@@ -44,20 +44,20 @@ metrics:
 
 +-------------------+------------------------+---+-------+------------+
 |                   | Reference              | A | Under | Waiting    |
-|                   |                        | v | d     | for your   |
-|                   |                        | a | evelo | co         |
-|                   |                        | i | pment | ntribution |
+|                   |                        | v | dev.  | for your   |
+|                   |                        | a |       | contrib.   |
+|                   |                        | i |       |            |
 |                   |                        | l |       |            |
 |                   |                        | a |       |            |
 |                   |                        | b |       |            |
 |                   |                        | l |       |            |
 |                   |                        | e |       |            |
 +===================+========================+===+=======+============+
-| Loudness for      | ISO 532B:1975          | x |       |            |
-| steady signals    | DIN 45631:1991         |   |       |            |
+| Loudness for      | ISO 532B:1975 ;        | x |       |            |
+| steady signals    | DIN 45631:1991 ;       |   |       |            |
 | (Zwicker method)  | ISO 532-1:2017 §5      |   |       |            |
 +-------------------+------------------------+---+-------+------------+
-| Loudness for      | DIN 45631/A1:2010      |   | x     |            |
+| Loudness for      | DIN 45631/A1:2010 ;    |   | x     |            |
 | non-stationary    | ISO 532-1:2017 §6      |   |       |            |
 | (Zwicker method)  |                        |   |       |            |
 +-------------------+------------------------+---+-------+------------+
@@ -74,11 +74,11 @@ metrics:
 As a second priority, the project could address the following metrics:
 
 +------------------------------+--------------+---+------+-----------+
-|                              | Reference    | A | U    | Waiting   |
-|                              |              | v | nder | for your  |
-|                              |              | a | dev  | con       |
-|                              |              | i | elop | tribution |
-|                              |              | l | ment |           |
+|                              | Reference    | A | Under| Waiting   |
+|                              |              | v | dev. | for your  |
+|                              |              | a |      | contrib.  |
+|                              |              | i |      |           |
+|                              |              | l |      |           |
 |                              |              | a |      |           |
 |                              |              | b |      |           |
 |                              |              | l |      |           |
