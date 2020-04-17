@@ -1,0 +1,4 @@
+__pycache__/
+.pytest_cache/
+.vscode/
+/mosqito/loudness/loudness_zwicker_time.py
