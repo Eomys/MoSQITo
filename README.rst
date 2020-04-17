@@ -36,6 +36,13 @@ language in the scientific computing community. It is meant to be highly
 documented (use of Jupyter notebooks, tutorials) and validated with
 reference sound samples and scientific publications.
 
+Origin of the project
+---------------------
+
+EOMYS initiated this open-source project in 2020 as a side-project to 
+Pyleecan (Python Library for Electrical Engineering Computational Analysis) 
+an open and non-commercial project started two years earlier. 
+
 Scope
 -----
 
@@ -43,9 +50,9 @@ The scope of the project is to implement the following first set of
 metrics:
 
 +-------------------+------------------------+---+-------+------------+
-|                   | Reference              | A | Under | Waiting    |
-|                   |                        | v | dev.  | for your   |
-|                   |                        | a |       | contrib.   |
+|                   | Reference              | A | Under | To do      |
+|                   |                        | v | dev.  |            |
+|                   |                        | a |       |            |
 |                   |                        | i |       |            |
 |                   |                        | l |       |            |
 |                   |                        | a |       |            |
@@ -74,9 +81,9 @@ metrics:
 As a second priority, the project could address the following metrics:
 
 +------------------------------+--------------+---+------+-----------+
-|                              | Reference    | A | Under| Waiting   |
-|                              |              | v | dev. | for your  |
-|                              |              | a |      | contrib.  |
+|                              | Reference    | A | Under| To do     |
+|                              |              | v | dev. |           |
+|                              |              | a |      |           |
 |                              |              | i |      |           |
 |                              |              | l |      |           |
 |                              |              | a |      |           |
