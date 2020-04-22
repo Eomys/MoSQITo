@@ -46,9 +46,10 @@ an open and non-commercial project started two years earlier.
 Documentation
 -------------
 
-Tutorials are available in the `_tutorials
+Tutorials are available in the `tutorials
 <./tutorials/>`_ folder. Documentation and validation of the MoSQITo functions
-are available in the `_validated<./documentation/>`_ folder.
+are available in the `documentation
+<./documentation/>`_ folder.
 
 
 Scope
