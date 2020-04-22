@@ -17,18 +17,23 @@ The test signal n°2 to 5 (annex B3 of the standard) provides .wav files to be u
 The plots below compares the MoSQITo loudness calculations for all the tests signals to the compliance requirements of the standards. 
 
 ![](../mosqito/tests/output/test_loudness_zwicker_wav_Test_signal_1.png)
+
 *Loudness calculation for ISO 532-1 test signal n°1 (machinery noise in free field)*
 
 ![](../mosqito/tests/output/test_loudness_zwicker_wav_Test_signal_2_(250_Hz_80_dB).png)
+
 *Loudness calculation for ISO 532-1 test signal n°2 (250 Hz tone in free field with a level of 80 dB)*
 
 ![](../mosqito/tests/output/test_loudness_zwicker_wav_Test_signal_3_(1_kHz_60_dB).png)
+
 *Loudness calculation for ISO 532-1 test signal n°3 (1 kHz tone in free field with a level of 60 dB)*
 
 ![](../mosqito/tests/output/test_loudness_zwicker_wav_Test_signal_4_(4_kHz_40_dB).png)
+
 *Loudness calculation for ISO 532-1 test signal n°4 (4 kHz tone in free field with a level of 40 dB)*
 
 ![](../mosqito/tests/output/test_loudness_zwicker_wav_Test_signal_5_(pinknoise_60_dB).png)
+
 *Loudness calculation for ISO 532-1 test signal n°5 (pink noise in free field with an overall level of 60 dB)*
 
 Note : all the plots can be obtained by runing the following command in the main MoSQITo folder: 
