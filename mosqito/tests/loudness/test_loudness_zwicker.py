@@ -18,7 +18,7 @@ from mosqito.loudness.loudness_zwicker_stationary import loudness_zwicker_statio
 from mosqito.generic.wav_to_oct3 import wav_to_oct3
 
 
-@pytest.mark.loudness  # unable to skip or run only loudness test
+@pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
 def test_loudness_zwicker_3oct():
     """Test function for the script loudness_zwicker_stationary
 
@@ -85,7 +85,7 @@ def test_loudness_zwicker_3oct():
 
 
 # pytest.mark.parametrize allows to execute a test for different data : see http://doc.pytest.org/en/latest/parametrize.html
-@pytest.mark.loudness  # unable to skip or run only loudness test
+@pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
 @pytest.mark.parametrize(
     "signal",
     [
@@ -111,6 +111,8 @@ def test_loudness_zwicker_3oct():
         },
     ],
 )
+
+@pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
 def test_loudness_zwicker_wav(signal):
     """Test function for the script loudness_zwicker_stationary
 
@@ -197,7 +199,7 @@ def check_conformance(N, N_specific, bark_axis, iso_ref):
         np.amax([N_specif_iso * 1.05, N_specif_iso + 0.1], axis=0),
         alpha=0.4,
         color="gray",
-        label="ISO 532-1 conformance",
+        label="ISO 532-1 compliance",
     )
     plt.legend()
     plt.xlabel("Critical band rate [Bark]")
@@ -207,9 +209,10 @@ def check_conformance(N, N_specific, bark_axis, iso_ref):
     else:
         clr = "red"
     plt.title("N = " + str(N) + " sone (ISO ref. " + str(N_iso) + " sone)", color=clr)
+    file_name = "_".join(iso_ref["data_file"].split(" "))
     plt.savefig(
         "mosqito/tests/output/test_loudness_zwicker_wav_"
-        + iso_ref["data_file"].split("/")[-1][:-4]
+        + file_name.split("/")[-1][:-4]
         + ".png",
         format="png",
     )

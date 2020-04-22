@@ -43,6 +43,14 @@ EOMYS initiated this open-source project in 2020 as a side-project to
 Pyleecan (Python Library for Electrical Engineering Computational Analysis) 
 an open and non-commercial project started two years earlier. 
 
+Documentation
+-------------
+
+Tutorials are available in the `_tutorials
+<./tutorials/>`_ folder. Documentation and validation of the MoSQITo functions
+are available in the `_validated<./documentation/>`_ folder.
+
+
 Scope
 -----
 
@@ -136,5 +144,7 @@ References
 
 Hales Swift, S., and Gee, K. L. (2017). “Extending sharpness calculation
 for an alternative loudness metric input,” J. Acoust. Soc. Am.142,
-EL549. Moore, B. C. J. (2014). “Development and Current Status of the
+EL549. 
+
+Moore, B. C. J. (2014). “Development and Current Status of the
 “Cambridge” Loudness Models,” Trends in Hearing, vol. 18: 1-29
