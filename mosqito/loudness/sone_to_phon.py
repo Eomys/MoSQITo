@@ -4,8 +4,12 @@
 @author martin_g for Eomys
 """
 
+# Standard library imports
 import math
 
+# Third party imports
+
+# Local application imports
 
 def sone_to_phon(sone):
     """Calculate Loudness level [phons] from Loudness [sones]

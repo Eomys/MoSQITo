@@ -3,11 +3,14 @@
 @date Created on Tue Mar 03 2020
 @author martin_g for Eomys
 """
-
-import numpy as np
+# Standard library imports
 import math
+
+# Third party imports
+import numpy as np
 from scipy import signal
 
+# Local application imports
 
 def oct3dsgn(fc, fs, n=3):
     """Design of a one-third-octave filter

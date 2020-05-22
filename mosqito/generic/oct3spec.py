@@ -4,28 +4,43 @@
 @author martin_g for Eomys
 """
 
-import math
+# Standard library imports
+
+# Third party imports
 import numpy as np
-from scipy import signal
+
+# Local application imports
 from mosqito.generic.oct3level import oct3level
 
 
-def oct3spec(sig, fs, fc_min=20, fc_max=20000):
+def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type='stationary', dec_factor=24):
     """Calculate third-octave band spectrum
 
-    Calculate the rms level of the signa "sig" sampled at freqency "fs"
+    Calculate the rms level of the signal "sig" sampled at freqency "fs"
     for each third octave band between "fc_min" and "fc_max". 
 
     Parameters
     ----------
     sig : numpy.ndarray
-        time signal [Any unit]
+        time signal
     fs : float
         Sampling frequency [Hz]
     fc_min : float
         Filter center frequency of the lowest 1/3 oct. band [Hz]
     fc_max : float
         Filter center frequency of the highest 1/3 oct. band [Hz]
+    out_format : str
+        Format of the output data ("rms" by default or "time")
+        corresponding respectively to a vector of overall rms values
+        per third octave band or a matrix (dim [freq, time]) filtered 
+        time signals per third octave band
+    sig_type : str
+        Type of signal ('stationary' or 'time-varying'), influence the 
+        format of the output data corresponding respectively to a vector
+        of overall rms values per third octave band or a matrix 
+        (dim [freq, time]) filtered time signals per third octave band
+    fs_level : int
+        RMS vs. time (pseudo-)sampling frequency.
 
     Outputs
     -------
@@ -116,10 +131,14 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000):
     fpref = fpref[fpref <= fc_max]
 
     # Calculation of the rms level of the signal in each band
-    spec = np.zeros((len(fexact), 1))
+    if sig_type == 'stationary':
+        spec = np.zeros((len(fexact), 1))
+    else:
+        n_level = int(np.ceil(sig.shape[0]/dec_factor))
+        spec = np.zeros((len(fexact), n_level))
     i = 0
     for fc in fexact:
-        spec[i] = oct3level(sig, fs, fc)
+        spec[i,:] = oct3level(sig, fs, fc, sig_type, dec_factor)
         i += 1
 
     return spec, fpref
