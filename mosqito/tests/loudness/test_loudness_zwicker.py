@@ -3,15 +3,13 @@
 @date Created on Mon Mar 23 2020
 @author martin_g for Eomys
 """
-# import sys
-# sys.path.append('../../..')
 
 # Standard library imports
+
+# Third party imports
 import numpy as np
 import matplotlib.pyplot as plt
 import pytest
-
-# Third party imports
 
 # Local application imports
 from mosqito.loudness.loudness_zwicker_stationary import loudness_zwicker_stationary
@@ -24,8 +22,8 @@ def test_loudness_zwicker_3oct():
 
     Test function for the script loudness_zwicker_stationary with
     third octave band spectrum as input. The input spectrum is 
-    provided by ISO 532-1 annex B2, the conformance is assessed 
-    according to section 5.1 of the standard. One .png conformance
+    provided by ISO 532-1 annex B2, the compliance is assessed 
+    according to section 5.1 of the standard. One .png compliance
     plot is generated.
 
     Parameters
@@ -76,11 +74,8 @@ def test_loudness_zwicker_3oct():
         "N": 83.296,
         "N_specif_file": "mosqito/tests/data/ISO_532-1/test_signal_1.csv",
     }
-
     N, N_specific, bark_axis = loudness_zwicker_stationary(test_signal_1)
-
-    tst = check_conformance(N, N_specific, bark_axis, signal)
-
+    tst = check_compliance(N, N_specific, bark_axis, signal)
     assert tst
 
 
@@ -118,8 +113,8 @@ def test_loudness_zwicker_wav(signal):
 
     Test function for the script loudness_zwicker_stationary with
     .wav file as input. The input file is provided by ISO 532-1 annex 
-    B3, the conformance is assessed according to section 5.1 of the 
-    standard. One .png conformance plot is generated.
+    B3, the compliance is assessed according to section 5.1 of the 
+    standard. One .png compliance plot is generated.
 
     Parameters
     ----------
@@ -138,14 +133,14 @@ def test_loudness_zwicker_wav(signal):
     N, N_specific, bark_axis = loudness_zwicker_stationary(
         20 * np.log10(np.squeeze(spec) / (2 * 10 ** -5))
     )
-    # Check ISO 532-1 conformance
-    assert check_conformance(N, N_specific, bark_axis, signal)
+    # Check ISO 532-1 compliance
+    assert check_compliance(N, N_specific, bark_axis, signal)
 
 
-def check_conformance(N, N_specific, bark_axis, iso_ref):
-    """Check the conformance of loudness calc. to ISO 532-1
+def check_compliance(N, N_specific, bark_axis, iso_ref):
+    """Check the comppiance of loudness calc. to ISO 532-1
 
-    Check the conformance of the input data N and N_specific
+    Check the compliance of the input data N and N_specific
     to section 5.1 of ISO 532-1 by using the reference data
     described in dictionary iso_ref.
 
@@ -168,7 +163,7 @@ def check_conformance(N, N_specific, bark_axis, iso_ref):
     Outputs
     -------
     tst : bool
-        Conformance to the reference data
+        Compliance to the reference data
     """
     # Load ISO reference outputs
     N_iso = iso_ref["N"]
@@ -187,12 +182,12 @@ def check_conformance(N, N_specific, bark_axis, iso_ref):
         ).all()
     )
     tst = tst_N and tst_specif
-    # Generate conformance plot
+    # Generate compliance plot
     if tst_specif:
         clr = "green"
     else:
         clr = "red"
-    plt.plot(bark_axis, N_specific, label="MoSQUITo", color=clr)
+    plt.plot(bark_axis, N_specific, label="MoSQITo", color=clr)
     plt.fill_between(
         bark_axis,
         np.amin([N_specif_iso * 0.95, N_specif_iso - 0.1], axis=0),
