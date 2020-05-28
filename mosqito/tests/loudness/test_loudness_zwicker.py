@@ -198,7 +198,7 @@ def check_compliance(N, N_specific, bark_axis, iso_ref):
     )
     plt.legend()
     plt.xlabel("Critical band rate [Bark]")
-    plt.ylabel("Specific loudness, [sones/Bark]")
+    plt.ylabel("Specific loudness, [sone/Bark]")
     if tst_N:
         clr = "green"
     else:
