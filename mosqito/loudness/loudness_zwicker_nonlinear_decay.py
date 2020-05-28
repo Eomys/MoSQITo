@@ -12,22 +12,21 @@ import numpy as np
 
 # Local application imports
 
-def calc_nl_loudness(core_loudness, sample_rate):
+def calc_nl_loudness(core_loudness):
     """Simulate the nonlinear temporal decay of the hearing system
 
     Parameters
     ----------
     core_loudness : numpy.ndarray
         Core loudness
-    sample_rate : int
-        Sampling rate
     
     Outputs
     -------
     nl_loudness :  numpy.ndarray
         Loudness with non linear temporal decay
     """
-
+    # Initialization
+    sample_rate = 2000
     nl_loudness = core_loudness
     # Factor for virtual upsampling/inner iterations
     nl_iter = 24

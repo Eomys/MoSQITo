@@ -12,7 +12,7 @@ import numpy as np
 # Local application imports
 from mosqito.loudness.loudness_zwicker_lowpass_intp import loudness_zwicker_lowpass_intp
 
-def loudness_zwicker_temporal_weighting(loudness, sample_rate):
+def loudness_zwicker_temporal_weighting(loudness):
     """ Temporal weighting of total loudness
     
     Two first-order low-pass filters (time constants 3,5 ms
@@ -24,14 +24,13 @@ def loudness_zwicker_temporal_weighting(loudness, sample_rate):
     ----------
     loudness : numpy.ndarray
         Loudness vs. time
-    sample_rate : int
-        Loudness signal sampling frequency
 
     Outputs
     -------
     loudness : numpy.ndarray
         Filtered loudness    
     """
+    sample_rate = 2000
     tau = 3.5 * 10**-3
     filt_loudness_1 = loudness_zwicker_lowpass_intp(loudness, tau, sample_rate)
     tau = 70 * 10**-3
