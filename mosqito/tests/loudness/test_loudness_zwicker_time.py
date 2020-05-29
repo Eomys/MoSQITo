@@ -340,7 +340,7 @@ def check_compliance(N, N_specific, bark_axis, iso_ref):
                 fontsize=10)
             plt.legend()
             plt.xlabel("Time [s]")
-            if Ni_label == 'Loudness':
+            if N_label == 'Loudness':
                 plt.ylabel("Loudness, [sone]")
             else:
                 plt.ylabel("Specific loudness [sone/Bark]")
