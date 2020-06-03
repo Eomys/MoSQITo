@@ -1,6 +1,4 @@
-# MoSQITo
-
-(**Mo**dular **S**ound **Q**uality **I**ntegrated **To**olbox)
+![](./logo.png)
 
 ## Background
 
