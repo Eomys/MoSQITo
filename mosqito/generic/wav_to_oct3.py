@@ -55,7 +55,7 @@ def wav_to_oct3(file, calib=1, out_type='overall'):
         dec_factor = int(fs / 2000)
         spec, freq = oct3spec(sig, fs, 25, 12500, sig_type='time_varying', dec_factor=24)
     elif out_type == 'time_iso':
-        spec = calc_third_octave_levels(sig,dec_factor)
+        spec = calc_third_octave_levels(sig,fs)
         freq = np.array(
         [
             25,
