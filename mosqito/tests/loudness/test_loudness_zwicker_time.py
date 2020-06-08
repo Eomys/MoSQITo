@@ -185,7 +185,6 @@ def test_loudness_zwicker_time(signal):
     #
     # Load signal and compute third octave band spectrum
     third_octave_levels, freq = wav_to_oct3(signal["data_file"], calib = 2 * 2**0.5, out_type='time_iso')
-    # third_octave_levels = 20 * np.log10((third_octave_levels + 1e-12) / (2*10**-5))
     #
     # Compute Loudness
     N, N_specific, bark_axis = loudness_zwicker_time(third_octave_levels, signal["field"])

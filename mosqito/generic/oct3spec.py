@@ -22,7 +22,7 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type='stationary', dec_factor
     Parameters
     ----------
     sig : numpy.ndarray
-        time signal
+        time signal [Pa]
     fs : float
         Sampling frequency [Hz]
     fc_min : float
@@ -45,7 +45,7 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type='stationary', dec_factor
     Outputs
     -------
     spec : numpy.ndarray
-        Third octave band spectrum of signal sig [Any unit, rms]
+        Third octave band spectrum of signal sig [dB re.2e-5 Pa]
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies
     """
@@ -141,4 +141,5 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type='stationary', dec_factor
         spec[i,:] = oct3level(sig, fs, fc, sig_type, dec_factor)
         i += 1
 
+    spec = 20 * np.log10((spec + 1e-12) / (2*10**-5))
     return spec, fpref

@@ -36,7 +36,7 @@ def wav_to_oct3(file, calib=1, out_type='overall'):
     Outputs
     -------
     spec : numpy.ndarray
-        Third octave band spectrum of signal sig [pa, rms]
+        Third octave band spectrum of signal sig [dB re.2e-5 Pa]
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies
     """
@@ -55,7 +55,6 @@ def wav_to_oct3(file, calib=1, out_type='overall'):
         dec_factor = int(fs / 2000)
         spec, freq = oct3spec(sig, fs, 25, 12500, sig_type='time_varying', dec_factor=24)
     elif out_type == 'time_iso':
-        dec_factor = int(fs / 2000)
         spec = calc_third_octave_levels(sig,dec_factor)
         freq = np.array(
         [
@@ -89,4 +88,4 @@ def wav_to_oct3(file, calib=1, out_type='overall'):
             12500,
         ]
     )
-    return spec, freq
+    return np.squeeze(spec), freq

@@ -13,9 +13,9 @@ from scipy import signal
 # Local application imports
 from mosqito.generic.square_and_smooth import square_and_smooth
 
-def calc_third_octave_levels(sig,dec_factor):
+def calc_third_octave_levels(sig,fs):
     """3rd octave filtering, squaring, smoothing, level calculation and
-    downsampling by dec_factor to SR_LEVEL
+    downsampling to temporal resolution: 0,5 ms, i.e. sampling rate: 2 kHz
 
     See ISO 532-1 section 6.3
 
@@ -23,17 +23,23 @@ def calc_third_octave_levels(sig,dec_factor):
     ----------
     sig : numpy.ndarray
         time signal sampled at 48 kHz[pa]
-    dec_factor : int
-        TODO: descr
+    fs : int
+        time signal sampling frequency
 
     Outputs
     -------
     third_octave_levels : numpy.ndarray
         Set of time signals filtered per third octave bands
     """
+    # Sampling frequency shall be equal to 48 kHz (as per ISO 532)
+    if fs != 48000:
+        raise ValueError(
+            """ERROR: Sampling frequency shall be equal to 48 kHz"""
+        )
     # Constants
     n_level_band = 28
     n_filter_coeff = 6
+    dec_factor = int(fs / 2000)
     # Initialisation
     coeff = np.zeros(n_filter_coeff)
     # Filter coefficients of one-third-octave-band filters (reference

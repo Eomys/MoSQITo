@@ -130,9 +130,7 @@ def test_loudness_zwicker_wav(signal):
     # Load signal and compute third octave band spectrum
     spec, _ = wav_to_oct3(signal["data_file"], calib=2 * 2 ** 0.5)
     # Compute Loudness
-    N, N_specific, bark_axis = loudness_zwicker_stationary(
-        20 * np.log10(np.squeeze(spec) / (2 * 10 ** -5))
-    )
+    N, N_specific, bark_axis = loudness_zwicker_stationary(spec)
     # Check ISO 532-1 compliance
     assert check_compliance(N, N_specific, bark_axis, signal)
 
