@@ -1,4 +1,4 @@
-![](./logo.png)
+# ![MoSQITo Logo](./logo.png) MoSQITo
 
 ## Background
 
