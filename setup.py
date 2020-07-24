@@ -22,17 +22,12 @@ setuptools.setup(
     version="0.1.0",
     author="MoSQITo Developers",
     author_email="martin.glesser@eomys.com",
-    description="Python Library for Electrical Engineering Computational Analysis",
+    description="Modular Sound Quality Integrated Toolbox",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Eomys/MoSQITo",
-    download_url="https://github.com/Eomys/SciDataTool/archive/0.0.1.tar.gz",
+    download_url="https://github.com/Eomys/MoSQITo/archive/0.1.0.tar.gz",
     packages=setuptools.find_packages(exclude=["documentation", "tutorials"]),
-    # package_data={
-    #     # Include any *.json files found in pyleecan:
-    #     # '': ['*.json'],
-    #     "": [""]
-    # },
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
