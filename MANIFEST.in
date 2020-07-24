@@ -1,0 +1,2 @@
+global-exclude *.py[cod]
+include README.md
