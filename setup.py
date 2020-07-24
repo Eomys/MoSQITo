@@ -19,7 +19,7 @@ tests_require = ["pytest>=5.4.1"]
 
 setuptools.setup(
     name="mosqito",
-    version="0.0.1.1",
+    version="0.1.0",
     author="MoSQITo Developers",
     author_email="martin.glesser@eomys.com",
     description="Python Library for Electrical Engineering Computational Analysis",
