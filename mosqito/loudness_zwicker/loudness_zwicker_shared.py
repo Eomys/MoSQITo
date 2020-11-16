@@ -311,4 +311,5 @@ def calc_slopes(nm):
         N = np.floor(N * 1000 + 0.5) / 1000
     else:
         N = np.floor(N * 100 + 0.5) / 100
+        
     return N, N_specific

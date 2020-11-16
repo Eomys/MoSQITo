@@ -50,7 +50,7 @@ def loudness_zwicker_time(third_octave_levels, field_type):
     bark_axis : numpy.ndarray
         Corresponding bark axis
     """
-    #
+    
     # Calculate core loudness
     num_sample_level = np.shape(third_octave_levels)[1]
     core_loudness = np.zeros((21, num_sample_level))
