@@ -7,7 +7,7 @@ Created on Thu Sep 10 16:59:53 2020
 # Standard library import
 import numpy as np
 
-def calc_sharpness_din(N, N_specific, is_stationary):
+def comp_sharpness_din(N, N_specific, is_stationary):
     """ Sharpness calculation
 
     The code is based on DIN 45692:2009 to determine sharpness

@@ -8,7 +8,7 @@ Created on Thu Sep 10 17:06:11 2020
 # Standard library import
 import numpy as np
 
-def calc_sharpness_bismarck(N, N_specific, is_stationary):
+def comp_sharpness_bismarck(N, N_specific, is_stationary):
     """ Sharpness calculation
 
     The code is based on Bismarck formulation to determine sharpness

@@ -8,7 +8,7 @@ Created on Wed Nov  4 2020
 # Standard library imports
 import numpy as np  
  
-def calc_sharpness_fastl(N, N_specific, is_stationary):
+def comp_sharpness_fastl(N, N_specific, is_stationary):
     """ Sharpness calculation according to FASTL's method (1991)
         Expression for weighting function obtained by fitting an 
         equation to the data given in 'Psychoacoustics: Facts and Models' 
