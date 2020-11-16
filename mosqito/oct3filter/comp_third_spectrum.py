@@ -13,7 +13,7 @@ from mosqito.oct3filter.calc_third_octave_levels import calc_third_octave_levels
 from mosqito.oct3filter.oct3spec import oct3spec
 
 
-def comp_third_oct(is_stationary, signal, fs):       
+def comp_third_spec(is_stationary, signal, fs):       
     """ Third-octave band spectrum calculation, with the corresponding 
     bands center frequencies
         
@@ -28,7 +28,7 @@ def comp_third_oct(is_stationary, signal, fs):
     if is_stationary == True:
         spec_third_dB, spec_third_freq = oct3spec(signal, fs)
     elif is_stationary == False:            
-        spec_third_dB = calc_third_octave_levels(signal,fs)
+        spec_third_dB, spec_third_freq = calc_third_octave_levels(signal,fs)
     np.squeeze(spec_third_dB)      
 
     return spec_third_dB, spec_third_freq     
