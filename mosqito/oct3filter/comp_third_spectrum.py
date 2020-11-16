@@ -26,9 +26,9 @@ def comp_third_spec(is_stationary, signal, fs):
         """                                  
     
     if is_stationary == True:
-        spec_third_dB, spec_third_freq = oct3spec(signal, fs)
+        spec_third, third_axis = oct3spec(signal, fs)
     elif is_stationary == False:            
-        spec_third_dB, spec_third_freq = calc_third_octave_levels(signal,fs)
-    np.squeeze(spec_third_dB)      
+        spec_third, third_axis = calc_third_octave_levels(signal,fs)
+    np.squeeze(spec_third)      
 
-    return spec_third_dB, spec_third_freq     
+    return spec_third, third_axis 
