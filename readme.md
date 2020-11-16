@@ -52,9 +52,9 @@ metrics:
 |:-|:-|:-:|:-:|:-:|
 |Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | x |||
 |Loudness for non-stationary<br>(Zwicker method) | DIN 45631/A1:2010<br>ISO 532-1:2017 §6 | x |||
-| Sharpness | DIN 45692:2009 ||| x |
-| Roughness /<br>Fluctuation Strength | To be defined ||| x |
-| Tonality (Hearing model) | ECMA-74:2019 annex G ||| x |
+| Sharpness | DIN 45692:2009 || x ||
+| Roughness /<br>Fluctuation Strength | To be defined || x ||
+| Tonality (Hearing model) | ECMA-74:2019 annex G || x ||
 
 As a second priority, the project could address the following metrics:
 
