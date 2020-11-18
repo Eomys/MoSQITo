@@ -74,7 +74,7 @@ def test_loudness_zwicker_3oct():
         "N": 83.296,
         "N_specif_file": "mosqito/tests/loudness/data/ISO_532-1/test_signal_1.csv",
     }
-    N, N_specific, bark_axis = loudness_zwicker_stationary(test_signal_1)
+    N, N_specific = loudness_zwicker_stationary(test_signal_1)
     tst = check_compliance(N, N_specific, bark_axis, signal)
     assert tst
 
@@ -130,7 +130,7 @@ def test_loudness_zwicker_wav(signal):
     # Load signal and compute third octave band spectrum
     spec, _ = load2oct3(signal["data_file"], calib=2 * 2 ** 0.5)
     # Compute Loudness
-    N, N_specific, bark_axis = loudness_zwicker_stationary(spec)
+    N, N_specific = loudness_zwicker_stationary(spec)
     # Check ISO 532-1 compliance
     assert check_compliance(N, N_specific, bark_axis, signal)
 
