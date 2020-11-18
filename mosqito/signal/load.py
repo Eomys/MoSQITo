@@ -35,7 +35,7 @@ def load(is_stationary, file, calib=1 ):
         sampling frequency        
     """
     
-    # load the wav file content
+    # load the wav file content    
     if file[-3:] == 'wav':
         fs, signal = wavfile.read(file) 
         
@@ -56,6 +56,11 @@ def load(is_stationary, file, calib=1 ):
     
         # calculate the sampling frequency
         fs = int(1/data['abscissa_inc'])
+        
+    else:
+        raise ValueError(
+            """ERROR: only .wav or .uff file are supported"""
+        )
     
     # resample to 48kHz to allow calculation
     if fs != 48000:
