@@ -36,15 +36,15 @@ def comp_sharpness(is_stationary, N, N_specific, method='din'):
     """
     
     if method == 'din':
-        S = calc_sharpness_din(N, N_specific, is_stationary )      
+        S = comp_sharpness_din(N, N_specific, is_stationary )      
         
     elif method == 'aures':
-        S = calc_sharpness_aures(N, N_specific, is_stationary ) 
+        S = comp_sharpness_aures(N, N_specific, is_stationary ) 
 
     elif method == 'bismarck':
-        S = calc_sharpness_bismarck(N, N_specific, is_stationary )                    
+        S = comp_sharpness_bismarck(N, N_specific, is_stationary )                    
 
     elif method == 'fastl':
-        S = calc_sharpness_fastl(N, N_specific, is_stationary ) 
+        S = comp_sharpness_fastl(N, N_specific, is_stationary ) 
     
     return S
