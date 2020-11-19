@@ -25,7 +25,7 @@ def comp_loudness(is_stationary, spec_third, third_axis=[], field_type = 'free')
     third_axis: numpy.array
         third-octave spectum frequency axis
     field-type: string
-        'free' by default or 
+        'free' by default or 'diffuse'
     
     Outputs
     -------
@@ -33,6 +33,8 @@ def comp_loudness(is_stationary, spec_third, third_axis=[], field_type = 'free')
         loudness value
     N_specific: numpy.array
         specific loudness values
+    bark_axis: numpy.array
+        frequency axis correpsondong to N_specific values in bark
     
     """
 
