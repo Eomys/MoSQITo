@@ -4,7 +4,9 @@
 @author martin_g for Eomys
 """
 
-# Standard library imports
+
+import sys
+sys.path.append('../../..')
 
 # Third party imports
 import numpy as np
@@ -128,14 +130,14 @@ def test_loudness_zwicker_wav(signal):
     # (from ISO 532-1 annex B3)
 
     # Load signal and compute third octave band spectrum
-    spec, _ = load2oct3(signal["data_file"], calib=2 * 2 ** 0.5)
+    spec, _ = load2oct3(True,signal["data_file"], calib=2 * 2 ** 0.5)
     # Compute Loudness
     N, N_specific = loudness_zwicker_stationary(spec)
     # Check ISO 532-1 compliance
-    assert check_compliance(N, N_specific, bark_axis, signal)
+    assert check_compliance(N, N_specific, signal)
 
 
-def check_compliance(N, N_specific, bark_axis, iso_ref):
+def check_compliance(N, N_specific, iso_ref):
     """Check the comppiance of loudness calc. to ISO 532-1
 
     Check the compliance of the input data N and N_specific
@@ -180,6 +182,10 @@ def check_compliance(N, N_specific, bark_axis, iso_ref):
         ).all()
     )
     tst = tst_N and tst_specif
+    
+    # critical band rate scale
+    bark_axis = np.linspace(0.1, 24, int(24 / 0.1))  
+
     # Generate compliance plot
     if tst_specif:
         clr = "green"

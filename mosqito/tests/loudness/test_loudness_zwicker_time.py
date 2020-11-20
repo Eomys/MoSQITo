@@ -4,7 +4,8 @@
 @author martin_g for Eomys
 """
 
-# Standard library imports
+import sys
+sys.path.append('../../..')
 
 # Third party imports
 import numpy as np
@@ -184,16 +185,16 @@ def test_loudness_zwicker_time(signal):
     """
     #
     # Load signal and compute third octave band spectrum
-    third_octave_levels, freq = load2oct3(signal["data_file"], calib = 2 * 2**0.5, out_type='time_iso')
+    third_octave_levels, freq = load2oct3(False,signal["data_file"], calib = 2 * 2**0.5)
     #
     # Compute Loudness
-    N, N_specific, bark_axis = loudness_zwicker_time(third_octave_levels, signal["field"])
+    N, N_specific, = loudness_zwicker_time(third_octave_levels, signal["field"])
     #
     # Check ISO 532-1 compliance
-    assert check_compliance(N, N_specific, bark_axis, signal)
+    assert check_compliance(N, N_specific, signal)
 
 
-def check_compliance(N, N_specific, bark_axis, iso_ref):
+def check_compliance(N, N_specific, iso_ref):
     """Check the comppiance of loudness calc. to ISO 532-1
 
     Check the compliance of the input data N and N_specific
@@ -271,7 +272,11 @@ def check_compliance(N, N_specific, bark_axis, iso_ref):
             N_iso = N_iso[1:]
             N_specif_iso = N_specif_iso[1:]
             time = time[1:]
-        #
+        
+        # critical band rate scale
+        bark_axis = np.linspace(0.1, 24, int(24 / 0.1))  
+
+        
         # Generate compliance plot for loudness and specific loudness
         comp = np.zeros((4,N.size))
         if iso_ref["N_specif_bark"] != -1:
