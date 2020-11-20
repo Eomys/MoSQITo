@@ -6,7 +6,7 @@ Created on Mon Nov  2 10:34:04 2020
 """
 
 import sys
-sys.path.append('../..')
+sys.path.append('../../..')
 
 # Standard imports
 import numpy as np
@@ -18,9 +18,10 @@ from mosqito.roughness_danielweber.roughness_main_calc import roughness_main_cal
 from mosqito.roughness_danielweber.weighting_function_gzi import gzi_definition
 from mosqito.roughness_danielweber.H_function import H_function
 from mosqito.roughness_danielweber.a0_zwicker import a0tab
-from mosqito.conversion import freq2bark
+from mosqito.conversion import freq2bark, db2amp
 
-def roughness(signal,fs,overlap):
+
+def comp_roughness(signal,fs,overlap):
     """ Roughness calculation of a signal sampled at 48kHz.
 
     The code is based on the algorithm described in "Psychoacoustical roughness:
@@ -60,10 +61,10 @@ def roughness(signal,fs,overlap):
         reshaped_signal[i_row,:] = signal[i_row*int(N*(1-overlap)):i_row*int(N*(1-overlap))+N]      
     
 # Creation of the spectrum by FFT with a Blackman window
-    fourier = fft(reshaped_signal* np.blackman(N)*2/(np.sum(np.blackman(N))))
-
-    # Zwicker transmission factor
+    fourier = fft(reshaped_signal*np.blackman(N))
+    fourier = fourier * 2 /(N*np.mean(np.blackman(N)))
     
+    # Zwicker transmission factor 
     a0 = np.power(10,0.05*a0tab(freq2bark(np.concatenate((np.arange(0,4800,1)*fs/N,np.arange(4800,0,-1)*fs/N)))))
     fourier = fourier * a0
     
