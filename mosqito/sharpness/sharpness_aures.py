@@ -47,7 +47,7 @@ def comp_sharpness_aures(N, N_specific, is_stationary):
             if N[t] >= 0.1:
                 # weighting function depending on the loudness
                 gA[:,t] = 0.078 * (np.exp(0.171 * z )/z)* (N[t]/np.log(N[t] * 0.05 + 1))
-                S[t] = 0.11 * sum(N_specific[:,t] * gA[:,t] * z * 0.1) / np.log(N[t] * 0.05 + 1)
+                S[t] = 0.11 * sum(N_specific[:,t] * gA[:,t] * z * 0.1) / N[t]
                            
     return S
 
