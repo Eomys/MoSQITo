@@ -6,8 +6,8 @@ Created on Thu Nov 26 10:59:28 2020
 """
 import numpy as np
 import math
-from mosqito.conversion import freq2bark, amp2db, bark2freq
-from mosqito.roughness_danielweber.LTQ import LTQ
+from mosqito.functions.conversion import freq2bark, amp2db, bark2freq
+from mosqito.functions.roughness_danielweber.LTQ import LTQ
 
 freqs = np.arange(0,4800,1)/0.2
 barks = freq2bark(freqs)

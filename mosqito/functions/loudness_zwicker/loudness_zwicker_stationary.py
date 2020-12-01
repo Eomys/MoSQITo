@@ -9,8 +9,8 @@
 import numpy as np
 
 # Local application imports
-from mosqito.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
-from mosqito.loudness_zwicker.loudness_zwicker_shared import calc_slopes
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
 
 def loudness_zwicker_stationary(spec_third, third_axis=[], field_type="free"):
     """Zwicker-loudness calculation for stationary signals

@@ -13,10 +13,10 @@ from pandas import ExcelFile, read_excel
 import numpy as np
 
 # Local applications imports
-from mosqito.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
-from mosqito.loudness_zwicker.loudness_zwicker_nonlinear_decay import calc_nl_loudness
-from mosqito.loudness_zwicker.loudness_zwicker_shared import calc_slopes
-from mosqito.loudness_zwicker.loudness_zwicker_temporal_weighting import loudness_zwicker_temporal_weighting
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
+from mosqito.functions.loudness_zwicker.loudness_zwicker_nonlinear_decay import calc_nl_loudness
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
+from mosqito.functions.loudness_zwicker.loudness_zwicker_temporal_weighting import loudness_zwicker_temporal_weighting
 
 def loudness_zwicker_time(third_octave_levels, field_type):
     """Calculate Zwicker-loudness for time-varying signals

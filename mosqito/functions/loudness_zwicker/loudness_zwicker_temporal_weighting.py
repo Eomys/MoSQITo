@@ -5,7 +5,7 @@
 """
 
 # Local application import
-from mosqito.loudness_zwicker.loudness_zwicker_lowpass_intp import loudness_zwicker_lowpass_intp
+from mosqito.functions.loudness_zwicker.loudness_zwicker_lowpass_intp import loudness_zwicker_lowpass_intp
 
 def loudness_zwicker_temporal_weighting(loudness):
     """ Temporal weighting of total loudness

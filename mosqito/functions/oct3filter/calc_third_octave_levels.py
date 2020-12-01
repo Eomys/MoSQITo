@@ -11,7 +11,7 @@ import numpy as np
 from scipy import signal
 
 # Local application imports
-from mosqito.oct3filter.square_and_smooth import square_and_smooth
+from mosqito.functions.oct3filter.square_and_smooth import square_and_smooth
 
 def calc_third_octave_levels(sig,fs):
     """3rd octave filtering, squaring, smoothing, level calculation and
@@ -229,8 +229,10 @@ def calc_third_octave_levels(sig,fs):
             10000,
             12500    ]
 
+    n_time = len(sig[::dec_factor])
+    time_axis = np.linspace(0,len(sig)/fs, num = n_time)
 
-    third_octave_level = np.zeros((n_level_band, len(sig[::dec_factor])))
+    third_octave_level = np.zeros((n_level_band, n_time))
     for i_bands in range(n_level_band):
         # Initialisation
         tiny_value = 10**-12
@@ -245,4 +247,5 @@ def calc_third_octave_levels(sig,fs):
         # SPL calculation and decimation
         third_octave_level[i_bands,:] = 10 * np.log10((sig_filt[::dec_factor]
             + tiny_value) / i_ref)
-    return third_octave_level, freq
+        
+    return third_octave_level, freq, time_axis

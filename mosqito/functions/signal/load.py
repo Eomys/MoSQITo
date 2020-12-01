@@ -12,7 +12,7 @@ from scipy.io import wavfile
 from scipy.signal import resample
 
 # Local import
-from mosqito.oct3filter.comp_third_spectrum import comp_third_spec
+from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
 
 
 

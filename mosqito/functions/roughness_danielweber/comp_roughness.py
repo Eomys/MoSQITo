@@ -13,12 +13,12 @@ from numpy.fft import fft, ifft
 import math
 
 # Local imports
-from mosqito.roughness_danielweber.excitation_pattern import excitation_pattern
-from mosqito.roughness_danielweber.weighting_function_gzi import gzi_definition
-from mosqito.roughness_danielweber.H_test import H_function
-from mosqito.roughness_danielweber.a0_zwicker import a0tab
-from mosqito.conversion import freq2bark, amp2db
-from mosqito.roughness_danielweber.LTQ import LTQ
+from mosqito.functions.roughness_danielweber.excitation_pattern import excitation_pattern
+from mosqito.functions.roughness_danielweber.weighting_function_gzi import gzi_definition
+from mosqito.functions.roughness_danielweber.H_test import H_function
+from mosqito.functions.roughness_danielweber.a0_zwicker import a0tab
+from mosqito.functions.conversion import freq2bark, amp2db
+from mosqito.functions.roughness_danielweber.LTQ import LTQ
 
 def comp_roughness(signal,fs,overlap):
     """ Roughness calculation of a signal sampled at 48kHz.

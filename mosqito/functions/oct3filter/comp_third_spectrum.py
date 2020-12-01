@@ -9,8 +9,8 @@ Created on Mon Nov 16 09:10:45 2020
 import numpy as np
 
 # Local imports
-from mosqito.oct3filter.calc_third_octave_levels import calc_third_octave_levels
-from mosqito.oct3filter.oct3spec import oct3spec
+from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
+from mosqito.functions.oct3filter.oct3spec import oct3spec
 
 
 def comp_third_spec(is_stationary, signal, fs):       

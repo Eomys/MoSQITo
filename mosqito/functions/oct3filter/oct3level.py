@@ -9,7 +9,7 @@ import numpy as np
 from scipy import signal
 
 # Local application imports
-from mosqito.oct3filter.oct3dsgn import oct3dsgn
+from mosqito.functions.oct3filter.oct3dsgn import oct3dsgn
 
 
 def oct3level(sig, fs, fc, sig_type='stationary', dec_factor=24):

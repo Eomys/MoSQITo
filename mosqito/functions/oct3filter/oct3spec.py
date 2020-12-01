@@ -8,7 +8,7 @@
 import numpy as np
 
 # Local application imports
-from mosqito.oct3filter.oct3level import oct3level
+from mosqito.functions.oct3filter.oct3level import oct3level
 
 
 def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type='stationary', dec_factor=24):
