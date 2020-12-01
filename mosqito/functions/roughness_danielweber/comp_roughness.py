@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Nov  2 10:34:04 2020
-
 @author: wantysal
 """
 
@@ -19,11 +18,10 @@ from mosqito.roughness_danielweber.weighting_function_gzi import gzi_definition
 from mosqito.roughness_danielweber.H_test import H_function
 from mosqito.roughness_danielweber.a0_zwicker import a0tab
 from mosqito.conversion import freq2bark, amp2db
-from mosqito.LTQ import LTQ
+from mosqito.roughness_danielweber.LTQ import LTQ
 
 def comp_roughness(signal,fs,overlap):
     """ Roughness calculation of a signal sampled at 48kHz.
-
     The code is based on the algorithm described in "Psychoacoustical roughness:
     implementation of an optimized model" by Daniel and Weber in 1997.
     The roughness model consists of a parallel processing structure that is made up 
@@ -38,7 +36,6 @@ def comp_roughness(signal,fs,overlap):
         sampling frequency
     overlap : float
         overlapping coefficient for the time windows of 200ms 
-
     Outputs
     -------
     R : numpy.array
@@ -60,10 +57,12 @@ def comp_roughness(signal,fs,overlap):
     reshaped_signal = np.zeros((row,N))     
     for i_row in range(row):        
         reshaped_signal[i_row,:] = signal[i_row*int(N*(1-overlap)):i_row*int(N*(1-overlap))+N]      
+    # time axis for the windows of 200ms
+    time = np.linspace(0,len(signal)/fs,num = row)
     
 # Creation of the spectrum by FFT with a Blackman window
     fourier = fft(reshaped_signal*np.blackman(N))
-    fourier = fourier *2/(N*np.mean(np.blackman(N)))
+    fourier = fourier*2/(N*np.mean(np.blackman(N)))
     # Zwicker transmission factor   
     a0 = np.power(10,0.05*a0tab(freq2bark(np.concatenate((np.arange(0,4800,1)*fs/N,np.arange(4800,0,-1)*fs/N)))))
     fourier = fourier * a0
@@ -75,8 +74,8 @@ def comp_roughness(signal,fs,overlap):
     high_limit	= int(20000*N/fs)+1
     
     # Audible frequencies axis
-    audible_freq_index =	np.arange(low_limit,high_limit,1)
-    audible_freq_axis	=	(audible_freq_index)*fs/N
+    audible_freq_index = np.arange(low_limit,high_limit,1)
+    audible_freq_axis =	(audible_freq_index)*fs/N
     audible_bark_axis = freq2bark(audible_freq_axis)
     
     
@@ -116,7 +115,7 @@ def comp_roughness(signal,fs,overlap):
         etmp = excitation_pattern(N,sizL,spectrum,module,LdB,low_limit, audible_index, audible_freq_axis,audible_bark_axis)
     
         # The temporal specific excitation functions are obtained by IFFT
-        ei = np.real(ifft(etmp * N * np.mean(np.blackman(N)) /2 ))
+        ei = np.real(ifft(etmp * N ))
 
 
 #-------------------------------2d stage---------------------------------------
@@ -176,4 +175,4 @@ def comp_roughness(signal,fs,overlap):
         R[i_time] = 0.25 * sum(R_spec[i_time,:])
 
         
-    return R, R_spec
+    return R, R_spec, time, center_freq

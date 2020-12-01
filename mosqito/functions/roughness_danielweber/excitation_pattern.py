@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Nov  6 15:39:05 2020
-
 @author: wantysal
 """
 # Standard library import
@@ -58,12 +57,12 @@ def excitation_pattern(N,sizL,spectrum,module,LdB,low_limit, audible_index, audi
         
         for k in np.arange(0,whichZ[0,l],1):
             Stemp	=	(S1*(bark-(k*0.5)))+level
-            if Stemp > LTQ(k*0.5) + a0tab(k*0.5):
+            if Stemp > LTQ(k*0.5) - a0tab(k*0.5):
                 Slopes[l,k]= db2amp(Stemp)
         
         for k in np.arange(int(whichZ[1,l]),47,1):
             Stemp	=	(S2[l]*((k*0.5)-bark))+level
-            if Stemp  > LTQ(k*0.5) + a0tab(k*0.5):
+            if Stemp  > LTQ(k*0.5) - a0tab(k*0.5):
                 Slopes[l,k]= db2amp(Stemp)
     
                     

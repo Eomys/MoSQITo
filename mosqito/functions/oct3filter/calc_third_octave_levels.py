@@ -200,8 +200,7 @@ def calc_third_octave_levels(sig,fs):
     ])
     
     # Definition of the range of preferred filter center frequency
-    freq = np.array(
-        [   25,
+    freq = [25,
             31.5,
             40,
             50,
@@ -228,7 +227,7 @@ def calc_third_octave_levels(sig,fs):
             6300,
             8000,
             10000,
-            12500    ])
+            12500    ]
 
 
     third_octave_level = np.zeros((n_level_band, len(sig[::dec_factor])))

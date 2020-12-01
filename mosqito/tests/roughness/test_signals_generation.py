@@ -4,10 +4,8 @@ Created on Fri Nov 13 15:17:27 2020
 
 @author: wantysal
 """
-import sys
-sys.path.append('../../..')
+# Standard library import
 import numpy as np
-from mosqito.functions.oct3filter.oct3spec import oct3spec
 
 
 def test_signal(fc, fmod, mdepth, fs, d, dB):
@@ -34,24 +32,15 @@ def test_signal(fc, fmod, mdepth, fs, d, dB):
     # time axis definition    
     time = np.linspace(0,d,int(fs * d))
     
-    # modulated signal
-    signal = (1 + mdepth * (np.cos(2*np.pi*fmod*time))) * np.cos(2*np.pi*fc*time)
+    # # Amplitude modulated signal
+    signal = np.power(10,dB/20)*2e-05*2**0.5*(1 + mdepth * (np.cos(2*np.pi*fmod*time))) * np.cos(2*np.pi*fc*time)    
     
-    # Compute third-octave spectrum
-    spec_third, spec_freq = oct3spec(signal, fs)
     
-    # Compute dB level
-    level_dB = 10 * np.log10(sum(np.power(10,spec_third/10)))
-
-    # Calibration factor to set the unmodulated signal at the desired dB level
-    factor = np.power(10,(dB-level_dB)/20)
-    
-    # Adapt the signal
-    signal = signal * factor
-    
+    # signal = 0.5*(1 + mdepth * (np.sin(2*np.pi*fmod*time))) * np.sin(2*np.pi*fc*time)    
+    # rms = np.sqrt(np.mean(np.power(signal,2)))
+    # ampl = 2*10**(-3/20)*np.power(10,0.05*dB)/rms
+    # signal = signal * ampl
     
     
     return signal
     
-
-   
