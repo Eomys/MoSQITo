@@ -5,8 +5,8 @@
 """
 
 # Local application imports
-from mosqito.signal.load import load
-from mosqito.oct3filter.comp_third_spectrum import comp_third_spec
+from functions.signal.load import load
+from functions.oct3filter.comp_third_spectrum import comp_third_spec
 
 
 def load2oct3(is_stationary,file, calib=1):

@@ -4,19 +4,15 @@
 @author martin_g for Eomys
 """
 
-# Temporary for testing purpose
-import sys
-sys.path.append('../../..')
-from pandas import ExcelFile, read_excel
 
 # Standard library imports
 import numpy as np
 
 # Local applications imports
-from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
-from mosqito.functions.loudness_zwicker.loudness_zwicker_nonlinear_decay import calc_nl_loudness
-from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
-from mosqito.functions.loudness_zwicker.loudness_zwicker_temporal_weighting import loudness_zwicker_temporal_weighting
+from functions.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
+from functions.loudness_zwicker.loudness_zwicker_nonlinear_decay import calc_nl_loudness
+from functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
+from functions.loudness_zwicker.loudness_zwicker_temporal_weighting import loudness_zwicker_temporal_weighting
 
 def loudness_zwicker_time(third_octave_levels, field_type):
     """Calculate Zwicker-loudness for time-varying signals
@@ -75,25 +71,3 @@ def loudness_zwicker_time(third_octave_levels, field_type):
     N_spec = spec_loudness[:,::dec_factor]
     return N, N_spec
 
-# test de la fonction
-if __name__ == "__main__":
-    signal = {
-            "data_file": "mosqito/tests/data/ISO_532-1/Annex B.5/Test signal 16 (hairdryer).wav",
-            "xls": "mosqito/tests/data/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
-            "tab": "Test signal 16",
-            "N_specif_bark": -1,
-            "field": "free",
-        }
-
-    xls_file = ExcelFile(signal["xls"])
-
-    third_octave_levels, freq = wav_to_oct3(signal["data_file"], calib = 2 * 2**0.5, out_type='time_iso')
-    # third_octave_levels = 20 * np.log10((third_octave_levels + 1e-12) / (2*10**-5))
-    N, N_specific, bark_axis = loudness_zwicker_time(third_octave_levels, 'free')
-    bark = signal["N_specif_bark"]
-    i_bark = np.nonzero((np.abs(bark_axis - bark)) == np.amin(np.abs(bark_axis - bark)))[0][0]
-
-    N_iso = np.transpose(read_excel(xls_file, sheet_name=signal["tab"], header=None, skiprows=10, usecols = 'B', squeeze=True).to_numpy())
-    N_specif_iso = np.transpose(read_excel(xls_file, sheet_name=signal["tab"], header=None, skiprows=10, usecols = 'L', squeeze=True).to_numpy())
-    check_compliance(N, N_specific, bark_axis, signal)
-    pass

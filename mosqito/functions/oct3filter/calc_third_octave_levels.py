@@ -11,7 +11,7 @@ import numpy as np
 from scipy import signal
 
 # Local application imports
-from mosqito.functions.oct3filter.square_and_smooth import square_and_smooth
+from functions.oct3filter.square_and_smooth import square_and_smooth
 
 def calc_third_octave_levels(sig,fs):
     """3rd octave filtering, squaring, smoothing, level calculation and

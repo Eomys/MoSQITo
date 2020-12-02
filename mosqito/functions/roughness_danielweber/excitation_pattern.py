@@ -7,9 +7,9 @@ Created on Fri Nov  6 15:39:05 2020
 import numpy as np
 
 # Local import
-from mosqito.functions.roughness_danielweber.LTQ import LTQ
-from mosqito.functions.conversion import db2amp
-from mosqito.functions.roughness_danielweber.a0_zwicker import a0tab
+from functions.roughness_danielweber.LTQ import LTQ
+from functions.conversion import db2amp
+from functions.roughness_danielweber.a0_zwicker import a0tab
 
 def excitation_pattern(N,sizL,spectrum,module,LdB,low_limit, audible_index, audible_freq_axis,audible_bark_axis):
        

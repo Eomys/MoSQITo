@@ -4,6 +4,8 @@ Created on Mon Nov 16 08:59:34 2020
 
 @author: wantysal
 """
+import sys
+sys.path.append('../../..')
 
 # Standard library imports
 import numpy as np
@@ -12,7 +14,7 @@ from scipy.io import wavfile
 from scipy.signal import resample
 
 # Local import
-from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
+from functions.oct3filter.comp_third_spectrum import comp_third_spec
 
 
 
