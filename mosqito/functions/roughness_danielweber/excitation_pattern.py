@@ -11,7 +11,7 @@ from functions.roughness_danielweber.LTQ import LTQ
 from functions.conversion import db2amp
 from functions.roughness_danielweber.a0_zwicker import a0tab
 
-def excitation_pattern(N,sizL,spectrum,module,LdB,low_limit, audible_index, audible_freq_axis,audible_bark_axis):
+def excitation_pattern(sizL,spectrum,module,LdB,low_limit, audible_index, audible_freq_axis,audible_bark_axis):
        
     # Terhardt's slopes definition
     # lower slope [dB/Bark]

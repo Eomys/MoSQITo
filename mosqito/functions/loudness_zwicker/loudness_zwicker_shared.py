@@ -122,8 +122,8 @@ def calc_main_loudness(spec_third, field_type):
         while spec_third[i] > rap[j] - dll[j, i] and j < dll.shape[0]:
             j += 1
         xp = spec_third[i] + dll[j, i]
-        ti[i] = 10 ** (xp / 10)
-    #
+        ti[i] = np.power(10, (xp / 10))
+    
     # Determination of levels LCB(1), LCB(2) and LCB(3) within the
     # first three critical bands
     gi = np.zeros(3)
@@ -132,7 +132,7 @@ def calc_main_loudness(spec_third, field_type):
     gi[2] = ti[9:11].sum()
     lcb = np.zeros(3)
     lcb[gi > 0] = 10 * np.log10(gi[gi > 0])
-    #
+    
     # Calculation of main loudness
     s = 0.25
     nm = np.zeros(20)
@@ -144,8 +144,8 @@ def calc_main_loudness(spec_third, field_type):
         le += ddf
     i = le > ltq
     le[i] -= dcb[i]
-    mp1 = 0.0635 * 10 ** (0.025 * ltq[i])
-    mp2 = (1 - s + s * 10 ** (0.1 * (le[i] - ltq[i]))) ** 0.25 - 1
+    mp1 = 0.0635 * np.power(10,0.025 * ltq[i])
+    mp2 = np.power(1 - s + s * np.power(10,0.1 * (le[i] - ltq[i])),0.25 ) -1 
     nm[i] = mp1 * mp2
     nm[nm < 0] = 0
     nm = np.append(nm, 0)
