@@ -4,15 +4,21 @@ Created on Mon Nov 30 15:25:12 2020
 
 @author: wantysal
 """
+
+
+# Standard library import
+import numpy as np
+
 # import SciDataTool objects
 from SciDataTool import Data1D, DataTime, DataFreq, DataLinspace
 
 # import Mosqito functions
-from mosqito.signal.load import load
-from mosqito.oct3filter.comp_third_spectrum import comp_third_spec
-from mosqito.loudness_zwicker.comp_loudness import comp_loudness
-from mosqito.sharpness.comp_sharpness import comp_sharpness
-from mosqito.roughness_danielweber.comp_roughness import comp_roughness
+from functions.signal.load import load
+from functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
+from functions.oct3filter.oct3spec import oct3spec
+from functions.loudness_zwicker.comp_loudness import comp_loudness
+from functions.sharpness.comp_sharpness import comp_sharpness
+from functions.roughness_danielweber.comp_roughness import comp_roughness
 
 
 class SoundQuality():
@@ -75,19 +81,36 @@ class SoundQuality():
     def comp_3oct_spec(self):
         """ Method to compute third-octave spectrum according to ISO"""
         
-        third_axis = Data1D(
-            name = 'Third-octave frequency axis',
-            unit = 'Hertz')
+        freqs = Data1D(
+            name = 'freqs',
+            unit = 'Hertz')        
         
-        third_spec, third_axis.values = comp_third_spec(self.is_stationary, self.signal.values, self.fs)
-        
-        self.third_spec = DataFreq(
+        if self.is_stationary == True:
+            third_spec, freqs.values = oct3spec(self.signal.values, self.fs)
+            np.squeeze(third_spec)            
+            self.third_spec = DataFreq(
             symbol = "3oct",
-            axes = [third_axis],
+            axes = [freqs],
             values = third_spec,            
             name = "Third-octave spectrum",
-            unit = "dB ref 2e-05",
-            normalizations={"ref":1e-12})
+            unit = "dB ref 2e-05")
+
+                     
+        elif self.is_stationary == False:    
+            time = Data1D(
+                name = 'time',
+                unit = 's')
+            third_spec, freqs.values, time.values = calc_third_octave_levels(self.signal.values, self.fs)
+            np.squeeze(third_spec) 
+            
+            self.third_spec = DataFreq(
+            symbol = "3oct",
+            axes = [freqs, time],
+            values = third_spec,            
+            name = "Third-octave spectrum",
+            unit = "dB ref 2e-05")
+
+       
     
     def compute_loudness(self, field_type = 'free'):
         """ Method to compute the loudness according to Zwicker's method
@@ -99,28 +122,51 @@ class SoundQuality():
         
                
         """
-        bark_axis = Data1D(
+        barks = Data1D(
             name = 'Frequency Bark scale',
             unit = 'Bark')
-
-        N, N_spec, bark_axis.values = comp_loudness(
+    
+        N, N_spec, barks.values = comp_loudness(
             self.is_stationary, 
             self.third_spec.values, 
             self.third_spec.axes[0].values, 
             field_type)
         
-        self.loudness = Data1D(
-            values = [N],
-            name = "Loudness",
-            unit = "Sones"
-            )
-        self.loudness_specific = DataFreq(
-            symbol = "N'",
-            axes = [bark_axis],
-            values = N_spec,
-            name = "Specific loudness",
-            unit = "Sones"
-            )
+        if self.is_stationary == True:
+            self.loudness = Data1D(
+                values = [N],
+                name = "Loudness",
+                unit = "Sones"
+                )
+            self.loudness_specific = DataFreq(
+                symbol = "N'",
+                axes = [barks],
+                values = N_spec,
+                name = "Specific loudness",
+                unit = "Sones"
+                )
+        elif self.is_stationary == False:
+            time = Data1D(
+                symbol = "T",
+                name = "Time axis",
+                unit = "s",
+                values = np.linspace(0, len(self.signal.values)/self.fs, num = N.size))
+            
+            self.loudness = DataTime(
+                symbol = "N",
+                axes = [time],
+                values = N,
+                name = "Loudness",
+                unit = "Sones"
+                )
+            self.loudness_specific = DataFreq(
+                symbol = "N'",
+                axes = [barks, time],
+                values = N_spec,
+                name = "Specific loudness",
+                unit = "Sones"
+                )
+
 
         
     def compute_sharpness(self, method = 'din'):        
@@ -132,14 +178,24 @@ class SoundQuality():
             'din' by default, 'aures', 'bismarck', 'fastl'
         """
         
-        S = comp_sharpness(self.signal.values, self.fs)
-        self.sharpness = Data1D(
-            values = [S],
-            name = "Sharpness",
-            unit = "Acum"
-            )
-
-
+        S = comp_sharpness(self.is_stationary, self.loudness.values, self.loudness_specific.values, method)
+        
+        if self.is_stationary == True:
+            self.sharpness = Data1D(
+                values = [S],
+                name = "Sharpness",
+                unit = "Acum"
+                )
+        elif self.is_stationary == False:
+            self.sharpness = DataTime(
+                symbol = "S",
+                axes = [self.loudness.axes[0]],
+                values = S,
+                name = "Sharpness",
+                unit = "Acum"
+                )
+            
+        
     def compute_roughness(self, overlap=0):
         """ Method to compute roughness according to the Daniel and Weber implementation
         
@@ -159,13 +215,15 @@ class SoundQuality():
         R, R_spec,time.values, freqs.values = comp_roughness(self.signal.values, self.fs, overlap)
 
         self.roughness = DataTime(
+            symbol = "R",
             axes = [time],
             values = R,
             name = "Roughness",
             unit = "Asper"
             )
 
-        self.roughness_specific = DataTime(
+        self.roughness_specific = DataFreq(
+            symbol = "R'",
             axes = [time, freqs],
             values = R_spec,
             name = "Specific roughness",
