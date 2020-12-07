@@ -32,14 +32,10 @@ def test_signal(fc, fmod, mdepth, fs, d, dB):
     # time axis definition    
     time = np.linspace(0,d,int(fs * d))
     
-    # # Amplitude modulated signal
-    signal = np.power(10,dB/20)*2e-05*2**0.5*(1 + mdepth * (np.cos(2*np.pi*fmod*time))) * np.cos(2*np.pi*fc*time)    
-    
-    
-    # signal = 0.5*(1 + mdepth * (np.sin(2*np.pi*fmod*time))) * np.sin(2*np.pi*fc*time)    
-    # rms = np.sqrt(np.mean(np.power(signal,2)))
-    # ampl = 2*10**(-3/20)*np.power(10,0.05*dB)/rms
-    # signal = signal * ampl
+    signal = 0.5 * (1 + mdepth * (np.sin(2 * np.pi * fmod * time))) * np.sin( 2 * np.pi * fc * time)    
+    rms = np.sqrt(np.mean(np.power(signal,2)))
+    ampl = 2 * 10**(-3/20) * np.power(10,0.05*dB) / rms
+    signal = signal * ampl
     
     
     return signal
