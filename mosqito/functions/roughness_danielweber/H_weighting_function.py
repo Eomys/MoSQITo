@@ -6,10 +6,9 @@ Created on Fri Oct  2 11:38:13 2020
 """
 # Standard library import
 import numpy as np
-import math
 
 
-def H_function(N, fs):
+def H_function(n, fs):
     """ Weighting functions Hi definition for each 1-bark-wide interval i 
     
     The code is based on the article "Psychoacoustical roughness:
@@ -41,8 +40,8 @@ def H_function(N, fs):
         47 weighting functions Hi
                 
     """
-    freq_axis = np.concatenate((np.arange(0,4800,1)*fs/N,np.zeros((4800))))
-    H = np.zeros((47,N))
+    freq_axis = np.concatenate((np.arange(0,int(n/2),1)*fs/n,np.zeros((int(n/2)))))
+    H = np.zeros((47,n))
 
     
     # H2, H16 and H42 are given
