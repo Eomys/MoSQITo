@@ -11,15 +11,13 @@ import numpy as np
 
 #----------------------------------Pa <-> dB-----------------------------------
 def db2amp(db):
-    """ Linearisation of a SPL level in dB 
-        reference = 2e-05                  """
-    return np.power(10,0.05*db)*0.00002
+    """ Linearisation of a SPL level in dB  """
+    return np.power(10,0.05*db)
 
 def amp2db(amp):
-    """ Conversion of an amplitude value into dB 
-        reference = 2e-05                       """
+    """ Conversion of an amplitude value into dB                  """
     
-    return 20*np.log10(amp/0.00002) 
+    return 20*np.log10(amp) 
 
 #------------------------------Hertz <-> Bark----------------------------------
 
