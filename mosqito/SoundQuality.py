@@ -4,7 +4,8 @@ Created on Mon Nov 30 15:25:12 2020
 
 @author: wantysal
 """
-
+import sys
+sys.path.append('../..')
 
 # Standard library import
 import numpy as np
@@ -13,12 +14,12 @@ import numpy as np
 from SciDataTool import Data1D, DataTime, DataFreq, DataLinspace
 
 # import Mosqito functions
-from functions.signal.load import load
-from functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
-from functions.oct3filter.oct3spec import oct3spec
-from functions.loudness_zwicker.comp_loudness import comp_loudness
-from functions.sharpness.comp_sharpness import comp_sharpness
-from functions.roughness_danielweber.comp_roughness import comp_roughness
+from mosqito.functions.signal.load import load
+from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
+from mosqito.functions.oct3filter.oct3spec import oct3spec
+from mosqito.functions.loudness_zwicker.comp_loudness import comp_loudness
+from mosqito.functions.sharpness.comp_sharpness import comp_sharpness
+from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness
 
 
 class SoundQuality():
@@ -204,15 +205,13 @@ class SoundQuality():
         overlap: float
             overlapping coefficient for the time windows of 200ms 
         """
-        freqs = Data1D(
-            name = 'Frequency Bark scale',
-            unit = 'Bark')
+
         
         time = Data1D(
             name = 'Time',
             unit = 's')
 
-        R, R_spec,time.values, freqs.values = comp_roughness(self.signal.values, self.fs, overlap)
+        R, time.values = comp_roughness(self.signal.values, self.fs, overlap)
 
         self.roughness = DataTime(
             symbol = "R",
@@ -222,13 +221,7 @@ class SoundQuality():
             unit = "Asper"
             )
 
-        self.roughness_specific = DataFreq(
-            symbol = "R'",
-            axes = [time, freqs],
-            values = R_spec,
-            name = "Specific roughness",
-            unit = "Asper"
-            )
+
 
 
 
