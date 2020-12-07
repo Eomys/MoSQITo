@@ -101,6 +101,6 @@ def load2oct3(is_stationary,file, calib=1):
     signal,fs = load(is_stationary, file, calib)
     
     # Compute third-octave spectrum
-    spec_third, third_axis = comp_third_spec(is_stationary, signal, fs)
+    spec_third, third_axis, time_axis = comp_third_spec(is_stationary, signal, fs)
 
-    return spec_third, third_axis
+    return spec_third, third_axis, time_axis
