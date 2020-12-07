@@ -50,6 +50,6 @@ def LTQ(bark_axis):
                         3.8,5,7.5,15,48,60,130])
     
        
-    MinExcdB = np.interp(bark_axis,HTres_x,HTres_y)
+    threshold = np.interp(bark_axis,HTres_x,HTres_y)
         
-    return MinExcdB 
+    return threshold
