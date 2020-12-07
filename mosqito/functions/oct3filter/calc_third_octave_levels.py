@@ -3,15 +3,15 @@
 @date Created on Fri May 22 2020
 @author martin_g for Eomys
 """
-
-# Standard library imports
+import sys
+sys.path.append('../..')
 
 # Third party imports
 import numpy as np
 from scipy import signal
 
 # Local application imports
-from functions.oct3filter.square_and_smooth import square_and_smooth
+from mosqito.functions.oct3filter.square_and_smooth import square_and_smooth
 
 def calc_third_octave_levels(sig,fs):
     """3rd octave filtering, squaring, smoothing, level calculation and

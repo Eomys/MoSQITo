@@ -3,14 +3,15 @@
 @date Created on Tue Feb 25 2020
 @author martin_g for Eomys
 """
-
+import sys
+sys.path.append('../..')
 
 # Third party imports
 import numpy as np
 
 # Local application imports
-from functions.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
-from functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
 
 def loudness_zwicker_stationary(spec_third, third_axis=[], field_type="free"):
     """Zwicker-loudness calculation for stationary signals

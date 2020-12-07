@@ -3,9 +3,12 @@
 @date Created on Fri May 22 2020
 @author martin_g for Eomys
 """
+import sys
+sys.path.append('../..')
+
 
 # Local application import
-from functions.loudness_zwicker.loudness_zwicker_lowpass_intp import loudness_zwicker_lowpass_intp
+from mosqito.functions.loudness_zwicker.loudness_zwicker_lowpass_intp import loudness_zwicker_lowpass_intp
 
 def loudness_zwicker_temporal_weighting(loudness):
     """ Temporal weighting of total loudness

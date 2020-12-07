@@ -3,10 +3,12 @@
 @date Created on Tue Mar 24 2020
 @author martin_g for Eomys
 """
+import sys
+sys.path.append('..')
 
 # Local application imports
-from functions.signal.load import load
-from functions.oct3filter.comp_third_spectrum import comp_third_spec
+from mosqito.functions.signal.load import load
+from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
 
 
 def load2oct3(is_stationary,file, calib=1):
@@ -34,6 +36,6 @@ def load2oct3(is_stationary,file, calib=1):
     signal,fs = load(is_stationary, file, calib)
     
     # Compute third-octave spectrum
-    spec_third, third_axis = comp_third_spec(is_stationary, signal, fs)
+    spec_third, third_axis, time_axis = comp_third_spec(is_stationary, signal, fs)
 
-    return spec_third, third_axis
+    return spec_third, third_axis, time_axis

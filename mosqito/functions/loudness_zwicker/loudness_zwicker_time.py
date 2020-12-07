@@ -3,16 +3,17 @@
 @date Created on Thu Mar 26 2020
 @author martin_g for Eomys
 """
-
+import sys
+sys.path.append('../..')
 
 # Standard library imports
 import numpy as np
 
 # Local applications imports
-from functions.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
-from functions.loudness_zwicker.loudness_zwicker_nonlinear_decay import calc_nl_loudness
-from functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
-from functions.loudness_zwicker.loudness_zwicker_temporal_weighting import loudness_zwicker_temporal_weighting
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
+from mosqito.functions.loudness_zwicker.loudness_zwicker_nonlinear_decay import calc_nl_loudness
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
+from mosqito.functions.loudness_zwicker.loudness_zwicker_temporal_weighting import loudness_zwicker_temporal_weighting
 
 def loudness_zwicker_time(third_octave_levels, field_type):
     """Calculate Zwicker-loudness for time-varying signals

@@ -4,14 +4,15 @@ Created on Mon Nov 16 09:23:56 2020
 
 @author: martin_g for eomys
 """
-
+import sys
+sys.path.append('../../..')
 
 # Standard import
 import numpy as np
 
 # Local imports
-from functions.loudness_zwicker.loudness_zwicker_stationary import loudness_zwicker_stationary
-from functions.loudness_zwicker.loudness_zwicker_time import loudness_zwicker_time      
+from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import loudness_zwicker_stationary
+from mosqito.functions.loudness_zwicker.loudness_zwicker_time import loudness_zwicker_time      
     
 def comp_loudness(is_stationary, spec_third, third_axis=[], field_type = 'free'):
     """  Acoustic loudness calculation according to Zwicker method for
