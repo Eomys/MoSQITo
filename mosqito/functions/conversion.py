@@ -35,9 +35,7 @@ def amp2db(amp, ref=1):
     ref: float
         reference value
     
-    """
-    amp[amp < ref] = ref
-        
+    """        
     if ref == 0:
         raise ValueError('Reference must be different from 0')
    
