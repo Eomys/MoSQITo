@@ -14,11 +14,13 @@ import matplotlib.pyplot as plt
 import pytest
 
 # Local application imports
-from mosqito.roughness_daniel_weber import comp_roughness
+from mosqito.roughness_daniel_weber.comp_roughness import comp_roughness
 from mosqito.tests.roughness.test_signals_generation import test_signal
 from mosqito.tests.roughness.ref import ref_roughness
+from mosqito.tests.roughness.ref_danielweber import  ref_dw
 
-@pytest.mark.roughness  # to skip or run only roughness tests
+
+@pytest.mark.roughness_dw  # to skip or run only roughness tests
 def test_roughness():
     """Test function for the roughness calculation of a audio signal
 
@@ -40,14 +42,13 @@ def test_roughness():
     """
    
    # Parameters definition for signals generation 
-    fs = 48000
+    fs = 44100
     carrier  = np.array([125, 250, 500, 1000, 2000, 4000, 8000])
-    fmod     = np.array([10, 20, 30, 40, 50, 60, 70, 80, 100, 150, 200, 400])
+    fmod     = np.array([10, 20, 30, 40, 50, 60, 70, 80, 100, 120, 140, 160, 180, 200, 300, 400])
     mdepth = 1   
-    duration = 2
+    duration = 1
     dB = 60
-
-    
+   
    # Overlapping definition for roughness calculation
     overlap = 0.5
 
@@ -56,19 +57,20 @@ def test_roughness():
     for ind_fc in range(carrier.size):
         # Roughness reference values
         R_ref = ref_roughness(carrier[ind_fc], fmod)
+        R_DW = ref_dw(carrier[ind_fc], fmod)
+        
         R = np.zeros([fmod.size])
         # Roughness calculation for each modulation frequency
         for ind_fmod in range(fmod.size):     
             signal = test_signal(carrier[ind_fc], fmod[ind_fmod], mdepth, fs, duration, dB)
             R,_ = comp_roughness(signal, fs, overlap)
-            R[ind_fmod] = R[2]
-        
-        
-    tst = check_compliance(R, R_ref)
+            R[ind_fmod] = R[1]
+                
+    tst = check_compliance(R, R_ref, fmod)
     assert tst
     
 
-def check_compliance(R, R_ref):
+def check_compliance(R, R_ref, fmod):
     """Check the compliance of roughness calc. to Daniel and Weber article
     "Psychoacoustical roughness: implementation of an optimized model", 1997.
 
@@ -77,42 +79,37 @@ def check_compliance(R, R_ref):
 
     Parameters
     ----------
-    R : float
+    R: float
         Calculated roughness [asper]
-    article_ref : dict
-        {   "carrier_frequency": <Path to reference input signal>,
-            "R_file": <Path to reference calculated roughness>  }
-        
-        Dictionary containing link to ref. data
-        
-        
+    R_ref: float
+        Reference value of roughness [asper]
+    fmod: numpy.array
+        list of modulation frequencies
+                
     Outputs
     -------
     tst : bool
         Compliance to the reference data
     """
-    
-    # Load reference inputs
-    R_article = np.genfromtxt(article_ref["R_file"], skip_header=1)
-    
+        
     # Test for comformance (1% tolerance)
 
-    tst = (   R.all() >= R_article.all() * 0.83
-          and R.all() <= R_article.all() * 1.17   )
+    tst = (   R.all() >= R_ref.all() * 0.83
+          and R.all() <= R_ref.all() * 1.17   )
            
     
     # Define and plot the tolerance curves 
     fmod_axis = np.linspace(0,160,33)
-    tol_curve_min = R_article * 0.83    
-    tol_curve_max = R_article * 1.17
-    plt.plot(bark_axis, tol_curve_min, color='red', linestyle = 'solid', label='17% tolerance', linewidth=1)  
-    plt.plot(bark_axis, tol_curve_max, color='red', linestyle = 'solid', label='', linewidth=1) 
+    tol_curve_min = R_ref * 0.83    
+    tol_curve_max = R_ref * 1.17
+    plt.plot(fmod, tol_curve_min, color='red', linestyle = 'solid', label='17% tolerance', linewidth=1)  
+    plt.plot(fmod, tol_curve_max, color='red', linestyle = 'solid', label='', linewidth=1) 
     plt.legend()
     
     # Compliance plot
     
     plt.plot(fmod_axis, R, label="MoSQITo")    
-    if tst_specif:
+    if tst:
         plt.text(0.5, 0.5, 'Test passed (17% tolerance not exceeded)', horizontalalignment='center',
         verticalalignment='center', transform=plt.gca().transAxes,
         bbox=dict(facecolor='green', alpha=0.3))
