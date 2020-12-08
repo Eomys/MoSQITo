@@ -19,13 +19,13 @@ The plot below compare the MoSQITo roughness calculations for an amplitude-modul
 (all compliance plots can be found in the [tests/roughness/output folder](../mosqito/tests/roughness/output)). 
 
 
-![](../mosqito/tests/roughness/output\test_roughness_dw_fmod50Hz.png)
+![](../mosqito/tests/roughness/output/test_roughness_dw_fmod50Hz.png)
 
 *Roughness calculation test signal n°4 (carrier frequency from 125 to 8000 Hz and modulation frequency of 50 Hz)*
 
 MoSQITo implementation passes successfully 6 tests out of 20.
 
-![](../mosqito/tests/roughness/output\test_roughness_dw_fmod100Hz.png)
+![](../mosqito/tests/roughness/output/test_roughness_dw_fmod100Hz.png)
 *Roughness calculation test signal n°4 (carrier frequency from 125 to 8000 Hz and modulation frequency of 100 Hz)*
 
 
