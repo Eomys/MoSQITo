@@ -11,20 +11,20 @@ The ISO 532-1:2017 standard provides a set of synthetic and technical signals co
 
 Annex B4 of the standard provides .wav files of synthetic signals to be used as input for time-varying loudness calculation. The plots below compare the MoSQITo loudness calculations for the test signal n°6 to the compliance requirements of the standards. MoSQITo implementation passes successully the 8 tests from annex B4 (all compliance plots can be found in the [tests/output folder](../mosqito/tests/output)). 
 
-![](../mosqito/tests/output/test_loudness_zwicker_time_Test_signal_6_(tone_250_Hz_30_dB_-_80_dB)_Loudness.png)
-![](../mosqito/tests/output/test_loudness_zwicker_time_Test_signal_6_(tone_250_Hz_30_dB_-_80_dB)_Specific.png)
+![](../mosqito/tests/loudness/output/test_loudness_zwicker_time_Test_signal_6_(tone_250_Hz_30_dB_-_80_dB)_Loudness.png)
+![](../mosqito/tests/loudness/output/test_loudness_zwicker_time_Test_signal_6_(tone_250_Hz_30_dB_-_80_dB)_Specific.png)
 
 *Loudness calculation for ISO 532-1 test signal n°6 (A 250 Hz tone with a time-varying sound pressure level starting with 30 dB and increasing linearly to 80 dB). Top: overall loudness, Bottom: specific loudness at 2.5 Barks*
 
 Annex B5 of the standard provides .wav files of technical signals to be used as input for time-varying loudness calculation. The plot below compares the MoSQITo loudness calculations for the test signal n°14 to the compliance requirements of the standards. MoSQITo implementation passes successully 11 tests over the 12 from annex B4 (all compliance plots can be found in the [tests/output folder](../mosqito/tests/output)). 
 
-![](../mosqito/tests/output/test_loudness_zwicker_time_Test_signal_14_(propeller-driven_airplane)_Loudness.png)
+![](../mosqito/tests/loudness/output/test_loudness_zwicker_time_Test_signal_14_(propeller-driven_airplane)_Loudness.png)
 
 *Loudness calculation for ISO 532-1 test signal n°14 (Propeller-driven airplane noise)*
 
 The test on signal 16 fails because the 5% tolerance limit is exceeded for more than 1% of the time at the end of the signal, during the decay from hairdryer noise to silence (see figure below). This issue is currently under investigation.
 
-![](../mosqito/tests/output/FAILED_test_loudness_zwicker_time_Test_signal_16_(hairdryer)_Loudness.png)
+![](../mosqito/tests/loudness/output/FAILED_test_loudness_zwicker_time_Test_signal_16_(hairdryer)_Loudness.png)
 
 *Loudness calculation for ISO 532-1 test signal n°14 (Hairdryer noise)*
 
