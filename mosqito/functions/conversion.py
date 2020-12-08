@@ -10,14 +10,38 @@ import numpy as np
 
 
 #----------------------------------Pa <-> dB-----------------------------------
-def db2amp(db):
-    """ Linearisation of a SPL level in dB  """
-    return np.power(10,0.05*db)
-
-def amp2db(amp):
-    """ Conversion of an amplitude value into dB                  """
+def db2amp(dB, ref=1):
+    """ Linearisation of a SPL level in dB  
     
-    return 20*np.log10(amp) 
+    Parameters
+    ----------
+    dB : numpy.array
+        dB values to be converted
+    ref: float
+        reference value    
+    """
+    if ref == 0:
+        raise ValueError('Reference must be different from 0')
+
+    return np.power(10,0.05*dB) * ref
+
+def amp2db(amp, ref=1):
+    """ Conversion of an amplitude value into dB 
+    
+    Parameters:
+    -----------
+    amp: np.array
+        amplitude values to be converted
+    ref: float
+        reference value
+    
+    """        
+    if ref == 0:
+        raise ValueError('Reference must be different from 0')
+   
+    return 20 * np.log10(amp / ref) 
+
+
 
 #------------------------------Hertz <-> Bark----------------------------------
 
@@ -77,7 +101,7 @@ def freq2bark(freq_axis):
     
     yp = np.arange(0,25,0.5)    
     
-    return np.interp(freq_axis,xp,yp)
+    return np.interp(freq_axis,xp,yp, right = None)
 
 #-----------------------------------dB <-> dBA---------------------------------
 

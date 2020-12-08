@@ -14,8 +14,8 @@ import pytest
 from pandas import ExcelFile, read_excel
 
 # Local application imports
-from mosqito.loudness_zwicker.loudness_zwicker_time import loudness_zwicker_time
-from mosqito.signal.load2oct3 import load2oct3
+from mosqito.functions.loudness_zwicker.loudness_zwicker_time import loudness_zwicker_time
+from mosqito.functions.signal.load import load2oct3
 
 @pytest.mark.loudness_zwtv  # to skip or run only loudness zwicker time-varying tests
 @pytest.mark.parametrize(
