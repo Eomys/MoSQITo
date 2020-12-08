@@ -15,8 +15,9 @@ The validation procedure described in the article is based on a comparison with 
 
 
 The synthetic signals to be used as input for the calculation are generated using the 'test_signal_generation' script, in accordance with the equation (1) from the article. 
-The plot below compare the MoSQITo roughness calculations for an amplitude-modulated tones (carrier frequency from 125 to 8000 Hz and modulation frequency of 50 Hz) to the compliance requirements given in the article. 
-(all compliance plots can be found in the [tests/roughness/output folder](../mosqito/tests/roughness/output)). 
+The plot below compare the MoSQITo roughness calculations for an amplitude-modulated tone (carrier frequency from 125 to 8000 Hz and modulation frequency of 50 Hz) to the compliance requirements given in the article. 
+
+_ (all compliance plots can be found in the [tests/roughness/output folder](../mosqito/tests/roughness/output)). 
 
 
 ![](../mosqito/tests/roughness/output/test_roughness_dw_fmod50Hz.png)
@@ -34,6 +35,9 @@ The test on signal 9 fails because the 17% tolerance limit is exceeded for carri
 Note : all the plots can be obtained by runing the following command in the main MoSQITo folder: 
 
 ```python -m pytest mosqito -m roughness_dw``` 
+
+### Comparison with other implementations
+
 
 
 
