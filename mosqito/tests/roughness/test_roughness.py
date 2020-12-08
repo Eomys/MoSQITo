@@ -214,7 +214,13 @@ def check_compliance(R, signal):
 
     tst = (   (R >= ref * 0.83).all() 
           and (R <= ref * 1.17).all()   )
-           
+    
+    # Find the highest difference  
+    diff = 0
+    for i in range(R.size):
+        d = (np.abs(R[i] - ref[i])/ ref[i]) * 100
+        if d > diff:
+            diff = d
     
     # Define and plot the tolerance curves 
     fc = signal['fc']
@@ -225,7 +231,8 @@ def check_compliance(R, signal):
     plt.legend()
     
     # Compliance plot   
-    plt.plot(fc, R, label="MoSQITo")    
+    plt.plot(fc, R, label="MoSQITo")   
+    plt.text(0.5, 0.1, 'Maximum difference: ' + str(diff) + ' %', horizontalalignment='center',verticalalignment='center', transform=plt.gca().transAxes)
     if tst:
         plt.text(0.5, 0.5, 'Test passed (17% tolerance not exceeded)', horizontalalignment='center',
         verticalalignment='center', transform=plt.gca().transAxes,
