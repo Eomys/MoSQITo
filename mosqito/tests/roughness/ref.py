@@ -119,37 +119,29 @@ def ref_roughness(fc, fmod):
 
 
 
-fmod     = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110,120, 160,
-                      180, 200, 250, 300, 400])
 
+# Check plots
 
-curve1 = ref_roughness(125, fmod)
-curve3 = ref_roughness(250, fmod)
-curve4 = ref_roughness(500, fmod)
-curve5 = ref_roughness(1000, fmod)
-curve6 = ref_roughness(2000, fmod)
-curve7 = ref_roughness(4000, fmod)
-curve2 = ref_roughness(8000, fmod)
+# fmod     = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110,120, 160,
+#                       180, 200, 250, 300, 400])
 
-plt.figure()
-plt.plot(fmod,curve1)
-plt.plot(fmod,curve2)
-plt.plot(fmod,curve3)
-plt.plot(fmod,curve4)
-plt.plot(fmod,curve5)
-plt.plot(fmod,curve6)
-plt.plot(fmod,curve7)
+# curve1 = ref_roughness(125, fmod)
+# curve3 = ref_roughness(250, fmod)
+# curve4 = ref_roughness(500, fmod)
+# curve5 = ref_roughness(1000, fmod)
+# curve6 = ref_roughness(2000, fmod)
+# curve7 = ref_roughness(4000, fmod)
+# curve2 = ref_roughness(8000, fmod)
 
+# plt.figure()
+# plt.plot(fmod,curve1)
+# plt.plot(fmod,curve2)
+# plt.plot(fmod,curve3)
+# plt.plot(fmod,curve4)
+# plt.plot(fmod,curve5)
+# plt.plot(fmod,curve6)
+# plt.plot(fmod,curve7)
 
-
-# fig, axs = plt.subplots(2, 2)
-# axs[0, 0].plot(fmod, curve1)
-# axs[0, 0].plot(fmod, curve3)
-# axs[0, 1].plot(fmod, curve5)
-# axs[0, 1].plot(fmod, curve7)
-# axs[1, 0].plot(fmod, curve4)
-# axs[1, 1].plot(fmod, curve2)
-# axs[1, 1].plot(fmod, curve6)
 
 
     
