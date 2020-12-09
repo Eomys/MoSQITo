@@ -32,12 +32,13 @@ def test_signal(fc, fmod, mdepth, fs, d, dB):
         SPL dB level of the carrier signal
     """
     
-    # time axis definition    
-    time = np.linspace(0,d,int(fs * d))
+    # time axis definition
+    dt = 1/fs    
+    time = np.arange(0,d,dt)
     
     signal = 0.5 * (1 + mdepth * (np.sin(2 * np.pi * fmod * time))) * np.sin( 2 * np.pi * fc * time)    
     rms = np.sqrt(np.mean(np.power(signal,2)))
-    ampl = 2 * 10**(-3/20) * np.power(10,0.05*dB) / rms
+    ampl = 1.42 * np.power(10,0.05*dB) / rms
     signal = signal * ampl
         
     return signal
