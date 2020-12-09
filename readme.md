@@ -52,8 +52,9 @@ metrics:
 |:-|:-|:-:|:-:|:-:|
 |Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | x |||
 |Loudness for non-stationary<br>(Zwicker method) | DIN 45631/A1:2010<br>ISO 532-1:2017 §6 | x |||
+| Roughness | Daniel and Weber, 1997 | x |||
+| Fluctuation Strength | To be defined || x ||
 | Sharpness | DIN 45692:2009 || x ||
-| Roughness /<br>Fluctuation Strength | To be defined || x ||
 | Tonality (Hearing model) | ECMA-74:2019 annex G || x ||
 
 As a second priority, the project could address the following metrics:
@@ -82,6 +83,9 @@ You can contact us on Github by opening an issue (to request a feature,
 ask a question or report a bug).
 
 ## References
+
+Daniel, P., and Weber, R. (1997). “Psychoacoustical Roughness: Implementation 
+of an Optimized Model”, Acta Acustica, Vol. 83: 113-123
 
 Hales Swift, S., and Gee, K. L. (2017). “Extending sharpness calculation
 for an alternative loudness metric input,” J. Acoust. Soc. Am.142,
