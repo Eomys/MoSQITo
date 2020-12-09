@@ -56,7 +56,10 @@ def comp_roughness(signal,fs,overlap):
     n = int(0.2 * fs)
    
     # Number of frames according to the given overlap proportion 
-    nb_frame = math.floor(signal.size / ((1 - overlap) * n)) - 1 
+    nb_frame = math.floor(signal.size / ((1 - overlap) * n)) - 1
+    
+    if nb_frame == 0:
+        nb_frame = 1
     
     # Creation of the corresponding time axis
     time = np.linspace(0,len(signal)/fs,num = nb_frame)
@@ -87,7 +90,7 @@ def comp_roughness(signal,fs,overlap):
         
         # Calculate Zwicker a0 factor (transfer characteristic of the outer and inner ear)
         a0 = np.zeros((n))
-        a0[nZ] = db2amp(a0tab(barks)) 
+        a0[nZ-1] = db2amp(a0tab(barks)) 
         spectrum = a0 * spectrum
     
         # Conversion of the spectrum into dB
@@ -147,7 +150,7 @@ def comp_roughness(signal,fs,overlap):
     
         # Initialization
         hBP = np.zeros((n_channel, n))
-        modDepth = np.zeros((n_channel))
+        mod_depth = np.zeros((n_channel))
         
         # Definition of the excitation amplitude        
         for i in np.arange(0,n_channel,1):
@@ -194,11 +197,11 @@ def comp_roughness(signal,fs,overlap):
         # and excitation functions time average :             
             hBPrms = np.sqrt(np.mean(np.power(hBP[i,:],2)))
             if h0 > 0:
-                modDepth[i]= hBPrms / h0
-                if modDepth[i] > 1:
-                    modDepth[i] = 1
+                mod_depth[i]= hBPrms / h0
+                if mod_depth[i] > 1:
+                    mod_depth[i] = 1
             else:
-                modDepth[i] = 0
+                mod_depth[i] = 0
                 
 #------------------------------- stage 3 --------------------------------------
 #----------------roughness calculation with cross correlation------------------
@@ -217,12 +220,12 @@ def comp_roughness(signal,fs,overlap):
         # function given by Aures
         R_spec = np.zeros((47))   
         
-        R_spec[0] = gzi[0] * pow(modDepth[0]*ki[0],2)
-        R_spec[1] = gzi[1] * pow(modDepth[1]*ki[1],2)
+        R_spec[0] = gzi[0] * pow(mod_depth[0]*ki[0],2)
+        R_spec[1] = gzi[1] * pow(mod_depth[1]*ki[1],2)
         for i in np.arange(2,45):
-            R_spec[i] = gzi[i] * pow(modDepth[i]*ki[i]*ki[i-2],2)
-        R_spec[45] = gzi[45] * pow(modDepth[45]*ki[43],2)
-        R_spec[46] = gzi[46] * pow(modDepth[46]*ki[44],2)
+            R_spec[i] = gzi[i] * pow(mod_depth[i]*ki[i]*ki[i-2],2)
+        R_spec[45] = gzi[45] * pow(mod_depth[45]*ki[43],2)
+        R_spec[46] = gzi[46] * pow(mod_depth[46]*ki[44],2)
 
             
         # Total roughness calculation with calibration factor of 0.25 given in the article  
