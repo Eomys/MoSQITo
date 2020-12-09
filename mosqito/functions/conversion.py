@@ -38,8 +38,10 @@ def amp2db(amp, ref=1):
     """        
     if ref == 0:
         raise ValueError('Reference must be different from 0')
+    elif ref!=0:
+        db = 20 * np.log10(amp / ref) 
    
-    return 20 * np.log10(amp / ref) 
+    return db
 
 
 
@@ -101,7 +103,7 @@ def freq2bark(freq_axis):
     
     yp = np.arange(0,25,0.5)    
     
-    return np.interp(freq_axis,xp,yp, right = None)
+    return np.interp(freq_axis,xp,yp, right=0)
 
 #-----------------------------------dB <-> dBA---------------------------------
 
