@@ -6,7 +6,7 @@ Created on Fri Oct  2 11:38:13 2020
 """
 # Standard library import
 import numpy as np
-
+import math
 
 def H_function(n, fs):
     """ Weighting functions Hi definition for each 1-bark-wide interval i 
@@ -40,7 +40,8 @@ def H_function(n, fs):
         47 weighting functions Hi
                 
     """
-    freq_axis = np.concatenate((np.arange(0,int(n/2),1)*fs/n,np.zeros((int(n/2)))))
+    cut = 2
+    # freq_axis = np.concatenate((np.arange(0,int(n/2),1)*fs/n,np.zeros((int(n/2)))))
     H = np.zeros((47,n))
 
     
@@ -48,23 +49,33 @@ def H_function(n, fs):
     
     H2_x = np.array([0, 17,23,25,32,37,48,67,90,114,171,206,247,294,358]) 
     H2_y = np.array([0,0.8,0.95,0.975,1,0.975,0.9,0.8,0.7,0.6,0.4,0.3,0.2,0.1,0])
-    H[1,:] = np.interp(freq_axis,H2_x,H2_y)
+    last = math.floor((358/fs)*n)
+    j = np.arange(cut,last)
+    freq = j * fs / n    
+    H[1,j] = np.interp(freq[j-cut],H2_x,H2_y)
 
     H5_x = np.array([0,32,43,56,69,92,120,142,165,231,277,331,397,502 ])   
-    H5_y = np.array([0,0.8,0.95,1,0.975,0.9,0.8,0.7,0.6,0.4,0.3,0.2,0.1,0 ]) 
-    H[4,:] = np.interp(freq_axis,H5_x,H5_y)
+    H5_y = np.array([0,0.8,0.95,1,0.975,0.9,0.8,0.7,0.6,0.4,0.3,0.2,0.1,0 ])
+    last = math.floor((502/fs)*n)
+    j = np.arange(cut,last)
+    freq = j * fs / n    
+    H[4,j] = np.interp(freq[j-cut],H5_x,H5_y)
 
     H16_x = np.array([0,23.5,34,47,56,63,79,100,115,135,159,172,194,215,244,290,348,415,500,645 ]) 
     H16_y = np.array([0,0.4,0.6,0.8,0.9,0.95,1,0.975,0.95,0.9,0.85,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0])
-    H[15,:] = np.interp(freq_axis,H16_x,H16_y)
+    last = math.floor((502/fs)*n)
+    j = np.arange(cut,last)
+    freq = j * fs / n    
+
+    H[15,j] = np.interp(freq[j-cut],H16_x,H16_y)
     
     H21_x = np.array([ 0,19,44,52.5,58,75,101.5,114.5,132.5,143.5,165.5,197.5,241,290,348,415,500,645])   
     H21_y = np.array([0,0.4,0.8,0.9,0.95,1,0.95,0.9,0.85,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0 ]) 
-    H[20,:] = np.interp(freq_axis,H21_x,H21_y)    
+    H[20,j] = np.interp(freq[j-cut],H21_x,H21_y)    
     
     H42_x = np.array([0,15,41,49,53,64,71,88,94,106,115,137,180,238,290,348,415,500,645])
     H42_y = np.array([0,0.4,0.8,0.9,0.965,0.99,1,0.95,0.9,0.85,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0])    
-    H[41,:] = np.interp(freq_axis,H42_x,H42_y)
+    H[41,j] = np.interp(freq[j-cut],H42_x,H42_y)
 
     # According to the article we have :       
         
@@ -77,6 +88,8 @@ def H_function(n, fs):
         H[i,:] = H[20,:]
     for i in range(42,47):
         H[i,:] = H[41,:]
+    
+
 
     
     return H    
