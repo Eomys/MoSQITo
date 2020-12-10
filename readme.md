@@ -64,7 +64,7 @@ As a second priority, the project could address the following metrics:
 |Loudness for steady signals<br>(Moore/Glasberg method) | ISO 532-2:2017 |||x|
 |Loudness for non-stationary<br>(Moore/Glasberg method) | Moore, 2014 |||x|
 |Sharpness (using <br>Moore/Glasberg loudness) | Hales-Swift<br>and Gee, 2017 |||x|
-|Tone-to-noise ratio / Prominence <br> ratio (occupational noise,<br>discrete tones) | ECMA-74:2019 annex D<br>ISO 7719:2018 |||x|
+|Tone-to-noise ratio / Prominence <br> ratio (occupational noise,<br>discrete tones) | ECMA-74:2019 annex D<br>ISO 7719:2018 ||x||
 |Tone-to-noise ratio<br>(environmental noise,<br>automatic tone detection) | DIN 45681 |||x|
 |Tone-to-noise ratio<br>(environmental noise) | ISO 1996-2 |||x|
 |Tone-to-noise ratio<br>(environmental noise) | ANSI S1.13:2005 |||x|
