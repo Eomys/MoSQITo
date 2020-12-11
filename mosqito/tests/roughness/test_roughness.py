@@ -15,7 +15,7 @@ import pytest
 
 # Local application imports
 from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness
-from mosqito.tests.roughness.test_signals_generation import test_signal
+from mosqito.tests.roughness.tst_signals_generation import test_signal
 
 
 @pytest.mark.roughness_dw  # to skip or run only Daniel and Weber roughness tests
