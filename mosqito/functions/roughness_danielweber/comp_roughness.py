@@ -18,7 +18,7 @@ from mosqito.functions.roughness_danielweber.LTQ import LTQ
 from mosqito.functions.roughness_danielweber.gzi_weighting_function import gzi_definition
 from mosqito.functions.roughness_danielweber.H_weighting_function import H_function
 from mosqito.functions.roughness_danielweber.a0_zwicker import a0tab
-from mosqito.functions.conversion import freq2bark, db2amp, amp2db, bark2freq
+from mosqito.functions.shared.conversion import freq2bark, db2amp, amp2db, bark2freq
 
 
 def comp_roughness(signal,fs,overlap):

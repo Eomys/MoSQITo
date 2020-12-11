@@ -15,7 +15,7 @@ import pytest
 
 # Local application imports
 from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import loudness_zwicker_stationary
-from mosqito.functions.signal.load import load2oct3
+from mosqito.functions.shared.load import load2oct3
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
