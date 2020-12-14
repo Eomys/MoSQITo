@@ -54,7 +54,7 @@ def comp_loudness(is_stationary, signal, fs, field_type = 'free'):
         "name" : "Loudness",
         "values" : N,
         "specific values" : N_specific,
-        " freqs" : bark_axis
+        "freqs" : bark_axis
         }
     
     return output
