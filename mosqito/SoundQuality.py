@@ -17,8 +17,12 @@ from SciDataTool import Data1D, DataTime, DataFreq, DataLinspace
 from mosqito.functions.shared.load import load
 from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
 from mosqito.functions.oct3filter.oct3spec import oct3spec
-from mosqito.functions.loudness_zwicker.comp_loudness import comp_loudness
-from mosqito.functions.sharpness.comp_sharpness import comp_sharpness
+from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import loudness_zwicker_stationary
+from mosqito.functions.loudness_zwicker.loudness_zwicker_time import loudness_zwicker_time
+from mosqito.functions.sharpness.sharpness_aures import comp_sharpness_aures
+from mosqito.functions.sharpness.sharpness_din import comp_sharpness_din
+from mosqito.functions.sharpness.sharpness_bismarck import comp_sharpness_bismarck
+from mosqito.functions.sharpness.sharpness_fastl import comp_sharpness_fastl
 from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness
 
 
@@ -122,29 +126,29 @@ class SoundQuality():
             'free' by default or 'diffuse'      
                
         """
+        if self.third_spec == None:
+            self.comp_3oct_spec()
     
-        loudness = comp_loudness(
-            self.is_stationary,
-            self.signal.values, 
-            self.fs, 
-            field_type)
-        
+        if self.is_stationary == True:
+            N, N_specific = loudness_zwicker_stationary(self.third_spec.values, self.third_spec.axes[0], field_type)
+        elif self.is_stationary == False: 
+            N, N_specific = loudness_zwicker_time(self.third_spec.values, field_type)
+           
         barks = Data1D(
             name = 'Frequency Bark scale',
             unit = 'Bark', 
-            values = loudness['freqs'])
-
+            values = np.linspace(0.1, 24, int(24 / 0.1)))
         
         if self.is_stationary == True:
             self.loudness = Data1D(
-                values = loudness['values'],
+                values = N,
                 name = "Loudness",
                 unit = "Sones"
                 )
             self.loudness_specific = DataFreq(
                 symbol = "N'",
                 axes = [barks],
-                values = loudness['specific values'],
+                values = N_specific,
                 name = "Specific loudness",
                 unit = "Sones"
                 )
@@ -158,18 +162,17 @@ class SoundQuality():
             self.loudness = DataTime(
                 symbol = "N",
                 axes = [time],
-                values = loudness['values'],
+                values = N,
                 name = "Loudness",
                 unit = "Sones"
                 )
             self.loudness_specific = DataFreq(
                 symbol = "N'",
                 axes = [barks, time],
-                values = loudness['specific values'],
+                values = N_specific,
                 name = "Specific loudness",
                 unit = "Sones"
                 )
-
 
         
     def compute_sharpness(self, method = 'din'):        
@@ -180,12 +183,28 @@ class SoundQuality():
         method: string
             'din' by default, 'aures', 'bismarck', 'fastl'
         """
+        if method!= 'din' and method!='aures' and method !='fastl' and method != 'bismarck':
+            raise ValueError("ERROR: method must be 'din', 'aures', 'bismarck' or 'fastl")
+       
+        if self.loudness == None:
+            self.compute_loudness()
         
-        sharpness = comp_sharpness(self.is_stationary, self.signal.values, self.fs, method)
+    
+        if method == 'din':
+            S = comp_sharpness_din(self.loudness.values, self.loudness_specific.values, self.is_stationary )      
+        
+        elif method == 'aures':
+            S = comp_sharpness_aures(self.loudness.values, self.loudness_specific.values, self.is_stationary ) 
+
+        elif method == 'bismarck':
+            S = comp_sharpness_bismarck(self.loudness.values, self.loudness_specific.values, self.is_stationary )                    
+
+        elif method == 'fastl':
+            S = comp_sharpness_fastl(self.loudness.values, self.loudness_specific.values, self.is_stationary ) 
         
         if self.is_stationary == True:
             self.sharpness = Data1D(
-                values = sharpness['values'],
+                values = S,
                 name = "Sharpness",
                 unit = "Acum"
                 )
@@ -193,7 +212,7 @@ class SoundQuality():
             self.sharpness = DataTime(
                 symbol = "S",
                 axes = [self.loudness.axes[0]],
-                values = sharpness['values'],
+                values = S,
                 name = "Sharpness",
                 unit = "Acum"
                 )
