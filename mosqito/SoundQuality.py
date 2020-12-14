@@ -14,7 +14,7 @@ import numpy as np
 from SciDataTool import Data1D, DataTime, DataFreq, DataLinspace
 
 # import Mosqito functions
-from mosqito.functions.signal.load import load
+from mosqito.functions.shared.load import load
 from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
 from mosqito.functions.oct3filter.oct3spec import oct3spec
 from mosqito.functions.loudness_zwicker.comp_loudness import comp_loudness
@@ -119,30 +119,32 @@ class SoundQuality():
         Parameter
         ----------
         field-type: string
-            'free' by default or 'diffuse'
-        
+            'free' by default or 'diffuse'      
                
         """
+    
+        loudness = comp_loudness(
+            self.is_stationary,
+            self.signal.values, 
+            self.fs, 
+            field_type)
+        
         barks = Data1D(
             name = 'Frequency Bark scale',
-            unit = 'Bark')
-    
-        N, N_spec, barks.values = comp_loudness(
-            self.is_stationary, 
-            self.third_spec.values, 
-            self.third_spec.axes[0].values, 
-            field_type)
+            unit = 'Bark', 
+            values = loudness['freqs'])
+
         
         if self.is_stationary == True:
             self.loudness = Data1D(
-                values = [N],
+                values = loudness['values'],
                 name = "Loudness",
                 unit = "Sones"
                 )
             self.loudness_specific = DataFreq(
                 symbol = "N'",
                 axes = [barks],
-                values = N_spec,
+                values = loudness['specific values'],
                 name = "Specific loudness",
                 unit = "Sones"
                 )
@@ -156,14 +158,14 @@ class SoundQuality():
             self.loudness = DataTime(
                 symbol = "N",
                 axes = [time],
-                values = N,
+                values = loudness['values'],
                 name = "Loudness",
                 unit = "Sones"
                 )
             self.loudness_specific = DataFreq(
                 symbol = "N'",
                 axes = [barks, time],
-                values = N_spec,
+                values = loudness['specific values'],
                 name = "Specific loudness",
                 unit = "Sones"
                 )
@@ -179,11 +181,11 @@ class SoundQuality():
             'din' by default, 'aures', 'bismarck', 'fastl'
         """
         
-        S = comp_sharpness(self.is_stationary, self.loudness.values, self.loudness_specific.values, method)
+        sharpness = comp_sharpness(self.is_stationary, self.signal.values, self.fs, method)
         
         if self.is_stationary == True:
             self.sharpness = Data1D(
-                values = [S],
+                values = sharpness['values'],
                 name = "Sharpness",
                 unit = "Acum"
                 )
@@ -191,7 +193,7 @@ class SoundQuality():
             self.sharpness = DataTime(
                 symbol = "S",
                 axes = [self.loudness.axes[0]],
-                values = S,
+                values = sharpness['values'],
                 name = "Sharpness",
                 unit = "Acum"
                 )
@@ -205,18 +207,17 @@ class SoundQuality():
         overlap: float
             overlapping coefficient for the time windows of 200ms 
         """
-
+        roughness = comp_roughness(self.signal.values, self.fs, overlap)
         
         time = Data1D(
             name = 'Time',
-            unit = 's')
-
-        R, time.values = comp_roughness(self.signal.values, self.fs, overlap)
+            unit = 's',
+            values = roughness['time'])
 
         self.roughness = DataTime(
             symbol = "R",
             axes = [time],
-            values = R,
+            values = roughness['values'],
             name = "Roughness",
             unit = "Asper"
             )
