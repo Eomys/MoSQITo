@@ -12,22 +12,19 @@ A step by step description of how to use MoSQITo to calculate the roughness from
 ### Validation of the implementation
 
 The validation procedure described in the article is based on a comparison with the results by H.Fastl and E.Zwicker in *Psychoacoustics*, Springer, Berlin, Heidelberg, 1990. 
-
 The synthetic signals to be used as input for the calculation are generated using the 'test_signal_generation' script, in accordance with the equation (1) from the article. 
+
 The plot below compare different roughness implementations' results for amplitude-modulated tones (carrier frequency of 250, 1000, 4000 Hz and modulation frequency from 10 to 400 Hz). 
 
 
 ![](../mosqito/validations/roughness_danielweber/roughness_implementations_comparison.png)
 
-*Roughness calculation test signal n°4 (carrier frequency from 125 to 8000 Hz and modulation frequency of 50 Hz)*
-
-MoSQITo implementation passes successfully 6 tests out of 20.
+Even if some values differ, the general tendency is correct.
 
 
+Note : Mosqito succesfully reaches a value of 1 asper for a 1 kHz tone modulated at 70 Hz with a level of 60 dB.
 
-
-Note : Mosqito succesfully reaches a value of 1 asper for a tone at 1000Hz modulated at 70 Hz with a level of 60 dB
-an implementation test can be done by running the following command in the main MoSQITo folder: 
+An implementation test can be done by running the following command in the main MoSQITo folder: 
 
 ```python -m pytest mosqito -m roughness_dw``` 
 
