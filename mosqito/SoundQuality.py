@@ -5,7 +5,7 @@ Created on Mon Nov 30 15:25:12 2020
 @author: wantysal
 """
 import sys
-sys.path.append('../..')
+sys.path.append('..')
 
 # Standard library import
 import numpy as np
