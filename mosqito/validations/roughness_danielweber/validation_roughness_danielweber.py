@@ -253,7 +253,7 @@ def check_compliance(R, signal):
     plt.savefig(
         "validation_roughness_dw_fmod" + str(signal['fmod']) + "Hz"
         + ".png",
-        format="png",)
+        format="png")
     plt.clf()
     return tst
 
