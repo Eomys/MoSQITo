@@ -58,4 +58,47 @@ def comp_loudness(is_stationary, signal, fs, field_type = 'free'):
         }
     
     return output
+
+def comp_loudness_from_3spec(is_stationary, third_spec, third_axis=[], field_type = 'free'):
+    """  Acoustic loudness calculation according to Zwicker method for
+    stationary and time-varying signals.
     
+    Parameters
+    ----------
+    is_stationary: boolean
+        TRUE if the signal is stationary, FALSE if it is time-varying
+    third_spec: numpy.array
+        third octave spectrum
+    third_axis: numpy.array
+        third-octav frequency axis
+    field-type: string
+        'free' by default or 'diffuse'
+    
+    Outputs
+    -------
+    N: float/numpy.array
+        loudness value
+    N_specific: numpy.array
+        specific loudness values
+    bark_axis: numpy.array
+        frequency axis correpsondong to N_specific values in bark    
+    """
+    
+    if is_stationary == True:
+        N, N_specific = loudness_zwicker_stationary(third_spec, third_axis, field_type)
+    elif is_stationary == False: 
+        N, N_specific = loudness_zwicker_time(third_spec, field_type)
+
+    if third_axis == []:
+        # critical band rate scale
+        third_axis = np.linspace(0.1, 24, int(24 / 0.1))  
+
+    
+    output = {
+        "name" : "Loudness",
+        "values" : N,
+        "specific values" : N_specific,
+        "freqs" : third_axis
+        }
+    
+    return output
