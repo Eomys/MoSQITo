@@ -24,10 +24,10 @@ def comp_sharpness(is_stationary, signal, fs, method='din'):
     ----------
     is_stationary: boolean
         True if the signal is stationary, false if it is time varying
-    N: numpy.array
-        loudness values
-    N_specific: numpy.array
-        specific loudness values
+    signal: numpy.array
+        time history values
+    fs: integer
+        sampling frequency
     method: string
         'din' by default,'aures', 'bismarck','fastl'
         

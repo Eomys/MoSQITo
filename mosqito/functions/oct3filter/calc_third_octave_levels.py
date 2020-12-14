@@ -4,7 +4,7 @@
 @author martin_g for Eomys
 """
 import sys
-sys.path.append('../..')
+sys.path.append('../../..')
 
 # Third party imports
 import numpy as np

@@ -7,6 +7,7 @@ Created on Mon Nov 16 08:59:34 2020
 import sys
 sys.path.append('../../..')
 
+
 # Standard library imports
 import numpy as np
 import pyuff
@@ -15,8 +16,6 @@ from scipy.signal import resample
 
 # Local import
 from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
-
-
 
 def load(is_stationary, file, calib=1 ):
     """ Extract the signal and its time axis from .wav or .uff file,

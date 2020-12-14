@@ -21,7 +21,13 @@ def comp_third_spec(is_stationary, signal, fs):
     
     Parameters
     ----------
-    
+    is_stationary: boolean
+        TRUE if the signal is stationary, FALSE if it is time-varying
+    signal : numpy.array
+        time signal values
+    fs : integer
+        sampling frequency        
+
         
     Outputs
     --------
