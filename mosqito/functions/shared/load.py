@@ -73,7 +73,7 @@ def load(is_stationary, file, calib=1 ):
         fs = 48000
         print("Signal resampled to 48 kHz to allow calculation.")
     
-        
+    
     return signal, fs
 
 def load2oct3(is_stationary,file, calib=1):
@@ -101,6 +101,6 @@ def load2oct3(is_stationary,file, calib=1):
     signal,fs = load(is_stationary, file, calib)
     
     # Compute third-octave spectrum
-    spec_third, third_axis, time_axis = comp_third_spec(is_stationary, signal, fs)
+    output = comp_third_spec(is_stationary, signal, fs)         
 
-    return spec_third, third_axis, time_axis
+    return output

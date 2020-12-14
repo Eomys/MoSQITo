@@ -4,6 +4,8 @@ Created on Mon Nov 16 09:10:45 2020
 
 @author: wantysal
 """
+import sys
+sys.path.append('../../..')
 
 # Standard import
 import numpy as np
@@ -16,6 +18,10 @@ from mosqito.functions.oct3filter.oct3spec import oct3spec
 def comp_third_spec(is_stationary, signal, fs):       
     """ Third-octave band spectrum calculation, with the corresponding 
     bands center frequencies
+    
+    Parameters
+    ----------
+    
         
     Outputs
     --------
@@ -23,13 +29,20 @@ def comp_third_spec(is_stationary, signal, fs):
         Third octave band spectrum of signal sig [dB re.2e-5 Pa]
     spec_third_freq : numpy.ndarray
         Corresponding third octave bands center frequencies                   
-        """                                  
+    """                                  
     
     if is_stationary == True:
         spec_third, third_axis = oct3spec(signal, fs)
         time_axis = []
     elif is_stationary == False:            
         spec_third, third_axis, time_axis = calc_third_octave_levels(signal,fs)
-    np.squeeze(spec_third)      
+    np.squeeze(spec_third) 
 
-    return spec_third, third_axis , time_axis
+    output = {
+        "name" : 'Third-octave-spectrum',
+        "values" : spec_third,
+        "freqs" : third_axis,
+        "time" : time_axis
+        }     
+
+    return output

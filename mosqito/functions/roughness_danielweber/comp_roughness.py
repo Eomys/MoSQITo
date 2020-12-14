@@ -21,7 +21,7 @@ from mosqito.functions.roughness_danielweber.a0_zwicker import a0tab
 from mosqito.functions.shared.conversion import freq2bark, db2amp, amp2db, bark2freq
 
 
-def comp_roughness(signal,fs,overlap):
+def comp_roughness(signal, fs, overlap):
     """ Roughness calculation of a signal sampled at 48kHz.
 
     The code is based on the algorithm described in "Psychoacoustical roughness:
@@ -233,6 +233,12 @@ def comp_roughness(signal,fs,overlap):
         # of 70 Hz and a modulation depth of 1 
     
         R[i_frame] = 0.25 * sum(R_spec)
+        
+        output = {
+            "name" : "Roughness",
+            "values" : R,
+            "time" : time,
+            }
     
-    return R, time
+    return output
             
