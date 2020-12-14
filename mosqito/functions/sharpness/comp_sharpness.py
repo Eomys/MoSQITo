@@ -54,4 +54,10 @@ def comp_sharpness(is_stationary, signal, fs, method='din'):
     elif method == 'fastl':
         S = comp_sharpness_fastl(loudness['values'], loudness['specific values'], is_stationary ) 
     
-    return S
+    output = {
+        "name" : "sharpness",
+        "method" : method,
+        "values" : S
+        }
+    
+    return output
