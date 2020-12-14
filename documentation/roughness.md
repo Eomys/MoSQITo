@@ -13,33 +13,25 @@ A step by step description of how to use MoSQITo to calculate the roughness from
 
 The validation procedure described in the article is based on a comparison with the results by H.Fastl and E.Zwicker in *Psychoacoustics*, Springer, Berlin, Heidelberg, 1990. 
 
-
 The synthetic signals to be used as input for the calculation are generated using the 'test_signal_generation' script, in accordance with the equation (1) from the article. 
-The plot below compare the MoSQITo roughness calculations for an amplitude-modulated tone (carrier frequency from 125 to 8000 Hz and modulation frequency of 50 Hz) to the compliance requirements given in the article. 
-
-_ (all compliance plots can be found in the [tests/roughness/output folder](../mosqito/tests/roughness/output)). 
+The plot below compare different roughness implementations' results for amplitude-modulated tones (carrier frequency of 250, 1000, 4000 Hz and modulation frequency from 10 to 400 Hz). 
 
 
-![](../mosqito/tests/roughness/output/test_roughness_dw_fmod50Hz.png)
+![](../mosqito/validations/roughness_danielweber/roughness_implementations_comparison.png)
 
 *Roughness calculation test signal n°4 (carrier frequency from 125 to 8000 Hz and modulation frequency of 50 Hz)*
 
 MoSQITo implementation passes successfully 6 tests out of 20.
 
-![](../mosqito/tests/roughness/output/test_roughness_dw_fmod100Hz.png)
-*Roughness calculation test signal n°4 (carrier frequency from 125 to 8000 Hz and modulation frequency of 100 Hz)*
 
 
-The test on signal 9 fails because the 17% tolerance limit is exceeded for carrier frequencies of 2000 and 3000 Hz.
 
-Note : all the plots can be obtained by runing the following command in the main MoSQITo folder: 
+Note : Mosqito succesfully reaches a value of 1 asper for a tone at 1000Hz modulated at 70 Hz with a level of 60 dB
+an implementation test can be done by running the following command in the main MoSQITo folder: 
 
 ```python -m pytest mosqito -m roughness_dw``` 
 
-### Comparison with other implementations
-
-
-
+_ (more accurate validation plots can be found in the [validations/roughness_danielweber folder](../mosqito/validations/roughness_danielweber)). 
 
 
 ### References
