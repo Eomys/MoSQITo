@@ -11,13 +11,13 @@ sys.path.append('../../..')
 # Standard library imports
 import numpy as np
 import pyuff
-from scipy.io import wavfile
+from scipy.io import wavfile, loadmat
 from scipy.signal import resample
 
 # Local import
 from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
 
-def load(is_stationary, file, calib=1 ):
+def load(is_stationary, file, calib=1, mat_signal='', mat_fs='' ):
     """ Extract the signal and its time axis from .wav or .uff file,
     resample the signal to 48 kHz, and affects its sampling frequency 
     and time signal values.
@@ -30,6 +30,10 @@ def load(is_stationary, file, calib=1 ):
         string path to the signal file
     calib : float
         calibration factor for the signal to be in [pa]
+    mat_signal : string
+        in case of a .mat file, name of the signal variable
+    mat_fs : string
+        in case of a .mat file, name of the sampling frequency variable
 
     Outputs
     -------
@@ -39,7 +43,7 @@ def load(is_stationary, file, calib=1 ):
         sampling frequency        
     """
     
-    # load the wav file content    
+    # load the .wav file content    
     if file[-3:] == 'wav':
         fs, signal = wavfile.read(file) 
         
@@ -49,21 +53,31 @@ def load(is_stationary, file, calib=1 ):
         elif isinstance(signal[0], np.int32):
             signal = calib * signal / (2 ** 31 - 1)  
         
-    # load the uff file content
+    # load the .uff file content
     elif file[-3:] == 'uff':
         uff_file = pyuff.UFF(file)
         data = uff_file.read_sets()
         data.keys()
     
-        #extract the signal values
+        # extract the signal values
         signal = data['data']
     
         # calculate the sampling frequency
         fs = int(1/data['abscissa_inc'])
         
+    # load the .mat file content
+    elif file[-3:] == 'mat':
+        matfile = loadmat(file)
+        
+        # extract the signal values and sampling frequency
+        signal = matfile[mat_signal][:,0]
+        fs = matfile[mat_fs]
+        fs = fs[:,0]
+        
+        
     else:
         raise ValueError(
-            """ERROR: only .wav or .uff file are supported"""
+            """ERROR: only .wav .mat or .uff file are supported"""
         )
     
     # resample to 48kHz to allow calculation
