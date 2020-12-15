@@ -33,9 +33,11 @@ reference sound samples and scientific publications.
 
 ## Origin of the project
 
-EOMYS initiated this open-source project in 2020 as a side-project to 
-Pyleecan (Python Library for Electrical Engineering Computational Analysis) 
-an open and non-commercial project started two years earlier. 
+[EOMYS ENGINEERING] (www.eomys.com) initiated this open-source project 
+in 2020 for the study of electric motor sound quality. The project is now
+backed by [Green Forge Coop](https://www.linkedin.com/company/greenforgecoop/) non profit organization, 
+who also supports the development of [Pyleecan](https://www.pyleecan.org) electrical 
+machine simulation software.
 
 ## Documentation
 
