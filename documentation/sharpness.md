@@ -11,11 +11,11 @@ In MoSQITo, the code is based on the standard version published in 2009 and the 
 
 The DIN 45692:2009 standard provides a set of synthetic and technical signals covering representative applications to be used to validate any of its implementation. The standards also provides the compliance requirements for a set of broad-band noises and narrow- band noises.
 
-![](../mosqito/validations/sharpness/output/validation_sharpness_Broadband_noise.png)
+![](../mosqito/validations/sharpness/output/validation_sharpness_Broad-band_noise.png)
 
 *Sharpness calculation for DIN 45692 broad-band test signals*
 
-![](../mosqito/validations/sharpness/output/validation_sharpness_Narrowband_noise.png)
+![](../mosqito/validations/sharpness/output/validation_sharpness_Narrow-band_noise.png)
 
 *Sharpness calculation for DIN 45692 narrow-band test signals*
 
