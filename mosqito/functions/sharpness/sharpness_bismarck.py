@@ -34,8 +34,8 @@ def comp_sharpness_bismarck(N, N_specific, is_stationary):
     
     # Von Bismarck weighting function
     gB = np.zeros((z.size))
-    gB[z<15] = 1
-    gB[z>=15] =  0.2 * np.exp(0.308 *( z[z>=15] - 15)) + 0.8 
+    gB[z<=15] = 1
+    gB[z>15] =  0.2 * np.exp(0.308 *( z[z>15] - 15)) + 0.8 
     
     if is_stationary :
         if N == 0:
