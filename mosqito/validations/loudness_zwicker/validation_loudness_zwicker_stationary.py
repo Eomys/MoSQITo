@@ -18,7 +18,7 @@ from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import loudn
 from mosqito.functions.shared.load import load
 
 
-def test_loudness_zwicker_3oct():
+def validation_loudness_zwicker_3oct():
     """Test function for the script loudness_zwicker_stationary
 
     Test function for the script loudness_zwicker_stationary with
@@ -110,7 +110,7 @@ signal[3] = {
             "N_specif_file": "data/ISO_532-1/test_signal_5.csv",
         }
 
-def test_loudness_zwicker_wav(signal):
+def validation_loudness_zwicker_wav(signal):
     """Test function for the script loudness_zwicker_stationary
 
     Test function for the script loudness_zwicker_stationary with
@@ -228,6 +228,6 @@ def check_compliance(loudness, iso_ref):
 
 # test de la fonction
 if __name__ == "__main__":
-    test_loudness_zwicker_3oct()
+    validation_loudness_zwicker_3oct()
     for i in range(4):
-        test_loudness_zwicker_wav(signal[i])
+        validation_loudness_zwicker_wav(signal[i])
