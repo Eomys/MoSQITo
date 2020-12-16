@@ -223,13 +223,15 @@ def validation_sharpness(noise):
         reference[i] = noise[i]['S']
         
     noise_type = noise[0]["type"]
-        
-    assert check_compliance(sharpness, reference, noise_type)
+    
+    check_compliance(sharpness, reference, noise_type)    
+    
+    
 
     
 
 def check_compliance(sharpness, reference, noise_type):
-    """Check the comppiance of loudness calc. to ISO 532-1
+    """Check the compliance of sharpness calc. to DIN 45692
 
     The compliance is assessed according to chapter 6 of the 
     standard DIN 45692_2009E. 
@@ -267,11 +269,11 @@ def check_compliance(sharpness, reference, noise_type):
     tol_high = np.amax([reference * 1.05, reference + 0.05], axis=0)
                             
     # Plot tolerance curves
-    plt.plot(barks, tol_low, color='red', linestyle = 'solid', label='5% tolerance', linewidth=1)
+    plt.plot(barks, tol_low, color='red', linestyle = 'solid', label='tolerance', linewidth=1)
     plt.plot(barks, tol_high, color='red', linestyle = 'solid', linewidth=1)
     
     if tstS:
-        plt.text(0.5, 0.5, 'Test passed (5% tolerance not exceeded)', horizontalalignment='center',
+        plt.text(0.5, 0.5, 'Test passed ', horizontalalignment='center',
              verticalalignment='center', transform=plt.gca().transAxes,
              bbox=dict(facecolor='green', alpha=0.3))
     
@@ -295,7 +297,7 @@ def check_compliance(sharpness, reference, noise_type):
             )
     plt.clf()
     
-    return tstS
+
 
 
 # test de la fonction
