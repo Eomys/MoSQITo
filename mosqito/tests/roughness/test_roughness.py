@@ -20,12 +20,11 @@ from mosqito.tests.roughness.tst_signals_generation import test_signal
 def test_roughness():
     """Test function for the roughness calculation of a audio signal
 
-    Test function for the Audio_signal class "comp_roughness" method with signal array 
+    Test function for the script "comp_roughness" method with signal array 
     as input. The input signals are chosen according to the article "Psychoacoustical 
     roughness: implementation of an optimized model" by Daniel and Weber in 1997.
     The figure 3 is used to compare amplitude-modulated signals created according to 
     their carrier frequency and modulation frequency to the article results.
-    The test are done with 50% overlapping time windows as described in the article.
     One .png compliance plot is generated.
 
     Parameters
