@@ -21,7 +21,7 @@ broadband_noise = np.zeros((20), dtype = dict)
 
 broadband_noise[0] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC250.wav",
-            "type": "Broadband noise",
+            "type": "Broadband_noise",
             "S": 2.70
         }
 broadband_noise[1] = {
@@ -107,7 +107,7 @@ narrowband_noise = np.zeros((21), dtype = dict)
 
 narrowband_noise[0] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP250.wav",
-            "type": "Narrowband noise",
+            "type": "Narrowband_noise",
             "S": 0.38
         }
 narrowband_noise[1] = {
