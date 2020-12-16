@@ -21,7 +21,7 @@ broadband = np.zeros((20), dtype = dict)
 
 broadband[0] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC250.wav",
-            "type": "Broadband_noise",
+            "type": "Broad-band",
             "S": 2.70
         }
 broadband[1] = {
@@ -107,7 +107,7 @@ narrowband = np.zeros((21), dtype = dict)
 
 narrowband[0] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP250.wav",
-            "type": "Narrowband_noise",
+            "type": "Narrow-band",
             "S": 0.38
         }
 narrowband[1] = {
@@ -291,7 +291,7 @@ def check_compliance(sharpness, reference, noise_type):
 
     plt.savefig(
         "output/" + "validation_sharpness_"
-        + noise_type 
+        + noise_type + "_noise"
         + ".png",
         format="png",
             )
