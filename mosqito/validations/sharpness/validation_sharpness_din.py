@@ -17,176 +17,176 @@ from mosqito.functions.sharpness.comp_sharpness import comp_sharpness
 from mosqito.functions.shared.load import load
 
     # Signals and results from DIN 45692_2009E, chapter 6
-broadband_noise = np.zeros((20), dtype = dict)
+broadband = np.zeros((20), dtype = dict)
 
-broadband_noise[0] = {
+broadband[0] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC250.wav",
             "type": "Broadband_noise",
             "S": 2.70
         }
-broadband_noise[1] = {
+broadband[1] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC350.wav",
             "S": 2.74
         }
-broadband_noise[2] = {
+broadband[2] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC450.wav",
             "S": 2.78
         }
-broadband_noise[3] = {
+broadband[3] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC570.wav",
             "S": 2.85
         }
-broadband_noise[4] = {
+broadband[4] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC700.wav",
             "S": 2.91
         }
-broadband_noise[5] = {
+broadband[5] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC840.wav",
             "S": 2.96
         }
-broadband_noise[6] = {
+broadband[6] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC1000.wav",
             "S": 3.05
         }
-broadband_noise[7] = {
+broadband[7] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC1170.wav",
             "S": 3.12
         }
-broadband_noise[8] = {
+broadband[8] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC1370.wav",
             "S": 3.20
         }
-broadband_noise[9] = {
+broadband[9] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC1600.wav",
             "S": 3.30
         }
-broadband_noise[10] = {
+broadband[10] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC1850.wav",
             "S": 3.42
         }
-broadband_noise[11] = {
+broadband[11] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC2150.wav",
             "S": 3.53
         }
-broadband_noise[12] = {
+broadband[12] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC2500.wav",
             "S": 3.69
         }
-broadband_noise[13] = {
+broadband[13] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC2900.wav",
             "S": 3.89
         }
-broadband_noise[14] = {
+broadband[14] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC3400.wav",
             "S": 4.12
         }
-broadband_noise[15] = {
+broadband[15] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC4000.wav",
             "S": 4.49
         }
-broadband_noise[16] = {
+broadband[16] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC4800.wav",
             "S": 5.04
         }
-broadband_noise[17] = {
+broadband[17] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC5800.wav",
             "S": 5.69
         }
-broadband_noise[18] = {
+broadband[18] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC7000.wav",
             "S": 6.47
         }
-broadband_noise[19] = {
+broadband[19] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Broadband_noise(fo=10kHz_fu=variabel)\LC8500.wav",
             "S": 7.46
         }
 
 # Test signal as input for sharpness (from DIN 45692)
 
-narrowband_noise = np.zeros((21), dtype = dict)
+narrowband = np.zeros((21), dtype = dict)
 
-narrowband_noise[0] = {
+narrowband[0] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP250.wav",
             "type": "Narrowband_noise",
             "S": 0.38
         }
-narrowband_noise[1] = {
+narrowband[1] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP350.wav",
             "S": 0.49
         }
-narrowband_noise[2] = {
+narrowband[2] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP450.wav",
             "S": 0.6
         }
-narrowband_noise[3] = {
+narrowband[3] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP570.wav",
             "S": 0.71
         }
-narrowband_noise[4] = {
+narrowband[4] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP700.wav",
             "S": 0.82
         }
-narrowband_noise[5] = {
+narrowband[5] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP840.wav",
             "S": 0.93
         }
-narrowband_noise[6] = {
+narrowband[6] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP1000.wav",
             "S": 1.00
         }
-narrowband_noise[7] = {
+narrowband[7] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP1170.wav",
             "S": 1.13
         }
-narrowband_noise[8] = {
+narrowband[8] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP1370.wav",
             "S": 1.26
         }
-narrowband_noise[9] = {
+narrowband[9] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP1600.wav",
             "S": 1.35
         }
-narrowband_noise[10] = {
+narrowband[10] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP1850.wav",
             "S": 1.49
         }
-narrowband_noise[11] = {
+narrowband[11] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP2150.wav",
             "S": 1.64
         }
-narrowband_noise[12] = {
+narrowband[12] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP2500.wav",
             "S": 1.78
         }
-narrowband_noise[13] = {
+narrowband[13] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP2900.wav",
             "S": 2.06
         }
-narrowband_noise[14] = {
+narrowband[14] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP3400.wav",
             "S": 2.40
         }
-narrowband_noise[15] = {
+narrowband[15] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP4000.wav",
             "S": 2.82
         }
-narrowband_noise[16] = {
+narrowband[16] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP4800.wav",
             "S": 3.48
         }
-narrowband_noise[17] = {
+narrowband[17] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP5800.wav",
             "S": 4.43
         }
-narrowband_noise[18] = {
+narrowband[18] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP7000.wav",
             "S": 5.52
         }
-narrowband_noise[19] = {
+narrowband[19] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP8500.wav",
             "S": 6.81
         }
-narrowband_noise[20] = {
+narrowband[20] = {
             "data_file": r"data\Check_signals_DIN_45692_(Schaerfe)\Narrowband_noise (frequency group width)\BP10500.wav",
             "S": 8.55
         }
@@ -284,9 +284,9 @@ def check_compliance(sharpness, reference, noise_type):
     
     # Plot the calculated sharpness
     plt.plot(barks, sharpness, label="MoSQITo")
-    plt.title("Sharpness of " + noise_type ,fontsize=10)
+    plt.title("Sharpness of " + noise_type + " noise" ,fontsize=10)
     plt.legend()
-    plt.xlabel("Time [s]")
+    plt.xlabel("Center frequency [bark]")
     plt.ylabel("Sharpness, [acum]")
 
     plt.savefig(
@@ -304,8 +304,8 @@ def check_compliance(sharpness, reference, noise_type):
 if __name__ == "__main__":
 
 # generate compliance plot for broadband noise 
-    validation_sharpness(broadband_noise)
-    validation_sharpness(narrowband_noise)
+    validation_sharpness(broadband)
+    validation_sharpness(narrowband)
         
     
     
