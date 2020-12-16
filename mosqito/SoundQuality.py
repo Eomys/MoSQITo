@@ -47,8 +47,8 @@ class SoundQuality():
         self.roughness_specific = None
         
     
-    def import_signal(self, is_stationary, file, calib=1 ):
-        """ Method to load the signal from a .wav or .uff file
+    def import_signal(self, is_stationary, file, calib=1, mat_signal='', mat_fs='' ):
+        """ Method to load the signal from a .wav .mat or .uff file
         
         Parameters
         ----------
@@ -58,6 +58,11 @@ class SoundQuality():
             string path to the signal file
         calib : float
             calibration factor for the signal to be in [pa]
+        mat_signal : string
+            in case of a .mat file, name of the signal variable
+        mat_fs : string
+            in case of a .mat file, name of the sampling frequency variable
+
     
         Outputs
         -------
@@ -175,13 +180,16 @@ class SoundQuality():
                 )
 
         
-    def compute_sharpness(self, method = 'din'):        
+    def compute_sharpness(self, method = 'din', skip='0.2'):        
         """ Method to cumpute the sharpness according to the given method
         
         Parameter
         ---------
         method: string
-            'din' by default, 'aures', 'bismarck', 'fastl'
+            'din' by default, 'aures', 'bismarck', 'fastl', 'all'
+        skip : float
+            number of second to be cut at the beginning of the analysis
+
         """
         if method!= 'din' and method!='aures' and method !='fastl' and method != 'bismarck':
             raise ValueError("ERROR: method must be 'din', 'aures', 'bismarck' or 'fastl")
@@ -201,6 +209,7 @@ class SoundQuality():
 
         elif method == 'fastl':
             S = comp_sharpness_fastl(self.loudness.values, self.loudness_specific.values, self.is_stationary ) 
+                   
         
         if self.is_stationary == True:
             self.sharpness = Data1D(
@@ -209,9 +218,19 @@ class SoundQuality():
                 unit = "Acum"
                 )
         elif self.is_stationary == False:
+            # Cut transient effect
+            time = np.linspace(0, len(self.signal.values)/self.fs, len(S))
+            cut_index = np.argmin(np.abs(time - skip))
+            S = S[cut_index:]
+        
+            time = Data1D(
+                symbol = "T",
+                name = "Time axis",
+                unit = "s",
+                values = np.linspace(skip, len(self.signal.values)/self.fs, num = S.size))
             self.sharpness = DataTime(
                 symbol = "S",
-                axes = [self.loudness.axes[0]],
+                axes = [time],
                 values = S,
                 name = "Sharpness",
                 unit = "Acum"
