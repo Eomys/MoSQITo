@@ -44,7 +44,7 @@ def load(is_stationary, file, calib=1, mat_signal='', mat_fs='' ):
     """
     
     # load the .wav file content    
-    if file[-3:] == 'wav':
+    if file[-3:] == 'wav' or file[-3:] == 'WAV':
         fs, signal = wavfile.read(file) 
         
         # calibration factor for the signal to be in Pa
@@ -54,7 +54,7 @@ def load(is_stationary, file, calib=1, mat_signal='', mat_fs='' ):
             signal = calib * signal / (2 ** 31 - 1)  
         
     # load the .uff file content
-    elif file[-3:] == 'uff':
+    elif file[-3:] == 'uff' or file[-3:] == 'UFF':
         uff_file = pyuff.UFF(file)
         data = uff_file.read_sets()
         data.keys()
