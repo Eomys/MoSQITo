@@ -3,26 +3,19 @@
 
 ### Introduction
 
-The acoustic sharpness calculation was introduced as a standard in the DIN 45692. The calculation is based upon the specific loudness distribution of the sound.
+The acoustic sharpness calculation was introduced as a standard in the DIN 45692. The calculation is based upon the specific loudness distribution of the sound. The specific loudness is weighted by ponderation functions. By default, the 'din' weighting function is used in Mosqito.
 
-In MoSQITo, the code is based on the standard version published in 2009 and the loudness is calculated according to Zwicker method, as described in ISO 532:B.
+The code is based on the version of the standard published in 2009 and the loudness is calculated according to Zwicker method, as described in ISO 532:B.
 
 ### Validation of the implementation
 
-The DIN 45692:2009 standard provides a set of synthetic and technical signals covering representative applications to be used to validate any of its implementation. The standards also provides the compliance requirements for a set of broad-band noises and narrow- band noises.
+The DIN 45692:2009 standard provides a set of synthetic and technical signals covering representative applications to be used to validate any of its implementation. The standards also provides the compliance requirements for a set of broad-band noises and narrow-band noises. The sharpness is calculated by mosqito for the 20 broad-band signals  and for the 21 narrow-band signals filtered with different center frequencies provided with the standard. The results are compared to the requirements in the figures below.
 
 ![](../mosqito/validations/sharpness/output/validation_sharpness_Broad-band_noise.png)
 
-*Sharpness calculation for DIN 45692 broad-band test signals*
-
 ![](../mosqito/validations/sharpness/output/validation_sharpness_Narrow-band_noise.png)
 
-*Sharpness calculation for DIN 45692 narrow-band test signals*
-
-
-Note : an  implementation test checking the compliance to the standard can be obtained by runing the following command in the main MoSQITo folder: 
-```python -m pytest mosqito -m sharpness_din``` 
-
+*The validation plots and scripts can be found in [this folder](../mosqito/validations/sharpness).*
 
 ## Sharpness of stationary and time-varying signals (other methods)
 
@@ -32,6 +25,7 @@ Several other calculation methods can be found in Mosqito:
 * Fastl
 
 The calculation method remains the same, only the weighting functions change.
+
 
 
 ### References
