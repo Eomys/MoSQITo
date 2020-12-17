@@ -33,9 +33,11 @@ reference sound samples and scientific publications.
 
 ## Origin of the project
 
-EOMYS initiated this open-source project in 2020 as a side-project to 
-Pyleecan (Python Library for Electrical Engineering Computational Analysis) 
-an open and non-commercial project started two years earlier. 
+[EOMYS ENGINEERING](https://eomys.com/?lang=en) initiated this open-source project 
+in 2020 for the study of electric motor sound quality. The project is now
+backed by [Green Forge Coop](https://www.linkedin.com/company/greenforgecoop/) non profit organization, 
+who also supports the development of [Pyleecan](https://www.pyleecan.org) electrical 
+machine simulation software.
 
 ## Documentation
 
@@ -50,11 +52,12 @@ metrics:
 
 || Reference | Available | Under dev. | To do |
 |:-|:-|:-:|:-:|:-:|
-|Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | x |||
-|Loudness for non-stationary<br>(Zwicker method) | DIN 45631/A1:2010<br>ISO 532-1:2017 §6 | x |||
-| Sharpness | DIN 45692:2009 ||| x |
-| Roughness /<br>Fluctuation Strength | To be defined ||| x |
-| Tonality (Hearing model) | ECMA-74:2019 annex G ||| x |
+|Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | [x](./documentation/loudness-stationary.md) |||
+|Loudness for non-stationary<br>(Zwicker method) | DIN 45631/A1:2010<br>ISO 532-1:2017 §6 | [x](./documentation/loudness-time-varying.md) |||
+| Roughness | Daniel and Weber, 1997 | [x](./documentation/roughness.md) |||
+| Fluctuation Strength | To be defined || x ||
+| Sharpness | DIN 45692:2009 | [x](./documentation/sharpness.md) |||
+| Tonality (Hearing model) | ECMA-74:2019 annex G || x ||
 
 As a second priority, the project could address the following metrics:
 
@@ -63,7 +66,7 @@ As a second priority, the project could address the following metrics:
 |Loudness for steady signals<br>(Moore/Glasberg method) | ISO 532-2:2017 |||x|
 |Loudness for non-stationary<br>(Moore/Glasberg method) | Moore, 2014 |||x|
 |Sharpness (using <br>Moore/Glasberg loudness) | Hales-Swift<br>and Gee, 2017 |||x|
-|Tone-to-noise ratio / Prominence <br> ratio (occupational noise,<br>discrete tones) | ECMA-74:2019 annex D<br>ISO 7719:2018 |||x|
+|Tone-to-noise ratio / Prominence <br> ratio (occupational noise,<br>discrete tones) | ECMA-74:2019 annex D<br>ISO 7719:2018 ||x||
 |Tone-to-noise ratio<br>(environmental noise,<br>automatic tone detection) | DIN 45681 |||x|
 |Tone-to-noise ratio<br>(environmental noise) | ISO 1996-2 |||x|
 |Tone-to-noise ratio<br>(environmental noise) | ANSI S1.13:2005 |||x|
@@ -82,6 +85,9 @@ You can contact us on Github by opening an issue (to request a feature,
 ask a question or report a bug).
 
 ## References
+
+Daniel, P., and Weber, R. (1997). “Psychoacoustical Roughness: Implementation 
+of an Optimized Model”, Acta Acustica, Vol. 83: 113-123
 
 Hales Swift, S., and Gee, K. L. (2017). “Extending sharpness calculation
 for an alternative loudness metric input,” J. Acoust. Soc. Am.142,
