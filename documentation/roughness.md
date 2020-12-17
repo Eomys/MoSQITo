@@ -24,7 +24,7 @@ Mosqito implementation give similar results as other implementations. Zwicker an
 ![](../mosqito/validations/roughness_danielweber/roughness_implementations_comparison.png)
 
 
-*(All the plots and scripts for more detailed validation can be found in the [validations/roughness_danielweber](../mosqito/validations/roughness_danielweber)) folder.* 
+*All the plots and scripts for more detailed validation can be found in [this folder](../mosqito/validations/roughness_danielweber).* 
 
 
 ### References
