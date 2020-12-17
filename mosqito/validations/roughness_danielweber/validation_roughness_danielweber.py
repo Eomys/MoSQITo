@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness
-from mosqito.tests.roughness.tst_signals_generation import test_signal
+from mosqito.tests.roughness.signals_test_generation import signal_test
 
 
 # Test signal parameters as input for roughness calculation
@@ -172,7 +172,7 @@ def validation_roughness(signal):
     # Roughness calculation for each carrier frequency
     R = np.zeros((len(signal['fc'])), dtype = dict)           
     for ind_fc in range(len(signal['fc'])):     
-        stimulus = test_signal(signal['fc'][ind_fc], signal['fmod'], mdepth, fs, duration, level)
+        stimulus = signal_test(signal['fc'][ind_fc], signal['fmod'], mdepth, fs, duration, level)
         roughness = comp_roughness(stimulus, fs, overlap)
         R[ind_fc] = roughness['values'][0]
             

@@ -13,7 +13,7 @@ import pytest
 
 # Local application imports
 from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness
-from mosqito.tests.roughness.tst_signals_generation import test_signal
+from mosqito.tests.roughness.signals_test_generation import signal_test
 
    
 @pytest.mark.roughness_dw  # to skip or run only Daniel and Weber roughness tests
@@ -37,7 +37,7 @@ def test_roughness():
     """ 
     
     # Stimulus generation
-    stimulus = test_signal(
+    stimulus = signal_test(
             fc = 1000,
             fmod = 70,
             mdepth = 1,
@@ -85,4 +85,4 @@ def check_compliance(R):
 
 # test de la fonction
 if __name__ == "__main__":
-    test_roughness(signal)
+    test_roughness()

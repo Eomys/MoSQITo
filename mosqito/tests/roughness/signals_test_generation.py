@@ -10,7 +10,7 @@ from scipy.io.wavfile import write
 
 
 
-def test_signal(fc, fmod, mdepth, fs, d, dB):
+def signal_test(fc, fmod, mdepth, fs, d, dB):
     """ Creation of stationary amplitude modulated signals for the roughness 
     validation procedure (signal created according to equation 1 in 
     "Psychoacoustical roughness:implementation of an optimized model" 
@@ -43,7 +43,7 @@ def test_signal(fc, fmod, mdepth, fs, d, dB):
         
     return signal
     
-def test_wav(fc, fmod, mdepth, fs, d, dB, folder):
+def wav_test(fc, fmod, mdepth, fs, d, dB, folder):
     """ Creation of .wav file of stationary amplitude modulated signals for the roughness 
     validation procedure (signal created according to equation 1 in 
     "Psychoacoustical roughness:implementation of an optimized model" 

@@ -11,7 +11,7 @@ from mosqito.functions.sound_synthesis.read_spectro_xls import read_spectro_xls
 
 @pytest.mark.sound_synth  # to skip or run only loudness zwicker time-varying tests
 def test_spectro():
-    file_name = "mosqito/tests/data/sound-synthesis/spectro.xls" # Path to excel file
+    file_name = "mosqito/tests/sound_synthesis/spectro.xls" # Path to excel file
 
     # Read excel file
     spectrum, freqs, time = read_spectro_xls(file_name)

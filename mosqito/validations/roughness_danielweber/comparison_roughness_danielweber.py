@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Local application imports
-from mosqito.tests.roughness.tst_signals_generation import test_signal
+from mosqito.tests.roughness.signals_test_generation import signal_test
 from mosqito.validations.roughness_danielweber.reference_values.references import ref_zf, ref_dw, ref_ps
 from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness
 
@@ -44,7 +44,7 @@ def comparison_roughness():
         r_ps[ind_fc,:] = ref_ps(carrier[ind_fc], fmod)
         # Roughness calculation for each modulation frequency
         for ind_fmod in range(fmod.size):     
-            signal = test_signal(
+            signal = signal_test(
                 carrier[ind_fc],
                 fmod[ind_fmod],
                 mdepth,
