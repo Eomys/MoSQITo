@@ -50,11 +50,11 @@ metrics:
 
 || Reference | Available | Under dev. | To do |
 |:-|:-|:-:|:-:|:-:|
-|Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | x |||
-|Loudness for non-stationary<br>(Zwicker method) | DIN 45631/A1:2010<br>ISO 532-1:2017 §6 | x |||
-| Roughness | Daniel and Weber, 1997 | x |||
+|Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | [x](./documentation/loudness-stationary.md) |||
+|Loudness for non-stationary<br>(Zwicker method) | DIN 45631/A1:2010<br>ISO 532-1:2017 §6 | [x](./documentation/loudness-time-varying.md) |||
+| Roughness | Daniel and Weber, 1997 | [x](./documentation/roughness.md) |||
 | Fluctuation Strength | To be defined || x ||
-| Sharpness | DIN 45692:2009 || x ||
+| Sharpness | DIN 45692:2009 | [x](./documentation/sharpness.md) |||
 | Tonality (Hearing model) | ECMA-74:2019 annex G || x ||
 
 As a second priority, the project could address the following metrics:
