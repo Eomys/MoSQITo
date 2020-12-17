@@ -5,7 +5,7 @@ Created on Mon Nov 30 15:25:12 2020
 @author: wantysal
 """
 import sys
-sys.path.append('../..')
+sys.path.append('..')
 
 # Standard library import
 import numpy as np
@@ -14,11 +14,15 @@ import numpy as np
 from SciDataTool import Data1D, DataTime, DataFreq, DataLinspace
 
 # import Mosqito functions
-from mosqito.functions.signal.load import load
+from mosqito.functions.shared.load import load
 from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
 from mosqito.functions.oct3filter.oct3spec import oct3spec
-from mosqito.functions.loudness_zwicker.comp_loudness import comp_loudness
-from mosqito.functions.sharpness.comp_sharpness import comp_sharpness
+from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import loudness_zwicker_stationary
+from mosqito.functions.loudness_zwicker.loudness_zwicker_time import loudness_zwicker_time
+from mosqito.functions.sharpness.sharpness_aures import comp_sharpness_aures
+from mosqito.functions.sharpness.sharpness_din import comp_sharpness_din
+from mosqito.functions.sharpness.sharpness_bismarck import comp_sharpness_bismarck
+from mosqito.functions.sharpness.sharpness_fastl import comp_sharpness_fastl
 from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness
 
 
@@ -43,8 +47,8 @@ class SoundQuality():
         self.roughness_specific = None
         
     
-    def import_signal(self, is_stationary, file, calib=1 ):
-        """ Method to load the signal from a .wav or .uff file
+    def import_signal(self, is_stationary, file, calib=1, mat_signal='', mat_fs='' ):
+        """ Method to load the signal from a .wav .mat or .uff file
         
         Parameters
         ----------
@@ -54,6 +58,11 @@ class SoundQuality():
             string path to the signal file
         calib : float
             calibration factor for the signal to be in [pa]
+        mat_signal : string
+            in case of a .mat file, name of the signal variable
+        mat_fs : string
+            in case of a .mat file, name of the sampling frequency variable
+
     
         Outputs
         -------
@@ -119,30 +128,32 @@ class SoundQuality():
         Parameter
         ----------
         field-type: string
-            'free' by default or 'diffuse'
-        
+            'free' by default or 'diffuse'      
                
         """
+        if self.third_spec == None:
+            self.comp_3oct_spec()
+    
+        if self.is_stationary == True:
+            N, N_specific = loudness_zwicker_stationary(self.third_spec.values, self.third_spec.axes[0], field_type)
+        elif self.is_stationary == False: 
+            N, N_specific = loudness_zwicker_time(self.third_spec.values, field_type)
+           
         barks = Data1D(
             name = 'Frequency Bark scale',
-            unit = 'Bark')
-    
-        N, N_spec, barks.values = comp_loudness(
-            self.is_stationary, 
-            self.third_spec.values, 
-            self.third_spec.axes[0].values, 
-            field_type)
+            unit = 'Bark', 
+            values = np.linspace(0.1, 24, int(24 / 0.1)))
         
         if self.is_stationary == True:
             self.loudness = Data1D(
-                values = [N],
+                values = N,
                 name = "Loudness",
                 unit = "Sones"
                 )
             self.loudness_specific = DataFreq(
                 symbol = "N'",
                 axes = [barks],
-                values = N_spec,
+                values = N_specific,
                 name = "Specific loudness",
                 unit = "Sones"
                 )
@@ -163,34 +174,63 @@ class SoundQuality():
             self.loudness_specific = DataFreq(
                 symbol = "N'",
                 axes = [barks, time],
-                values = N_spec,
+                values = N_specific,
                 name = "Specific loudness",
                 unit = "Sones"
                 )
 
-
         
-    def compute_sharpness(self, method = 'din'):        
+    def compute_sharpness(self, method = 'din', skip='0.2'):        
         """ Method to cumpute the sharpness according to the given method
         
         Parameter
         ---------
         method: string
-            'din' by default, 'aures', 'bismarck', 'fastl'
+            'din' by default, 'aures', 'bismarck', 'fastl', 'all'
+        skip : float
+            number of second to be cut at the beginning of the analysis
+
         """
+        if method!= 'din' and method!='aures' and method !='fastl' and method != 'bismarck':
+            raise ValueError("ERROR: method must be 'din', 'aures', 'bismarck' or 'fastl")
+       
+        if self.loudness == None:
+            self.compute_loudness()
         
-        S = comp_sharpness(self.is_stationary, self.loudness.values, self.loudness_specific.values, method)
+    
+        if method == 'din':
+            S = comp_sharpness_din(self.loudness.values, self.loudness_specific.values, self.is_stationary )      
+        
+        elif method == 'aures':
+            S = comp_sharpness_aures(self.loudness.values, self.loudness_specific.values, self.is_stationary ) 
+
+        elif method == 'bismarck':
+            S = comp_sharpness_bismarck(self.loudness.values, self.loudness_specific.values, self.is_stationary )                    
+
+        elif method == 'fastl':
+            S = comp_sharpness_fastl(self.loudness.values, self.loudness_specific.values, self.is_stationary ) 
+                   
         
         if self.is_stationary == True:
             self.sharpness = Data1D(
-                values = [S],
+                values = S,
                 name = "Sharpness",
                 unit = "Acum"
                 )
         elif self.is_stationary == False:
+            # Cut transient effect
+            time = np.linspace(0, len(self.signal.values)/self.fs, len(S))
+            cut_index = np.argmin(np.abs(time - skip))
+            S = S[cut_index:]
+        
+            time = Data1D(
+                symbol = "T",
+                name = "Time axis",
+                unit = "s",
+                values = np.linspace(skip, len(self.signal.values)/self.fs, num = S.size))
             self.sharpness = DataTime(
                 symbol = "S",
-                axes = [self.loudness.axes[0]],
+                axes = [time],
                 values = S,
                 name = "Sharpness",
                 unit = "Acum"
@@ -205,18 +245,17 @@ class SoundQuality():
         overlap: float
             overlapping coefficient for the time windows of 200ms 
         """
-
+        roughness = comp_roughness(self.signal.values, self.fs, overlap)
         
         time = Data1D(
             name = 'Time',
-            unit = 's')
-
-        R, time.values = comp_roughness(self.signal.values, self.fs, overlap)
+            unit = 's',
+            values = roughness['time'])
 
         self.roughness = DataTime(
             symbol = "R",
             axes = [time],
-            values = R,
+            values = roughness['values'],
             name = "Roughness",
             unit = "Asper"
             )

@@ -77,40 +77,14 @@ def test_loudness_zwicker_3oct():
         "N_specif_file": "mosqito/tests/loudness/data/ISO_532-1/test_signal_1.csv",
     }
     N, N_specific = loudness_zwicker_stationary(test_signal_1)
-    tst = check_compliance(N, N_specific, bark_axis, signal)
+
+    tst = check_compliance(N, N_specific, signal)
+    
     assert tst
 
 
-# pytest.mark.parametrize allows to execute a test for different data : see http://doc.pytest.org/en/latest/parametrize.html
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
-@pytest.mark.parametrize(
-    "signal",
-    [
-        {
-            "data_file": "mosqito/tests/loudness/data/ISO_532-1/Test signal 2 (250 Hz 80 dB).wav",
-            "N": 14.655,
-            "N_specif_file": "mosqito/tests/loudness/data/ISO_532-1/test_signal_2.csv",
-        },
-        {
-            "data_file": "mosqito/tests/loudness/data/ISO_532-1/Test signal 3 (1 kHz 60 dB).wav",
-            "N": 4.019,
-            "N_specif_file": "mosqito/tests/loudness/data/ISO_532-1/test_signal_3.csv",
-        },
-        {
-            "data_file": "mosqito/tests/loudness/data/ISO_532-1/Test signal 4 (4 kHz 40 dB).wav",
-            "N": 1.549,
-            "N_specif_file": "mosqito/tests/loudness/data/ISO_532-1/test_signal_4.csv",
-        },
-        {
-            "data_file": "mosqito/tests/loudness/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
-            "N": 10.498,
-            "N_specif_file": "mosqito/tests/loudness/data/ISO_532-1/test_signal_5.csv",
-        },
-    ],
-)
-
-@pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
-def test_loudness_zwicker_wav(signal):
+def test_loudness_zwicker_wav():
     """Test function for the script loudness_zwicker_stationary
 
     Test function for the script loudness_zwicker_stationary with
@@ -128,11 +102,18 @@ def test_loudness_zwicker_wav(signal):
     """
     # Test signal as input for stationary loudness
     # (from ISO 532-1 annex B3)
+    signal = {
+            "data_file": "mosqito/tests/loudness/data/ISO_532-1/Test signal 3 (1 kHz 60 dB).wav",
+            "N": 4.019,
+            "N_specif_file": "mosqito/tests/loudness/data/ISO_532-1/test_signal_3.csv",
+        }
 
     # Load signal and compute third octave band spectrum
-    spec, _ = load2oct3(True,signal["data_file"], calib=2 * 2 ** 0.5)
+    third_spec = load2oct3(True,signal["data_file"], calib=2 * 2 ** 0.5)
+    
     # Compute Loudness
-    N, N_specific = loudness_zwicker_stationary(spec)
+    N, N_specific = loudness_zwicker_stationary(third_spec['values'])
+    
     # Check ISO 532-1 compliance
     assert check_compliance(N, N_specific, signal)
 
@@ -183,26 +164,28 @@ def check_compliance(N, N_specific, iso_ref):
     )
     tst = tst_N and tst_specif
     
-    # critical band rate scale
-    bark_axis = np.linspace(0.1, 24, int(24 / 0.1))  
-
-    # Generate compliance plot
-    if tst_specif:
-        clr = "green"
-    else:
-        clr = "red"
-    plt.plot(bark_axis, N_specific, label="MoSQITo", color=clr)
-    plt.fill_between(
-        bark_axis,
-        np.amin([N_specif_iso * 0.95, N_specif_iso - 0.1], axis=0),
-        np.amax([N_specif_iso * 1.05, N_specif_iso + 0.1], axis=0),
-        alpha=0.4,
-        color="gray",
-        label="ISO 532-1 compliance",
-    )
+    # Define and plot the tolerance curves 
+    bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
+    tol_curve_min = np.amin([N_specif_iso * 0.95, N_specif_iso - 0.1], axis=0)
+    tol_curve_min[tol_curve_min < 0] = 0
+    tol_curve_max = np.amax([N_specif_iso * 1.05, N_specif_iso + 0.1], axis=0)
+    plt.plot(bark_axis, tol_curve_min, color='red', linestyle = 'solid', label='5% tolerance', linewidth=1)  
+    plt.plot(bark_axis, tol_curve_max, color='red', linestyle = 'solid', label='', linewidth=1) 
     plt.legend()
-    plt.xlabel("Critical band rate [Bark]")
-    plt.ylabel("Specific loudness, [sone/Bark]")
+    
+    # Compliance plot
+    
+    plt.plot(bark_axis, N_specific, label="MoSQITo")    
+    if tst_specif:
+        plt.text(0.5, 0.5, 'Test passed (5% tolerance not exceeded)', horizontalalignment='center',
+        verticalalignment='center', transform=plt.gca().transAxes,
+        bbox=dict(facecolor='green', alpha=0.3))
+    else:
+        tst = 0
+        plt.text(0.5, 0.5, 'Test not passed', horizontalalignment='center',
+        verticalalignment='center', transform=plt.gca().transAxes, 
+        bbox=dict(facecolor='red', alpha=0.3))
+                
     if tst_N:
         clr = "green"
     else:
@@ -210,7 +193,7 @@ def check_compliance(N, N_specific, iso_ref):
     plt.title("N = " + str(N) + " sone (ISO ref. " + str(N_iso) + " sone)", color=clr)
     file_name = "_".join(iso_ref["data_file"].split(" "))
     plt.savefig(
-        "mosqito/tests/output/test_loudness_zwicker_wav_"
+        "mosqito/tests/loudness/output/test_loudness_zwicker_wav_"
         + file_name.split("/")[-1][:-4]
         + ".png",
         format="png",

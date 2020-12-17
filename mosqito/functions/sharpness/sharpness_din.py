@@ -34,8 +34,8 @@ def comp_sharpness_din(N, N_specific, is_stationary):
     
     # weighting function
     gDIN = np.zeros((z.size))
-    gDIN[z<15.8] = 1
-    gDIN[z>=15.8] = 0.15 * np.exp(0.42 *( z[z>=15.8] - 15.8)) + 0.85 
+    gDIN[z<=15.8] = 1
+    gDIN[z>15.8] = 0.15 * np.exp(0.42 *( z[z>15.8] - 15.8)) + 0.85 
 
     if is_stationary :
         if N == 0:

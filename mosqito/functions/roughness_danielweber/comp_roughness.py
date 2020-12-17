@@ -14,14 +14,14 @@ from numpy.fft import fft, ifft
 import math
 
 # Local imports
-from mosqito.functions.roughness_danielweber.LTQ import LTQ
+from mosqito.functions.shared.LTQ import LTQ
 from mosqito.functions.roughness_danielweber.gzi_weighting_function import gzi_definition
 from mosqito.functions.roughness_danielweber.H_weighting_function import H_function
 from mosqito.functions.roughness_danielweber.a0_zwicker import a0tab
 from mosqito.functions.shared.conversion import freq2bark, db2amp, amp2db, bark2freq
 
 
-def comp_roughness(signal,fs,overlap):
+def comp_roughness(signal, fs, overlap):
     """ Roughness calculation of a signal sampled at 48kHz.
 
     The code is based on the algorithm described in "Psychoacoustical roughness:
@@ -98,7 +98,7 @@ def comp_roughness(signal,fs,overlap):
         spec_dB = amp2db(module)
         
         # Find the audible components within the spectrum
-        threshold = LTQ(barks)
+        threshold = LTQ(barks, reference = 'roughness')
         audible_index = np.where(spec_dB > threshold)[0]
         # Number of audible frequencies
         n_aud = len(audible_index)
@@ -233,6 +233,12 @@ def comp_roughness(signal,fs,overlap):
         # of 70 Hz and a modulation depth of 1 
     
         R[i_frame] = 0.25 * sum(R_spec)
+        
+        output = {
+            "name" : "Roughness",
+            "values" : R,
+            "time" : time,
+            }
     
-    return R, time
+    return output
             
