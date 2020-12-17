@@ -57,15 +57,15 @@ def comparison_roughness():
 
     
     
-    fig, (axs1, axs2, axs3) = plt.subplots(3, 1, figsize=(10, 6),constrained_layout=True)
+    fig, (axs1, axs2, axs3) = plt.subplots(3, 1, figsize=(6, 6),constrained_layout=True)
     
     axs1.plot(fmod,r_zf[0] ,linestyle='dotted', color='black',label='reference')
     axs1.plot(fmod[0:12],r_dw[0,0:12],marker='x', color='red', label='Daniel and Weber')
     axs1.plot(fmod[0:12],r_ps[0,0:12],marker='o', color='#0069a1', label = 'Psysound')
     axs1.plot(fmod,R[0,:],marker='s', color='#69c3c5', label = 'mosqito')
-    axs1.set(xlim=(10, 400), ylim=(0, 1.1))
+    axs1.set(xlim=(0, 160), ylim=(0, 1.1))
     axs1.set_title('Carrier frequency of 250 Hz', fontsize=11)
-    axs1.legend(loc='lower right', shadow = True)
+    axs1.legend(loc='upper right', shadow = True)
     axs1.set_ylabel('Roughness [asper]')
     axs1.set_xlabel('Modulation frequency [Hz]')
     
@@ -73,7 +73,7 @@ def comparison_roughness():
     axs2.plot(fmod[0:12],r_dw[1,0:12],marker='x', color='red')
     axs2.plot(fmod[0:12],r_ps[1,0:12],marker='o', color='#0069a1')
     axs2.plot(fmod,R[1,:],marker='s', color='#69c3c5')
-    axs2.set(xlim=(10, 400), ylim=(0, 1.1))
+    axs2.set(xlim=(0, 160), ylim=(0, 1.1))
     axs2.set_ylabel('Roughness [asper]')
     axs2.set_xlabel('Modulation frequency [Hz]')
     axs2.set_title('Carrier frequency of 1000 Hz', fontsize=11)
@@ -82,7 +82,7 @@ def comparison_roughness():
     axs3.plot(fmod[0:12],r_dw[2,0:12],marker='x', color='red')
     axs3.plot(fmod[0:12],r_ps[2,0:12],marker='o', color='#0069a1')
     axs3.plot(fmod,R[2,:],marker='s', color='#69c3c5')
-    axs3.set(xlim=(10, 400), ylim=(0, 1.1))
+    axs3.set(xlim=(0, 160), ylim=(0, 1.1))
     axs3.set_ylabel('Roughness [asper]')
     axs3.set_xlabel('Modulation frequency [Hz]')
     axs3.set_title('Carrier frequency of 4000 Hz', fontsize=11)
