@@ -103,7 +103,7 @@ def freq2bark(freq_axis):
     
     yp = np.arange(0,25,0.5)    
     
-    return np.interp(freq_axis,xp,yp, right=0)
+    return np.interp(freq_axis,xp,yp)
 
 #-----------------------------------dB <-> dBA---------------------------------
 
