@@ -15,6 +15,7 @@ from SciDataTool import Data1D, DataTime, DataFreq, DataLinspace
 
 # import Mosqito functions
 from mosqito.functions.shared.load import load
+from mosqito.functions.shared.cut import cut_signal
 from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
 from mosqito.functions.oct3filter.oct3spec import oct3spec
 from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import loudness_zwicker_stationary
@@ -74,7 +75,7 @@ class SoundQuality():
         """
         
         self.is_stationary = is_stationary
-        values, self.fs = load(self.is_stationary, file, calib=1 )
+        values, self.fs = load(self.is_stationary, file, calib, mat_signal, mat_fs )
         self.signal = Data1D(
             values = values,
             name = "Audio signal",
@@ -87,6 +88,19 @@ class SoundQuality():
             step = 1/self.fs,
             )
 
+    def cut_signal(self, start, stop):
+        """ Method to keep only the signal values between 'start' and 'stop'
+        
+        Parameters
+        ----------
+        start : float
+            beginning of the new signal in [s]
+        stop : float
+            end of the new signal in [s]
+        
+        """
+        
+        self.signal.values = cut_signal(self.signal.values, self.fs, start, stop)
     
     def comp_3oct_spec(self):
         """ Method to compute third-octave spectrum according to ISO"""
@@ -135,7 +149,7 @@ class SoundQuality():
             self.comp_3oct_spec()
     
         if self.is_stationary == True:
-            N, N_specific = loudness_zwicker_stationary(self.third_spec.values, self.third_spec.axes[0], field_type)
+            N, N_specific = loudness_zwicker_stationary(self.third_spec.values, self.third_spec.axes[0].values, field_type)
         elif self.is_stationary == False: 
             N, N_specific = loudness_zwicker_time(self.third_spec.values, field_type)
            
@@ -146,7 +160,7 @@ class SoundQuality():
         
         if self.is_stationary == True:
             self.loudness = Data1D(
-                values = N,
+                values = [N],
                 name = "Loudness",
                 unit = "Sones"
                 )
@@ -180,7 +194,7 @@ class SoundQuality():
                 )
 
         
-    def compute_sharpness(self, method = 'din', skip='0.2'):        
+    def compute_sharpness(self, method = 'din', skip=0.2):        
         """ Method to cumpute the sharpness according to the given method
         
         Parameter
@@ -213,7 +227,7 @@ class SoundQuality():
         
         if self.is_stationary == True:
             self.sharpness = Data1D(
-                values = S,
+                values = [S],
                 name = "Sharpness",
                 unit = "Acum"
                 )
@@ -228,6 +242,7 @@ class SoundQuality():
                 name = "Time axis",
                 unit = "s",
                 values = np.linspace(skip, len(self.signal.values)/self.fs, num = S.size))
+            
             self.sharpness = DataTime(
                 symbol = "S",
                 axes = [time],
