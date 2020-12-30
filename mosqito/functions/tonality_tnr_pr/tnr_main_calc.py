@@ -16,14 +16,18 @@ from numpy.fft import fft
 # Local functions imports
 from mosqito.functions.shared.conversion import amp2db
 from mosqito.functions.tonality_tnr_pr.critical_band import critical_band
-from mosqito.functions.tonality_tnr_pr.screening import screening_for_tones
+from mosqito.functions.tonality_tnr_pr.screening_for_tones import screening_for_tones
 from mosqito.functions.tonality_tnr_pr.find_highest_tone import find_highest_tone
 from mosqito.functions.tonality_tnr_pr.peak_level import spectrum_peak_level
 
 def tnr_main_calc(signal, fs):
     """ 
-        Calculation of the tone-to noise ratio 
-        
+        Calculation of the tone-to noise ratio according to the method described
+        in ECMA 74, annex D.
+        The method to find the tonal candidates is the one described by Wade Bray
+        in 'Methods for automating prominent tone evaluation and for considerin 
+        variations with time or other reference quantities'
+    
     Parameters
     ----------
     signal : numpy.array
@@ -33,14 +37,14 @@ def tnr_main_calc(signal, fs):
     
     Output
     ------
-    tones_freqs :
-        
-    tnr :
-        
-    prominence :
-        
-    total_tnr :
-        
+    tones_freqs : list of float
+        frequency of the tones   
+    tnr : list of float
+        TNR value calculated for each tone    
+    prominence : list of boolean
+        prominence criteria as described in ECMA 74   
+    total_tnr : list of float
+        sum of the specific TNR   
     """
 
 #### Spectrum creation #######################################################

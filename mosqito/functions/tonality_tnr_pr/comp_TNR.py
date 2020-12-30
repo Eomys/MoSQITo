@@ -8,21 +8,39 @@ Created on Thu Dec 10 16:51:19 2020
 import sys
 sys.path.append('../../..')
 
+# Standard library imports
 import numpy as np
 import math
-# from scipy.signal import welch, periodogram
-
 
 # Local functions imports
 from mosqito.functions.tonality_tnr_pr.tnr_main_calc import tnr_main_calc
-from mosqito.functions.shared.load import load
 
-
-def comp_TNR(is_stationary, file):
-    """ Computation of tone-to-noise ration according to ECMA-74, annex D.9 """
+def comp_TNR(is_stationary, signal, fs):
+    """ Computation of tone-to-noise ration according to ECMA-74, annex D.9 
     
-    signal, fs = load(is_stationary, file)
+    Parameters
+    ----------
+    is_stationary : boolean
+        True if the signal is stationary    
+    signal :numpy.array
+        time signal values       
+    fs : integer
+        sampling frequency
     
+    Output
+    ------
+    output = dict
+    {    "name" : "tone-to-noise ratio",
+         "time" : np.linspace(0, len(signal)/fs, num=nb_frame),
+         "freqs" : <frequency of the tones>
+         "values" : <TNR calculated value for each tone>
+         "prominence" : <True or False according to ECMA criteria>
+         "global value" : <sum of the specific TNR values>       
+            }
+    
+    
+    """
+        
     if is_stationary == True:
         tones_freqs, tnr, prominence, total_tnr = tnr_main_calc(signal, fs)
         
@@ -59,10 +77,3 @@ def comp_TNR(is_stationary, file):
     
     
     return output
-
-
-if __name__ == '__main__':
-    # tonality = comp_TNR(False,r"C:\Users\pc\Documents\Salomé\MoSQITo_tonality\mosqito\validations\loudness_zwicker\data\ISO_532-1\Annex B.5\Test signal 16 (hairdryer).wav")
-    # tonality = comp_TNR(True,r"C:\Users\pc\Documents\Salomé\MoSQITo_tonality\mosqito\validations\loudness_zwicker\data\ISO_532-1\sinus_1000Hz_60dBSPL.wav")
-    # tonality = comp_TNR(True,r"C:\Users\pc\Documents\Salomé\Biblio\Review\Audios\brose_desk_motor_from_ikea.wav")
-    tonality = comp_TNR(True,r"C:\Users\pc\Documents\Salomé\MoSQITo_tonality\mosqito\functions\tonality_tnr_pr\fichier_test_3.wav")

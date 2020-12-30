@@ -13,6 +13,9 @@ from mosqito.functions.tonality_tnr_pr.critical_band import critical_band
         
 def find_highest_tone(freqs, spec_db, index, nb_tones, ind):
     """
+    
+    Method to find the two highest tones in a given spectrum from a given index
+    according to their critical band
 
     Parameters
     ----------
