@@ -46,8 +46,8 @@ def find_highest_tone(freqs, spec_db, index, nb_tones, ind):
     high_limit_idx = np.argmin(np.abs(freqs - f2))
     
     # Other tones in the critical band centered on f tones       
-    multiple_idx = index[index>low_limit_idx]
-    multiple_idx = multiple_idx[multiple_idx<high_limit_idx]  
+    multiple_idx = index[index > low_limit_idx]
+    multiple_idx = multiple_idx[multiple_idx < high_limit_idx]  
 
     if len(multiple_idx  ) > 1:  
         sort_spec = np.argsort(-1 * spec_db[multiple_idx])

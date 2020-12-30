@@ -20,7 +20,7 @@ from mosqito.functions.tonality_tnr_pr.screening import screening_for_tones
 from mosqito.functions.tonality_tnr_pr.find_highest_tone import find_highest_tone
 from mosqito.functions.tonality_tnr_pr.peak_level import spectrum_peak_level
 
-def main_calc_tnr(signal, fs):
+def tnr_main_calc(signal, fs):
     """ 
         Calculation of the tone-to noise ratio 
         
@@ -80,12 +80,14 @@ def main_calc_tnr(signal, fs):
     tones_freqs = []
     prominence = []
 
-
-
     # Each candidate is studied and then deleted from the list until all have been treated
     while (nb_tones > 0):
         ind = peak_index[0]
-        ind_p, ind_s, peak_index, nb_tones = find_highest_tone(freqs, spec_db,peak_index, nb_tones, ind)  
+        if len(peak_index) > 1:
+            ind_p, ind_s, peak_index, nb_tones = find_highest_tone(freqs, spec_db,peak_index, nb_tones, ind)  
+        else:
+            ind_p = ind
+            ind_s = None
         
         # multiple tones in a critical band
         if ind_s != None:               
