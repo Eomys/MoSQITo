@@ -55,7 +55,6 @@ def find_highest_tone(freqs, spec_db, index, nb_tones, ind):
     if len(multiple_idx  ) > 1:  
         sort_spec = np.argsort(-1 * spec_db[multiple_idx])
     
-        plt.plot(freqs[multiple_idx], spec_db[multiple_idx])
    
         # highest tones in the critical band
         ind_p = multiple_idx[sort_spec[0]]
@@ -68,10 +67,6 @@ def find_highest_tone(freqs, spec_db, index, nb_tones, ind):
             nb_tones -= 1
     
         if ind_p != ind:
-            # suppression of the second highest value
-            # sup = np.where(index == multiple_idx[sort_spec[1]])[0]
-            # index = np.delete(index, sup)
-            # nb_tones -= 1
             # screening to find the highest value in the critical band centered on fp
             ind_p, ind_s, index, nb_tones = find_highest_tone(freqs, spec_db, index, nb_tones, ind_p)  
     

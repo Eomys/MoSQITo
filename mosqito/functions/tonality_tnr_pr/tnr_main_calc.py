@@ -64,23 +64,17 @@ def tnr_main_calc(signal, fs):
     freq_axis = np.arange(0,int(n/2),1) * (fs/n)    
     freq_index = np.where((freq_axis > 89.1) & (freq_axis < 11200))[0]
     freqs = freq_axis[freq_index]
-    spec_db = spectrum_db[freq_index]
+    spec_db = spectrum_db[freq_index]   
     
-    plt.plot(freqs, spec_db)
-       
 #### Screening to find the potential tonal components ########################
     
     peak_index = screening_for_tones(freqs, spec_db, 'smoothed', 90, 11200)
     nb_tones = len(peak_index)    
     
-    plt.plot(freqs[peak_index],spec_db[peak_index],'x')
-
-
 #### Evaluation of each candidate ############################################
     
     # Initialization of the results lists
     tnr = []
-    tones_index = []
     tones_freqs = []
     prominence = []
 
@@ -157,20 +151,17 @@ def tnr_main_calc(signal, fs):
             delta_ft = freqs[1] - freqs[0]
         
 
-   
         # SPL of the masking noise
         delta_fc = f2 - f1
         delta_ftot = freq_axis[high_limit_idx] - freq_axis[low_limit_idx]
         Ln = 10 * np.log10(10 ** (Ltot/10) - 10 ** (Lt/10))\
             + 10 * np.log10( delta_fc / (delta_ftot - delta_ft))
         
-        
-        
+            
         # Tone-to-noise ratio
         f = freqs[ind_p]
         delta_t = Lt - Ln
         if delta_t > 0:
-            tones_index.append(ind)
             tones_freqs.append(f)
             tnr.append(delta_t)
         
@@ -192,8 +183,5 @@ def tnr_main_calc(signal, fs):
         nb_tones -= 1
         
     total_tnr = sum(tnr)
-        
-        
-
 
     return tones_freqs, tnr, prominence, total_tnr
