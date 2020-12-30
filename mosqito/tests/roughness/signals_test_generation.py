@@ -38,7 +38,7 @@ def signal_test(fc, fmod, mdepth, fs, d, dB):
     
     signal = 0.5 * (1 + mdepth * (np.sin(2 * np.pi * fmod * time))) * np.sin( 2 * np.pi * fc * time)    
     rms = np.sqrt(np.mean(np.power(signal,2)))
-    ampl = 1.42 * np.power(10,0.05*dB) / rms
+    ampl = 0.00002 * np.power(10,dB/20) / rms
     signal = signal * ampl
         
     return signal
