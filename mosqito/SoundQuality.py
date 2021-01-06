@@ -25,7 +25,8 @@ from mosqito.functions.sharpness.sharpness_din import comp_sharpness_din
 from mosqito.functions.sharpness.sharpness_bismarck import comp_sharpness_bismarck
 from mosqito.functions.sharpness.sharpness_fastl import comp_sharpness_fastl
 from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness
-
+from mosqito.functions.tonality_tnr_pr.comp_tnr import comp_tnr
+from mosqito.functions.tonality_tnr_pr.comp_pr import comp_pr
 
 class SoundQuality():
     """ Audio signal loading and analysis: from .wav or .uff files compute 
@@ -41,11 +42,16 @@ class SoundQuality():
         self.fs = int()
         self.time_axis = None
         self.third_spec = None
-        self.loudness = None
-        self.loudness_specific = None
-        self.sharpness = None
+        self.loudness_zwicker = None
+        self.loudness_zwicker_specific = None
+        self.sharpness_aures = None
+        self.sharpness_bismarck = None
+        self.sharpness_din = None
+        self.sharpness_fastl = None
         self.roughness = None
         self.roughness_specific = None
+        self.tonality_tnr = None
+        self.tonality_pr = None
         
     
     def import_signal(self, is_stationary, file, calib=1, mat_signal='', mat_fs='' ):
@@ -159,12 +165,12 @@ class SoundQuality():
             values = np.linspace(0.1, 24, int(24 / 0.1)))
         
         if self.is_stationary == True:
-            self.loudness = Data1D(
+            self.loudness_zwicker = Data1D(
                 values = [N],
                 name = "Loudness",
                 unit = "Sones"
                 )
-            self.loudness_specific = DataFreq(
+            self.loudness_zwicker_specific = DataFreq(
                 symbol = "N'",
                 axes = [barks],
                 values = N_specific,
@@ -178,14 +184,14 @@ class SoundQuality():
                 unit = "s",
                 values = np.linspace(0, len(self.signal.values)/self.fs, num = N.size))
             
-            self.loudness = DataTime(
+            self.loudness_zwicker = DataTime(
                 symbol = "N",
                 axes = [time],
                 values = N,
                 name = "Loudness",
                 unit = "Sones"
                 )
-            self.loudness_specific = DataFreq(
+            self.loudness_zwicker_specific = DataFreq(
                 symbol = "N'",
                 axes = [barks, time],
                 values = N_specific,
@@ -208,50 +214,128 @@ class SoundQuality():
         if method!= 'din' and method!='aures' and method !='fastl' and method != 'bismarck':
             raise ValueError("ERROR: method must be 'din', 'aures', 'bismarck' or 'fastl")
        
-        if self.loudness == None:
+        if self.loudness_zwicker == None:
             self.compute_loudness()
         
     
-        if method == 'din':
+        if method == 'din' or method == 'all':
             S = comp_sharpness_din(self.loudness.values, self.loudness_specific.values, self.is_stationary )      
-        
-        elif method == 'aures':
-            S = comp_sharpness_aures(self.loudness.values, self.loudness_specific.values, self.is_stationary ) 
-
-        elif method == 'bismarck':
-            S = comp_sharpness_bismarck(self.loudness.values, self.loudness_specific.values, self.is_stationary )                    
-
-        elif method == 'fastl':
-            S = comp_sharpness_fastl(self.loudness.values, self.loudness_specific.values, self.is_stationary ) 
-                   
-        
-        if self.is_stationary == True:
-            self.sharpness = Data1D(
+            
+            if self.is_stationary == True:
+                self.sharpness_din = Data1D(
                 values = [S],
                 name = "Sharpness",
                 unit = "Acum"
                 )
-        elif self.is_stationary == False:
-            # Cut transient effect
-            time = np.linspace(0, len(self.signal.values)/self.fs, len(S))
-            cut_index = np.argmin(np.abs(time - skip))
-            S = S[cut_index:]
-        
-            time = Data1D(
-                symbol = "T",
-                name = "Time axis",
-                unit = "s",
-                values = np.linspace(skip, len(self.signal.values)/self.fs, num = S.size))
+            elif self.is_stationary == False:
+                # Cut transient effect
+                time = np.linspace(0, len(self.signal.values)/self.fs, len(S))
+                cut_index = np.argmin(np.abs(time - skip))
+                S = S[cut_index:]
             
-            self.sharpness = DataTime(
-                symbol = "S",
-                axes = [time],
-                values = S,
+                time = Data1D(
+                    symbol = "T",
+                    name = "Time axis",
+                    unit = "s",
+                    values = np.linspace(skip, len(self.signal.values)/self.fs, num = S.size))
+                
+                self.sharpness_din = DataTime(
+                    symbol = "S",
+                    axes = [time],
+                    values = S,
+                    name = "Sharpness",
+                    unit = "Acum"
+                    )
+        
+        
+        elif method == 'aures' or method == 'all':
+            S = comp_sharpness_aures(self.loudness.values, self.loudness_specific.values, self.is_stationary ) 
+
+            if self.is_stationary == True:
+                self.sharpness_aures = Data1D(
+                values = [S],
                 name = "Sharpness",
                 unit = "Acum"
                 )
+            elif self.is_stationary == False:
+                # Cut transient effect
+                time = np.linspace(0, len(self.signal.values)/self.fs, len(S))
+                cut_index = np.argmin(np.abs(time - skip))
+                S = S[cut_index:]
             
-        
+                time = Data1D(
+                    symbol = "T",
+                    name = "Time axis",
+                    unit = "s",
+                    values = np.linspace(skip, len(self.signal.values)/self.fs, num = S.size))
+                
+                self.sharpness_aures = DataTime(
+                    symbol = "S",
+                    axes = [time],
+                    values = S,
+                    name = "Sharpness",
+                    unit = "Acum"
+                    )
+
+        elif method == 'bismarck' or method == 'all':
+            S = comp_sharpness_bismarck(self.loudness.values, self.loudness_specific.values, self.is_stationary )                    
+
+            if self.is_stationary == True:
+                self.sharpness_bismarck = Data1D(
+                values = [S],
+                name = "Sharpness",
+                unit = "Acum"
+                )
+            elif self.is_stationary == False:
+                # Cut transient effect
+                time = np.linspace(0, len(self.signal.values)/self.fs, len(S))
+                cut_index = np.argmin(np.abs(time - skip))
+                S = S[cut_index:]
+            
+                time = Data1D(
+                    symbol = "T",
+                    name = "Time axis",
+                    unit = "s",
+                    values = np.linspace(skip, len(self.signal.values)/self.fs, num = S.size))
+                
+                self.sharpness_bismarck = DataTime(
+                    symbol = "S",
+                    axes = [time],
+                    values = S,
+                    name = "Sharpness",
+                    unit = "Acum"
+                    )
+
+        elif method == 'fastl' or method == 'all':
+            S = comp_sharpness_fastl(self.loudness.values, self.loudness_specific.values, self.is_stationary ) 
+                   
+            if self.is_stationary == True:
+                self.sharpness_fastl = Data1D(
+                values = [S],
+                name = "Sharpness",
+                unit = "Acum"
+                )
+            elif self.is_stationary == False:
+                # Cut transient effect
+                time = np.linspace(0, len(self.signal.values)/self.fs, len(S))
+                cut_index = np.argmin(np.abs(time - skip))
+                S = S[cut_index:]
+            
+                time = Data1D(
+                    symbol = "T",
+                    name = "Time axis",
+                    unit = "s",
+                    values = np.linspace(skip, len(self.signal.values)/self.fs, num = S.size))
+                
+                self.sharpness_fastl = DataTime(
+                    symbol = "S",
+                    axes = [time],
+                    values = S,
+                    name = "Sharpness",
+                    unit = "Acum"
+                    )
+      
+                
     def compute_roughness(self, overlap=0):
         """ Method to compute roughness according to the Daniel and Weber implementation
         
@@ -274,11 +358,5 @@ class SoundQuality():
             name = "Roughness",
             unit = "Asper"
             )
-
-
-
-
-
-
 
 
