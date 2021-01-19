@@ -25,7 +25,8 @@ def pr_main_calc(signal, fs):
         The method to find the tonal candidates is the one described by Wade Bray
         in 'Methods for automating prominent tone evaluation and for considerin 
         variations with time or other reference quantities'
-    
+        The total value calculated, T-PR, is calculated according to ECMA TR/108
+
     Parameters
     ----------
     signal : numpy.array
@@ -72,8 +73,8 @@ def pr_main_calc(signal, fs):
 #### Evaluation of each candidate ############################################
     
     # Initialization of the results lists
-    tones_freqs = []
-    pr = []
+    tones_freqs = np.array(())
+    pr = np.array(())
     prominence = []
     # Each candidate is studied and then deleted from the list until all have been treated
     while (nb_tones > 0):
@@ -125,20 +126,20 @@ def pr_main_calc(signal, fs):
                   - 10 * np.log10((10**(0.1 * Ll) + 10**(0.1 * Lu)) * 0.5)
 
         if delta > 0:
-            pr.append(delta)
-            tones_freqs.append(ft)
+            pr = np.append(pr,delta)
+            tones_freqs = np.append(tones_freqs,ft)
             
-        # Prominent discrete tone criteria
-        if ft >= 89.1 and ft <=1000:
-            if delta >= 9 + 10 * np.log10(1000 / ft):
-                prominence.append(True)
-            else:
-                prominence.append(False)
-        elif ft > 1000:
-            if delta >= 9:
-                prominence.append(True)
-            else:
-                prominence.append(False)
+            # Prominent discrete tone criteria
+            if ft >= 89.1 and ft <=1000:
+                if delta >= 9 + 10 * np.log10(1000 / ft):
+                    prominence.append(True)
+                else:
+                    prominence.append(False)
+            elif ft > 1000:
+                if delta >= 9:
+                    prominence.append(True)
+                else :
+                    prominence.append(False)
     
         # suppression from the list of tones of all the candidates belonging to the 
         # same critical band        
@@ -146,7 +147,7 @@ def pr_main_calc(signal, fs):
         peak_index = np.delete(peak_index, sup)
         nb_tones -= len(sup)
 
-    total_pr = sum(pr)
+    t_pr = 10 * np.log10(sum(np.power(10,(pr/10))))
  
 
-    return tones_freqs, pr, prominence, total_pr
+    return tones_freqs, pr, prominence, t_pr

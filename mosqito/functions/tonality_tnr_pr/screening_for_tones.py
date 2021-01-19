@@ -6,7 +6,6 @@ Created on Wed Dec 16 20:23:01 2020
 """
 # Standard library imports
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Mosqito functions import
 from mosqito.functions.shared.spectrum_smoothing import spectrum_smoothing
@@ -60,16 +59,21 @@ def screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         # Criteria 1 : the level of the spectral line is higher than the level of 
         # the two neighboring lines
         maxima = (np.diff(np.sign(np.diff(spec_db))) < 0).nonzero()[0] + 1 
-    
+        # plt.plot(freqs[maxima],spec_db[maxima],'x')
+        
+        
         # Criteria 2 : the level of the spectral line exceeds the corresponding lines 
         # of the 1/24 octave smoothed spectrum by at least 6 dB
         indexx = np.where(spec_db[maxima] > smooth_spec[maxima] + 6)[0]
-     
+        # plt.plot(freqs, smooth_spec + 6)
+        # plt.plot(freqs[maxima][indexx],spec_db[maxima][indexx],'o')
+
         # Criteria 3 : the level of the spectral line exceeds the threshold of hearing
         threshold = LTH(freqs)
         audible = np.where(spec_db[maxima][indexx] > threshold[maxima][indexx] + 10)[0]
         
         index = np.arange(0,len(spec_db))[maxima][indexx][audible]
+        # plt.plot(freqs[index],spec_db[index],'s')
 
     if method == 'not-smoothed':
         # Criteria 1 : the level of the spectral line is higher than the level of 
@@ -107,7 +111,7 @@ def screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         temp = peak_index + 1
        
         # As long as the level decreases or remains above the smoothed spectrum,
-        while spec_db[temp] > smooth_spec[temp] + 6: 
+        while (spec_db[temp] > smooth_spec[temp] + 6) and (temp +1 < len(spec_db)): 
             # if a highest spectral line is found, it becomes the candidate
             if spec_db[temp] > spec_db[peak_index] :
                 peak_index = temp    
@@ -117,7 +121,7 @@ def screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         # Screen the left points of the peak
         temp = peak_index - 1
         # As long as the level decreases,
-        while spec_db[temp] > smooth_spec[temp] + 6:            
+        while (spec_db[temp] > smooth_spec[temp] + 6) and (temp +1 < len(spec_db)):            
             # if a highest spectral line is found, it becomes the candidate
             if spec_db[temp] > spec_db[peak_index] :
                 peak_index = temp    

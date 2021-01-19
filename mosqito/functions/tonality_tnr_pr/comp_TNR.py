@@ -17,8 +17,9 @@ from matplotlib.colors import ListedColormap
 # Local functions imports
 from mosqito.functions.tonality_tnr_pr.tnr_main_calc import tnr_main_calc
 
-def comp_TNR(is_stationary, signal, fs, plot='y'):
+def comp_tnr(is_stationary, signal, fs, prominence=True, plot='y'):
     """ Computation of tone-to-noise ration according to ECMA-74, annex D.9 
+        The T-TNR value is calculated according to ECMA-TR/108
     
     Parameters
     ----------
@@ -28,8 +29,10 @@ def comp_TNR(is_stationary, signal, fs, plot='y'):
         time signal values       
     fs : integer
         sampling frequency
+    prominence : boolean
+        if True, the algorithm only returns the prominent tones, if False it returns all tones detected
     plot : str
-        'y' to plot the results on a time / freq / tnr matrix, 'n' to only return the dict
+        'y' to plot the results, 'n' to only return the dict
     
     Output
     ------
@@ -44,17 +47,63 @@ def comp_TNR(is_stationary, signal, fs, plot='y'):
     
     
     """
-        
+    # Prominence criteria    
+    freqs = np.arange(90,11200,100)
+    limit = np.zeros((len(freqs)))
+    for i in range(len(freqs)):
+        if freqs[i] >= 89.1 and freqs[i] < 1000:
+            limit[i] = 8 + 8.33 * np.log10(1000/freqs[i])
+        if freqs[i] >= 1000 and freqs[i] < 11200:
+            limit[i] = 8 
+
+    
     if is_stationary == True:
-        tones_freqs, tnr, prominence, total_tnr = tnr_main_calc(signal, fs)
+        tones_freqs, tnr, prom, t_tnr = tnr_main_calc(signal, fs)
         
-        output = {
-        "name" : "tone-to-noise ratio",
-        "freqs" : tones_freqs,
-        "values" : tnr,
-        "prominence" : prominence,
-        "global value" : total_tnr       
-        }   
+        tones_freqs = tones_freqs.astype(int)
+        
+        if prominence == True:
+            output = {
+            "name" : "tone-to-noise ratio",
+            "freqs" : tones_freqs[prom],
+            "values" : tnr[prom],
+            "prominence" : True,
+            "global value" : t_tnr       
+            } 
+            
+        else:
+            output = {
+            "name" : "tone-to-noise ratio",
+            "freqs" : tones_freqs,
+            "values" : tnr,
+            "prominence" : prom,
+            "global value" : t_tnr       
+            } 
+        
+        if plot == 'y':
+            plt.figure()
+            plt.plot(freqs, limit, color='#e69f00', linewidth=2,dashes=[6,2],label='Prominence criteria')
+            plt.bar(output['freqs'], output['values'],width=10, color='#69c3c5')  
+            plt.legend()                      
+            plt.grid(axis='y')
+            plt.ylabel("TNR [dB]")
+            
+            # Title
+            if prominence == True:            
+                plt.title("Prominent tones TNR values \n (Total TNR = "+str(np.around(output['global value'],decimals=1))+" dB)", fontsize=16)
+            else:
+                plt.title("Discrete tones TNR values \n  (Total TNR = "+str(np.around(output['global value'],decimals=1))+" dB)", fontsize=16)
+            plt.legend()
+
+            # Frequency axis
+            plt.xlabel("Frequency [Hz]")
+            plt.xscale('log')
+            xticks_pos = [100,1000,10000] + list(output['freqs'])
+            xticks_pos = np.sort(xticks_pos)
+            xticks_label = [str(elem) for elem in xticks_pos]
+            plt.xticks(xticks_pos, labels=xticks_label, rotation = 30)            
+                        
+
         
     if is_stationary == False:
         # Signal cut in frames of 200 ms along the time axis
@@ -66,39 +115,58 @@ def comp_TNR(is_stationary, signal, fs, plot='y'):
         # Initialization of the result arrays
         tones_freqs = np.zeros((nb_frame), dtype = list)
         tnr = np.zeros((nb_frame), dtype = list)
-        prominence = np.zeros((nb_frame), dtype = list)
-        total_tnr = np.zeros((nb_frame))
+        prom = np.zeros((nb_frame), dtype = list)
+        t_tnr = np.zeros((nb_frame))
         
-        
+        # Calculate TNR values along time
         for i_frame in range(nb_frame):         
             segment = signal[int(i_frame*n):int(i_frame*n+n)]      
-            tones_freqs[i_frame], tnr[i_frame], prominence[i_frame], total_tnr[i_frame] = tnr_main_calc(segment, fs)
+            tones_freqs[i_frame], tnr[i_frame], prom[i_frame], t_tnr[i_frame] = tnr_main_calc(segment, fs)
         
-        output = {
-            "name" : "tone-to-noise ratio",
-            "time" : time,
-            "freqs" : tones_freqs,
-            "values" : tnr,
-            "prominence" : prominence,
-            "global value" : total_tnr       
-        }  
+
+        # Store the results in a time vs frequency array  
+        freq_axis = np.logspace(np.log10(90),np.log10(11200),num=1000)
+        results = np.zeros((len(freq_axis),nb_frame))            
+        promi = np.zeros((len(freq_axis),nb_frame),dtype=bool)
         
-        if plot == 'y':
-            freq_axis = np.logspace(np.log10(90),np.log10(11200),num=1000)
-            results = np.zeros((len(freq_axis),nb_frame))
-            
+        if prominence == True:
+        
+            for t in range(nb_frame):
+                for f in range(len(tones_freqs[t])):
+                    if prom[t][f] == True:
+                        ind = np.argmin(np.abs(freq_axis - tones_freqs[t][f]))            
+                        results[ind, t] = tnr[t][f]
+                        promi[ind, t] = True
+        else:
             for t in range(nb_frame):
                 for f in range(len(tones_freqs[t])):
                     ind = np.argmin(np.abs(freq_axis - tones_freqs[t][f]))            
                     results[ind, t] = tnr[t][f]
+                    promi[ind, t] = prom[t][f]
                     
+        
+        output = {
+            "name" : "tone-to-noise ratio",
+            "time" : time,
+            "freqs" : freq_axis,
+            "values" : results,
+            "prominence" : promi,
+            "global value" : t_tnr       
+            }  
+            
+        # Plot option    
+        if plot == 'y':
+            plt.figure()
+            
             cmap = np.load(r"C:\Users\pc\Documents\Salomé\eomys_cmp (1).npy")
             eomyscmp = ListedColormap(cmap)
 
             plt.pcolormesh(results, vmin=0, cmap = eomyscmp)
             plt.colorbar(label = "TNR value in dB")
-            plt.title("Tone-to-noise ratio along time and frequency", fontsize=14)
-            
+            if prominence == True:
+                plt.title("Tone-to-noise ratio along time and frequency (prominent tones only)", fontsize=14)
+            else:
+                plt.title("Tone-to-noise ratio along time and frequency (all discrete tones)", fontsize=14)
             plt.xlabel("Time [s]")
             plt.ylabel("Frequency [Hz]")
             

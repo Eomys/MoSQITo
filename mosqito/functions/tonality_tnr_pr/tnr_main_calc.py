@@ -8,10 +8,7 @@ import sys
 sys.path.append('../..')
 
 import numpy as np
-import matplotlib.pyplot as plt
 from numpy.fft import fft
-# from scipy.signal import welch, periodogram
-
 
 # Local functions imports
 from mosqito.functions.shared.conversion import amp2db
@@ -27,6 +24,7 @@ def tnr_main_calc(signal, fs):
         The method to find the tonal candidates is the one described by Wade Bray
         in 'Methods for automating prominent tone evaluation and for considerin 
         variations with time or other reference quantities'
+        The total value calculated, T-TNR, is calculated according to ECMA TR/108
     
     Parameters
     ----------
@@ -43,7 +41,7 @@ def tnr_main_calc(signal, fs):
         TNR value calculated for each tone    
     prominence : list of boolean
         prominence criteria as described in ECMA 74   
-    total_tnr : list of float
+    t_tnr : list of float
         sum of the specific TNR   
     """
 
@@ -74,8 +72,8 @@ def tnr_main_calc(signal, fs):
 #### Evaluation of each candidate ############################################
     
     # Initialization of the results lists
-    tnr = []
-    tones_freqs = []
+    tnr = np.array(())
+    tones_freqs = np.array(())
     prominence = []
 
     # Each candidate is studied and then deleted from the list until all have been treated
@@ -162,8 +160,8 @@ def tnr_main_calc(signal, fs):
         f = freqs[ind_p]
         delta_t = Lt - Ln
         if delta_t > 0:
-            tones_freqs.append(f)
-            tnr.append(delta_t)
+            tones_freqs = np.append(tones_freqs,f)
+            tnr = np.append(tnr,delta_t)
         
             # Prominence criteria
             if f >= 89.1 and f < 1000:
@@ -182,6 +180,6 @@ def tnr_main_calc(signal, fs):
         peak_index = np.delete(peak_index, sup)
         nb_tones -= 1
         
-    total_tnr = sum(tnr)
+    t_tnr = 10 * np.log10(sum(np.power(10,(tnr/10))))
 
-    return tones_freqs, tnr, prominence, total_tnr
+    return tones_freqs, tnr, prominence, t_tnr
