@@ -9,6 +9,7 @@ sys.path.append('..')
 
 # Standard library import
 import numpy as np
+import matplotlib.pyplot as plt
 
 # import SciDataTool objects
 from SciDataTool import Data1D, DataTime, DataFreq, DataLinspace
@@ -16,6 +17,7 @@ from SciDataTool import Data1D, DataTime, DataFreq, DataLinspace
 # import Mosqito functions
 from mosqito.functions.shared.load import load
 from mosqito.functions.shared.cut import cut_signal
+from mosqito.functions.shared.A_weighting import A_weighting
 from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
 from mosqito.functions.oct3filter.oct3spec import oct3spec
 from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import loudness_zwicker_stationary
@@ -41,7 +43,10 @@ class SoundQuality():
         self.is_stationary = bool()
         self.fs = int()
         self.time_axis = None
-        self.third_spec = None
+        self.third_spec_db = None
+        self.third_spec_dba = None
+        self.level_db = None
+        self.level_dba = None
         self.loudness_zwicker = None
         self.loudness_zwicker_specific = None
         self.sharpness_aures = None
@@ -52,8 +57,6 @@ class SoundQuality():
         self.roughness_specific = None
         self.tonality_tnr = None
         self.tonality_pr = None
-        self.tonality_ttnr = None
-        self.tonality_tpr = None
         
     
     def import_signal(self, is_stationary, file, calib=1, mat_signal='', mat_fs='' ):
@@ -110,8 +113,15 @@ class SoundQuality():
         
         self.signal.values = cut_signal(self.signal.values, self.fs, start, stop)
     
-    def comp_3oct_spec(self):
-        """ Method to compute third-octave spectrum according to ISO"""
+    def comp_3oct_spec(self, unit='dB'):
+        """ Method to compute third-octave spectrum according to ISO
+        
+        Parameter
+        ---------
+        unit : string
+            'dB' or 'dBA'        
+        
+        """
         
         freqs = Data1D(
             name = 'freqs',
@@ -120,14 +130,22 @@ class SoundQuality():
         if self.is_stationary == True:
             third_spec, freqs.values = oct3spec(self.signal.values, self.fs)
             np.squeeze(third_spec)            
-            self.third_spec = DataFreq(
-            symbol = "3oct",
-            axes = [freqs],
-            values = third_spec,            
-            name = "Third-octave spectrum",
-            unit = "dB ref 2e-05")
+            self.third_spec_db = DataFreq(
+                symbol = "3oct",
+                axes = [freqs],
+                values = third_spec,            
+                name = "Third-octave spectrum",
+                unit = "dB ref 2e-05")
+            
+            if unit == 'dBA':
+                self.third_spec_dba = DataFreq(
+                    symbol = "3oct",
+                    axes = [freqs],
+                    values = A_weighting(third_spec, freqs.values),           
+                    name = "Third-octave spectrum",
+                    unit = "dBA ref 2e-05")
 
-                     
+
         elif self.is_stationary == False:    
             time = Data1D(
                 name = 'time',
@@ -135,14 +153,91 @@ class SoundQuality():
             third_spec, freqs.values, time.values = calc_third_octave_levels(self.signal.values, self.fs)
             np.squeeze(third_spec) 
             
-            self.third_spec = DataFreq(
-            symbol = "3oct",
-            axes = [freqs, time],
-            values = third_spec,            
-            name = "Third-octave spectrum",
-            unit = "dB ref 2e-05")
+            self.third_spec_db = DataFreq(
+                symbol = "3oct",
+                axes = [freqs, time],
+                values = third_spec,            
+                name = "Third-octave spectrum",
+                unit = "dB ref 2e-05")
+            
+            if unit == 'dBA':
+                self.third_spec_dba = DataFreq(
+                    symbol = "3oct",
+                    axes = [freqs, time],
+                    values = A_weighting(third_spec, freqs.values),         
+                    name = "Third-octave spectrum",
+                    unit = "dBA ref 2e-05")
 
+    
+    def compute_level(self, unit):
+        """ Overall Sound Pressure Level calculation in the chosen unit 
+        
+        Parameter:
+        ----------
+        unit : string
+             'dB' or 'dBA' to apply A-weighting
+        plot : boolean
+            if True, the overall level is plotted along time (non-steady signals)
+        """
+ 
+        if unit == 'dB':
+            # Third octave spectrum calculation
+            if self.third_spec_db == None:
+                self.comp_3oct_spec()
+            
+            L = 10 * np.log10(sum(np.power(10,self.third_spec_db.values/10)))
+
+            if self.is_stationary == True:
+                self.level_db = Data1D(
+                    values = [L],
+                    name = "Overall Sound Pressure Level",
+                    unit = "dB"
+                    )
+                
+            else :               
+                time = Data1D(
+                    symbol = "T",
+                    name = "Time axis",
+                    unit = "s",
+                    values = np.linspace(0, len(self.signal.values)/self.fs, self.third_spec_db.values.shape[1]))
+                
+                self.level_db = DataTime(
+                    symbol = "dB",
+                    axes = [time],
+                    values = L,
+                    name = "Overall Sound Pressure Level",
+                    unit = "dB"
+                    )
        
+        elif unit == 'dBA':
+            # Third octave spectrum calculation
+            if self.third_spec_dba == None:
+                self.comp_3oct_spec(unit='dBA')
+                
+        
+                L = 10 * np.log10(sum(np.power(10,self.third_spec_dba.values/10)))
+        
+            if self.is_stationary == True :
+                self.level_dba = Data1D(
+                        values = [L],
+                        name = "Overall Sound Pressure Level",
+                        unit = "dBA"
+                        )      
+            else:
+                time = Data1D(
+                    symbol = "T",
+                    name = "Time axis",
+                    unit = "s",
+                    values = np.linspace(0, len(self.signal.values)/self.fs, self.third_spec_dba.values.shape[1]))
+
+                self.level_dba = DataTime(
+                    symbol = "dBA",
+                    axes = [time],
+                    values = L,
+                    name = "Overall Sound Pressure Level",
+                    unit = "dBA"
+                    )
+
     
     def compute_loudness(self, field_type = 'free'):
         """ Method to compute the loudness according to Zwicker's method
@@ -153,13 +248,13 @@ class SoundQuality():
             'free' by default or 'diffuse'      
                
         """
-        if self.third_spec == None:
+        if self.third_spec_db == None:
             self.comp_3oct_spec()
     
         if self.is_stationary == True:
-            N, N_specific = loudness_zwicker_stationary(self.third_spec.values, self.third_spec.axes[0].values, field_type)
+            N, N_specific = loudness_zwicker_stationary(self.third_spec_db.values, self.third_spec_db.axes[0].values, field_type)
         elif self.is_stationary == False: 
-            N, N_specific = loudness_zwicker_time(self.third_spec.values, field_type)
+            N, N_specific = loudness_zwicker_time(self.third_spec_db.values, field_type)
            
         barks = Data1D(
             name = 'Frequency Bark scale',
@@ -361,8 +456,7 @@ class SoundQuality():
             unit = "Asper"
             )
 
-
-    def compute_tonality(self, method):
+    def compute_tonality(self, method, prominence=True, plot=True):
         """ Method to compute tonality metrics according to the given method
         
         Parameter
@@ -370,11 +464,15 @@ class SoundQuality():
         method : string
             'tnr' for the tone-to-noise ratio, 
             'pr' for the prominence ratio, 
-            'all' for both        
+            'all' for both       
+        prominence : boolean
+            give only the prominent tones
+        plot : boolean
+            if True the results are plotted
         """
 
         if method == 'tnr' or method == 'all':
-            T = comp_tnr(self.is_stationary, self.signal.values, self.fs, plot='n')
+            T = comp_tnr(self.is_stationary, self.signal.values, self.fs,prominence=prominence, plot=plot)
             
             freqs = Data1D(
                     symbol = "F",
@@ -428,7 +526,7 @@ class SoundQuality():
 
             
         if method == 'pr' or method == 'all':
-            T = comp_pr(self.is_stationary, self.signal.values, self.fs, plot='n')
+            T = comp_pr(self.is_stationary, self.signal.values, self.fs, prominence=prominence, plot=plot)
             
             freqs = Data1D(
                     symbol = "F",
@@ -478,6 +576,3 @@ class SoundQuality():
                     unit = "dB",
                     values = T['global value']
                     )
-
-
-
