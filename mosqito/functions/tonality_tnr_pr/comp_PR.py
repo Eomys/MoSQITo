@@ -17,7 +17,7 @@ from matplotlib.colors import ListedColormap
 from mosqito.functions.tonality_tnr_pr.pr_main_calc import pr_main_calc
 
 
-def comp_pr(is_stationary, signal, fs, prominence=True, plot='y'):
+def comp_pr(is_stationary, signal, fs, prominence=True, plot=False):
     """ Computation of prominence ratio according to ECMA-74, annex D.10 
         The T-PR value is calculated according to ECMA-TR/108
 
@@ -82,7 +82,7 @@ def comp_pr(is_stationary, signal, fs, prominence=True, plot='y'):
         
 
         
-        if plot == 'y':
+        if plot == True:
             plt.figure()
             plt.plot(freqs, limit, color='#e69f00', linewidth=2,dashes=[6,2],label='Prominence criteria')
             plt.bar(output['freqs'], output['values'],width=10, color='#69c3c5')
@@ -152,12 +152,9 @@ def comp_pr(is_stationary, signal, fs, prominence=True, plot='y'):
             }  
                 
         # Plot option
-        if plot == 'y':                    
+        if plot == True:  
             plt.figure()
-            cmap = np.load(r"C:\Users\pc\Documents\Salomé\eomys_cmp (1).npy")
-            eomyscmp = ListedColormap(cmap)
-
-            plt.pcolormesh(results, vmin=0, cmap = eomyscmp)
+            plt.pcolormesh(results, vmin=0)
             plt.colorbar(label = "PR value in dB")
             
             if prominence == True:            

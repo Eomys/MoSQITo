@@ -80,7 +80,7 @@ def comp_tnr(is_stationary, signal, fs, prominence=True, plot='y'):
             "global value" : t_tnr       
             } 
         
-        if plot == 'y':
+        if plot == True:
             plt.figure()
             plt.plot(freqs, limit, color='#e69f00', linewidth=2,dashes=[6,2],label='Prominence criteria')
             plt.bar(output['freqs'], output['values'],width=10, color='#69c3c5')  
@@ -155,13 +155,9 @@ def comp_tnr(is_stationary, signal, fs, prominence=True, plot='y'):
             }  
             
         # Plot option    
-        if plot == 'y':
+        if plot == True:
             plt.figure()
-            
-            cmap = np.load(r"C:\Users\pc\Documents\Salomé\eomys_cmp (1).npy")
-            eomyscmp = ListedColormap(cmap)
-
-            plt.pcolormesh(results, vmin=0, cmap = eomyscmp)
+            plt.pcolormesh(results, vmin=0)
             plt.colorbar(label = "TNR value in dB")
             if prominence == True:
                 plt.title("Tone-to-noise ratio along time and frequency (prominent tones only)", fontsize=14)

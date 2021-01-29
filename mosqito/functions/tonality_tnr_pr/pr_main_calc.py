@@ -103,8 +103,11 @@ def pr_main_calc(signal, fs):
         high_limit = np.argmin(np.abs(freqs - f2))
 
         spec_sum  = sum(10**(spec_db[low_limit:high_limit]/10))
-        Ll = 10 * np.log10(spec_sum)
-        
+        if spec_sum != 0:
+            Ll = 10 * np.log10(spec_sum)
+        else:
+            Ll =0
+            
         delta_f = f2 - f1
         
         # Level of the upper critical band
