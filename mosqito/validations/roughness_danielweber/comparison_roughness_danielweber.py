@@ -90,7 +90,7 @@ def comparison_roughness():
     fig.savefig(
         "roughness_implementations_comparison" + ".png",
         format="png")
-    plt.clf()
+    # plt.clf()
 
 
 if __name__ == "__main__":
