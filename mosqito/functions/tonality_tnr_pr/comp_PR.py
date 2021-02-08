@@ -85,7 +85,7 @@ def comp_pr(is_stationary, signal, fs, prominence=True, plot=False):
         if plot == True:
             plt.figure()
             plt.plot(freqs, limit, color='#e69f00', linewidth=2,dashes=[6,2],label='Prominence criteria')
-            plt.bar(output['freqs'], output['values'],width=10, color='#69c3c5')
+            plt.bar(output['freqs'], output['values'],width=10.0, color='#69c3c5')
             plt.grid(axis='y')
             plt.ylabel("PR [dB]")
             
@@ -94,7 +94,7 @@ def comp_pr(is_stationary, signal, fs, prominence=True, plot=False):
                 plt.title("Prominent tones PR values \n (Total Prominence ratio = "+str(np.around(output['global value'],decimals=1))+" dB)", fontsize=16)
             else:
                 plt.title("Discrete tones PR values \n  (Total Prominence ratio = "+str(np.around(output['global value'],decimals=1))+" dB)", fontsize=16)
-            plt.legend()
+            plt.legend(fontsize=16)
 
             # Frequency axis
             plt.xlabel("Frequency [Hz]")
@@ -104,8 +104,8 @@ def comp_pr(is_stationary, signal, fs, prominence=True, plot=False):
             xticks_label = [str(elem) for elem in xticks_pos]
             plt.xticks(xticks_pos, labels=xticks_label, rotation = 30)            
      
-    if is_stationary == False:
-        # Signal cut in frames of 200 ms along the time axis
+    elif is_stationary == False:
+        # Signal cut in frames of 500 ms along the time axis
         n = 0.5*fs
         nb_frame = math.floor(signal.size / n)
         time = np.linspace(0, len(signal)/fs, num=nb_frame)
@@ -147,7 +147,7 @@ def comp_pr(is_stationary, signal, fs, prominence=True, plot=False):
                 "time" : time,
                 "freqs" : freq_axis,
                 "values" : results,
-                "prominence" : prom,
+                "prominence" : promi,
                 "global value" : t_pr       
             }  
                 

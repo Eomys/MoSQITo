@@ -11,7 +11,6 @@ import numpy as np
 from numpy.fft import fft
 # from scipy.signal import welch, periodogram
 
-
 # Local functions imports
 from mosqito.functions.shared.conversion import amp2db
 from mosqito.functions.tonality_tnr_pr.critical_band import critical_band, lower_critical_band, upper_critical_band
@@ -85,17 +84,17 @@ def pr_main_calc(signal, fs):
             ind, _, peak_index, nb_tones = find_highest_tone(freqs, spec_db,peak_index, nb_tones, ind)  
 
         ft = freqs[ind]
-        
-        
+                
         # Level of the middle critical band
         f1, f2 = critical_band(ft)
         low_limit_idx = np.argmin(np.abs(freqs - f1))
         high_limit_idx = np.argmin(np.abs(freqs - f2))
 
         spec_sum  = sum(10**(spec_db[low_limit_idx:high_limit_idx]/10))
-        Lm = 10 * np.log10(spec_sum)
-        
-        
+        if spec_sum != 0 :
+            Lm = 10 * np.log10(spec_sum)
+        else :
+            Lm = 0
         
         # Level of the lower critical band
         f1, f2 = lower_critical_band(ft)
@@ -116,12 +115,14 @@ def pr_main_calc(signal, fs):
         high_limit = np.argmin(np.abs(freqs - f2))
 
         spec_sum  = sum(10**(spec_db[low_limit:high_limit]/10))
-        Lu = 10 * np.log10(spec_sum)
-    
+        if spec_sum != 0 :
+            Lu = 10 * np.log10(spec_sum)
+        else:
+            Lu = 0
     
         if ft <= 171.4:
             delta = 10 * np.log10(10**(0.1*Lm)) \
-                  - 10 * np.log10((100 / delta_f * 10**(0.1 * Ll) + 10**(0.1 * Lu)) * 0.5)
+                  - 10 * np.log10(((100 / delta_f) * 10**(0.1 * Ll) + 10**(0.1 * Lu)) * 0.5)
         
         
         elif ft > 171.4:
@@ -150,7 +151,10 @@ def pr_main_calc(signal, fs):
         peak_index = np.delete(peak_index, sup)
         nb_tones -= len(sup)
 
-    t_pr = 10 * np.log10(sum(np.power(10,(pr/10))))
+    if sum(np.power(10,(pr/10))) != 0 :
+        t_pr = 10 * np.log10(sum(np.power(10,(pr/10))))
+    else :
+        t_pr =0
  
 
     return tones_freqs, pr, prominence, t_pr

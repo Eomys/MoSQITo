@@ -12,12 +12,11 @@ sys.path.append('../../..')
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap 
 
 # Local functions imports
 from mosqito.functions.tonality_tnr_pr.tnr_main_calc import tnr_main_calc
 
-def comp_tnr(is_stationary, signal, fs, prominence=True, plot='y'):
+def comp_tnr(is_stationary, signal, fs, prominence=True, plot=False):
     """ Computation of tone-to-noise ration according to ECMA-74, annex D.9 
         The T-TNR value is calculated according to ECMA-TR/108
     
@@ -32,7 +31,7 @@ def comp_tnr(is_stationary, signal, fs, prominence=True, plot='y'):
     prominence : boolean
         if True, the algorithm only returns the prominent tones, if False it returns all tones detected
     plot : str
-        'y' to plot the results, 'n' to only return the dict
+        True to plot the results, False to only return the dict
     
     Output
     ------
@@ -84,7 +83,7 @@ def comp_tnr(is_stationary, signal, fs, prominence=True, plot='y'):
             plt.figure()
             plt.plot(freqs, limit, color='#e69f00', linewidth=2,dashes=[6,2],label='Prominence criteria')
             plt.bar(output['freqs'], output['values'],width=10, color='#69c3c5')  
-            plt.legend()                      
+            plt.legend(fontsize=16)                      
             plt.grid(axis='y')
             plt.ylabel("TNR [dB]")
             

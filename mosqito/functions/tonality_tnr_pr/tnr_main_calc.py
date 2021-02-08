@@ -179,7 +179,11 @@ def tnr_main_calc(signal, fs):
         sup = np.where(peak_index == ind_p)[0]
         peak_index = np.delete(peak_index, sup)
         nb_tones -= 1
+    
+    if sum(np.power(10,(tnr/10))) != 0 :
+        t_tnr = 10 * np.log10(sum(np.power(10,(tnr/10))))
+    else :
+        t_tnr = 0
         
-    t_tnr = 10 * np.log10(sum(np.power(10,(tnr/10))))
 
     return tones_freqs, tnr, prominence, t_tnr
