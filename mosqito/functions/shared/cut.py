@@ -20,11 +20,6 @@ def cut_signal(signal, fs, start, stop):
         end of the new signal in [s]
         
     """
-    
-    
-    
-    
-    
     return signal[int(start * fs):int(stop * fs)]
     
     

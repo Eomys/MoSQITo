@@ -75,11 +75,11 @@ def comp_roughness(signal, fs, overlap):
         segment = signal[i_frame * int( n * (1-overlap)):i_frame * int( n * (1-overlap)) + n]      
         
         # Calculate Blackman analysis window 
-        window = np.blackman(n)
+        window = np.blackman(n) 
         window = window / sum(window)
 
         # Creation of the spectrum by FFT using the Blackman window
-        spectrum = fft(segment * window)    
+        spectrum = fft(segment * window) * 1.42 
         # Highest frequency
         nMax = round(n/2) 
         nZ = np.arange(1,nMax+1,1)
@@ -90,12 +90,12 @@ def comp_roughness(signal, fs, overlap):
         
         # Calculate Zwicker a0 factor (transfer characteristic of the outer and inner ear)
         a0 = np.zeros((n))
-        a0[nZ-1] = db2amp(a0tab(barks)) 
+        a0[nZ-1] = db2amp(a0tab(barks),ref=1) 
         spectrum = a0 * spectrum
     
         # Conversion of the spectrum into dB
         module = abs(spectrum[0:nMax])
-        spec_dB = amp2db(module)
+        spec_dB = amp2db(module, ref=0.00002)
         
         # Find the audible components within the spectrum
         threshold = LTQ(barks, reference = 'roughness')
@@ -142,11 +142,11 @@ def comp_roughness(signal, fs, overlap):
             for j in np.arange (0,int(ch_low[k]+1)):
                 sl = (s1 * (b - ((j + 1) * 0.5))) + levDB
                 if sl > minExcitDB[j]:
-                    slopes[k,j] = db2amp(sl)
+                    slopes[k,j] = db2amp(sl, ref=0.00002)
             for j in np.arange(int(ch_high[k]),n_channel):
                 sl = (s2[k] * (((j + 1) * 0.5) - b)) + levDB
                 if sl > minExcitDB[j]:
-                    slopes[k,j] = db2amp(sl)
+                    slopes[k,j] = db2amp(sl, ref=0.00002)
     
         # Initialization
         hBP = np.zeros((n_channel, n))
