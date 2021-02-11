@@ -77,7 +77,7 @@ def load(is_stationary, file, calib=1, mat_signal='', mat_fs='' ):
         
     else:
         raise ValueError(
-            """ERROR: only .wav .mat or .uff file are supported"""
+            """ERROR: only .wav .mat or .uff files are supported"""
         )
     
     # resample to 48kHz to allow calculation
@@ -117,3 +117,72 @@ def load2oct3(is_stationary,file, calib=1):
     output = comp_third_spec(is_stationary, signal, fs)         
 
     return output
+
+def load2wav(is_stationary,file, sampling_freq, calib=1, encodage=16, mat_signal='', mat_fs=''):
+    """Load .uff or .mat file and create the corresponding .wav audio file
+    
+    Parameters
+    ----------
+    is_stationary: boolean
+        True if the signal is stationary, False if it is time-varying
+    file : string
+        full path to the signal file
+    sampling_freq : integer
+        sampling frequency of the created .wav file
+    calib : float
+        calibration factor for the signal to be in [pa]
+    encodage : integer
+        encodage of the signal, 16 for np.int16, 32 for np.int32
+    mat_signal : string
+        in case of a .mat file, name of the signal variable
+    mat_fs : string
+        in case of a .mat file, name of the sampling frequency variable
+    Output
+    ------
+    None
+    """
+    
+    # Load the .uff file content
+    if file[-3:] == 'uff' or file[-3:] == 'UFF':
+        uff_file = pyuff.UFF(file)
+        data = uff_file.read_sets()
+        data.keys()
+    
+        # extract the signal values
+        signal = data['data']
+    
+        # calculate the sampling frequency
+        fs = int(1/data['abscissa_inc'])
+        
+    # Load the .mat file content
+    elif file[-3:] == 'mat':
+        matfile = loadmat(file)
+        
+        # extract the signal values and sampling frequency
+        signal = matfile[mat_signal][:,0]
+        fs = matfile[mat_fs]
+        fs = fs[:,0]
+        
+        
+    else:
+        raise ValueError(
+            """ERROR: only .mat or .uff file are supported"""
+        )
+    
+    # Resample 
+    if fs != sampling_freq:
+        signal = resample(signal, 
+                          sampling_freq*int(len(signal)/fs)
+                          )
+    
+    # calibration factor for the signal to be in Pa
+    if encodage == 16:
+        signal = signal * (2 ** 15 - 1) / calib
+        signal = signal.astype(np.int16)
+
+    elif encodage == 32:
+        signal = signal * (2 ** 31 - 1)   / calib
+        signal = signal.astype(np.int32)
+    # create the .wav file
+    newfile = file[:-3] + "wav"
+    wavfile.write( newfile, sampling_freq,  signal)
