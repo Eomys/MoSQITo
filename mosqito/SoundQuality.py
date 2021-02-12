@@ -432,7 +432,7 @@ class SoundQuality():
                     )
       
                 
-    def compute_roughness(self, method='danielweber' overlap=0):
+    def compute_roughness(self, method='danielweber', overlap=0):
         """ Method to compute roughness according to the Daniel and Weber implementation
         
         Parameter
