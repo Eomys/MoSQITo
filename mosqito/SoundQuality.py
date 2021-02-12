@@ -53,8 +53,7 @@ class SoundQuality():
         self.sharpness_bismarck = None
         self.sharpness_din = None
         self.sharpness_fastl = None
-        self.roughness = None
-        self.roughness_specific = None
+        self.roughness_dw = None
         self.tonality_tnr = None
         self.tonality_pr = None
         
@@ -433,12 +432,14 @@ class SoundQuality():
                     )
       
                 
-    def compute_roughness(self, overlap=0):
+    def compute_roughness(self, method='danielweber' overlap=0):
         """ Method to compute roughness according to the Daniel and Weber implementation
         
         Parameter
         ---------
-        overlap: float
+        method : string
+            method used to do the computation 'danielweber' is the only one for now
+        overlap : float
             overlapping coefficient for the time windows of 200ms 
         """
         roughness = comp_roughness(self.signal.values, self.fs, overlap)
@@ -448,7 +449,7 @@ class SoundQuality():
             unit = 's',
             values = roughness['time'])
 
-        self.roughness = DataTime(
+        self.roughness_dw = DataTime(
             symbol = "R",
             axes = [time],
             values = roughness['values'],
