@@ -9,8 +9,8 @@ def import_signal(self, is_stationary, file, calib=1, mat_signal="", mat_fs=""):
 
     Parameters
     ----------
-    self : SoundQuality object
-        Object frol the SoundQuality class
+    self : Audio object
+        Object from the Audio class
     is_stationary : boolean
         TRUE if the signal is stationary, FALSE if it is time-varying
     file : string

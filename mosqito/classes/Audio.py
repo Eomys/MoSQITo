@@ -15,11 +15,11 @@ import numpy as np
 from SciDataTool import Data1D, DataTime, DataFreq
 
 # import methods
-from mosqito.methods.SoundQuality.import_signal import import_signal
-from mosqito.methods.SoundQuality.cut_signal import cut_signal
-from mosqito.methods.SoundQuality.comp_3oct_spec import comp_3oct_spec
-from mosqito.methods.SoundQuality.compute_level import compute_level
-from mosqito.methods.SoundQuality.compute_loudness import compute_loudness
+from mosqito.methods.Audio.import_signal import import_signal
+from mosqito.methods.Audio.cut_signal import cut_signal
+from mosqito.methods.Audio.comp_3oct_spec import comp_3oct_spec
+from mosqito.methods.Audio.compute_level import compute_level
+from mosqito.methods.Audio.compute_loudness import compute_loudness
 
 # import Mosqito functions
 from mosqito.functions.sharpness.sharpness_aures import comp_sharpness_aures
@@ -31,7 +31,7 @@ from mosqito.functions.tonality_tnr_pr.comp_tnr import comp_tnr
 from mosqito.functions.tonality_tnr_pr.comp_pr import comp_pr
 
 
-class SoundQuality:
+class Audio:
     """Audio signal loading and analysis: from .wav or .uff files compute
     loudness, sharpness and roughness values thanks to the Mosqito package,
     Results plotting thanks to the SciDataTool package."""
