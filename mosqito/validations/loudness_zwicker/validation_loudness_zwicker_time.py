@@ -258,7 +258,7 @@ def check_compliance(loudness, signal):
     )
     N_specif_iso = N_specif_iso[~np.isnan(N_specif_iso)]
 
-    # Correct eventual length difference between MoSQITo and ISO results
+    # Correct eventual length difference between MOSQITO and ISO results
     # (1 samples max)
     if np.abs(N_iso.size - N.size) <= 1:
         i_max = np.min([N_iso.size, N.size])
@@ -393,7 +393,7 @@ def check_compliance(loudness, signal):
                     )
             #
             # Plot the calculated loudness
-            plt.plot(time, N, label="MoSQITo")
+            plt.plot(time, N, label="MOSQITO")
             plt.title(
                 N_label
                 + " vs. time - "
