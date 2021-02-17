@@ -13,7 +13,7 @@ def sone_to_phon(sone):
 
     The code is based on BASIC program published in "Program for
     calculating loudness according to DIN 45631 (ISO 532B)", E.Zwicker
-    and H.Fastl, J.A.S.J (E) 12, 1 (1991). 
+    and H.Fastl, J.A.S.J (E) 12, 1 (1991).
 
     Parameters
     ----------

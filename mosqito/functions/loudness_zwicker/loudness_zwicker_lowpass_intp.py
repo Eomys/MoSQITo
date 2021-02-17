@@ -21,7 +21,7 @@ def loudness_zwicker_lowpass_intp(loudness, tau, sample_rate):
         Filter parameter
     sample_rate : int
         Louness signal sampling frequency
-    
+
     Outputs
     -------
     filt_loudness : numpy.ndarray
@@ -30,10 +30,10 @@ def loudness_zwicker_lowpass_intp(loudness, tau, sample_rate):
     filt_loudness = np.zeros(np.shape(loudness))
     # Factor for virtual upsampling/inner iterations
     lp_iter = 24
-    
+
     num_samples = np.shape(loudness)[0]
     a1 = math.exp(-1 / (sample_rate * lp_iter * tau))
-    b0 = 1- a1
+    b0 = 1 - a1
     y1 = 0
 
     for i in range(num_samples):
@@ -43,7 +43,7 @@ def loudness_zwicker_lowpass_intp(loudness, tau, sample_rate):
 
         # Linear interpolation steps between current and next sample
         if i < num_samples - 1:
-            xd = (loudness[i+1] - x0) / lp_iter
+            xd = (loudness[i + 1] - x0) / lp_iter
             # Inner iterations/interpolation
             for ii in range(lp_iter):
                 x0 += xd
