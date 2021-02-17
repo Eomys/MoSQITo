@@ -1,4 +1,4 @@
-# MoSQITo Documentation
+# MOSQITO Documentation
 ## Tone-to-noise ratio (TNR) and Prominence ratio (PR) according to ECMA 74
 
 ### Introduction

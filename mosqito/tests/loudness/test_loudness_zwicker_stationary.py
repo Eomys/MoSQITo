@@ -186,7 +186,7 @@ def check_compliance(N, N_specific, iso_ref):
 
     # Compliance plot
 
-    plt.plot(bark_axis, N_specific, label="MoSQITo")
+    plt.plot(bark_axis, N_specific, label="MOSQITO")
     if tst_specif:
         plt.text(
             0.5,

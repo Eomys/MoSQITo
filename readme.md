@@ -1,4 +1,4 @@
-# ![MoSQITo Logo](./logo.png) MoSQITo
+# ![MOSQITO Logo](./logo.png) MOSQITO
 
 ## Background
 
@@ -20,7 +20,7 @@ toolbox.
 
 ## Objectives
 
-The objective of MoSQITo is therefore to provide a unified and modular
+The objective of MOSQITO is therefore to provide a unified and modular
 development framework of key sound quality metrics with open-source
 object-oriented technologies, favoring reproducible science and
 efficient shared scripting among engineers, teachers and researchers
@@ -42,7 +42,7 @@ machine simulation software.
 ## Documentation
 
 Tutorials are available in the [tutorials](./tutorials/) folder. Documentation 
-and validation of the MoSQITo functions are available in the [documentation](./documentation/) folder.
+and validation of the MOSQITO functions are available in the [documentation](./documentation/) folder.
 
 
 ## Scope

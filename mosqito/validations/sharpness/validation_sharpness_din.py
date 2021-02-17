@@ -294,7 +294,7 @@ def check_compliance(sharpness, reference, noise_type):
         )
 
     # Plot the calculated sharpness
-    plt.plot(barks, sharpness, label="MoSQITo")
+    plt.plot(barks, sharpness, label="MOSQITO")
     plt.title("Sharpness of " + noise_type + " noises", fontsize=10)
     plt.legend()
     plt.xlabel("Center frequency [bark]")

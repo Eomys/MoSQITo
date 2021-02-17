@@ -240,7 +240,7 @@ def check_compliance(R, signal):
     plt.legend()
 
     # Compliance plot
-    plt.plot(fc, R, label="MoSQITo")
+    plt.plot(fc, R, label="MOSQITO")
     plt.text(
         0.5,
         0.05,
