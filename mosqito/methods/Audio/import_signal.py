@@ -32,6 +32,10 @@ def import_signal(self, is_stationary, file, calib=1, mat_signal="", mat_fs=""):
 
     """
 
+    # Init Audio object
+    self.__init__()
+
+    # Import audio signal
     values, fs = load(
         is_stationary,
         file,
@@ -40,6 +44,7 @@ def import_signal(self, is_stationary, file, calib=1, mat_signal="", mat_fs=""):
         mat_fs=mat_fs,
     )
 
+    # Create Data object for time axis
     time_axis = DataLinspace(
         name="time",
         unit="s",
@@ -49,6 +54,7 @@ def import_signal(self, is_stationary, file, calib=1, mat_signal="", mat_fs=""):
         include_endpoint=True,
     )
 
+    # Create audio signal Data object
     self.fs = fs
     self.is_stationary = is_stationary
     self.signal = DataTime(

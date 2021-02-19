@@ -4,15 +4,12 @@ Created on Mon Nov 30 15:25:12 2020
 
 @author: wantysal
 """
-import sys
-
-sys.path.append("..")
 
 # import SciDataTool objects
-from SciDataTool import Data1D, DataTime, DataFreq
+from SciDataTool import Data1D, DataTime, DataFreq, DataLinspace
 
 # import methods
-from mosqito.methods.Audio.import_signal import import_signal
+from mosqito.functions.shared.load import load
 from mosqito.methods.Audio.cut_signal import cut_signal
 from mosqito.methods.Audio.comp_3oct_spec import comp_3oct_spec
 from mosqito.methods.Audio.compute_level import compute_level
@@ -30,16 +27,62 @@ class Audio:
     loudness, sharpness and roughness values thanks to the Mosqito package,
     Results plotting thanks to the SciDataTool package."""
 
-    def __init__(self):
-        """Constructor of the class."""
+    def __init__(self, file, is_stationary=False, calib=1, mat_signal="", mat_fs=""):
+        """Constructor of the class. Loads the signal from a .wav .mat or .uff file
 
-        self.signal = None
-        self.is_stationary = bool()
-        self.fs = int()
-        self.time_axis = None
+        Parameters
+        ----------
+        self : Audio object
+            Object from the Audio class
+        file : string
+            string path to the signal file
+        is_stationary : boolean
+            TRUE if the signal is stationary, FALSE if it is time-varying
+        calib : float
+            calibration factor for the signal to be in [pa]
+        mat_signal : string
+            in case of a .mat file, name of the signal variable
+        mat_fs : string
+            in case of a .mat file, name of the sampling frequency variable
+
+        """
+
+        # Import audio signal
+        values, fs = load(
+            is_stationary,
+            file,
+            calib=calib,
+            mat_signal=mat_signal,
+            mat_fs=mat_fs,
+        )
+
+        # Create Data object for time axis
+        time_axis = DataLinspace(
+            name="time",
+            unit="s",
+            initial=0,
+            final=(len(values) - 1) / fs,
+            number=len(values),
+            include_endpoint=True,
+        )
+
+        # Create audio signal Data object and populate the object
+        self.fs = fs
+        self.is_stationary = is_stationary
+        self.signal = DataTime(
+            name="Audio signal",
+            symbol="x",
+            unit="Pa",
+            axes=[time_axis],
+            values=values,
+        )
+
+        # Init physical metrics attributes
         self.third_spec = None
         self.level_db = None
         self.level_dba = None
+
+        # Init physiological metrics attributes
         self.loudness_zwicker = None
         self.loudness_zwicker_specific = None
         self.sharpness = dict()
@@ -47,7 +90,7 @@ class Audio:
         self.tonality_tnr = None
         self.tonality_pr = None
 
-    import_signal = import_signal
+    # Methods
     cut_signal = cut_signal
     comp_3oct_spec = comp_3oct_spec
     compute_level = compute_level
