@@ -6,6 +6,7 @@ Created on Mon Feb 15 18:06:47 2021
 """
 import pytest
 from mosqito.classes.Audio import Audio
+from mosqito import COLORS
 
 out_path = "./mosqito/tests/Audio/output/"
 is_show_fig = False
@@ -13,10 +14,9 @@ is_show_fig = False
 
 @pytest.fixture(scope="module")
 def fixture_import_signal():
-    audio = Audio()
-    audio.import_signal(
-        True,
+    audio = Audio(
         "./mosqito/validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
+        is_stationary=True,
         calib=2 * 2 ** 0.5,
     )
     return audio
@@ -24,9 +24,7 @@ def fixture_import_signal():
 
 @pytest.fixture(scope="module")
 def fixture_import_signal_time():
-    audio = Audio()
-    audio.import_signal(
-        False,
+    audio = Audio(
         "./mosqito/validations/loudness_zwicker/data/ISO_532-1/Annex B.4/Test signal 6 (tone 250 Hz 30 dB - 80 dB).wav",
         calib=2 * 2 ** 0.5,
     )
@@ -35,14 +33,16 @@ def fixture_import_signal_time():
 
 @pytest.mark.audio
 def test_import_signal():
-    audio = Audio()
-    audio.import_signal(
-        True,
+    audio = Audio(
         "./mosqito/validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
+        is_stationary=True,
         calib=2 * 2 ** 0.5,
     )
     audio.signal.plot_2D_Data(
-        "time", is_show_fig=is_show_fig, save_path=out_path + "test_import_signal.png"
+        "time",
+        is_show_fig=is_show_fig,
+        save_path=out_path + "test_import_signal.png",
+        color_list=COLORS,
     )
 
 
@@ -71,6 +71,7 @@ def test_compute_loudness(fixture_import_signal):
         type_plot="curve",
         is_show_fig=is_show_fig,
         save_path=out_path + "test_compute_loudness.png",
+        color_list=COLORS,
     )
 
 
@@ -83,6 +84,7 @@ def test_compute_loudness_time(fixture_import_signal_time):
         type_plot="curve",
         is_show_fig=is_show_fig,
         save_path=out_path + "test_compute_loudness_time_1.png",
+        color_list=COLORS,
     )
     audio.loudness_zwicker_specific.plot_2D_Data(
         "time",
@@ -90,6 +92,7 @@ def test_compute_loudness_time(fixture_import_signal_time):
         type_plot="curve",
         is_show_fig=is_show_fig,
         save_path=out_path + "test_compute_loudness_time_2.png",
+        color_list=COLORS,
     )
     audio.loudness_zwicker_specific.plot_3D_Data(
         "cr_band",
