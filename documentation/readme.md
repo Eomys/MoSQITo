@@ -1,8 +1,14 @@
 # MOSQITO Documentation
 
-MOSQITO is a unified and modular development framework of key sound quality metrics favoring reproducible science and efficient shared scripting among engineers, teachers and researchers community.
+MOSQITO is a unified and modular development framework of sound quality tools (including key SQ metrics) favoring reproducible science and efficient shared scripting among engineers, teachers and researchers community.
 
 In this folder, you will find the documentation and validation of the different functions implemented in MOSQITO.
+
+## Generalities
+
+- [Architecture of the toolbox](./architecture.md)
+
+## Sound Quality metrics
 
 - [Loudness of stationary signals (Zwicker method)](./loudness-stationary.md)
 - [Loudness of time varying signals (Zwicker method)](./loudness-time-varying.md)
