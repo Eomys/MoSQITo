@@ -77,7 +77,7 @@ def load(is_stationary, file, calib=1, mat_signal="", mat_fs=""):
 
     # resample to 48kHz to allow calculation
     if fs != 48000:
-        signal = resample(signal, 48000 * int(len(signal) / fs))
+        signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
         print("Signal resampled to 48 kHz to allow calculation.")
 
