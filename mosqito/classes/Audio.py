@@ -12,6 +12,7 @@ from SciDataTool import Data1D, DataTime, DataFreq, DataLinspace
 from mosqito.functions.shared.load import load
 from mosqito.methods.Audio.cut_signal import cut_signal
 from mosqito.methods.Audio.comp_3oct_spec import comp_3oct_spec
+from mosqito.methods.Audio.compute_welch import compute_welch
 from mosqito.methods.Audio.compute_level import compute_level
 from mosqito.methods.Audio.compute_loudness import compute_loudness
 from mosqito.methods.Audio.compute_sharpness import compute_sharpness
@@ -73,6 +74,7 @@ class Audio:
             name="Audio signal",
             symbol="x",
             unit="Pa",
+            normalizations={"ref": 2e-5},
             axes=[time_axis],
             values=values,
         )
@@ -81,6 +83,7 @@ class Audio:
         self.third_spec = None
         self.level_db = None
         self.level_dba = None
+        self.welch = None
 
         # Init physiological metrics attributes
         self.loudness_zwicker = None
@@ -93,6 +96,7 @@ class Audio:
     # Methods
     cut_signal = cut_signal
     comp_3oct_spec = comp_3oct_spec
+    compute_welch = compute_welch
     compute_level = compute_level
     compute_loudness = compute_loudness
     compute_sharpness = compute_sharpness
