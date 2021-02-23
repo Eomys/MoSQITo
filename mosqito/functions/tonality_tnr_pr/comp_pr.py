@@ -18,7 +18,7 @@ from matplotlib.colors import ListedColormap
 from mosqito.functions.tonality_tnr_pr.pr_main_calc import pr_main_calc
 
 
-def comp_pr(is_stationary, signal, fs, prominence=True, plot=False):
+def comp_pr(is_stationary, signal, fs, prominence=True):
     """Computation of prominence ratio according to ECMA-74, annex D.10
         The T-PR value is calculated according to ECMA-TR/108
 
@@ -80,45 +80,6 @@ def comp_pr(is_stationary, signal, fs, prominence=True, plot=False):
                 "global value": t_pr,
             }
 
-        if plot == True:
-            plt.figure()
-            plt.plot(
-                freqs,
-                limit,
-                color="#e69f00",
-                linewidth=2,
-                dashes=[6, 2],
-                label="Prominence criteria",
-            )
-            plt.bar(output["freqs"], output["values"], width=10.0, color="#69c3c5")
-            plt.grid(axis="y")
-            plt.ylabel("PR [dB]")
-
-            # Title
-            if prominence == True:
-                plt.title(
-                    "Prominent tones PR values \n (Total Prominence ratio = "
-                    + str(np.around(output["global value"], decimals=1))
-                    + " dB)",
-                    fontsize=16,
-                )
-            else:
-                plt.title(
-                    "Discrete tones PR values \n  (Total Prominence ratio = "
-                    + str(np.around(output["global value"], decimals=1))
-                    + " dB)",
-                    fontsize=16,
-                )
-            plt.legend(fontsize=16)
-
-            # Frequency axis
-            plt.xlabel("Frequency [Hz]")
-            plt.xscale("log")
-            xticks_pos = [100, 1000, 10000] + list(output["freqs"])
-            xticks_pos = np.sort(xticks_pos)
-            xticks_label = [str(elem) for elem in xticks_pos]
-            plt.xticks(xticks_pos, labels=xticks_label, rotation=30)
-
     elif is_stationary == False:
         # Signal cut in frames of 500 ms along the time axis
         n = 0.5 * fs
@@ -169,31 +130,5 @@ def comp_pr(is_stationary, signal, fs, prominence=True, plot=False):
             "prominence": promi,
             "global value": t_pr,
         }
-
-        # Plot option
-        if plot == True:
-            plt.figure()
-            plt.pcolormesh(results, vmin=0)
-            plt.colorbar(label="PR value in dB")
-
-            if prominence == True:
-                plt.title(
-                    "Prominence ratio along time and frequency for prominent tones",
-                    fontsize=14,
-                )
-            else:
-                plt.title("Prominence ratio along time and frequency", fontsize=14)
-            plt.xlabel("Time [s]")
-            plt.ylabel("Frequency [Hz]")
-
-            # Frequency axis
-            freq_labels = [90, 200, 500, 1000, 2000, 5000, 10000]
-            freq_ticks = []
-            for i in range(len(freq_labels)):
-                freq_ticks.append(np.argmin(np.abs(freq_axis - freq_labels[i])))
-            plt.yticks(freq_ticks, labels=[str(elem) for elem in freq_labels])
-
-            # Time axis
-            plt.xticks(np.arange(nb_frame), labels=[str(elem) for elem in time])
 
     return output
