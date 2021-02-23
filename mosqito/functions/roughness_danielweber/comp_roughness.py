@@ -5,10 +5,6 @@ Created on Mon Nov  2 10:34:04 2020
 @author: wantysal
 """
 
-import sys
-
-sys.path.append("../../..")
-
 # Standard imports
 import numpy as np
 from numpy.fft import fft, ifft

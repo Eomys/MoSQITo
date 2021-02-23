@@ -4,15 +4,10 @@ Created on Wed Dec 30 14:25:04 2020
 
 @author: wantysal
 """
-import sys
-
-sys.path.append("../../..")
 
 # Standard library import
 import numpy as np
 import math
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
 
 # Local imports
 from mosqito.functions.tonality_tnr_pr.pr_main_calc import pr_main_calc

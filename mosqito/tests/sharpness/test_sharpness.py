@@ -5,10 +5,6 @@ Created on Wed Dec 16 09:20:41 2020
 @author: wantysal
 """
 
-import sys
-
-sys.path.append("../../..")
-
 # Standard imports
 import numpy as np
 import pytest

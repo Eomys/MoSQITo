@@ -5,10 +5,6 @@ Created on Mon Nov 16 10:00:50 2020
 @author: wantysal
 """
 
-import sys
-
-sys.path.append("../..")
-
 # Standard library import
 import numpy as np
 

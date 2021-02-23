@@ -3,9 +3,7 @@
 @date Created on Fri Mar 13 2020
 @author martin_g for Eomys
 """
-import sys
 
-sys.path.append("../..")
 
 # Standard library imports
 import numpy as np

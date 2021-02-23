@@ -5,10 +5,6 @@ Created on Tue Nov 24 16:43:45 2020
 @author: pc
 """
 
-import sys
-
-sys.path.append("../../..")
-
 # Standard imports
 import numpy as np
 import matplotlib.pyplot as plt

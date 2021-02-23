@@ -4,9 +4,6 @@ Created on Mon Nov 16 09:23:56 2020
 
 @author: martin_g for eomys
 """
-import sys
-
-sys.path.append("../../..")
 
 # Standard import
 import numpy as np

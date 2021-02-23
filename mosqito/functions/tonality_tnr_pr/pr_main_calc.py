@@ -4,9 +4,6 @@ Created on Wed Dec 30 15:12:18 2020
 
 @author: wantysal
 """
-import sys
-
-sys.path.append("../..")
 
 import numpy as np
 from numpy.fft import fft

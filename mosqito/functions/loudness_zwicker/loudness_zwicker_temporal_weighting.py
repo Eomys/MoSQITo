@@ -3,10 +3,6 @@
 @date Created on Fri May 22 2020
 @author martin_g for Eomys
 """
-import sys
-
-sys.path.append("../..")
-
 
 # Local application import
 from mosqito.functions.loudness_zwicker.loudness_zwicker_lowpass_intp import (

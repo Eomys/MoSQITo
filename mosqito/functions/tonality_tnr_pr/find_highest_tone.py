@@ -6,7 +6,6 @@ Created on Wed Dec 16 20:23:01 2020
 """
 # Standard library imports
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Mosqito functions import
 from mosqito.functions.tonality_tnr_pr.critical_band import critical_band

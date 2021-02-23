@@ -5,14 +5,10 @@ Created on Thu Dec 10 16:51:19 2020
 @author: wantysal
 """
 
-import sys
-
-sys.path.append("../../..")
 
 # Standard library imports
 import numpy as np
 import math
-import matplotlib.pyplot as plt
 
 # Local functions imports
 from mosqito.functions.tonality_tnr_pr.tnr_main_calc import tnr_main_calc

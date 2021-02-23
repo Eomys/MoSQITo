@@ -4,9 +4,6 @@ Created on Mon Nov 16 09:10:45 2020
 
 @author: wantysal
 """
-import sys
-
-sys.path.append("../../..")
 
 # Standard import
 import numpy as np
