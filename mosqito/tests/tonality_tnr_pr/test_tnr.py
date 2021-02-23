@@ -5,8 +5,6 @@ Created on Mon Feb  8 10:39:49 2021
 @author: wantysal
 """
 
-# Standard imports
-import numpy as np
 import pytest
 
 # Local application imports
@@ -54,5 +52,5 @@ def test_tnr():
         audio, fs = load(signal[i]["is_stationary"], signal[i]["data_file"])
         # Compute tone-to-noise ratio
         tnr = comp_tnr(
-            signal[i]["is_stationary"], audio, fs, prominence=True, plot=True
+            signal[i]["is_stationary"], audio, fs, prominence=True
         )
