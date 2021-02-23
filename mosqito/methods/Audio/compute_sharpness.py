@@ -6,8 +6,10 @@ Created on Wed Feb 17 13:03:02 2021
 """
 import numpy as np
 
-from SciDataTool import DataLinspace, DataTime, DataFreq, Data1D
+# Import SciDataTool objects
+from SciDataTool import DataTime, Data1D
 
+# Import MOSQITO functions
 from mosqito.functions.sharpness.sharpness_aures import comp_sharpness_aures
 from mosqito.functions.sharpness.sharpness_din import comp_sharpness_din
 from mosqito.functions.sharpness.sharpness_bismarck import comp_sharpness_bismarck
@@ -71,7 +73,7 @@ def compute_sharpness(self, method="din", skip=0.2):
             )
 
             self.sharpness["din"] = DataTime(
-                symbol="S", axes=[time], values=S, name="Sharpness", unit="Acum"
+                symbol="S_{DIN}", axes=[time], values=S, name="Sharpness", unit="Acum"
             )
 
     elif method == "aures" or method == "all":
@@ -102,7 +104,7 @@ def compute_sharpness(self, method="din", skip=0.2):
             )
 
             self.sharpness["aures"] = DataTime(
-                symbol="S", axes=[time], values=S, name="Sharpness", unit="Acum"
+                symbol="S_{Aures}", axes=[time], values=S, name="Sharpness", unit="Acum"
             )
 
     elif method == "bismarck" or method == "all":
@@ -133,7 +135,11 @@ def compute_sharpness(self, method="din", skip=0.2):
             )
 
             self.sharpness["bismarck"] = DataTime(
-                symbol="S", axes=[time], values=S, name="Sharpness", unit="Acum"
+                symbol="S_{Bismarck}",
+                axes=[time],
+                values=S,
+                name="Sharpness",
+                unit="Acum",
             )
 
     elif method == "fastl" or method == "all":
@@ -164,5 +170,5 @@ def compute_sharpness(self, method="din", skip=0.2):
             )
 
             self.sharpness["fastl"] = DataTime(
-                symbol="S", axes=[time], values=S, name="Sharpness", unit="Acum"
+                symbol="S_{Fastl}", axes=[time], values=S, name="Sharpness", unit="Acum"
             )
