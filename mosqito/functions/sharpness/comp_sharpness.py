@@ -72,7 +72,7 @@ def comp_sharpness(is_stationary, signal, fs, method="din", skip=0):
 
     if is_stationary == False:
         # Cut transient effect
-        time = np.linspace(0, len(signal / fs, len(S)))
+        time = np.linspace(0, len(signal) / fs, len(S))
         cut_index = np.argmin(np.abs(time - skip))
         S = S[cut_index:]
 
