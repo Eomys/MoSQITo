@@ -102,3 +102,60 @@ def test_compute_loudness_time(fixture_import_signal_time):
         is_show_fig=is_show_fig,
         save_path=out_path + "test_compute_loudness_time_3.png",
     )
+
+
+@pytest.mark.audio
+def test_compute_sharpness(fixture_import_signal):
+    audio = fixture_import_signal
+    audio.compute_sharpness(method="all")
+
+
+@pytest.mark.audio
+def test_compute_sharpness_time(fixture_import_signal_time):
+    audio = fixture_import_signal_time
+    audio.compute_sharpness(method="all")
+    audio.sharpness["din"].plot_2D_Data(
+        "time",
+        type_plot="curve",
+        is_show_fig=is_show_fig,
+        save_path=out_path + "test_compute_sharpness_time.png",
+        color_list=COLORS,
+    )
+
+
+@pytest.mark.audio
+def test_compute_roughness(fixture_import_signal):
+    audio = fixture_import_signal
+    audio.compute_roughness(overlap=0)
+
+
+@pytest.mark.audio
+def test_compute_roughness_time(fixture_import_signal_time):
+    audio = fixture_import_signal_time
+    audio.compute_roughness(overlap=0)
+    audio.roughness["Daniel Weber"].plot_2D_Data(
+        "time",
+        type_plot="curve",
+        is_show_fig=is_show_fig,
+        save_path=out_path + "test_compute_roughness_time.png",
+        color_list=COLORS,
+    )
+
+
+@pytest.mark.audio
+def test_compute_tnr_pr(fixture_import_signal):
+    audio = fixture_import_signal
+    audio.compute_tnr_pr(method="all")
+
+
+@pytest.mark.audio
+def test_compute_tnr_pr_time(fixture_import_signal_time):
+    audio = fixture_import_signal_time
+    audio.compute_tnr_pr(method="all")
+    audio.tonality["tnr"].plot_3D_Data(
+        "time",
+        "freqs",
+        is_2D_view=True,
+        is_show_fig=is_show_fig,
+        save_path=out_path + "test_compute_tnr_pr_time.png",
+    )
