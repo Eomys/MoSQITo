@@ -98,29 +98,29 @@ def comp_tnr(is_stationary, signal, fs, prominence=True):
             ) = tnr_main_calc(segment, fs)
 
         # Store the results in a time vs frequency array
-        freq_axis = np.logspace(np.log10(90), np.log10(11200), num=1000)
-        results = np.zeros((len(freq_axis), nb_frame))
-        promi = np.zeros((len(freq_axis), nb_frame), dtype=bool)
+        freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
+        results = np.zeros((len(freqs), nb_frame))
+        promi = np.zeros((len(freqs), nb_frame), dtype=bool)
 
         if prominence == True:
 
             for t in range(nb_frame):
                 for f in range(len(tones_freqs[t])):
                     if prom[t][f] == True:
-                        ind = np.argmin(np.abs(freq_axis - tones_freqs[t][f]))
+                        ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
                         results[ind, t] = tnr[t][f]
                         promi[ind, t] = True
         else:
             for t in range(nb_frame):
                 for f in range(len(tones_freqs[t])):
-                    ind = np.argmin(np.abs(freq_axis - tones_freqs[t][f]))
+                    ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
                     results[ind, t] = tnr[t][f]
                     promi[ind, t] = prom[t][f]
 
         output = {
             "name": "tone-to-noise ratio",
             "time": time,
-            "freqs": freq_axis,
+            "freqs": freqs,
             "values": results,
             "prominence": promi,
             "global value": t_tnr,
