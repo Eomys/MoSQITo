@@ -7,15 +7,16 @@
 import math
 from scipy import signal
 
+
 def oct3dsgn(fc, fs, n=3):
     """Design of a one-third-octave filter
 
     Designs a digital 1/3-octave filter with center frequency fc for
-    sampling frequency fs. The filter is designed according to the 
-    Order-N specification of the ANSI S1.1-1986 standard. Default 
-    value for N is 3. 
+    sampling frequency fs. The filter is designed according to the
+    Order-N specification of the ANSI S1.1-1986 standard. Default
+    value for N is 3.
 
-    References: 
+    References:
         ANSI S1.1-1986 (ASA 65-1986): Specifications for
         Octave-Band and Fractional-Octave-Band Analog and
         Digital Filters, 1993.

@@ -1,4 +1,4 @@
-# MoSQITo Documentation
+# MOSQITO Documentation
 ## Sharpness of stationary and time-varying signals (DIN 45692 method)
 
 ### Introduction
