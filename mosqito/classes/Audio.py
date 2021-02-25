@@ -87,8 +87,7 @@ class Audio:
         self.loudness_zwicker_specific = None
         self.sharpness = dict()
         self.roughness = dict()
-        self.tonality_tnr = None
-        self.tonality_pr = None
+        self.tonality = dict()
 
     # Methods
     cut_signal = cut_signal
