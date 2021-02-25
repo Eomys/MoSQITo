@@ -33,6 +33,7 @@ def compute_sharpness(self, method="din", skip=0.2):
         and method != "aures"
         and method != "fastl"
         and method != "bismarck"
+        and method != "all"
     ):
         raise ValueError("ERROR: method must be 'din', 'aures', 'bismarck' or 'fastl")
 
@@ -73,7 +74,7 @@ def compute_sharpness(self, method="din", skip=0.2):
             # Define time axis
             time = Data1D(
                 symbol="T",
-                name="Time axis",
+                name="time",
                 unit="s",
                 values=self.loudness_zwicker.get_axes()[0].values[cut_index:],
             )
@@ -112,7 +113,7 @@ def compute_sharpness(self, method="din", skip=0.2):
             # Define time axis
             time = Data1D(
                 symbol="T",
-                name="Time axis",
+                name="time",
                 unit="s",
                 values=self.loudness_zwicker.get_axes()[0].values[cut_index:],
             )
@@ -150,7 +151,7 @@ def compute_sharpness(self, method="din", skip=0.2):
             # Define time axis
             time = Data1D(
                 symbol="T",
-                name="Time axis",
+                name="time",
                 unit="s",
                 values=self.loudness_zwicker.get_axes()[0].values[cut_index:],
             )
@@ -192,7 +193,7 @@ def compute_sharpness(self, method="din", skip=0.2):
             # Define time axis
             time = Data1D(
                 symbol="T",
-                name="Time axis",
+                name="time",
                 unit="s",
                 values=self.loudness_zwicker.get_axes()[0].values[cut_index:],
             )
