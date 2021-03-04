@@ -3,3 +3,4 @@ scipy
 pytest
 matplotlib
 pyuff
+scidatatool

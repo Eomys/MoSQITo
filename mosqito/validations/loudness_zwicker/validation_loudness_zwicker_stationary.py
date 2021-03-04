@@ -73,7 +73,7 @@ def validation_loudness_zwicker_3oct():
     signal = {
         "data_file": "Test signal 1.txt",
         "N": 83.296,
-        "N_specif_file": "data/ISO_532-1/test_signal_1.csv",
+        "N_specif_file": "./mosqito/validations/loudness_zwicker/data/ISO_532-1/test_signal_1.csv",
     }
 
     N, N_specific = loudness_zwicker_stationary(test_signal_1)
@@ -88,24 +88,24 @@ def validation_loudness_zwicker_3oct():
 signal = np.zeros((4), dtype=dict)
 
 signal[0] = {
-    "data_file": "data/ISO_532-1/Test signal 2 (250 Hz 80 dB).wav",
+    "data_file": "./mosqito/validations/loudness_zwicker/data/ISO_532-1/Test signal 2 (250 Hz 80 dB).wav",
     "N": 14.655,
-    "N_specif_file": "data/ISO_532-1/test_signal_2.csv",
+    "N_specif_file": "./mosqito/validations/loudness_zwicker/data/ISO_532-1/test_signal_2.csv",
 }
 signal[1] = {
-    "data_file": "data/ISO_532-1/Test signal 3 (1 kHz 60 dB).wav",
+    "data_file": "./mosqito/validations/loudness_zwicker/data/ISO_532-1/Test signal 3 (1 kHz 60 dB).wav",
     "N": 4.019,
-    "N_specif_file": "data/ISO_532-1/test_signal_3.csv",
+    "N_specif_file": "./mosqito/validations/loudness_zwicker/data/ISO_532-1/test_signal_3.csv",
 }
 signal[2] = {
-    "data_file": "data/ISO_532-1/Test signal 4 (4 kHz 40 dB).wav",
+    "data_file": "./mosqito/validations/loudness_zwicker/data/ISO_532-1/Test signal 4 (4 kHz 40 dB).wav",
     "N": 1.549,
-    "N_specif_file": "data/ISO_532-1/test_signal_4.csv",
+    "N_specif_file": "./mosqito/validations/loudness_zwicker/data/ISO_532-1/test_signal_4.csv",
 }
 signal[3] = {
-    "data_file": "data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
+    "data_file": "./mosqito/validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
     "N": 10.498,
-    "N_specif_file": "data/ISO_532-1/test_signal_5.csv",
+    "N_specif_file": "./mosqito/validations/loudness_zwicker/data/ISO_532-1/test_signal_5.csv",
 }
 
 
@@ -236,7 +236,7 @@ def check_compliance(loudness, iso_ref):
     plt.title("N = " + str(N) + " sone (ISO ref. " + str(N_iso) + " sone)", color=clr)
     file_name = "_".join(iso_ref["data_file"].split(" "))
     plt.savefig(
-        "output/"
+        "./mosqito/validations/loudness_zwicker/output/"
         + "validation_loudness_zwicker_stationary_"
         + file_name.split("/")[-1][:-4]
         + ".png",

@@ -32,7 +32,7 @@ def compute_roughness(self, method="dw", overlap=0.5):
 
     R = comp_roughness(self.signal.values, self.fs, overlap)
 
-    time = Data1D(name="Time", unit="s", values=R["time"])
+    time = Data1D(name="time", unit="s", values=R["time"])
 
     self.roughness["Daniel Weber"] = DataTime(
         symbol="R_{dw}",
