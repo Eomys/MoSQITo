@@ -8,31 +8,59 @@ Created on Mon Nov 16 09:14:07 2020
 # Standard library import
 import numpy as np
 
-# Local import
-from mosqito.functions.shared.conversion import spectrum2dBA
 
 
-def comp_level(is_stationary, spec_third, fs, unit):
-    """Overall Sound Pressure Level calculation in the chosen unit
-    from the signal's third-octave spectrum
+def comp_level(signal, fs, nb_points=[], start=[],stop=[]):
+    """Overall Sound Pressure Level calculation from the time signal
+    The SPL can be computed according to a specified number of points or 
+    during a given time frame
 
     Parameter:
     ----------
-    spec_third_dB: numpy.array
-        third octave spectrum of the signal
+    signal : numpy.array
+        time signal value
     fs: integer
         sampling frequency
-    unit : string
-        'dB' or 'dBA'
+        
+    Output:
+    -------
+    level : numpy.array
+        SPL in dB
 
     """
+    # Check the inputs
+    if len(nb_points)>1:
+        raise ValueError(
+            "ERROR : Give a single number of points"
+            )
+        
+    if nb_points<1 or nb_points>len(signal):
+        raise ValueError(
+            "ERROR : Number of points should be between 1 and the length of the given signal"
+            )
+    
+    if start<0 or stop<0 or start>len(signal)/fs or stop>len(signal)/fs:
+        raise ValueError(
+            "ERROR : Time frame should be between 0s and the duration of the signal"
+            )
+        
+    
+    # Initialization
+    level= []
+    n = len(signal)
+    
+    # Case of a given number of points
+    if nb_points != []:
+        frame_size = int(n / nb_points)
+        for i in range(nb_points):
+            frame = signal[i*frame_size:i*frame_size + frame_size]
+            peff = np.sqrt(np.mean(frame**2))
+            level.append(10 * np.log10((peff **2/(2e-05)**2)))
 
-    if unit == "dB":
-        level = 10 * np.log10(sum(np.power(10, spec_third["values"] / 10)))
-
-    elif unit == "dBA":
-        # spectrum A-weighting
-        spec_third_dBA = spectrum2dBA(spec_third["values"], fs)
-        level = 10 * np.log10(sum(np.power(10, spec_third_dBA / 10)))
+    # Case of a given time frame
+    if start !=[] and stop !=[]:
+        frame = signal[start*fs:stop*fs]
+        peff = np.sqrt(np.mean(frame**2))
+        level = 10 * np.log10((peff **2/(2e-05)**2))
 
     return level
