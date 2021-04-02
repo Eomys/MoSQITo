@@ -37,11 +37,7 @@ def import_signal(self, is_stationary, file, calib=1, mat_signal="", mat_fs=""):
 
     # Import audio signal
     values, fs = load(
-        is_stationary,
-        file,
-        calib=calib,
-        mat_signal=mat_signal,
-        mat_fs=mat_fs,
+        is_stationary, file, calib=calib, mat_signal=mat_signal, mat_fs=mat_fs,
     )
 
     # Create Data object for time axis
@@ -58,9 +54,5 @@ def import_signal(self, is_stationary, file, calib=1, mat_signal="", mat_fs=""):
     self.fs = fs
     self.is_stationary = is_stationary
     self.signal = DataTime(
-        name="Audio signal",
-        symbol="x",
-        unit="Pa",
-        axes=[time_axis],
-        values=values,
+        name="Audio signal", symbol="x", unit="Pa", axes=[time_axis], values=values,
     )
