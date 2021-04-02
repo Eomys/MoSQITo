@@ -47,11 +47,7 @@ class Audio:
 
         # Import audio signal
         values, fs = load(
-            is_stationary,
-            file,
-            calib=calib,
-            mat_signal=mat_signal,
-            mat_fs=mat_fs,
+            is_stationary, file, calib=calib, mat_signal=mat_signal, mat_fs=mat_fs,
         )
 
         # Create Data object for time axis
