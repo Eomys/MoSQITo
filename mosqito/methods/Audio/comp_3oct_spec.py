@@ -34,10 +34,18 @@ def comp_3oct_spec(self, unit="dB"):
     third_spec = 2e-5 * 10 ** (third_spec / 20)
 
     # Define axis objects
-    frequency = Data1D(name="freqs", unit="Hz", values=freq_val,)
+    frequency = Data1D(
+        name="freqs",
+        unit="Hz",
+        values=freq_val,
+    )
     axes = [frequency]
     if not self.is_stationary:
-        time = Data1D(name="time", unit="s", values=time_val,)
+        time = Data1D(
+            name="time",
+            unit="s",
+            values=time_val,
+        )
         axes.append(time)
 
     # Define Data object

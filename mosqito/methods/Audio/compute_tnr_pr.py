@@ -27,7 +27,10 @@ def compute_tnr_pr(self, method, prominence=True):
 
     if method == "tnr" or method == "all":
         T = comp_tnr(
-            self.is_stationary, self.signal.values, self.fs, prominence=prominence,
+            self.is_stationary,
+            self.signal.values,
+            self.fs,
+            prominence=prominence,
         )
 
         freqs = Data1D(symbol="F", name="freqs", unit="Hz", values=T["freqs"])
@@ -60,7 +63,10 @@ def compute_tnr_pr(self, method, prominence=True):
 
     if method == "pr" or method == "all":
         T = comp_pr(
-            self.is_stationary, self.signal.values, self.fs, prominence=prominence,
+            self.is_stationary,
+            self.signal.values,
+            self.fs,
+            prominence=prominence,
         )
 
         freqs = Data1D(symbol="F", name="freqs", unit="Hz", values=T["freqs"])

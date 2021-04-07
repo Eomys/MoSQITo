@@ -16,7 +16,11 @@ def compute_welch(self, N=None, noverlap=None):
     )
 
     # Define axis objects
-    frequency = Data1D(name="freqs", unit="Hz", values=f,)
+    frequency = Data1D(
+        name="freqs",
+        unit="Hz",
+        values=f,
+    )
 
     # Define Data object
     self.welch = DataFreq(

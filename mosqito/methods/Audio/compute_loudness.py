@@ -37,7 +37,9 @@ def compute_loudness(self, field_type="free"):
     if self.is_stationary:
         third_spec_data = self.third_spec.get_along("freqs", unit="dB")
         N, N_specific = loudness_zwicker_stationary(
-            third_spec_data["x"], third_spec_data["freqs"], field_type,
+            third_spec_data["x"],
+            third_spec_data["freqs"],
+            field_type,
         )
         self.loudness_zwicker = N
         axes = [barks]
@@ -51,7 +53,11 @@ def compute_loudness(self, field_type="free"):
             name="time", unit="s", values=self.third_spec.get_axes()[1].values[::4]
         )
         self.loudness_zwicker = DataTime(
-            name="Loudness", symbol="N_{zw}", unit="sone", axes=[time], values=N,
+            name="Loudness",
+            symbol="N_{zw}",
+            unit="sone",
+            axes=[time],
+            values=N,
         )
         axes = [barks, time]
 
