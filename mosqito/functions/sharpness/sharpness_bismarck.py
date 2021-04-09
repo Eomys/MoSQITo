@@ -43,7 +43,7 @@ def comp_sharpness_bismarck(N, N_specific, is_stationary):
             S = 0
         else:
             S = 0.11 * sum(N_specific * gB * z * 0.1) / N
-            print("Bismarck sharpness:", str(S), "acum")
+            print("Bismarck sharpness:", "%.2f" % S, "acum")
     else:
         S = np.zeros((N.size))
         for t in range(N.size):
