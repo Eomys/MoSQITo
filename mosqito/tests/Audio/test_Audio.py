@@ -52,13 +52,27 @@ def test_comp_3oct_spec(fixture_import_signal):
     audio.comp_3oct_spec()
     audio.third_spec.plot_2D_Data(
         "freqs",
-        is_logscale_x=True,
         type_plot="curve",
+        is_logscale_x=True,
+        x_min=20,
         y_min=0,
         y_max=40,
         unit="dB",
         is_show_fig=is_show_fig,
         save_path=out_path + "test_comp_3oct_spec.png",
+    )
+
+
+@pytest.mark.audio
+def test_level(fixture_import_signal_time):
+    audio = fixture_import_signal_time
+    audio.compute_level(nb_points=20, start=0.5, stop=4)
+    audio.level.plot_2D_Data(
+        "time",
+        type_plot="curve",
+        unit="dB",
+        is_show_fig=is_show_fig,
+        save_path=out_path + "test_level.png",
     )
 
 

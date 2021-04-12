@@ -297,7 +297,11 @@ def check_compliance(sharpness, reference, noise_type):
     plt.ylabel("Sharpness, [acum]")
 
     plt.savefig(
-        "./mosqito/validations/sharpness/output/" + "validation_sharpness_" + noise_type + "_noise" + ".png",
+        "./mosqito/validations/sharpness/output/"
+        + "validation_sharpness_"
+        + noise_type
+        + "_noise"
+        + ".png",
         format="png",
     )
     plt.clf()
