@@ -1,3 +1,4 @@
 global-exclude *.py[cod]
 include README.md
 include logo.png
+include requirements.txt
