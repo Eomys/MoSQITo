@@ -78,8 +78,7 @@ class Audio:
 
         # Init physical metrics attributes
         self.third_spec = None
-        self.level_db = None
-        self.level_dba = None
+        self.level = None
         self.welch = None
 
         # Init physiological metrics attributes

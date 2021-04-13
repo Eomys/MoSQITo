@@ -6,9 +6,11 @@ In this folder, you will find the tutorials explaining how to use the different 
 
 ## Generalities
 
-- [Tutorial](./tuto_import_signal.ipynb): How to **import** an audio signal
-- [Tutorial](./tuto_signal_basic_operations.ipynb): **Basic operation** on audio signal (plot time history, compute overall level, etc.)
+- [Tutorial](./tuto_signal_basic_operations.ipynb): **Basic operation** on audio signal (import, plot time history, compute overall level, etc.)
 
 ## Sound quality metrics
 
 - [Tutorial](./tuto_loudness.ipynb): How to compute **loudness**
+- [Tutorial](./tuto_sharpness.ipynb): How to compute **sharpness**
+- [Tutorial](./tuto_roughness.ipynb): How to compute **roughness**
+- [Tutorial](./tuto_TNR_PR.ipynb): How to compute **tonality** (work in progress)
