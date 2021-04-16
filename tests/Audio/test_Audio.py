@@ -8,14 +8,14 @@ import pytest
 from mosqito.classes.Audio import Audio
 from mosqito import COLORS
 
-out_path = "./mosqito/tests/Audio/output/"
+out_path = "./tests/Audio/output/"
 is_show_fig = False
 
 
 @pytest.fixture(scope="module")
 def fixture_import_signal():
     audio = Audio(
-        "./mosqito/validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
+        "./validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
         is_stationary=True,
         calib=2 * 2 ** 0.5,
     )
@@ -25,7 +25,7 @@ def fixture_import_signal():
 @pytest.fixture(scope="module")
 def fixture_import_signal_time():
     audio = Audio(
-        "./mosqito/validations/loudness_zwicker/data/ISO_532-1/Annex B.4/Test signal 6 (tone 250 Hz 30 dB - 80 dB).wav",
+        "./validations/loudness_zwicker/data/ISO_532-1/Annex B.4/Test signal 6 (tone 250 Hz 30 dB - 80 dB).wav",
         calib=2 * 2 ** 0.5,
     )
     return audio
@@ -34,7 +34,7 @@ def fixture_import_signal_time():
 @pytest.mark.audio
 def test_import_signal():
     audio = Audio(
-        "./mosqito/validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
+        "./validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
         is_stationary=True,
         calib=2 * 2 ** 0.5,
     )

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Feb  8 10:41:09 2021
+Created on Mon Feb  8 10:39:49 2021
 
 @author: wantysal
 """
@@ -9,11 +9,11 @@ import pytest
 
 # Local application imports
 from mosqito.functions.shared.load import load
-from mosqito.functions.tonality_tnr_pr.comp_pr import comp_pr
+from mosqito.functions.tonality_tnr_pr.comp_tnr import comp_tnr
 
 
-@pytest.mark.pr  # to skip or run PR test
-def test_pr():
+@pytest.mark.tnr  # to skip or run PR test
+def test_tnr():
     """Test function for the prominence ratio calculation of an audio signal
 
     Validation function for the Audio_signal class "comp_tnr" method with signal array
@@ -35,14 +35,15 @@ def test_pr():
     signal.append(
         {
             "is_stationary": True,
-            "data_file": r"mosqito\tests\tonality_tnr_pr\white_noise_442_1768_Hz_stationary.wav",
+            "tones freq": [200, 2000],
+            "data_file": r"tests\tonality_tnr_pr\white_noise_442_1768_Hz_stationary.wav",
         }
     )
 
     signal.append(
         {
             "is_stationary": False,
-            "data_file": r"mosqito\tests\tonality_tnr_pr\white_noise_442_1768_Hz_varying.wav",
+            "data_file": r"tests\tonality_tnr_pr\white_noise_442_1768_Hz_varying.wav",
         }
     )
 
@@ -50,4 +51,4 @@ def test_pr():
         # Load signal
         audio, fs = load(signal[i]["is_stationary"], signal[i]["data_file"])
         # Compute tone-to-noise ratio
-        pr = comp_pr(signal[i]["is_stationary"], audio, fs, prominence=True)
+        tnr = comp_tnr(signal[i]["is_stationary"], audio, fs, prominence=True)

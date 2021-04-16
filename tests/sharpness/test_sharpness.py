@@ -33,7 +33,7 @@ def test_sharpness():
     """
 
     # Input signal from DIN 45692_2009E
-    signal = {"data_file": r"mosqito\tests\sharpness\Standard\1KHZ60DB.wav", "S": 1}
+    signal = {"data_file": r"tests\sharpness\Standard\1KHZ60DB.wav", "S": 1}
 
     # Load signal
     sig, fs = load(True, signal["data_file"], calib=1)

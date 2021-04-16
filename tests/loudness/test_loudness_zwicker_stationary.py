@@ -72,7 +72,7 @@ def test_loudness_zwicker_3oct():
     signal = {
         "data_file": "Test signal 1.txt",
         "N": 83.296,
-        "N_specif_file": "mosqito/tests/loudness/data/ISO_532-1/test_signal_1.csv",
+        "N_specif_file": "tests/loudness/data/ISO_532-1/test_signal_1.csv",
     }
     N, N_specific = loudness_zwicker_stationary(test_signal_1)
 
@@ -101,9 +101,9 @@ def test_loudness_zwicker_wav():
     # Test signal as input for stationary loudness
     # (from ISO 532-1 annex B3)
     signal = {
-        "data_file": "mosqito/tests/loudness/data/ISO_532-1/Test signal 3 (1 kHz 60 dB).wav",
+        "data_file": "tests/loudness/data/ISO_532-1/Test signal 3 (1 kHz 60 dB).wav",
         "N": 4.019,
-        "N_specif_file": "mosqito/tests/loudness/data/ISO_532-1/test_signal_3.csv",
+        "N_specif_file": "tests/loudness/data/ISO_532-1/test_signal_3.csv",
     }
 
     # Load signal and compute third octave band spectrum
@@ -211,7 +211,7 @@ def check_compliance(N, N_specific, iso_ref):
     plt.title("N = " + str(N) + " sone (ISO ref. " + str(N_iso) + " sone)", color=clr)
     file_name = "_".join(iso_ref["data_file"].split(" "))
     plt.savefig(
-        "mosqito/tests/loudness/output/test_loudness_zwicker_wav_"
+        "tests/loudness/output/test_loudness_zwicker_wav_"
         + file_name.split("/")[-1][:-4]
         + ".png",
         format="png",

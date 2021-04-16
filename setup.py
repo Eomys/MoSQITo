@@ -30,7 +30,12 @@ setuptools.setup(
     download_url="https://github.com/Eomys/MoSQITo/archive/v{}.tar.gz".format(
         MoSQITo_VERSION
     ),
-    packages=setuptools.find_packages(exclude=["documentation", "tutorials"]),
+    packages=setuptools.find_packages(exclude=[
+        "documentation", 
+        "tutorials", 
+        "validations",
+        "tests",
+    ]),
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
