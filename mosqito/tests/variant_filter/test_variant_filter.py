@@ -12,7 +12,7 @@ Created on Sun Jan 10 17:16:18 2021
 import time
 import pylab as plt
 import numpy as np
-import sounddevice as sd
+# import sounddevice as sd
 from matplotlib import gridspec
 from scipy.io.wavfile import write
 from mosqito.functions.variant_filter.variant_filter import variant_filter
@@ -22,7 +22,7 @@ from mosqito.functions.shared.load import load
 armonic_order = 1  # harmonics 1, 2, 3, ...
 ftype = 1  # Filter selector: 0-->FIR, 1-->IIR
 band = 40  # The bandwidth around the centerline frequency that you wish to filter
-signal = "mosqito/tests/variant_filter/signals/RUN5_RunUp_60s_RPM-profile_Rec0.UFF"
+signal = "mosqito/tests/variant_filter/signals/RUN5_RunUp_60s_Track1_Rec0.UFF"
 track = "mosqito/tests/variant_filter/signals/RUN5_RunUp_60s_RPM-profile_Rec0.UFF"
 
 # Aplication of the variant_filter function
@@ -37,8 +37,9 @@ sd.play(filtered_signal, Fs)
 """
 
 # Scale both signals to integers to write a wav file
-scaled_o = np.int16(original_signal / np.max(np.abs(original_signal)) * 32767)
-scaled_f = np.int16(filtered_signal / np.max(np.abs(filtered_signal)) * 32767)
+scale = np.max([np.max(np.abs(original_signal)), np.max(np.abs(filtered_signal))])
+scaled_o = np.int16(original_signal / scale * 32767)
+scaled_f = np.int16(filtered_signal / scale * 32767)
 
 write("original_signal_.wav", Fs, scaled_o)
 write("filtered_signal_" + str(armonic_order) + ".wav", Fs, scaled_f)
