@@ -1,4 +1,4 @@
-# ![MoSQITo Logo](./logo.png) MoSQITo
+# ![MOSQITO Logo](https://raw.githubusercontent.com/Eomys/MoSQITo/master/logo.png) MOSQITO
 
 ## Background
 
@@ -20,7 +20,7 @@ toolbox.
 
 ## Objectives
 
-The objective of MoSQITo is therefore to provide a unified and modular
+The objective of MOSQITO is therefore to provide a unified and modular
 development framework of key sound quality metrics with open-source
 object-oriented technologies, favoring reproducible science and
 efficient shared scripting among engineers, teachers and researchers
@@ -42,34 +42,33 @@ machine simulation software.
 ## Documentation
 
 Tutorials are available in the [tutorials](./tutorials/) folder. Documentation 
-and validation of the MoSQITo functions are available in the [documentation](./documentation/) folder.
-
+and validation of the MOSQITO functions are available in the [documentation](./documentation/) folder.
 
 ## Scope
 
 The scope of the project is to implement the following first set of
 metrics:
 
-|| Reference | Available | Under dev. | To do |
-|:-|:-|:-:|:-:|:-:|
-|Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | [x](./documentation/loudness-stationary.md) |||
-|Loudness for non-stationary<br>(Zwicker method) | DIN 45631/A1:2010<br>ISO 532-1:2017 §6 | [x](./documentation/loudness-time-varying.md) |||
-| Roughness | Daniel and Weber, 1997 | [x](./documentation/roughness.md) |||
-| Fluctuation Strength | To be defined || x ||
-| Sharpness | DIN 45692:2009 | [x](./documentation/sharpness.md) |||
-| Tonality (Hearing model) | ECMA-74:2019 annex G || x ||
+|                                                    | Reference                                            | Validated                                          | Available                                     | Under dev. | To do |
+|:-------------------------------------------------- |:---------------------------------------------------- |:--------------------------------------------------:|:---------------------------------------------:|:----------:|:-----:|
+| Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | [x](./mosqito/validations/loudness_zwicker/output) | [x](./documentation/loudness-stationary.md)   |            |       |
+| Loudness for non-stationary<br>(Zwicker method)    | DIN 45631/A1:2010<br>ISO 532-1:2017 §6               | [x](./mosqito/validations/loudness_zwicker/output) | [x](./documentation/loudness-time-varying.md) |            |       |
+| Roughness                                          | Daniel and Weber, 1997                               | [x](./mosqito/validations/roughness_danielweber)   | [x](./documentation/roughness.md)             |            |       |
+| Fluctuation Strength                               | To be defined                                        |                                                    |                                               |            | x     |
+| Sharpness                                          | DIN 45692:2009                                       | [x](./mosqito/validations/sharpness/output)        | [x](./documentation/sharpness.md)             |            |       |
+| Tonality (Hearing model)                           | ECMA-74:2019 annex G                                 |                                                    |                                               | x          |       |
 
 As a second priority, the project could address the following metrics:
 
-|| Reference | Available | Under dev. | To do |
-|:-|:-|:-:|:-:|:-:|
-|Loudness for steady signals<br>(Moore/Glasberg method) | ISO 532-2:2017 |||x|
-|Loudness for non-stationary<br>(Moore/Glasberg method) | Moore, 2014 |||x|
-|Sharpness (using <br>Moore/Glasberg loudness) | Hales-Swift<br>and Gee, 2017 |||x|
-|Tone-to-noise ratio / Prominence <br> ratio (occupational noise,<br>discrete tones) | ECMA-74:2019 annex D<br>ISO 7719:2018 ||x||
-|Tone-to-noise ratio<br>(environmental noise,<br>automatic tone detection) | DIN 45681 |||x|
-|Tone-to-noise ratio<br>(environmental noise) | ISO 1996-2 |||x|
-|Tone-to-noise ratio<br>(environmental noise) | ANSI S1.13:2005 |||x|
+|                                                                                     | Reference                             | Validated | Available | Under dev. | To do |
+|:----------------------------------------------------------------------------------- |:------------------------------------- |:---------:|:---------:|:----------:|:-----:|
+| Loudness for steady signals<br>(Moore/Glasberg method)                              | ISO 532-2:2017                        |           |           |            | x     |
+| Loudness for non-stationary<br>(Moore/Glasberg method)                              | Moore, 2014                           |           |           |            | x     |
+| Sharpness (using <br>Moore/Glasberg loudness)                                       | Hales-Swift<br>and Gee, 2017          |           |           |            | x     |
+| Tone-to-noise ratio / Prominence <br> ratio (occupational noise,<br>discrete tones) | ECMA-74:2019 annex D<br>ISO 7719:2018 |           | x         |            |       |
+| Tone-to-noise ratio<br>(environmental noise,<br>automatic tone detection)           | DIN 45681                             |           |           |            | x     |
+| Tone-to-noise ratio<br>(environmental noise)                                        | ISO 1996-2                            |           |           |            | x     |
+| Tone-to-noise ratio<br>(environmental noise)                                        | ANSI S1.13:2005                       |           |           |            | x     |
 
 In parallel, tools for signal listening and manipulation will be
 developed. The objective is to be able to apply some modification to a

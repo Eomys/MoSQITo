@@ -1,12 +1,12 @@
-# MoSQITo Documentation
+# MOSQITO Documentation
 ## Roughness calculation (Daniel and Weber)
 
 ### Introduction
 
 Several models have been developed to calculate the acoustic roughness, but there is no official standardization yet. 
 
-In MoSQITo, the code is based on the algorithm described in Daniel and Weber, 1997.
-A step by step description of how to use MoSQITo to calculate the roughness is given in [tutorial n°6](../tutorials/tuto6_Roughness-from-wav.ipynb)
+In MOSQITO, the code is based on the algorithm described in Daniel and Weber, 1997.
+A step by step description of how to use MOSQITO to calculate the roughness is given in [tutorial n°6](../tutorials/tuto6_Roughness-from-wav.ipynb)
 
 ### Validation of the implementation
 

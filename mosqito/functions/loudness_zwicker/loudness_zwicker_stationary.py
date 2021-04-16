@@ -3,15 +3,16 @@
 @date Created on Tue Feb 25 2020
 @author martin_g for Eomys
 """
-import sys
-sys.path.append('../..')
 
 # Third party imports
 import numpy as np
 
 # Local application imports
-from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_main_loudness
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import (
+    calc_main_loudness,
+)
 from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
+
 
 def loudness_zwicker_stationary(spec_third, third_axis=[], field_type="free"):
     """Zwicker-loudness calculation for stationary signals
@@ -24,9 +25,9 @@ def loudness_zwicker_stationary(spec_third, third_axis=[], field_type="free"):
         ISO 532-1:2017 (method 1)
     The code is based on BASIC program published in "Program for
     calculating loudness according to DIN 45631 (ISO 532B)", E.Zwicker
-    and H.Fastl, J.A.S.J (E) 12, 1 (1991). 
+    and H.Fastl, J.A.S.J (E) 12, 1 (1991).
     Note that due to normative continuity, as defined in the
-    preceeding standards, the method is in accordance with 
+    preceeding standards, the method is in accordance with
     ISO 226:1987 equal loudness contours (instead of ISO 226:2003)
 
     Parameters
@@ -36,7 +37,7 @@ def loudness_zwicker_stationary(spec_third, third_axis=[], field_type="free"):
     third_axis : numpy.ndarray
         Normalized center frequency of third octave bands [Hz]
     field_type : str
-        Type of soundfield corresponding to spec_third ("free" by 
+        Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse")
 
     Outputs
@@ -104,9 +105,8 @@ def loudness_zwicker_stationary(spec_third, third_axis=[], field_type="free"):
     # Calculate main loudness
     Nm = calc_main_loudness(spec_third, field_type)
     #
-    # Calculation of specific loudness pattern and integration of overall 
+    # Calculation of specific loudness pattern and integration of overall
     # loudness by attaching slopes towards higher frequencies
     N, N_specific = calc_slopes(Nm)
-   
 
     return N, N_specific

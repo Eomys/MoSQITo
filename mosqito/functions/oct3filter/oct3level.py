@@ -3,8 +3,7 @@
 @date Created on Fri Mar 13 2020
 @author martin_g for Eomys
 """
-import sys
-sys.path.append('../..')
+
 
 # Standard library imports
 import numpy as np
@@ -14,8 +13,8 @@ from scipy import signal
 from mosqito.functions.oct3filter.oct3dsgn import oct3dsgn
 
 
-def oct3level(sig, fs, fc, sig_type='stationary', dec_factor=24):
-    """Calculate rms level of a signal in the third octave band fc 
+def oct3level(sig, fs, fc, sig_type="stationary", dec_factor=24):
+    """Calculate rms level of a signal in the third octave band fc
 
     Calculate the rms level of the signal "sig" in the third-octave
     band centered on frequency "fc". If "fc" is such that fc < fs/200,
@@ -37,7 +36,7 @@ def oct3level(sig, fs, fc, sig_type='stationary', dec_factor=24):
     Outputs
     -------
     level : numpy.ndarray
-        Rms level of sig in the third octave band centered on fc 
+        Rms level of sig in the third octave band centered on fc
     """
 
     """
@@ -58,8 +57,8 @@ def oct3level(sig, fs, fc, sig_type='stationary', dec_factor=24):
             verify: fc <= 0.88 * (fs / 2)"""
         )
     # Check if dec_factor is a divisor of fs
-    fs_divisor = [n for n in range(1,(fs+1)) if fs % n ==0]
-    if (sig_type != 'stationary') and (not dec_factor in fs_divisor):
+    fs_divisor = [n for n in range(1, (fs + 1)) if fs % n == 0]
+    if (sig_type != "stationary") and (not dec_factor in fs_divisor):
         raise ValueError(
             """ERROR: Design not possible. Time decimation factor shall
             be a divisor of fs"""
@@ -68,10 +67,10 @@ def oct3level(sig, fs, fc, sig_type='stationary', dec_factor=24):
     # Downsampling to a multiple of fs to respect "fc > fs/200"
     # (in case of time varying signal, the decimation factor shall be
     # a multiple of dec_factor)
-    if sig_type == 'stationary':
+    if sig_type == "stationary":
         dec_factors = fs_divisor
     else:
-        dec_factors = [n for n in fs_divisor if dec_factor % n ==0]
+        dec_factors = [n for n in fs_divisor if dec_factor % n == 0]
     for i in dec_factors:
         fs_sub = fs / i
         if fs_sub / fc < 200:
@@ -86,17 +85,19 @@ def oct3level(sig, fs, fc, sig_type='stationary', dec_factor=24):
     b, a = oct3dsgn(fc, fs_sub, n=3)
     # Downsample the signal
     if fs != fs_sub:
-        sig = signal.decimate(sig, int(fs/fs_sub))
+        sig = signal.decimate(sig, int(fs / fs_sub))
     # Filter the signal
     sig_filt = signal.lfilter(b, a, sig)
-    if sig_type == 'stationary':
+    if sig_type == "stationary":
         # Calculate overall rms level
         level = np.sqrt(sum(sig_filt ** 2) / len(sig_filt))
     else:
         # Calculate rms level versus time
-        n_level = int(np.floor(sig_filt.shape[0]/dec_factor))
-        sig_reshaped = sig_filt[:dec_factor*n_level].reshape((n_level, dec_factor))
-        level = np.sqrt(np.mean(sig_reshaped**2,1))
+        n_level = int(np.floor(sig_filt.shape[0] / dec_factor))
+        sig_reshaped = sig_filt[: dec_factor * n_level].reshape((n_level, dec_factor))
+        level = np.sqrt(np.mean(sig_reshaped ** 2, 1))
         if sig_filt.shape[0] % dec_factor != 0:
-            level = np.append(level, np.sqrt(np.mean(sig_filt[dec_factor*n_level:]**2)))
+            level = np.append(
+                level, np.sqrt(np.mean(sig_filt[dec_factor * n_level :] ** 2))
+            )
     return level

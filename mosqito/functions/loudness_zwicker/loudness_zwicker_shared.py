@@ -7,12 +7,13 @@
 # Standard library imports
 import numpy as np
 
+
 def calc_main_loudness(spec_third, field_type):
     """Calculate core loudness
 
     The code is based on BASIC program published in "Program for
     calculating loudness according to DIN 45631 (ISO 532B)", E.Zwicker
-    and H.Fastl, J.A.S.J (E) 12, 1 (1991). 
+    and H.Fastl, J.A.S.J (E) 12, 1 (1991).
     It also corresponds to the following functions of the C program
     published with ISO 532-1:2017:
     - corr_third_octave_intensities
@@ -25,7 +26,7 @@ def calc_main_loudness(spec_third, field_type):
     spec_third : numpy.ndarray
         A third octave band spectrum [dB ref. 2e-5 Pa]
     field_type : str
-        Type of soundfield correspondin to spec_third ("free" or 
+        Type of soundfield correspondin to spec_third ("free" or
         "diffuse")
 
     Outputs
@@ -123,7 +124,7 @@ def calc_main_loudness(spec_third, field_type):
             j += 1
         xp = spec_third[i] + dll[j, i]
         ti[i] = np.power(10, (xp / 10))
-    
+
     # Determination of levels LCB(1), LCB(2) and LCB(3) within the
     # first three critical bands
     gi = np.zeros(3)
@@ -132,20 +133,20 @@ def calc_main_loudness(spec_third, field_type):
     gi[2] = ti[9:11].sum()
     lcb = np.zeros(3)
     lcb[gi > 0] = 10 * np.log10(gi[gi > 0])
-    
+
     # Calculation of main loudness
     s = 0.25
     nm = np.zeros(20)
     le = spec_third[8:]
     le = le.reshape((20))
-    le[0:3] = lcb    
-    le = le-a0
+    le[0:3] = lcb
+    le = le - a0
     if field_type == "diffuse":
         le += ddf
     i = le > ltq
     le[i] -= dcb[i]
-    mp1 = 0.0635 * np.power(10,0.025 * ltq[i])
-    mp2 = np.power(1 - s + s * np.power(10,0.1 * (le[i] - ltq[i])),0.25 ) -1 
+    mp1 = 0.0635 * np.power(10, 0.025 * ltq[i])
+    mp2 = np.power(1 - s + s * np.power(10, 0.1 * (le[i] - ltq[i])), 0.25) - 1
     nm[i] = mp1 * mp2
     nm[nm < 0] = 0
     nm = np.append(nm, 0)
@@ -158,9 +159,9 @@ def calc_main_loudness(spec_third, field_type):
         nm[0] *= korry
     return nm
 
+
 def calc_slopes(nm):
-    """
-    """
+    """"""
     # Upper limits of approximated critical bands in terms of critical
     # band rate
     zup = np.array(
@@ -311,5 +312,5 @@ def calc_slopes(nm):
         N = np.floor(N * 1000 + 0.5) / 1000
     else:
         N = np.floor(N * 100 + 0.5) / 100
-        
+
     return N, N_specific

@@ -11,11 +11,11 @@ import numpy as np
 from mosqito.functions.oct3filter.oct3level import oct3level
 
 
-def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type='stationary', dec_factor=24):
+def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type="stationary", dec_factor=24):
     """Calculate third-octave band spectrum
 
     Calculate the rms level of the signal "sig" sampled at freqency "fs"
-    for each third octave band between "fc_min" and "fc_max". 
+    for each third octave band between "fc_min" and "fc_max".
 
     Parameters
     ----------
@@ -30,12 +30,12 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type='stationary', dec_factor
     out_format : str
         Format of the output data ("rms" by default or "time")
         corresponding respectively to a vector of overall rms values
-        per third octave band or a matrix (dim [freq, time]) filtered 
+        per third octave band or a matrix (dim [freq, time]) filtered
         time signals per third octave band
     sig_type : str
-        Type of signal ('stationary' or 'time-varying'), influences the 
+        Type of signal ('stationary' or 'time-varying'), influences the
         format of the output data corresponding respectively to a vector
-        of overall rms values per third octave band or a matrix 
+        of overall rms values per third octave band or a matrix
         (dim [freq, time]) filtered time signals per third octave band
     fs_level : int
         RMS vs. time (pseudo-)sampling frequency.
@@ -54,7 +54,8 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type='stationary', dec_factor
 
     # Définition of the range of preferred filter center frequency
     fpref = np.array(
-        [   25,
+        [
+            25,
             31.5,
             40,
             50,
@@ -81,10 +82,13 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type='stationary', dec_factor
             6300,
             8000,
             10000,
-            12500    ])
-    
+            12500,
+        ]
+    )
+
     fexact = np.array(
-        [   25.119,
+        [
+            25.119,
             31.623,
             39.811,
             50.119,
@@ -111,24 +115,25 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type='stationary', dec_factor
             6309.6,
             7943,
             10000,
-            12589    ])
-    
-    
+            12589,
+        ]
+    )
+
     fexact = fexact[fpref >= fc_min]
     fpref = fpref[fpref >= fc_min]
     fexact = fexact[fpref <= fc_max]
     fpref = fpref[fpref <= fc_max]
 
     # Calculation of the rms level of the signal in each band
-    if sig_type == 'stationary':
+    if sig_type == "stationary":
         spec = np.zeros((len(fexact), 1))
     else:
-        n_level = int(np.ceil(sig.shape[0]/dec_factor))
+        n_level = int(np.ceil(sig.shape[0] / dec_factor))
         spec = np.zeros((len(fexact), n_level))
     i = 0
     for fc in fexact:
-        spec[i,:] = oct3level(sig, fs, fc, sig_type, dec_factor)
+        spec[i, :] = oct3level(sig, fs, fc, sig_type, dec_factor)
         i += 1
 
-    spec = 20 * np.log10((spec + 1e-12) / (2*10**-5))
+    spec = 20 * np.log10((spec + 1e-12) / (2 * 10 ** -5))
     return spec, fpref

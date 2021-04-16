@@ -1,5 +1,8 @@
-numpy==1.18.1
-scipy==1.4.1
-pytest==5.4.1
-matplotlib==3.1.3
-pandas
+numpy
+scipy
+pytest
+matplotlib
+pyuff
+scidatatool
+h5py
+cloudpickle

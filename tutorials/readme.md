@@ -1,9 +1,16 @@
-# MoSQITo Tutorials
+# MOSQITO Tutorials
 
-MoSQITo is a unified and modular development framework of key sound quality metrics favoring reproducible science and efficient shared scripting among engineers, teachers and researchers community.
+MOSQITO is a unified and modular development framework of sound quality tools (including key SQ metrics) favoring reproducible science and efficient shared scripting among engineers, teachers and researchers community.
 
-In this folder, you will find the tutorials explaining how to use the different functions of MoSQITo.
+In this folder, you will find the tutorials explaining how to use the different functions of MOSQITO.
 
-- [Tutorial 1](./tuto1_Loudness-zwicker-from-3oct.ipynb): How to calculate Zwicker **loudness** from third octave band spectrum
-- [Tutorial 2](./tuto2_Loudness-zwicker-from-wav.ipynb): How to calculate Zwicker **loudness** from .wav file (steady signal)
-- [Tutorial 3](./tuto3_Loudness-zwicker-time-varying.ipynb): How to calculate Zwicker **loudness** from .wav file (time-varying signal)
+## Generalities
+
+- [Tutorial](./tuto_signal_basic_operations.ipynb): **Basic operation** on audio signal (import, plot time history, compute overall level, etc.)
+
+## Sound quality metrics
+
+- [Tutorial](./tuto_loudness.ipynb): How to compute **loudness**
+- [Tutorial](./tuto_sharpness.ipynb): How to compute **sharpness**
+- [Tutorial](./tuto_roughness.ipynb): How to compute **roughness**
+- [Tutorial](./tuto_TNR_PR.ipynb): How to compute **tonality** (work in progress)
