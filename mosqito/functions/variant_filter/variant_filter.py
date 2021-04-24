@@ -101,10 +101,10 @@ def variant_filter(original_signal, signal_tracking, ftype, harmonic_order, att)
                 
     i = int(fs / 16)    #Segment size
     j = 0               
-    h = 2*int(fs / 64)    #Segment size to overlap to avoid cuts
+    h = 2*int(fs / 64)    #Segment size to overlap
     filtered_signal = []
     
-    while j < len(signal_tracking):
+    while i <= len(signal_tracking):
         
         #Value of RPM
         rpm = signal_tracking[j]

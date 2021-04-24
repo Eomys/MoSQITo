@@ -15,11 +15,11 @@ from scipy.io.wavfile import write
 from mosqito.functions.variant_filter.variant_filter import variant_filter
 
 #Filter parameters
-harmonic_order = 4     #harmonics 1, 2, 3, ...
+harmonic_order = 2     #harmonics 1, 2, 3, ...
 att = 6
 
-signal = "C:/josema_rep/MoSQITo/mosqito/tests/variant_filter/signals/RUN5_RunUp_60s_Track1_Rec0.UFF"
-track = "C:/josema_rep/MoSQITo/mosqito/tests/variant_filter/signals/RUN5_RunUp_60s_RPM-profile_Rec0.UFF"
+signal = "mosqito/tests/variant_filter/signals/RUN5_RunUp_60s_Track1_Rec0.UFF"
+track = "mosqito/tests/variant_filter/signals/RUN5_RunUp_60s_RPM-profile_Rec0.UFF"
 
 #Aplication of the variant_filter function
 original_signal, fir_filtered_signal, Fs = variant_filter(
