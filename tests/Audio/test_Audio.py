@@ -8,14 +8,14 @@ import pytest
 from mosqito.classes.Audio import Audio
 from mosqito import COLORS
 
-out_path = "./tests/Audio/output/"
+out_path = "./tests/output/"
 is_show_fig = False
 
 
 @pytest.fixture(scope="module")
 def fixture_import_signal():
     audio = Audio(
-        "./validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
+        "./tests/input/Test signal 5 (pinknoise 60 dB).wav",
         is_stationary=True,
         calib=2 * 2 ** 0.5,
     )
@@ -25,7 +25,7 @@ def fixture_import_signal():
 @pytest.fixture(scope="module")
 def fixture_import_signal_time():
     audio = Audio(
-        "./validations/loudness_zwicker/data/ISO_532-1/Annex B.4/Test signal 6 (tone 250 Hz 30 dB - 80 dB).wav",
+        "./tests/input/Test signal 6 (tone 250 Hz 30 dB - 80 dB).wav",
         calib=2 * 2 ** 0.5,
     )
     return audio
@@ -34,14 +34,14 @@ def fixture_import_signal_time():
 @pytest.mark.audio
 def test_import_signal():
     audio = Audio(
-        "./validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
+        "./tests/input/Test signal 5 (pinknoise 60 dB).wav",
         is_stationary=True,
         calib=2 * 2 ** 0.5,
     )
     audio.signal.plot_2D_Data(
         "time",
         is_show_fig=is_show_fig,
-        save_path=out_path + "test_import_signal.png",
+        save_path=out_path + "test_Audio_import_signal.png",
         color_list=COLORS,
     )
 
@@ -59,7 +59,7 @@ def test_comp_3oct_spec(fixture_import_signal):
         y_max=40,
         unit="dB",
         is_show_fig=is_show_fig,
-        save_path=out_path + "test_comp_3oct_spec.png",
+        save_path=out_path + "test_Audio_comp_3oct_spec.png",
     )
 
 
@@ -72,7 +72,7 @@ def test_level(fixture_import_signal_time):
         type_plot="curve",
         unit="dB",
         is_show_fig=is_show_fig,
-        save_path=out_path + "test_level.png",
+        save_path=out_path + "test_Audio_level.png",
     )
 
 
@@ -84,7 +84,7 @@ def test_compute_loudness(fixture_import_signal):
         "cr_band",
         type_plot="curve",
         is_show_fig=is_show_fig,
-        save_path=out_path + "test_compute_loudness.png",
+        save_path=out_path + "test_Audio_compute_loudness.png",
         color_list=COLORS,
     )
 
@@ -97,7 +97,7 @@ def test_compute_loudness_time(fixture_import_signal_time):
         "time",
         type_plot="curve",
         is_show_fig=is_show_fig,
-        save_path=out_path + "test_compute_loudness_time_1.png",
+        save_path=out_path + "test_Audio_compute_loudness_time_1.png",
         color_list=COLORS,
     )
     audio.loudness_zwicker_specific.plot_2D_Data(
@@ -105,7 +105,7 @@ def test_compute_loudness_time(fixture_import_signal_time):
         "cr_band=2.5",
         type_plot="curve",
         is_show_fig=is_show_fig,
-        save_path=out_path + "test_compute_loudness_time_2.png",
+        save_path=out_path + "test_Audio_compute_loudness_time_2.png",
         color_list=COLORS,
     )
     audio.loudness_zwicker_specific.plot_3D_Data(
@@ -114,7 +114,7 @@ def test_compute_loudness_time(fixture_import_signal_time):
         is_2D_view=True,
         is_switch_axes=True,
         is_show_fig=is_show_fig,
-        save_path=out_path + "test_compute_loudness_time_3.png",
+        save_path=out_path + "test_Audio_compute_loudness_time_3.png",
     )
 
 
@@ -132,7 +132,7 @@ def test_compute_sharpness_time(fixture_import_signal_time):
         "time",
         type_plot="curve",
         is_show_fig=is_show_fig,
-        save_path=out_path + "test_compute_sharpness_time.png",
+        save_path=out_path + "test_Audio_compute_sharpness_time.png",
         color_list=COLORS,
     )
 
@@ -151,7 +151,7 @@ def test_compute_roughness_time(fixture_import_signal_time):
         "time",
         type_plot="curve",
         is_show_fig=is_show_fig,
-        save_path=out_path + "test_compute_roughness_time.png",
+        save_path=out_path + "test_Audio_compute_roughness_time.png",
         color_list=COLORS,
     )
 
@@ -171,5 +171,5 @@ def test_compute_tnr_pr_time(fixture_import_signal_time):
         "freqs",
         is_2D_view=True,
         is_show_fig=is_show_fig,
-        save_path=out_path + "test_compute_tnr_pr_time.png",
+        save_path=out_path + "test_Audio_compute_tnr_pr_time.png",
     )
