@@ -36,14 +36,14 @@ def test_tnr():
         {
             "is_stationary": True,
             "tones freq": [200, 2000],
-            "data_file": r"tests\tonality_tnr_pr\white_noise_442_1768_Hz_stationary.wav",
+            "data_file": r"tests\input\white_noise_442_1768_Hz_stationary.wav",
         }
     )
 
     signal.append(
         {
             "is_stationary": False,
-            "data_file": r"tests\tonality_tnr_pr\white_noise_442_1768_Hz_varying.wav",
+            "data_file": r"tests\input\white_noise_442_1768_Hz_varying.wav",
         }
     )
 
