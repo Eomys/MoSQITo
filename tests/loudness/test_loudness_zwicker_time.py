@@ -37,8 +37,8 @@ def test_loudness_zwicker_time():
     # Test signal as input for time-varying loudness
     # (from ISO 532-1 annex B4)
     signal = {
-        "data_file": "tests/loudness/data/ISO_532-1/Annex B.4/Test signal 6 (tone 250 Hz 30 dB - 80 dB).wav",
-        "xls": "tests/loudness/data/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
+        "data_file": "tests/input/Test signal 6 (tone 250 Hz 30 dB - 80 dB).wav",
+        "xls": "tests/input/Results and tests for synthetic signals (time varying loudness).xlsx",
         "tab": "Test signal 6",
         "N_specif_bark": 2.5,
         "field": "free",
@@ -270,7 +270,7 @@ def check_compliance(N, N_specific, iso_ref):
             else:
                 flag = "FAILED_"
             plt.savefig(
-                "tests/loudness/output/"
+                "tests/output/"
                 + flag
                 + "test_loudness_zwicker_time_"
                 + file_name.split("/")[-1][:-4]

@@ -15,7 +15,7 @@ is_show_fig = False
 @pytest.fixture(scope="module")
 def fixture_import_signal():
     audio = Audio(
-        "./tests/input/Test signal 5 (pinknoise 60 dB).wav",
+        "./tests/input/Test signal 3 (1 kHz 60 dB).wav",
         is_stationary=True,
         calib=2 * 2 ** 0.5,
     )
@@ -34,7 +34,7 @@ def fixture_import_signal_time():
 @pytest.mark.audio
 def test_import_signal():
     audio = Audio(
-        "./tests/input/Test signal 5 (pinknoise 60 dB).wav",
+        "./tests/input/Test signal 3 (1 kHz 60 dB).wav",
         is_stationary=True,
         calib=2 * 2 ** 0.5,
     )
