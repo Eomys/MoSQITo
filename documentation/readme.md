@@ -6,6 +6,7 @@ In this folder, you will find the documentation and validation of the different 
 
 ## Generalities
 
+- [Scope of the project](./scope.md)
 - [Architecture of the toolbox](./architecture.md)
 
 ## Sound Quality metrics
