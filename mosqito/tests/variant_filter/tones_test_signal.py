@@ -14,16 +14,15 @@ from matplotlib import gridspec
 from scipy.io.wavfile import write
 from mosqito.functions.variant_filter.variant_filter import variant_filter
 
-"""
-parameters: 
-rho - spectral noise density unit/SQRT(Hz)
-sr  - sample rate
-n   - no of points
-mu  - mean value, optional
+#White noise definition
+#Parameters:
+#   rhp - spectral noise density unit/SQRT(Hz)
+#   sr  - sample rate
+#   n   - no of points
+#   mu  - mean value, optional
+#Returns:
+#   n points of noise signal with spectral noise density of rho
 
-returns:
-n points of noise signal with spectral noise density of rho
-"""
 def white_noise(rho, sr, n, mu=0):
     sigma = rho * np.sqrt(sr/2)
     noise = np.random.normal(mu, sigma, n)
@@ -87,14 +86,6 @@ write('FIR_filtered_tones_test_signal.wav', Fs, scaled_fir)
 write('IIR_filtered_tones_test_signal.wav', Fs, scaled_iir)
 
 #Plotting results
-f, psd = signal.periodogram(noise_plus_signal, fs)
-
-plt.semilogy(f[1:], np.sqrt(psd[1:]))
-plt.xlabel("frequency (Hz)")
-plt.ylabel("psd (arb.u./SQRT(Hz))")
-#plt.axvline(13, ls="dashed", color="g")
-plt.axhline(rho, ls="dashed", color="r")
-plt.show()
 
 #Plot Spectrogram of the noise and signals
 NFFT = 4096
@@ -138,6 +129,7 @@ plt.colorbar(
 ).set_label('PSD [dB/Hz]', labelpad=-20, y=1.1, rotation=0)
 
 plt.show()
+
 #Plot Spectrogram filtered signal FIR
 ax1 = plt.subplot(gs[0])
 pxx,  freq, t, cax = plt.specgram(

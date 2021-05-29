@@ -15,8 +15,8 @@ from scipy.io.wavfile import write
 from mosqito.functions.variant_filter.variant_filter import variant_filter
 
 #Filter parameters
-harmonic_order = 2     #harmonics 1, 2, 3, ...
-att = 6
+harmonic_order = 1     #harmonics 1, 2, 3, ...
+att = 12
 
 signal = "mosqito/tests/variant_filter/signals/RUN5_RunUp_60s_Track1_Rec0.UFF"
 track = "mosqito/tests/variant_filter/signals/RUN5_RunUp_60s_RPM-profile_Rec0.UFF"
@@ -29,14 +29,7 @@ original_signal, iir_filtered_signal, Fs = variant_filter(
         signal, track,'iir', harmonic_order, att
 )
 
-"""
-#Playback of original and filtered signal
-sd.play(original_signal, Fs)
-time.sleep(40)
-sd.play(filtered_signal, Fs)
-"""
-
-#Scale both signals to integers to write a wav file
+#Scale signals to integers to write a wav file
 scale = np.max([np.max(np.abs(original_signal)), np.max(np.abs(iir_filtered_signal))])
 scaled_o = np.int16(original_signal / scale * 32767)
 scaled_fir = np.int16(fir_filtered_signal / scale * 32767)
@@ -51,13 +44,15 @@ rpm_signal, fs = load(False, track, calib = 1)
 l_rpm=len(rpm_signal)
 t_rpm = np.arange(0, l_rpm)/ fs # Time interval in seconds
 
-#♣Data recopilation
+#Plotting results
+
+#Average spectrum of 24000 samples
+plt.figure()
+
 f, Pxx_spec = sig.welch(
     original_signal[1200000:1224000], fs, 'flattop', 1024, scaling='spectrum'
 )
-plt.figure()
-axes = plt.axes()
-axes.set_xlim([0,3000])
+
 plt.semilogy(f, np.sqrt(Pxx_spec), color = 'darkred')
 plt.xlabel('frequency [Hz]')
 plt.ylabel('Linear spectrum [V RMS]')
@@ -72,13 +67,13 @@ plt.ylabel('Linear spectrum [V RMS]')
 f, Pxx_spec = sig.welch(
     iir_filtered_signal[1200000:1224000], fs,'flattop', 1024, scaling='spectrum'
 )
+axes = plt.axes()
+axes.set_xlim([0,3000])
 plt.semilogy(f, np.sqrt(Pxx_spec), color='darkgreen', linestyle='--')
 plt.xlabel('frequency [Hz]')
 plt.ylabel('Linear spectrum [V RMS]')
 plt.title('Power Spectrum')
 plt.show()
-
-#Plots
 
 #Plot Spectrogram original signal
 NFFT = 4096
@@ -187,23 +182,3 @@ plt.colorbar(
 ).set_label('PSD [dB/Hz]', labelpad=-20, y=1.1, rotation=0)
 
 plt.show()
-
-"""
-#Plot Phase of a band of 5Hz between 995Hz and 1000Hz
-ax3 = plt.subplot(2, 1, 1)
-plt.angle_spectrum(original_signal, Fs = Fs)
-plt.ylabel('Phase [Rad]')
-plt.xlabel('Frequency [Hz]')
-plt.axis([995, 1000, -3.2, 3.2])
-plt.title('Original Signal Phase')
-
-ax4 = plt.subplot(2, 1, 2)
-plt.angle_spectrum(filtered_signal, Fs = Fs)
-plt.ylabel('Phase [Rad]')
-plt.xlabel('Frequency [Hz]')
-plt.axis([995, 1000, -3.2, 3.2])
-plt.title('Filtered Signal Phase')
-
-plt.tight_layout()
-plt.show()
-"""

@@ -15,16 +15,16 @@ from matplotlib import gridspec
 from scipy.io.wavfile import write
 from mosqito.functions.variant_filter.variant_filter import variant_filter
 
-"""
-parameters: 
-rhp - spectral noise density unit/SQRT(Hz)
-sr  - sample rate
-n   - no of points
-mu  - mean value, optional
 
-returns:
-n points of noise signal with spectral noise density of rho
-"""
+#White noise definition
+#Parameters:
+#   rhp - spectral noise density unit/SQRT(Hz)
+#   sr  - sample rate
+#   n   - no of points
+#   mu  - mean value, optional
+#Returns:
+#   n points of noise signal with spectral noise density of rho
+
 def white_noise(rho, sr, n, mu=0):
     sigma = rho * np.sqrt(sr/2)
     noise = np.random.normal(mu, sigma, n)
@@ -40,18 +40,20 @@ fs = 48000
 n = 480000
 period = n/fs
 
-time = np.linspace(0, period, n)
 #White noise generation
 white_noise = white_noise(rho, fs, n, mu=0)
 
 #Generating frequency signal
+time = np.linspace(0, period, n)
+
+#Acceleration ramp from 0 to 20000 Hz
 freq = 80*chirp(
     time, 
     f0=20, 
     f1=20000, 
     t1=10, 
     method='linear'
-) #Acceleration ramp from 0 to 20000 Hz
+) 
 
 #Adding noise to the signal
 
@@ -88,123 +90,40 @@ write('ramp_test_signal.wav', Fs, scaled_o)
 write('IIR_filtered_ramp_test_signal.wav.wav', Fs, scaled_iir)
 write('FIR_filtered_ramp_test_signal.wav.wav', Fs, scaled_fir)
 
- # Spectrum low f
-plt.figure()
-f, Pxx_spec_o = sig.welch(
-    original_signal[24000:48000], fs, 'flattop', 1024, scaling='spectrum'
-)
-plt.plot(
-    f, 20*np.log10(np.sqrt(Pxx_spec_o)), color = 'darkred',label="Original"
-)
+#Plotting results
 
-f, Pxx_spec_fir = sig.welch(
-    fir_filtered_signal[24000:48000], fs,'flattop', 1024, scaling='spectrum'
-)
-plt.plot(
-    f, 20*np.log10(np.sqrt(Pxx_spec_fir)), color = 'darkblue', linestyle='--', label="FIR"
-)
+#Average spectrum of 24000 samples
 
-f, Pxx_spec_iir = sig.welch(
-    iir_filtered_signal[24000:48000], fs,'flattop', 1024, scaling='spectrum'
-)
-plt.plot(
-    f, 20*np.log10(np.sqrt(Pxx_spec_iir)), color='darkgreen', linestyle='--', label="IIR"
-)
-
-plt.xlabel('Frequency [Hz]')
-plt.ylabel('dBV')
-plt.title('Spectrum')
-plt.xscale("log")
-plt.legend()
-plt.show()
-
-# Spectrum medium f
 plt.figure()
 f, Pxx_spec_o = sig.welch(
     original_signal[120000:144000], fs, 'flattop', 1024, scaling='spectrum'
 )
+or_m_data = 20*np.log10(np.sqrt(Pxx_spec_o))
 plt.plot(
-    f, 20*np.log10(np.sqrt(Pxx_spec_o)), color = 'darkred',label="Original"
+    f, or_m_data, color = 'darkred',label="Original"
 )
 
 f, Pxx_spec_fir = sig.welch(
     fir_filtered_signal[120000:144000], fs,'flattop', 1024, scaling='spectrum'
 )
+fir_m_data = 20*np.log10(np.sqrt(Pxx_spec_fir))
 plt.plot(
-    f, 20*np.log10(np.sqrt(Pxx_spec_fir)), color = 'darkblue', linestyle='--', label="FIR"
+    f, fir_m_data, color = 'darkblue', linestyle='--', label="FIR"
 )
 
 f, Pxx_spec_iir = sig.welch(
     iir_filtered_signal[120000:144000], fs,'flattop', 1024, scaling='spectrum'
 )
+iir_m_data = 20*np.log10(np.sqrt(Pxx_spec_iir))
 plt.plot(
-    f, 20*np.log10(np.sqrt(Pxx_spec_iir)), color='darkgreen', linestyle='--', label="IIR"
+    f, iir_m_data, color='darkgreen', linestyle='--', label="IIR"
 )
 
 plt.xlabel('Frequency [Hz]')
 plt.ylabel('dBV')
 plt.title('Spectrum')
-plt.xscale("log")
 plt.legend()
 plt.show()
-
-#♣Data recopilation 
-i=10
-j=0
-data_o = []
-data_fir = []
-data_iir = []
-data_f = []
-while(i<=len(Pxx_spec_o)):
-    data_o.append(20*np.log10(np.sqrt(Pxx_spec_o[i])))
-    data_fir.append(20*np.log10(np.sqrt(Pxx_spec_fir[i])))
-    data_iir.append(20*np.log10(np.sqrt(Pxx_spec_iir[i])))
-    data_f.append(f[i])
-    print(20*np.log10(np.sqrt(Pxx_spec_o[i]))-20*np.log10(np.sqrt(Pxx_spec_fir[i])), 'At FIR')
-    print(20*np.log10(np.sqrt(Pxx_spec_o[i]))-20*np.log10(np.sqrt(Pxx_spec_iir[i])), 'At IIR')
-    j = i
-    i = i + 10   
-
-# Spectrum high f
-plt.figure()
-f, Pxx_spec_o = sig.welch(
-    original_signal[440000:464000], fs, 'flattop', 1024, scaling='spectrum'
-)
-plt.plot(
-    f, 20*np.log10(np.sqrt(Pxx_spec_o)), color = 'darkred',label="Original"
-)
-
-f, Pxx_spec_fir = sig.welch(
-    fir_filtered_signal[440000:464000], fs,'flattop', 1024, scaling='spectrum'
-)
-plt.plot(
-    f, 20*np.log10(np.sqrt(Pxx_spec_fir)), color = 'darkblue', linestyle='--', label="FIR"
-)
-
-f, Pxx_spec_iir = sig.welch(
-    iir_filtered_signal[440000:464000], fs,'flattop', 1024, scaling='spectrum'
-)
-plt.plot(
-    f, 20*np.log10(np.sqrt(Pxx_spec_iir)), color='darkgreen', linestyle='--', label="IIR"
-)
-
-plt.xlabel('Frequency [Hz]')
-plt.ylabel('dBV')
-plt.title('Spectrum')
-plt.xscale("log")
-plt.legend()
-plt.show()
-
-#Plotting results
-'''
-f, psd = signal.periodogram(noise_plus_signal, fs)
-
-plt.semilogy(f[1:], np.sqrt(psd[1:]))
-plt.xlabel("frequency (Hz)")
-plt.ylabel("psd (arb.u./SQRT(Hz))")
-#plt.axvline(13, ls="dashed", color="g")
-plt.axhline(rho, ls="dashed", color="r")
-plt.show()'''
 
 #Plot Spectrogram of the noise and signals
 NFFT = 4096
@@ -248,6 +167,7 @@ plt.colorbar(
 ).set_label('PSD [dB/Hz]', labelpad=-20, y=1.1, rotation=0)
 
 plt.show()
+
 #Plot Spectrogram filtered signal IIR
 ax1 = plt.subplot(gs[0])
 pxx,  freq, t, cax = plt.specgram(

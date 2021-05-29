@@ -18,7 +18,7 @@ from mosqito.functions.variant_filter.variant_filter import variant_filter
 
 #Filter parameters
 harmonic_order = 2     #harmonics 1, 2, 3, ...
-att = 6
+att = 12
 
 #Signal parameters
 fs = 48000
@@ -28,16 +28,17 @@ period = n/fs
 #Generating frequency signal
 time = np.linspace(0, period, n)
 
+#Acceleration ramp from 0 to 15000 Hz
 freq = 400*chirp(
     time, 
     f0=20, 
     f1=15000, 
     t1=10, 
     method='linear'
-) #Acceleration ramp from 0 to 15000 Hz
+) 
 
 #Import data of the wav signal
-signal_path = "mosqito/tests/variant_filter/signals/vocal_test_signal_voice.wav"
+signal_path = "C:/josema_rep/MoSQITo/mosqito/tests/variant_filter/signals/vocal_test_signal_voice.wav"
 signal, fs = load(False, signal_path, calib = 2 * 2**0.5)
 signal = np.float64(signal[:,1])
 
@@ -71,26 +72,41 @@ scaled_iir = np.int16(iir_filtered_signal / scale * 32767)
 write('vocal_&_freq_signal.wav', Fs, scaled_o)
 write('FIR_filtered_vocal_&_freq_signal.wav', Fs, scaled_fir)
 write('IIR_filtered_vocal_&_freq_signal.wav', Fs, scaled_iir)
+
+#Plotting results
     
-#♣Data recopilation
-f, Pxx_spec = sig.welch(signal_plus_ramp[400000:424000], fs, 'hann', 1024, scaling='spectrum')
+#Average spectrum of 24000 samples
 plt.figure()
+
+f, Pxx_spec = sig.welch(
+    signal_plus_ramp[400000:424000], fs, 'flattop', 1024, scaling='spectrum'
+)
+
+plt.semilogy(
+    f, np.sqrt(Pxx_spec), color = 'darkred', label='original'
+)
+
+f, Pxx_spec = sig.welch(
+    fir_filtered_signal[400000:424000], fs,'flattop', 1024, scaling='spectrum'
+)
+plt.semilogy(
+    f, np.sqrt(Pxx_spec), color = 'darkblue', linestyle='-.', label='FIR'
+)
+
+f, Pxx_spec = sig.welch(
+    iir_filtered_signal[400000:424000], fs,'flattop', 1024, scaling='spectrum'
+)
+plt.semilogy(
+    f, np.sqrt(Pxx_spec), color='darkgreen', linestyle='--', label='IIR'
+)
+
 axes = plt.axes()
 axes.set_xlim([0,15000])
-plt.semilogy(f, np.sqrt(Pxx_spec), color = 'darkred', label='original')
-
-f, Pxx_spec = sig.welch(fir_filtered_signal[400000:424000], fs,'hann', 1024, scaling='spectrum')
-plt.semilogy(f, np.sqrt(Pxx_spec), color = 'darkblue', linestyle='-.', label='FIR')
-
-f, Pxx_spec = sig.welch(iir_filtered_signal[400000:424000], fs,'hann', 1024, scaling='spectrum')
-plt.semilogy(f, np.sqrt(Pxx_spec), color='darkgreen', linestyle='--', label='IIR')
 plt.xlabel('Frequency [Hz]')
 plt.ylabel('V RMS')
 plt.title('Spectrum')
 plt.legend()
 plt.show()
-
-#Plotting results
 
 #Plot Spectrogram of the noise and signals
 NFFT = 4096
