@@ -38,7 +38,7 @@ freq = 400*chirp(
 ) 
 
 #Import data of the wav signal
-signal_path = "C:/josema_rep/MoSQITo/mosqito/tests/variant_filter/signals/vocal_test_signal_voice.wav"
+signal_path = "mosqito/tests/variant_filter/signals/vocal_test_signal_voice.wav"
 signal, fs = load(False, signal_path, calib = 2 * 2**0.5)
 signal = np.float64(signal[:,1])
 
