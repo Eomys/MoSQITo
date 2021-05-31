@@ -13,8 +13,12 @@ from mosqito.functions.hearing_model.sine_wave_generator import sine_wave_genera
 from mosqito.functions.hearing_model.afb_ppal_parameters import afb_ppal_parameters
 from mosqito.functions.hearing_model.afb_coefficients import afb_coefficients
 from mosqito.functions.hearing_model.segmentation_blocks import segmentation_blocks
-from mosqito.functions.hearing_model.segmentation_blocks import segmentation_blocks_test_a
-from mosqito.functions.hearing_model.segmentation_blocks import segmentation_blocks_test_b
+from mosqito.functions.hearing_model.segmentation_blocks import (
+    segmentation_blocks_test_a,
+)
+from mosqito.functions.hearing_model.segmentation_blocks import (
+    segmentation_blocks_test_b,
+)
 from mosqito.functions.hearing_model.nonlinear_common import nonlinear_common
 from mosqito.functions.hearing_model.nonlinear_repeat import nonlinear_repeat
 from mosqito.functions.hearing_model.sone2phone import sone2phone
@@ -22,11 +26,11 @@ from mosqito.functions.hearing_model.sl_validation import annex_f_validation
 
 import sys
 
-sys.path.append('../../..')
+sys.path.append("../../..")
 
 
 def comp_loudness(signal, validation=False):
-    """ Calculation of specific loudness and total loudness of an input signal. It describes the loudness excitation
+    """Calculation of specific loudness and total loudness of an input signal. It describes the loudness excitation
     in a critical band per Bark. The output of the signal consists in a pair of array lists, one for specific loudness
     and the other one for total loudness.
 
@@ -69,7 +73,7 @@ def comp_loudness(signal, validation=False):
         [1.0, -0.3661, -0.2841],
         [1.0, -1.7960, 0.8058],
         [1.0, -1.9124, 0.9142],
-        [1.0, 0.1623, 0.2842]
+        [1.0, 0.1623, 0.2842],
     ]
     filter_b = [
         [1.0159, -1.9253, 0.9221],
@@ -79,7 +83,7 @@ def comp_loudness(signal, validation=False):
         [0.4717, -0.3661, 0.2441],
         [0.1153, 0.0000, -0.1153],
         [0.9880, -1.9124, 0.9261],
-        [1.9522, 0.1623, -0.6680]
+        [1.9522, 0.1623, -0.6680],
     ]
 
     """ AUDITORY FILTERING BANK """
@@ -110,22 +114,72 @@ def comp_loudness(signal, validation=False):
     c_N = 0.0217406
     alpha = 1.50
     threshold_db_array = np.array([15.0, 25.0, 35.0, 45.0, 55.0, 65.0, 75.0, 85.0])
-    v_i_array = np.array([1.0, 0.6602, 0.0864, 0.6384, 0.0328, 0.4068, 0.2082, 0.3994, 0.6434])
+    v_i_array = np.array(
+        [1.0, 0.6602, 0.0864, 0.6384, 0.0328, 0.4068, 0.2082, 0.3994, 0.6434]
+    )
     M_exponents = len(threshold_db_array)
-    a_exponent_array, pt_threshold_array = nonlinear_common(p_0,
-                                                            alpha,
-                                                            M_exponents,
-                                                            v_i_array,
-                                                            threshold_db_array)
+    a_exponent_array, pt_threshold_array = nonlinear_common(
+        p_0, alpha, M_exponents, v_i_array, threshold_db_array
+    )
 
     """ CONSIDERATION OF THRESHOLD IN QUIET """
     # "The specific loudness in each band z is zero if it is at or below a critical-band-dependent specific loudness
     # threshold LTQ(z)"
-    ltq_z = [0.3310, 0.1625, 0.1051, 0.0757, 0.0576, 0.0453, 0.0365, 0.0298, 0.0247, 0.0207, 0.0176, 0.0151, 0.0131,
-             0.0115, 0.0103, 0.0093, 0.0086, 0.0081, 0.0077, 0.0074, 0.0073, 0.0072, 0.0071, 0.0072, 0.0073, 0.0074,
-             0.0076, 0.0079, 0.0082, 0.0086, 0.0092, 0.0100, 0.0109, 0.0122, 0.0138, 0.0157, 0.0172, 0.0180, 0.0180,
-             0.0177, 0.0176, 0.0177, 0.0182, 0.0190, 0.0202, 0.0217, 0.0237, 0.0263, 0.0296, 0.0339, 0.0398, 0.0485,
-             0.0622]
+    ltq_z = [
+        0.3310,
+        0.1625,
+        0.1051,
+        0.0757,
+        0.0576,
+        0.0453,
+        0.0365,
+        0.0298,
+        0.0247,
+        0.0207,
+        0.0176,
+        0.0151,
+        0.0131,
+        0.0115,
+        0.0103,
+        0.0093,
+        0.0086,
+        0.0081,
+        0.0077,
+        0.0074,
+        0.0073,
+        0.0072,
+        0.0071,
+        0.0072,
+        0.0073,
+        0.0074,
+        0.0076,
+        0.0079,
+        0.0082,
+        0.0086,
+        0.0092,
+        0.0100,
+        0.0109,
+        0.0122,
+        0.0138,
+        0.0157,
+        0.0172,
+        0.0180,
+        0.0180,
+        0.0177,
+        0.0176,
+        0.0177,
+        0.0182,
+        0.0190,
+        0.0202,
+        0.0217,
+        0.0237,
+        0.0263,
+        0.0296,
+        0.0339,
+        0.0398,
+        0.0485,
+        0.0622,
+    ]
     specific_loudness_all_bands_array = []
 
     """ TOTAL LOUDNESS """
@@ -156,8 +210,16 @@ def comp_loudness(signal, validation=False):
     # the "sos" filtering
     signal_filtered = signal
     for ear_filter_number in range(ear_filter_order):
-        sos_ear.append([filter_b[ear_filter_number][0], filter_b[ear_filter_number][1], filter_b[ear_filter_number][2],
-                        filter_a[ear_filter_number][0], filter_a[ear_filter_number][1], filter_a[ear_filter_number][2]])
+        sos_ear.append(
+            [
+                filter_b[ear_filter_number][0],
+                filter_b[ear_filter_number][1],
+                filter_b[ear_filter_number][2],
+                filter_a[ear_filter_number][0],
+                filter_a[ear_filter_number][1],
+                filter_a[ear_filter_number][2],
+            ]
+        )
 
     """
     It is important to use the "filtfilt" version of the filter in order to reduce the lag in the results.
@@ -189,7 +251,9 @@ def comp_loudness(signal, validation=False):
     parameter. We decided to implement the second option as they did on ECMA-74.
     """
     for band_number in range(53):
-        centre_freq, f_bandwidth, t_delay, d_coefficients, sb, sh = afb_ppal_parameters(fs, band_number, filter_order_k)
+        centre_freq, f_bandwidth, t_delay, d_coefficients, sb, sh = afb_ppal_parameters(
+            fs, band_number, filter_order_k
+        )
 
         # Assignation of values to their respective array lists. These arrays will be passed to the validation function
         centre_freq_array.append(centre_freq)
@@ -200,10 +264,10 @@ def comp_loudness(signal, validation=False):
         sh_array.append(sh)
 
         # AFB - Coefficient calculation
-        am_mod_coefficient_array[band_number], bm_mod_coefficient_array[band_number] = afb_coefficients(fs,
-                                                                                                        filter_order_k,
-                                                                                                        centre_freq,
-                                                                                                        d_coefficients)
+        (
+            am_mod_coefficient_array[band_number],
+            bm_mod_coefficient_array[band_number],
+        ) = afb_coefficients(fs, filter_order_k, centre_freq, d_coefficients)
 
         """ 
         "scipy.signal.lfilter" instead of "scipy.signal.filtfilt" in order to maintain consistency. That process 
@@ -211,9 +275,17 @@ def comp_loudness(signal, validation=False):
         because of the non zero-phase filtering of "lfilter", but it has a more appropriate slope than filtfilt. 
         By using filtfilt the slope is that high that filters too much the signal. 
         """
-        band_pass_signal = 2.0 * (sp.signal.lfilter(bm_mod_coefficient_array[band_number],
-                                                    am_mod_coefficient_array[band_number], signal_filtered,
-                                                    axis=0)).real
+        band_pass_signal = (
+            2.0
+            * (
+                sp.signal.lfilter(
+                    bm_mod_coefficient_array[band_number],
+                    am_mod_coefficient_array[band_number],
+                    signal_filtered,
+                    axis=0,
+                )
+            ).real
+        )
 
         """ RECTIFICATION (F.3.4)
 
@@ -297,7 +369,12 @@ def comp_loudness(signal, validation=False):
                 sequence_product = 1.0
                 for i_position in range(M_exponents):
                     # "a_base" is used to store the value of the "i_position" element of the sequence
-                    a_base = np.power((rms_block_value / pt_threshold_array[i_position]), alpha) + 1.00
+                    a_base = (
+                        np.power(
+                            (rms_block_value / pt_threshold_array[i_position]), alpha
+                        )
+                        + 1.00
+                    )
 
                     # The first loop we do not have a previous element in the sequence ("sequence_product"). On each
                     # iteration the previous multiplication is multiplied by a new element
@@ -320,22 +397,37 @@ def comp_loudness(signal, validation=False):
                 it will give the same result for values that are lower than the threshold.
                 """
                 if signal.ndim == 2:
-                    left_value = 0.00 if (a_value[0] < ltq_z[band_number]) else a_value[0] - ltq_z[band_number]
-                    right_value = 0.00 if (a_value[1] < ltq_z[band_number]) else a_value[1] - ltq_z[band_number]
+                    left_value = (
+                        0.00
+                        if (a_value[0] < ltq_z[band_number])
+                        else a_value[0] - ltq_z[band_number]
+                    )
+                    right_value = (
+                        0.00
+                        if (a_value[1] < ltq_z[band_number])
+                        else a_value[1] - ltq_z[band_number]
+                    )
                     specific_loudness_aux.append(np.array([left_value, right_value]))
 
                 else:
-                    mono_value = 0.00 if (a_value < ltq_z[band_number]) \
+                    mono_value = (
+                        0.00
+                        if (a_value < ltq_z[band_number])
                         else a_value - ltq_z[band_number]
+                    )
 
                     specific_loudness_aux.append(np.array([mono_value]))
 
         # Next step line calls the function "nonlinear_repeat" that wil fill the necessary array slots in order to
         # then rearrange all the bands.
         # "np.insert" adds the empty array to the start of the blocks.
-        band_blocks_array = np.insert(nonlinear_repeat(np.array(specific_loudness_aux), band_number),
-                                      0, empty_loudness_array, axis=0)
-        print('Band: ' + str(band_number) + ', length: ' + str(len(band_blocks_array)))
+        band_blocks_array = np.insert(
+            nonlinear_repeat(np.array(specific_loudness_aux), band_number),
+            0,
+            empty_loudness_array,
+            axis=0,
+        )
+        # print('Band: ' + str(band_number) + ', length: ' + str(len(band_blocks_array)))
 
         specific_loudness_all_bands_array.append(band_blocks_array)
 
@@ -345,7 +437,12 @@ def comp_loudness(signal, validation=False):
     obtain arrays in which the elements of every array are the results per band for that specific block of signal, 
     we have to use the "zip" function. "zip" creates new arrays with elements that have the same index.
     """
-    n_array = np.array([loudness_per_block for loudness_per_block in zip(*specific_loudness_all_bands_array)])
+    n_array = np.array(
+        [
+            loudness_per_block
+            for loudness_per_block in zip(*specific_loudness_all_bands_array)
+        ]
+    )
 
     """ TOTAL LOUDNESS (F.3.7)
 
@@ -366,8 +463,22 @@ def comp_loudness(signal, validation=False):
     steps. On the other hand, if "validation" is set to True, it runs the validation function.
     """
     if validation:
-        annex_f_validation(fs, signal, signal_filtered, sos_ear, centre_freq_array, f_bandwidth_array, t_delay_array,
-                           d_coefficients_array, sb_array, sh_array, am_mod_coefficient_array, bm_mod_coefficient_array,
-                           band_pass_signal_array, n_array, t_array)
+        annex_f_validation(
+            fs,
+            signal,
+            signal_filtered,
+            sos_ear,
+            centre_freq_array,
+            f_bandwidth_array,
+            t_delay_array,
+            d_coefficients_array,
+            sb_array,
+            sh_array,
+            am_mod_coefficient_array,
+            bm_mod_coefficient_array,
+            band_pass_signal_array,
+            n_array,
+            t_array,
+        )
 
     return n_array, t_array
