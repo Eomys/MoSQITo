@@ -16,7 +16,7 @@ with open("requirements.txt", "r") as file:
         requirements
     ).splitlines()  # remove endline in each element
 
-tests_require = ["pytest>=5.4.1","pandas", "openpyxl"]
+tests_require = ["pytest>=5.4.1", "pandas", "openpyxl"]
 
 setuptools.setup(
     name="mosqito",
@@ -40,7 +40,5 @@ setuptools.setup(
     python_requires=python_requires,
     install_requires=install_requires,
     tests_require=tests_require,
-     extras_require={
-        'testing': tests_require
-    },
+    extras_require={"testing": tests_require},
 )
