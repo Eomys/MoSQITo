@@ -26,10 +26,10 @@ def equal_loudness_contours(phones):
     Returns
     -------
     spl_array: numpy.array
-        Sound pressure level (SPL) values.
+        Sound pressure level ('SPL') values.
 
     frequencies_array: numpy.array
-        Frequencies in which the function computes the resulting SPL values.
+        Frequencies in which the function computes the resulting 'SPL' values.
     """
     n_frequencies = 29
     freq_array = np.array([20.0, 25.0, 31.5, 40.0, 50.0, 63.0, 80.0, 100.0, 125.0, 160.0, 200.0, 250.0, 315.0, 400.0,

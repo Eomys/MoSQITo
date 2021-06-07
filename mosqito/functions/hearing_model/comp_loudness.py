@@ -31,9 +31,9 @@ sys.path.append("../../..")
 
 
 def comp_loudness(signal, validation=False):
-    """Calculation of specific loudness and total loudness of an input signal. It describes the loudness excitation
-    in a critical band per Bark. The output of the signal consists in a pair of array lists, one for specific loudness
-    and the other one for total loudness.
+    """Calculation of specific loudness and total loudness of an input signal according to ECMA-418-2. It describes the
+    loudness excitation in a critical band per Bark. The output of the signal consists in a pair of array lists, one
+    for specific loudness and the other one for total loudness.
 
     Parameters
     ----------
@@ -63,42 +63,6 @@ def comp_loudness(signal, validation=False):
     """
     # Signal dimensions
     dim = signal.ndim
-
-    """ AUDITORY FILTERING BANK """
-    # Order of the Outer and Middle ear filter
-    filter_order_k = 5
-    # Sampling frequency
-    fs = 48000.00
-    d_coefficients_array = []
-    # Step size
-    z_step_size = 0.50
-    # Centre frequencies F(z), 26.5/0.5 = 53
-    centre_freq_array = []
-    # F Bandwidth Af(z)
-    f_bandwidth_array = []
-    # Retardation
-    t_delay_array = []
-    # Block length and hop size lists
-    sb_array = []
-    sh_array = []
-    # Coefficients for the "Auditory Filtering Bank" part
-    am_mod_coefficient_array = np.zeros((53, int(filter_order_k + 1)), dtype=complex)
-    bm_mod_coefficient_array = np.zeros((53, int(filter_order_k + 1)), dtype=complex)
-    band_pass_signal_array = []
-
-    """ NON-LINEARITY. SOUND PRESSURE INTO SPECIFIC LOUDNESS """
-    p_0 = 2e-5
-    # c_N: In sones/bark
-    c_N = 0.0217406
-    alpha = 1.50
-    threshold_db_array = np.array([15.0, 25.0, 35.0, 45.0, 55.0, 65.0, 75.0, 85.0])
-    v_i_array = np.array(
-        [1.0, 0.6602, 0.0864, 0.6384, 0.0328, 0.4068, 0.2082, 0.3994, 0.6434]
-    )
-    M_exponents = len(threshold_db_array)
-    a_exponent_array, pt_threshold_array = nonlinear_common(
-        p_0, alpha, M_exponents, v_i_array, threshold_db_array
-    )
 
     """ CONSIDERATION OF THRESHOLD IN QUIET """
     # "The specific loudness in each band z is zero if it is at or below a critical-band-dependent specific loudness
@@ -158,12 +122,49 @@ def comp_loudness(signal, validation=False):
         0.0485,
         0.0622,
     ]
+
+    """ AUDITORY FILTERING BANK """
+    # Order of the Outer and Middle ear filter
+    filter_order_k = 5
+    # Sampling frequency
+    fs = 48000.00
+    d_coefficients_array = []
+    # Step size
+    z_step_size = 0.50
+    # Centre frequencies F(z), 26.5/0.5 = 53
+    centre_freq_array = []
+    # F Bandwidth Af(z)
+    f_bandwidth_array = []
+    # Retardation
+    t_delay_array = []
+    # Block length and hop size lists
+    sb_array = []
+    sh_array = []
+    # Coefficients for the "Auditory Filtering Bank" part
+    am_mod_coefficient_array = np.zeros((53, int(filter_order_k + 1)), dtype=complex)
+    bm_mod_coefficient_array = np.zeros((53, int(filter_order_k + 1)), dtype=complex)
+    band_pass_signal_array = []
+
+    """ NON-LINEARITY. SOUND PRESSURE INTO SPECIFIC LOUDNESS """
+    p_0 = 2e-5
+    # c_N: In sones/bark
+    c_N = 0.0217406
+    alpha = 1.50
+    threshold_db_array = np.array([15.0, 25.0, 35.0, 45.0, 55.0, 65.0, 75.0, 85.0])
+    v_i_array = np.array(
+        [1.0, 0.6602, 0.0864, 0.6384, 0.0328, 0.4068, 0.2082, 0.3994, 0.6434]
+    )
+    M_exponents = len(threshold_db_array)
+    a_exponent_array, pt_threshold_array = nonlinear_common(
+        p_0, alpha, M_exponents, v_i_array, threshold_db_array
+    )
+
     specific_loudness_all_bands_array = []
 
     """ TOTAL LOUDNESS """
     total_loudness_array = []
 
-    """ OUTER AND MIDDLE EAR FILTERING (F.3.2)
+    """ OUTER AND MIDDLE EAR FILTERING (5.1.2)
 
     It is important to use the "filtfilt" version of the filter in order to reduce the lag in the results.
     The Auditory Filtering Bank must be done by filtering with a non zero-phase filter in order to avoid filtering the
@@ -175,18 +176,18 @@ def comp_loudness(signal, validation=False):
     signal_filtered = signal
     signal_filtered = sp.signal.sosfiltfilt(sos_ear, signal_filtered, axis=0)
 
-    """ AUDITORY FILTERING BANK (F.3.4)
+    """ AUDITORY FILTERING BANK (5.1.3)
 
     In the following section, the signal is filtered by a series of 53 asymmetric and overlapping filters. They are 
     supposed to replicate the activation process of the auditory hair cells, and their shape matches the one from the 
     gammatone filters. First, we have to calculate the parameters (central frequency, bandwidth, delay, and "d" 
-    coefficient) that are going to define our filter and that are used in the recursive formula (F.10). Second, we have 
-    to link the critical band rate scale "z", with a certain hop size "sh_array" and its band dependent block size 
-    "sb_array" (Table G.1). After that, it comes the coefficient calculation (F.11 and F.12), in which we compute the 
-    values for the filter coefficients (*), and we store them in a list. Finally, the end of this section comes with 
-    the filtering of the signal.
+    coefficient) that are going to define our filter and that are used in the recursive formula number 10. Second, 
+    we have to link the critical band rate scale "z", with a certain hop size "sh_array" and its band dependent block 
+    size "sb_array" (Table G.1). After that, it comes the coefficient calculation (Formula 11 and 12), in which we 
+    compute the values for the filter coefficients (*), and we store them in a list. Finally, the end of this section 
+    comes with the filtering of the signal.
 
-    (*) An error in the standard has been found in expressions F.13 and F.14. The prior paragraph says that in order to 
+    (*) An error in the standard has been found in expressions 13 and 14. The prior paragraph says that in order to 
     obtain the approximation of the band-pass filter, the low-pass filter coefficients shall be modified by adding a 
     negative exponential with the transformation parameters "complex_exponential". If we try to develop the filter with 
     these guidelines, we find that the resulting filter is a low-pass filter, not a band-pass. The actual way of 
@@ -195,7 +196,7 @@ def comp_loudness(signal, validation=False):
     options in order to fix this. Either we make 2 transformations, one to the right and another one to the left, and 
     we adapt the transformation parameter, or we take for granted the last transformation by discarding the complex part 
     of the filter and multiplying by "2" (two transformations) and by a cosine with the original transformation 
-    parameter. We decided to implement the second option as they did on ECMA-74.
+    parameter. We decided to implement the second option as they did on ECMA-418-2.
     """
     for band_number in range(53):
         centre_freq, f_bandwidth, t_delay, d_coefficients, sb, sh = afb_ppal_parameters(
@@ -234,7 +235,7 @@ def comp_loudness(signal, validation=False):
             ).real
         )
 
-        """ RECTIFICATION (F.3.4)
+        """ RECTIFICATION (5.1.5)
 
         This part acts as the activation of the auditory nerves when the basilar membrane vibrates in a certain 
         direction. In order to rectify the signal we are using "np.clip" which establish a minimum and a maximum value
@@ -244,7 +245,7 @@ def comp_loudness(signal, validation=False):
         band_pass_signal_hr = np.clip(band_pass_signal, a_min=0.00, a_max=None)
         band_pass_signal_array.append(band_pass_signal_hr)
 
-        """ SEGMENTATION OF THE SIGNAL INTO BLOCKS (F.3.5)
+        """ SEGMENTATION OF THE SIGNAL INTO BLOCKS (5.1.4)
 
         The segmentation of the signal is done in order to obtain results for intervals of time, not for the whole 
         duration of the signal. The reason behind this decision resides in the fact that processing the signal in its 
@@ -255,11 +256,11 @@ def comp_loudness(signal, validation=False):
         """
         block_array = segmentation_blocks(band_pass_signal_hr, sb, sh, dim)
 
-        """ ROOT-MEAN-SQUARE (F.3.5)
+        """ ROOT-MEAN-SQUARE (5.1.6)
 
-        After the segmentation of the signal into blocks, root-mean square values of each block are calculated (F.17). 
-        Some of the necessary steps that are general to all of the blocks have been priorly calculated in order to reach 
-        a better performance. 
+        After the segmentation of the signal into blocks, root-mean square values of each block are calculated in 
+        Formula 17). Some of the necessary steps that are general to all of the blocks have been priorly calculated 
+        in order to reach a better performance. 
         We have to initialize here "a_array" (array of A values) and "specific_loudness_array" (array of specific 
         loudness values), in order to treat each band-pass signal separately.
         """
@@ -305,13 +306,13 @@ def comp_loudness(signal, validation=False):
                     plt.show()
                     """
 
-                """ NON-LINEARITY (F.3.6)
+                """ NON-LINEARITY (5.1.7)
 
                 This section covers the other part of the calculations needed to consider the non-linear transformation 
                 of sound pressure to specific loudness that does the the auditory system. After this point, the 
                 computation is done equally to every block in which we have divided our signal. The following loop makes 
-                possible the product of the sequence shown in F.18. "M_exponents" equals "M", which is the number of 
-                given exponents.
+                possible the product of the sequence shown in Formula 18. "M_exponents" equals "M", which is the number 
+                of given exponents.
                 """
                 sequence_product = 1.0
                 for i_position in range(M_exponents):
@@ -331,7 +332,7 @@ def comp_loudness(signal, validation=False):
                 # It is the same value as the "specific loudness" without consideration of the threshold in quiet
                 a_value = c_N * (rms_block_value / p_0) * sequence_product
 
-                """ SPECIFIC LOUDNESS CONSIDERING THE THRESHOLD IN QUIET (F.3.7)
+                """ SPECIFIC LOUDNESS CONSIDERING THE THRESHOLD IN QUIET (5.1.8)
 
                 The next calculation helps us obtain the result for the specific loudness - specific loudness with 
                 consideration of the lower threshold of hearing. After all the calculations that have been done, 
@@ -340,7 +341,7 @@ def comp_loudness(signal, validation=False):
                 sentences in order to simplify the reading.
 
                 ** ATTENTION ** This part gives problems later on, if we leave this part as it is it converts negative 
-                results to zero. That conversion makes sense but it causes that the Figure F.5 is not well represented,
+                results to zero. That conversion makes sense but it causes that the Figure 5 is not well represented,
                 it will give the same result for values that are lower than the threshold.
                 """
                 if signal.ndim == 2:
@@ -391,13 +392,13 @@ def comp_loudness(signal, validation=False):
         ]
     )
 
-    """ TOTAL LOUDNESS (F.3.7)
+    """ TOTAL LOUDNESS (5.1.8)
 
-    Inside the next "for loop", we are calculating the total loudness F.21 for each block of audio in which we divided 
-    our signal. After that, we append that value (stereo or mono) to an array list "total_loudness_array". "n_block" is 
-    an array of all the N values of each band in that specific audio part (block). After the for loop and the creation 
-    of the array list "total_loudness_array", we have to convert that list to a numpy array in order to maintain stereo 
-    format when needed.
+    Inside the next "for loop", we are calculating the total loudness (Formula 21) for each block of audio in which 
+    we divided our signal. After that, we append that value (stereo or mono) to an array list "total_loudness_array". 
+    "n_block" is an array of all the N values of each band in that specific audio part (block). After the for loop and 
+    the creation of the array list "total_loudness_array", we have to convert that list to a numpy array in order to 
+    maintain stereo format when needed.
     """
     for n_block in n_array:
         total_loudness_value = np.sum(n_block, axis=0) * z_step_size

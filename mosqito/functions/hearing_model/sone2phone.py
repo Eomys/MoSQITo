@@ -13,8 +13,8 @@ def sone2phone(sones):
     Parameters
     ----------
     sones: float
-        One of the units in which loudness is measured. 1 sone is equal to 40 phones. The conversion between sones
-        and phones is not linear.
+        One of the units in which loudness is measured. 1 sone equals to 40 phones. The conversion from sones to phones
+        is not linear.
 
     Returns
     -------

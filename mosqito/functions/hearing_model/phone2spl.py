@@ -7,12 +7,12 @@ import numpy as np
 
 
 def phone2spl(phones, tf, af, lu):
-    """ Conversion from phones to Sound Pressure Level (dB SPL), based on thestandard ISO/FDIS 226:2003.
+    """ Conversion from phones to Sound Pressure Level (dB SPL), based on the standard ISO/FDIS 226:2003.
 
     Parameters
     ----------
     phones: float
-        Logarithmic unit of loudness (phon = Ln).
+        Logarithmic unit of loudness ('phon' = Ln).
 
     tf: float
         Threshold of hearing.
@@ -26,7 +26,7 @@ def phone2spl(phones, tf, af, lu):
     Returns
     -------
     spl: float
-        Sound pressure level (dB SPL).
+        Sound pressure level ('dB SPL').
 
     """
     # "Af" is argument of the dB SPL conversion formula

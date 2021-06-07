@@ -30,7 +30,7 @@ def sine_wave_generator(fs, t, spl_value, freq):
     Returns
     -------
     signal: numpy.array
-        'Pa', time signal values. For the ECMA-74 sampling frequency of the signal must be 48000 Hz.
+        'Pa', time signal values. For ECMA-418-2 the sampling frequency of the signal must be 48000 Hz.
 
     time: numpy.array
         Time scale arranged in a numpy array.

@@ -392,8 +392,8 @@ def tl_validation(dim, t_array):
 def annex_f_validation(fs, signal, signal_filtered, sos_ear, centre_freq_array, f_bandwidth_array, t_delay_array,
                        d_coefficients_array, sb_array, sh_array, am_mod_coefficient_array, bm_mod_coefficient_array,
                        band_pass_signal_array, n_array, t_array):
-    """ Function that serves for the validation of the principal parameters presented in Annex F of ECMA-74. As well as
-    the general validation, here it is also verified the final result for specific and total loudness.
+    """ Function that serves for the validation of the principal parameters presented in section 5 of ECMA-418-2.
+    As well as the general validation, here it is also verified the final result for specific and total loudness.
 
     Parameters
     ----------

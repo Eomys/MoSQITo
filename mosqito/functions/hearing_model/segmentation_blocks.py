@@ -8,7 +8,7 @@ import numpy as np
 
 def segmentation_blocks(band_pass_signal_hr, sb, sh, dim):
     """ Function used for the segmentation of the signal into smaller parts of audio (blocks). This has been implemented
-    as described in formula F.16 (section F.3.5) of Annex F (ECMA-74).
+    as described in Formula 16 (section 5.1.4) of ECMA-418-2.
 
     Parameters
     ----------

@@ -8,17 +8,18 @@ def gammatone(freq, order=5, fs=48000):
     """
     ECMA-74 Gammatone filter design
 
-    This function computes the coefficients of a gammatone digital filter
-    according to ECMA-74:2019 section F 3.3
+    This function computes the coefficients of a gammatone digital filter according to ECMA-418-2 section 5.1.3.
 
     Parameters
     ----------
     freq: float
-        Center frequency of the filter [Hz]
+        Center frequency of the filter ['Hz'].
+
     order: int, optional
-        The order of the filter. Default is 5 according to ECMA-74
+        The order of the filter. Default is "5" according to ECMA-418.2.
+
     fs: float, optional
-        The sampling frequency of the signal. Default is 48000.
+        The sampling frequency of the signal. Default is 48000 Hz.
 
     Returns
     -------

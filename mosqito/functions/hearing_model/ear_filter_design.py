@@ -2,17 +2,17 @@
 
 
 def ear_filter_design():
-    """Return second-order filter coefficients of outer and middle/inner ear
-    filter according to ECMA-74:2019
+    """Return second-order filter coefficients of outer and middle/inner ear filter according to ECMA-418-2
+    section 5.1.2.
 
     The first section psycho-acoustic hearing model of the Annex F corresponds to the signal filtering (*) done in the
     outer and middle ear.
     As it is described in the annex: "The filter is optimized  on the equal-loudness contours of ISO 226:2003 for
     frequencies higher than 1 kHz. For lower frequencies, the equal-loudness contours of ISO 226:1987 are chosen as
     target because there is a large uncertainty of the experimental data at low frequencies".
-    We have to filter the signal with a high order filter (order = 8) (F.1), which is implemented as serially-cascaded
-    second-order filters (digital biquad filter) with the recursive formula F.2. The coefficient for the filters are
-    shown in table F.1. Each filter has its coefficients normalized to for having a0=1 on each one.
+    We have to filter the signal with a high order filter (order = 8) (Formula 1), which is implemented as
+    serially-cascaded second-order filters (digital biquad filter) with the recursive Formula 2. The coefficient for
+    the filters are shown in Table 1. Each filter has its coefficients normalized to for having a0=1 on each one.
     Also, for the implementation of these filters, we decided to use "scipy.signal.sosfiltfilt", which takes the filter
     coefficients in "sos" format (**) and filters the signal twice times, once forward and once backwards. Consequently,
     the "sosfiltfilt" does not make possible to use this code in real-time situations, to change that use
@@ -21,6 +21,13 @@ def ear_filter_design():
     (*) Filter coefficient values for the actual version of ECMA-74 (17th Edition/June 2019). Coefficients have changed
     from the previous version to the actual one.
     (**) sos format: b0, b1, b2, a0, a1, a2
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
     """
 
     # Filer coefficients

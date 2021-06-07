@@ -18,6 +18,9 @@ def nonlinear_repeat(specific_loudness_array, band_number):
     band_number: int
         Band number in which the filter is going to be applied over the signal.
 
+    Parameters
+    ----------
+
     Returns
     -------
     sl_array_rep: numpy.array

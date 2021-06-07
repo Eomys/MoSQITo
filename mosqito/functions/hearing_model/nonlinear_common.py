@@ -20,10 +20,10 @@ def nonlinear_common(p_0, alpha, m_exponents, v_i_array, threshold_db_array):
         Constant for the exponent.
 
     m_exponents: int
-        Max index of the multiplication sequence in F.18.
+        Max index of the multiplication sequence in Formula 18.
 
     v_i_array: numpy.array
-        Exponents for the multiplication sequence in F.18.
+        Exponents for the multiplication sequence in Formula 18.
 
     threshold_db_array: numpy.array
         Thresholds for their corresponding "vi" exponent.

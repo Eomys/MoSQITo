@@ -11,7 +11,7 @@ from scipy.special import comb
 def afb_ppal_parameters(fs, band_number, filter_order_k):
     """ Principal parameters for the Auditory Filtering Bank coefficients and other calculations in later sections:
     central frequency, bandwidth, delay, d coefficient, block size and hop size.
-    This has been implemented as described in section F.3.3 of Annex F (ECMA-74).
+    This has been implemented as described in section 5.1.3 of ECMA-418-2.
 
     Parameters
     ----------
@@ -45,8 +45,8 @@ def afb_ppal_parameters(fs, band_number, filter_order_k):
         Hop size.
     """
     z_step_size = 0.50
-    af_f0 = 81.9289  # ECMA-74
-    c = 0.1618  # ECMA-74
+    af_f0 = 81.9289  # ECMA-418-2
+    c = 0.1618  # ECMA-418-2
 
     # Exponent of the delay
     exponent_1 = (2.0 * filter_order_k) - 1.0
@@ -71,7 +71,7 @@ def afb_ppal_parameters(fs, band_number, filter_order_k):
     # "d" coefficient
     d_coefficients = float(np.exp((-1.0) / (fs * t_delay)))
 
-    # Block length and hop size, for further calculations (Root-Mean-Square Values,F.3.5)
+    # Block length and hop size, for further calculations (Root-Mean-Square Values, section 5.1.6)
     if z >= 13:
         sb = 1024
         sh = 256

@@ -10,9 +10,9 @@ from scipy.special import comb
 
 
 def afb_coefficients(fs, filter_order_k, centre_freq, d_coefficients):
-    """ Function for the calculation of the filter coefficients in the Auditory Filtering Bank section (F.3.3). Here, as
+    """ Function for the calculation of the filter coefficients in the Auditory Filtering Bank section (5.1.3). Here, as
     it has been mentioned in the principal function for the specific loudness, it is calculated the band-pass equivalent
-    of the low-pass filter. The typo/error found in the formulas (F.13 and F.14) presented in the ECMA-74 has been
+    of the low-pass filter. The typo/error found in the formulas (13 and 14) presented in the ECMA-418-2 has been
     already corrected.
 
     Parameters
