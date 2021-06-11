@@ -6,7 +6,7 @@ from scipy.special import comb
 
 def gammatone(freq, order=5, fs=48000):
     """
-    ECMA-74 Gammatone filter design
+    ECMA-418-2 Gammatone filter design
 
     This function computes the coefficients of a gammatone digital filter according to ECMA-418-2 section 5.1.3.
 

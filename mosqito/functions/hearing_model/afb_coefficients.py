@@ -10,7 +10,7 @@ from scipy.special import comb
 
 
 def afb_coefficients(fs, filter_order_k, centre_freq, d_coefficients):
-    """ Function for the calculation of the filter coefficients in the Auditory Filtering Bank section (5.1.3). Here, as
+    """Function for the calculation of the filter coefficients in the Auditory Filtering Bank section (5.1.3). Here, as
     it has been mentioned in the principal function for the specific loudness, it is calculated the band-pass equivalent
     of the low-pass filter. The typo/error found in the formulas (13 and 14) presented in the ECMA-418-2 has been
     already corrected.
@@ -37,6 +37,8 @@ def afb_coefficients(fs, filter_order_k, centre_freq, d_coefficients):
     bm_mod_coefficient_band_array: numpy.array
         "bm" coefficient to filter a signal.
     """
+    print("This function is deprecated and will be removed form the project")
+
     # The "e" coefficients are used for the calculation of the bm coefficients for the Auditory Filtering Bank
     e_coefficients_array = [0.0, 1.0, 11.0, 11.0, 1.0]
     # Coefficients for the "Auditory Filtering Bank"
@@ -49,14 +51,16 @@ def afb_coefficients(fs, filter_order_k, centre_freq, d_coefficients):
     # "b" summation sequence, fraction calculation (F.12)
     for j in range(filter_order_k - 1):
         iterator_sum = j + 1
-        bm_sum = bm_sum + (e_coefficients_array[iterator_sum] * (d_coefficients ** iterator_sum))
+        bm_sum = bm_sum + (
+            e_coefficients_array[iterator_sum] * (d_coefficients ** iterator_sum)
+        )
 
     bm_numerator = (1 - d_coefficients) ** filter_order_k
     bm_fraction = bm_numerator / bm_sum
 
     # Implementation of the recursive formula (F.10)
     for m in range(filter_order_k + 1):
-        exp_factor = ((2 * math.pi * centre_freq * m) / fs)
+        exp_factor = (2 * math.pi * centre_freq * m) / fs
         complex_exponential = 1j * exp_factor
 
         # Binomial coefficient, "am" coefficient calculation (F.11)
@@ -74,7 +78,9 @@ def afb_coefficients(fs, filter_order_k, centre_freq, d_coefficients):
         if m == filter_order_k:
             bm_coefficient = 0.0
         else:
-            bm_coefficient = bm_fraction * (d_coefficients ** m) * e_coefficients_array[m]
+            bm_coefficient = (
+                bm_fraction * (d_coefficients ** m) * e_coefficients_array[m]
+            )
 
         # Transformation from low-pass filter coefficients to band-pass.
         # (*) In this step is where the error that is mentioned at the start of the Auditory Filtering Bank section

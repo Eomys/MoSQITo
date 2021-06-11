@@ -11,8 +11,11 @@ from scipy.signal import welch
 from mosqito.functions.shared.load import load
 from mosqito.functions.hearing_model.sine_wave_generator import sine_wave_generator
 from mosqito.functions.hearing_model.ear_filter_design import ear_filter_design
+from mosqito.functions.hearing_model.gen_auditory_filters_centre_freq import (
+    gen_auditory_filters_centre_freq,
+)
+from mosqito.functions.hearing_model.gammatone import gammatone
 from mosqito.functions.hearing_model.afb_ppal_parameters import afb_ppal_parameters
-from mosqito.functions.hearing_model.afb_coefficients import afb_coefficients
 from mosqito.functions.hearing_model.segmentation_blocks import segmentation_blocks
 from mosqito.functions.hearing_model.segmentation_blocks import (
     segmentation_blocks_test_a,
@@ -198,24 +201,12 @@ def comp_loudness(signal, validation=False):
     of the filter and multiplying by "2" (two transformations) and by a cosine with the original transformation 
     parameter. We decided to implement the second option as they did on ECMA-418-2.
     """
+    centre_freq = gen_auditory_filters_centre_freq()
     for band_number in range(53):
-        centre_freq, f_bandwidth, t_delay, d_coefficients, sb, sh = afb_ppal_parameters(
-            fs, band_number, filter_order_k
-        )
-
-        # Assignation of values to their respective array lists. These arrays will be passed to the validation function
-        centre_freq_array.append(centre_freq)
-        f_bandwidth_array.append(f_bandwidth)
-        t_delay_array.append(t_delay)
-        d_coefficients_array.append(d_coefficients)
-        sb_array.append(sb)
-        sh_array.append(sh)
-
-        # AFB - Coefficient calculation
         (
-            am_mod_coefficient_array[band_number],
             bm_mod_coefficient_array[band_number],
-        ) = afb_coefficients(fs, filter_order_k, centre_freq, d_coefficients)
+            am_mod_coefficient_array[band_number],
+        ) = gammatone(centre_freq[band_number], order=5, fs=fs)
 
         """ 
         "scipy.signal.lfilter" instead of "scipy.signal.filtfilt" in order to maintain consistency. That process 
@@ -254,6 +245,7 @@ def comp_loudness(signal, validation=False):
         "band_number" in which we are processing the signal. "sh_array" is the step size, the time shift to the next 
         block.
         """
+        _, _, _, _, sb, sh = afb_ppal_parameters(fs, band_number, filter_order_k)
         block_array = segmentation_blocks(band_pass_signal_hr, sb, sh, dim)
 
         """ ROOT-MEAN-SQUARE (5.1.6)
