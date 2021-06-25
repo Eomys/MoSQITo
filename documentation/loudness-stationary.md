@@ -16,23 +16,23 @@ The test signals n°2 to 5 (annex B3 of the standard) provides .wav files to be 
 
 The plots below compares the MOSQITO loudness calculations for all the tests signals to the compliance requirements of the standards. 
 
-![](..\validations\loudness_zwicker\output\validation_loudness_zwicker_stationary_Test_signal_1.png)
+![](../validations/loudness_zwicker/output/validation_loudness_zwicker_stationary_Test_signal_1.png)
 
 *Loudness calculation for ISO 532-1 test signal n°1 (machinery noise in free field)*
 
-![](..\validations\loudness_zwicker\output\validation_loudness_zwicker_stationary_Test_signal_2_(250_Hz_80_dB).png)
+![](../validations/loudness_zwicker/output/validation_loudness_zwicker_stationary_Test_signal_2_(250_Hz_80_dB).png)
 
 *Loudness calculation for ISO 532-1 test signal n°2 (250 Hz tone in free field with a level of 80 dB)*
 
-![](..\validations\loudness_zwicker\output\validation_loudness_zwicker_stationary_Test_signal_3_(1_kHz_60_dB).png)
+![](../validations/loudness_zwicker/output/validation_loudness_zwicker_stationary_Test_signal_3_(1_kHz_60_dB).png)
 
 *Loudness calculation for ISO 532-1 test signal n°3 (1 kHz tone in free field with a level of 60 dB)*
 
-![](..\validations\loudness_zwicker\output\validation_loudness_zwicker_stationary_Test_signal_4_(4_kHz_40_dB).png)
+![](../validations/loudness_zwicker/output/validation_loudness_zwicker_stationary_Test_signal_4_(4_kHz_40_dB).png)
 
 *Loudness calculation for ISO 532-1 test signal n°4 (4 kHz tone in free field with a level of 40 dB)*
 
-![](..\validations\loudness_zwicker\output\validation_loudness_zwicker_stationary_Test_signal_5_(pinknoise_60_dB).png)
+![](../validations/loudness_zwicker/output/validation_loudness_zwicker_stationary_Test_signal_5_(pinknoise_60_dB).png)
 
 *Loudness calculation for ISO 532-1 test signal n°5 (pink noise in free field with an overall level of 60 dB)*
 
