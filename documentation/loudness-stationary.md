@@ -12,7 +12,7 @@ The ISO 532-1:2017 standard provides a set of synthetic and technical signals co
 
 The test signal n°1 (annex B2 of the standard) provides third octave levels to be used as input for stationary loudness calculation.
 
-The test signals n°2 to 5 (annex B3 of the standard) provides .wav files to be used as input for stationary loudness calculation. A step by step description of how to use MOSQITO to calculate the loudness and the specific loudness from signal n°3 is given in [this tutorial](../tutorials/tuto_Loudness.ipynb).
+The test signals n°2 to 5 (annex B3 of the standard) provides .wav files to be used as input for stationary loudness calculation. A step by step description of how to use MOSQITO to calculate the loudness and the specific loudness from signal n°3 is given in [this tutorial](../tutorials/tuto_loudness.ipynb).
 
 The plots below compares the MOSQITO loudness calculations for all the tests signals to the compliance requirements of the standards. 
 
@@ -36,7 +36,7 @@ The plots below compares the MOSQITO loudness calculations for all the tests sig
 
 *Loudness calculation for ISO 532-1 test signal n°5 (pink noise in free field with an overall level of 60 dB)*
 
-*All the validation plots and scripts can be found in [this folder](..\validations\loudness_zwicker).*
+*All the validation plots and scripts can be found in [this folder](../validations/loudness_zwicker).*
 
 ### References
 
