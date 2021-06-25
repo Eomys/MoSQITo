@@ -7,7 +7,7 @@ import numpy as np
 
 
 def segmentation_blocks(band_pass_signal_hr, sb, sh, dim):
-    """ Function used for the segmentation of the signal into smaller parts of audio (blocks). This has been implemented
+    """Function used for the segmentation of the signal into smaller parts of audio (blocks). This has been implemented
     as described in Formula 16 (section 5.1.4) of ECMA-418-2.
 
     Parameters
@@ -29,6 +29,14 @@ def segmentation_blocks(band_pass_signal_hr, sb, sh, dim):
     block_array: List[None]
         Array list of blocks in which the signal has been segmented.
     """
+
+    i_begin = 0
+    block_array = []
+    while i_begin + sb < len(band_pass_signal_hr):
+        block_array.append(band_pass_signal_hr[i_begin : i_begin + sb])
+        i_begin += sh
+
+    """ INITIAL VERSION
     # Creation of the first empty block
     if dim == 2:
         first_block = np.zeros((sb, dim), dtype=float)
@@ -41,12 +49,13 @@ def segmentation_blocks(band_pass_signal_hr, sb, sh, dim):
     # For loop that helps to cut the signal into different blocks
     block_array = [band_pass_signal_hr_complete[block_s: block_s + sb]
                    for block_s in range(0, len(band_pass_signal_hr_complete), sh)]
+    """
 
     return block_array
 
 
 def segmentation_blocks_test_a(band_pass_signal_hr, sb, sh, dim):
-    """ THIS SECTION REMAINS FOR TESTING PURPOSES
+    """THIS SECTION REMAINS FOR TESTING PURPOSES
 
     Function used for the segmentation of the signal into smaller parts of audio (blocks). This implementation
     has been modified in order to make a simpler version of the original one. After the tests, it has been proven that
@@ -74,14 +83,16 @@ def segmentation_blocks_test_a(band_pass_signal_hr, sb, sh, dim):
         Array list of blocks in which the signal has been segmented.
     """
     # Creation of the Array list of blocks with a specific block size (sb) and hop size (sh)
-    block_array = [band_pass_signal_hr[block_s: block_s + sb]
-                   for block_s in range(0, len(band_pass_signal_hr), sh)]
+    block_array = [
+        band_pass_signal_hr[block_s : block_s + sb]
+        for block_s in range(0, len(band_pass_signal_hr), sh)
+    ]
 
     return block_array
 
 
 def segmentation_blocks_test_b(band_pass_signal_hr, sb, sh, dim):
-    """ THIS SECTION REMAINS FOR TESTING PURPOSES
+    """THIS SECTION REMAINS FOR TESTING PURPOSES
 
     Function used for the segmentation of the signal into smaller parts of audio (blocks). This has been implemented
     as described in formula F.16 (section F.3.5) of Annex F (ECMA-74). It has some issues  when the input signal is
@@ -127,13 +138,16 @@ def segmentation_blocks_test_b(band_pass_signal_hr, sb, sh, dim):
         block = np.zeros((sb, band_pass_signal_hr.ndim), dtype=float)
 
         # Here is stated the range for the assignment
-        p_range = (sb - (block_number * sh))
+        p_range = sb - (block_number * sh)
         # Assignment position
         p_segmented = (block_number * sh) - sb
 
         for n_segmentation in range(sb):
-            block[n_segmentation] = band_pass_signal_hr[p_segmented + n_segmentation] \
-                if (n_segmentation >= p_range) else empty_value
+            block[n_segmentation] = (
+                band_pass_signal_hr[p_segmented + n_segmentation]
+                if (n_segmentation >= p_range)
+                else empty_value
+            )
 
         # Block assignment
         block_array.append(block)
