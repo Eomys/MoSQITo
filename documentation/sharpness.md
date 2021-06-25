@@ -11,11 +11,11 @@ The code is based on the version of the standard published in 2009 and the loudn
 
 The DIN 45692:2009 standard provides a set of synthetic and technical signals covering representative applications to be used to validate any of its implementation. The standards also provides the compliance requirements for a set of broad-band noises and narrow-band noises. The sharpness is calculated by mosqito for the 20 broad-band signals  and for the 21 narrow-band signals filtered with different center frequencies provided with the standard. The results are compared to the requirements in the figures below.
 
-![](../mosqito/validations/sharpness/output/validation_sharpness_Broad-band_noise.png)
+![](../validations/sharpness/output/validation_sharpness_Broad-band_noise.png)
 
-![](../mosqito/validations/sharpness/output/validation_sharpness_Narrow-band_noise.png)
+![](../validations/sharpness/output/validation_sharpness_Narrow-band_noise.png)
 
-*The validation plots and scripts can be found in [this folder](../mosqito/validations/sharpness).*
+*The validation plots and scripts can be found in [this folder](../validations/sharpness).*
 
 ## Sharpness of stationary and time-varying signals (other methods)
 
