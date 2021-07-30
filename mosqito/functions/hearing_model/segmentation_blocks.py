@@ -30,26 +30,37 @@ def segmentation_blocks(band_pass_signal_hr, sb, sh, dim):
         Array list of blocks in which the signal has been segmented.
     """
 
-    i_begin = 0
+    l = 0
     block_array = []
-    while i_begin + sb < len(band_pass_signal_hr):
-        block_array.append(band_pass_signal_hr[i_begin : i_begin + sb])
-        i_begin += sh
+    while l * sh <= len(band_pass_signal_hr):
+        i_begin = l * sh - sb
+        i_end = l * sh
+        if i_begin < 0 and i_end <= 0:
+            block_array.append(np.zeros(sb))
+        elif i_begin < 0:
+            block_array.append(
+                np.concatenate((np.zeros(-i_begin), band_pass_signal_hr[0:i_end]))
+            )
+        else:
+            block_array.append(band_pass_signal_hr[i_begin:i_end])
+        l += 1
 
-    """ INITIAL VERSION
-    # Creation of the first empty block
-    if dim == 2:
-        first_block = np.zeros((sb, dim), dtype=float)
-    else:
-        first_block = np.zeros(sb, dtype=float)
+    # # Creation of the first empty block
+    # if dim == 2:
+    #     first_block = np.zeros((sb, dim), dtype=float)
+    # else:
+    #     first_block = np.zeros(sb, dtype=float)
 
-    # Joins the first empty block with the rest of the signal
-    band_pass_signal_hr_complete = np.concatenate((first_block, band_pass_signal_hr), axis=0)
+    # # Joins the first empty block with the rest of the signal
+    # band_pass_signal_hr_complete = np.concatenate(
+    #     (first_block, band_pass_signal_hr), axis=0
+    # )
 
-    # For loop that helps to cut the signal into different blocks
-    block_array = [band_pass_signal_hr_complete[block_s: block_s + sb]
-                   for block_s in range(0, len(band_pass_signal_hr_complete), sh)]
-    """
+    # # For loop that helps to cut the signal into different blocks
+    # block_array = [
+    #     band_pass_signal_hr_complete[block_s : block_s + sb]
+    #     for block_s in range(0, len(band_pass_signal_hr_complete), sh)
+    # ]
 
     return block_array
 

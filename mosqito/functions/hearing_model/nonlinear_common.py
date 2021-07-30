@@ -8,7 +8,7 @@ import math
 
 
 def nonlinear_common(p_0, alpha, m_exponents, v_i_array, threshold_db_array):
-    """ Array lists that are necessary for the calculation of the non-linearity and are general to each band. This has
+    """Array lists that are necessary for the calculation of the non-linearity and are general to each band. This has
     been implemented as described in formula F.18 (section F.3.6) of Annex F (ECMA-74).
 
     Parameters
@@ -35,6 +35,9 @@ def nonlinear_common(p_0, alpha, m_exponents, v_i_array, threshold_db_array):
     pt_threshold_array: numpy.array
         'dB'
     """
+
+    print("This function is deprecated and will be removed form the project")
+
     pt_threshold_array = np.zeros(m_exponents, dtype=float)
 
     # Numpy array for the exponent in the non-linearity function

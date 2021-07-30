@@ -296,7 +296,7 @@ def comp_loudness(signal, validation=False):
                     plt.title('Rectified signal, block number 10, 1 kHz band')
                     plt.grid(which='both', linestyle='-', color='grey')
                     plt.show()
-                    """
+                """
 
                 """ NON-LINEARITY (5.1.7)
 
@@ -369,7 +369,8 @@ def comp_loudness(signal, validation=False):
         )
         # print('Band: ' + str(band_number) + ', length: ' + str(len(band_blocks_array)))
 
-        specific_loudness_all_bands_array.append(band_blocks_array)
+        # specific_loudness_all_bands_array.append(band_blocks_array)
+        specific_loudness_all_bands_array.append(specific_loudness_aux)
 
     """
     When we did the specific loudness calculation, we did it for all the blocks at a time, band per band. Therefore, 
@@ -377,12 +378,13 @@ def comp_loudness(signal, validation=False):
     obtain arrays in which the elements of every array are the results per band for that specific block of signal, 
     we have to use the "zip" function. "zip" creates new arrays with elements that have the same index.
     """
-    n_array = np.array(
-        [
-            loudness_per_block
-            for loudness_per_block in zip(*specific_loudness_all_bands_array)
-        ]
-    )
+    # n_array = np.array(
+    #     [
+    #         loudness_per_block
+    #         for loudness_per_block in zip(*specific_loudness_all_bands_array)
+    #     ]
+    # )
+    n_array = specific_loudness_all_bands_array
 
     """ TOTAL LOUDNESS (5.1.8)
 

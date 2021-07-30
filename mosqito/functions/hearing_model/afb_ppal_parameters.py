@@ -9,7 +9,7 @@ from scipy.special import comb
 
 
 def afb_ppal_parameters(fs, band_number, filter_order_k):
-    """ Principal parameters for the Auditory Filtering Bank coefficients and other calculations in later sections:
+    """Principal parameters for the Auditory Filtering Bank coefficients and other calculations in later sections:
     central frequency, bandwidth, delay, d coefficient, block size and hop size.
     This has been implemented as described in section 5.1.3 of ECMA-418-2.
 
@@ -44,6 +44,9 @@ def afb_ppal_parameters(fs, band_number, filter_order_k):
     sh: int
         Hop size.
     """
+
+    print("This function is deprecated and will be removed form the project")
+
     z_step_size = 0.50
     af_f0 = 81.9289  # ECMA-418-2
     c = 0.1618  # ECMA-418-2
@@ -53,7 +56,9 @@ def afb_ppal_parameters(fs, band_number, filter_order_k):
     # Binomial coefficient
     n_binomial = (2.0 * filter_order_k) - 2.0
     k_binomial = filter_order_k - 1.0
-    binomial_coef_1 = float(sp.special.comb(int(n_binomial), int(k_binomial), exact=True))
+    binomial_coef_1 = float(
+        sp.special.comb(int(n_binomial), int(k_binomial), exact=True)
+    )
 
     # Critical band rate scale
     z = (band_number + 1) * z_step_size

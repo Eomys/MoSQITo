@@ -11,7 +11,7 @@ from scipy.signal import welch
 # Project Imports
 from mosqito.functions.hearing_model.sone2phone import sone2phone
 from mosqito.functions.hearing_model.phone2spl import phone2spl
-from mosqito.functions.hearing_model.comp_loudness import comp_loudness
+from mosqito.functions.hearing_model.comp_loudness_alt import comp_loudness
 from mosqito.functions.hearing_model.equal_loudness_contours import (
     equal_loudness_contours,
 )
@@ -60,9 +60,11 @@ def hearing_model_validation():
             The next sentence returns the "t_array" from the function comp_loudness to then calculate the mean value 
             of the array. That makes possible to retain the resulting loudness.
             """
-            t_array = comp_loudness(signal, validation=False)[1]
-            mean_loudness_value = np.mean(t_array[:, 0])
-            loudness.append(sone2phone(mean_loudness_value))
+            n_array = comp_loudness(signal)
+            specific_loudness = np.array(n_array)
+            tot_loudness = np.sum(specific_loudness, axis=0)
+            mean_tot_loudness = np.mean(tot_loudness)
+            loudness.append(sone2phone(mean_tot_loudness))
 
         plt.semilogx(freq_vec, spl_vec, col + ":")
         plt.semilogx(freq_vec, loudness, col, label=str(phon) + " phons")

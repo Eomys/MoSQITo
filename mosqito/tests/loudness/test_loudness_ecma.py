@@ -2,11 +2,11 @@
 
 # Third party imports
 import pytest
-from numpy import mean
+import numpy as np
 
 # Local application imports
 from mosqito.functions.hearing_model.sine_wave_generator import sine_wave_generator
-from mosqito.functions.hearing_model.comp_loudness import comp_loudness
+from mosqito.functions.hearing_model.comp_loudness_alt import comp_loudness
 from mosqito.functions.hearing_model.sone2phone import sone2phone
 
 
@@ -23,16 +23,20 @@ def test_loudness_ecma():
     None
     """
 
-    signal, samples = sine_wave_generator(
+    signal, _ = sine_wave_generator(
         fs=48000,
         t=1,
         spl_value=60,
         freq=1000,
     )
-    t_array = comp_loudness(signal, validation=False)[1]
-    mean_loudness_value = mean(t_array[:, 0])
-    phon_loudness_value = sone2phone(mean_loudness_value)
+    n_array = comp_loudness(signal)
+    specific_loudness = np.array(n_array)
+    tot_loudness = np.sum(specific_loudness, axis=0)
+    mean_tot_loudness = np.mean(tot_loudness)
+    phon_loudness_value = sone2phone(mean_tot_loudness)
     assert phon_loudness_value < 60.1 and phon_loudness_value > 59.9
+
+    pass
 
 
 # test de la fonction

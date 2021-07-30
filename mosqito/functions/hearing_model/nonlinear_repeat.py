@@ -7,7 +7,7 @@ import numpy as np
 
 
 def nonlinear_repeat(specific_loudness_array, band_number):
-    """ It repeats certain blocks depending on the band that you are in, in order pseudo-link bands on time, because
+    """It repeats certain blocks depending on the band that you are in, in order pseudo-link bands on time, because
     lower bands have larger blocks than the higher ones.
 
     Parameters
@@ -26,6 +26,9 @@ def nonlinear_repeat(specific_loudness_array, band_number):
     sl_array_rep: numpy.array
         'sones hms'.
     """
+
+    print("This function is deprecated and will be removed form the project")
+
     # Critical band rate scale
     z = (band_number + 1) * 0.50
 
