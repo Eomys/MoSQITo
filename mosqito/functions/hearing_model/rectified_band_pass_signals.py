@@ -49,7 +49,9 @@ def rectified_band_pass_signals(signal, sb=2048, sh=1024):
     signal much more than it is intended to.
     """
     sos_ear = ear_filter_design()
-    signal_filtered = sp.signal.sosfiltfilt(sos_ear, signal, axis=0)
+    # signal_filtered = sp.signal.sosfiltfilt(sos_ear, signal, axis=0)
+    b, a = sp.signal.sos2tf(sos_ear)
+    signal_filtered = sp.signal.lfilter(a, b, signal, axis=0)
 
     """ AUDITORY FILTERING BANK (5.1.3)
 
