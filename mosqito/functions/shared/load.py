@@ -54,7 +54,7 @@ def load(is_stationary, file, calib=1, mat_signal="", mat_fs=""):
             signal = calib * signal
 
     # load the .uff file content
-    elif file[-3:] == "uff" or file[-3:] == "UFF":
+    elif file[-3:].lower() == "uff" or file[-3:].lower() == "unv":
         uff_file = pyuff.UFF(file)
         data = uff_file.read_sets()
         data.keys()
