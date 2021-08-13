@@ -1,7 +1,7 @@
 import setuptools
 
 # /!\ update before a release
-MoSQITo_VERSION = "0.2.1"
+MoSQITo_VERSION = "0.3.1"
 
 # MoSQITo description
 with open("README.md", "r", encoding="utf-8") as fh:
@@ -16,7 +16,7 @@ with open("requirements.txt", "r") as file:
         requirements
     ).splitlines()  # remove endline in each element
 
-tests_require = ["pytest>=5.4.1","pandas", "openpyxl"]
+tests_require = ["pytest>=5.4.1", "pandas", "openpyxl"]
 
 setuptools.setup(
     name="mosqito",
@@ -30,7 +30,14 @@ setuptools.setup(
     download_url="https://github.com/Eomys/MoSQITo/archive/v{}.tar.gz".format(
         MoSQITo_VERSION
     ),
-    packages=setuptools.find_packages(exclude=["documentation", "tutorials"]),
+    packages=setuptools.find_packages(
+        exclude=[
+            "documentation",
+            "tutorials",
+            "validations",
+            "tests",
+        ]
+    ),
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -40,7 +47,5 @@ setuptools.setup(
     python_requires=python_requires,
     install_requires=install_requires,
     tests_require=tests_require,
-     extras_require={
-        'testing': tests_require
-    },
+    extras_require={"testing": tests_require},
 )

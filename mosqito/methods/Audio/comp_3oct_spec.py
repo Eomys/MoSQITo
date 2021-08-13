@@ -11,19 +11,27 @@ from mosqito.functions.oct3filter.calc_third_octave_levels import (
 from mosqito.functions.oct3filter.oct3spec import oct3spec
 
 
-def comp_3oct_spec(self, unit="dB"):
+def comp_3oct_spec(
+    self,
+    fc_min=25,
+    fc_max=12800,
+):
     """Method to compute third-octave spectrum according to ISO
 
     Parameter
     ---------
-    unit : string
-        'dB' or 'dBA'
+    fc_min : float
+        Filter center frequency of the lowest 1/3 oct. band [Hz]
+    fc_max : float
+        Filter center frequency of the highest 1/3 oct. band [Hz]
 
     """
 
     # Compute third octave band spectrum
     if self.is_stationary:
-        third_spec, freq_val = oct3spec(self.signal.values, self.fs)
+        third_spec, freq_val = oct3spec(
+            self.signal.values, self.fs, fc_min=fc_min, fc_max=fc_max
+        )
     else:
         third_spec, freq_val, time_val = calc_third_octave_levels(
             self.signal.values, self.fs
