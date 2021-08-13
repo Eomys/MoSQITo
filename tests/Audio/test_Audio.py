@@ -47,16 +47,20 @@ def test_import_signal():
 
 
 @pytest.mark.audio
-def test_comp_3oct_spec(fixture_import_signal):
-    audio = fixture_import_signal
-    audio.comp_3oct_spec()
-    audio.third_spec.plot_2D_Data(
+def test_comp_3oct_spec():
+    audio1 = Audio(
+        "./tests/input/Test signal 3 (1 kHz 60 dB).wav",
+        is_stationary=True,
+        calib=2 * 2 ** 0.5,
+    )
+    audio1.comp_3oct_spec(fc_min=20, fc_max=20000)
+    audio1.third_spec.plot_2D_Data(
         "freqs",
-        type_plot="curve",
+        type_plot="octave",
         is_logscale_x=True,
-        x_min=20,
-        y_min=0,
-        y_max=40,
+        # x_min=20,
+        # y_min=0,
+        # y_max=40,
         unit="dB",
         is_show_fig=is_show_fig,
         save_path=out_path + "test_Audio_comp_3oct_spec.png",
