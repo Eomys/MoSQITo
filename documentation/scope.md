@@ -32,7 +32,8 @@ As a second priority, the project could address the following metrics:
 In parallel, tools for signal listening and manipulation will be
 developed. The objective is to be able to apply some modification to a
 signal (filtering, tone removal, etc.) and assess the impact on
-different SQ metrics.
+different SQ metrics. The integration of tools to define jury tests and 
+analyze the results is also planned.
 
 Of course, any other sound quality related implementation by anyone who
 wants to contribute is welcome.
@@ -46,7 +47,6 @@ Hales Swift, S., and Gee, K. L. (2017). “Extending sharpness calculation
 for an alternative loudness metric input,” J. Acoust. Soc. Am.142,
 EL549. 
 
-Moore, B. C. J. (2014). “Development and Current Status of the
-“Cambridge” Loudness Models,” Trends in Hearing, vol. 18: 1-29
+Moore, B. C. J. et al. (2016) ‘A Loudness Model for Time-Varying Sounds Incorporating Binaural Inhibition’, Trends in Hearing. [doi: 10.1177/2331216516682698](https://doi.org/10.1177/2331216516682698).
 
 Sottek, R. (2016) A Hearing Model Approach to Time-Varying Loudness, Acta Acustica united with Acustica, vol. 102, no. 4, pp. 725-744.

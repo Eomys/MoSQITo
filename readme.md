@@ -18,6 +18,8 @@ online, confirming the interest of the engineering and scientific
 community, but they often use Matlab signal processing commercial
 toolbox.
 
+Besides the metrics, sound quality studies requires several tool like audio signal filtering or jury testing procedure fore instance.
+
 ## Objectives
 
 The objective of MOSQITO is therefore to provide a unified and modular development framework of key sound quality tools (including key SQ metrics) with open-source object-oriented technologies, favoring reproducible science and efficient shared scripting among engineers, teachers and researchers
