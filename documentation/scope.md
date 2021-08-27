@@ -6,13 +6,13 @@ metrics:
 
 |                                                    | Reference                                            | Validated                                          | Available                                     | Under dev. | To do |
 |:-------------------------------------------------- |:---------------------------------------------------- |:--------------------------------------------------:|:---------------------------------------------:|:----------:|:-----:|
-| Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | [x](./mosqito/validations/loudness_zwicker/output) | [x](./documentation/loudness-stationary.md)   |            |       |
-| Loudness for non-stationary<br>(Zwicker method)    | DIN 45631/A1:2010<br>ISO 532-1:2017 §6               | [x](./mosqito/validations/loudness_zwicker/output) | [x](./documentation/loudness-time-varying.md) |            |       |
+| Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | [x](../validations/loudness_zwicker/output) | [x](./loudness-stationary.md)   |            |       |
+| Loudness for non-stationary<br>(Zwicker method)    | DIN 45631/A1:2010<br>ISO 532-1:2017 §6               | [x](../validations/loudness_zwicker/output) | [x](./loudness-time-varying.md) |            |       |
 | Loudness for non-stationary<br>(ECMA-74 method)    | ECMA-74:2019, annex F<br>Sottek, 2016               |  |  |     x       |       |
-| Roughness                                          | Daniel and Weber, 1997                               | [x](./mosqito/validations/roughness_danielweber)   | [x](./documentation/roughness.md)             |            |       |
+| Roughness                                          | Daniel and Weber, 1997                               | [x](../validations/roughness_danielweber)   | [x](./roughness.md)             |            |       |
 | Roughness | ECMA-418-2:2020 | |                                               |            | x     |
 | Fluctuation Strength                               | To be defined                                        |                                                    |                                               |            | x     |
-| Sharpness                                          | DIN 45692:2009                                       | [x](./mosqito/validations/sharpness/output)        | [x](./documentation/sharpness.md)             |            |       |
+| Sharpness                                          | DIN 45692:2009                                       | [x](../validations/sharpness/output)        | [x](./sharpness.md)             |            |       |
 | Tonality (Hearing model)                           | ECMA-74:2019 annex G                                 |                                                    |                                               | x          |       |
 
 As a second priority, the project could address the following metrics:

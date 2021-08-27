@@ -23,7 +23,7 @@ Besides the metrics, sound quality studies requires several tool like audio sign
 ## Objectives
 
 The objective of MOSQITO is therefore to provide a unified and modular development framework of key sound quality tools (including key SQ metrics) with open-source object-oriented technologies, favoring reproducible science and efficient shared scripting among engineers, teachers and researchers
-community. The development roadmap of the project is presented in more details in the [documentation](./documentation/scope.md). 
+community. The development roadmap of the project is presented in more details in the [scope section](./documentation/scope.md) of the documentation. 
 
 It is written in Python, one of the most popular free programming language in the scientific computing community. It is meant to be highly documented (use of Jupyter notebooks, tutorials) and validated with reference sound samples and scientific publications.
 
