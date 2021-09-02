@@ -146,7 +146,6 @@ def comp_sharpness_fastl(N, N_specific, is_stationary):
             S = 0
         else:
             S = 0.11 * sum(N_specific * gZF * z * 0.1) / N
-            print("Fastl sharpness:", "%.2f" % S, "acum")
     else:
         S = np.zeros((N.size))
         for t in range(N.size):
