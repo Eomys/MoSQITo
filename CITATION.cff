@@ -1,0 +1,53 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: MOSQITO
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Green Forge Coop
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.5284054
+    description: >-
+      This DOI represents all versions, and will
+      always resolve to the latest one.
+repository-code: "https://github.com/Eomys/MoSQITo"
+abstract: >-
+  Sound quality (SQ) metrics are developed by
+  acoustic engineers and researchers to provide an
+  objective assessment of the pleasantness of a
+  sound. Different metrics exist depending on the
+  nature of the sound to be tested. Some of these
+  metrics are already standardized, while some others
+  rely on scientific articles and are still under
+  active development. The calculation of some sound
+  quality metrics are included in major commercial
+  acoustic and vibration measurement and analysis
+  software. However, some of the proposed metrics
+  results from in-house implementation and can be
+  dependent from one system to another. Some
+  implementations may also lack of complete
+  documentation and validation on publicly available
+  standardized sound samples. Several implementations
+  of SQ metrics in different languages can been found
+  online, confirming the interest of the engineering
+  and scientific community, but they often use Matlab
+  signal processing commercial toolbox.
+
+
+  Besides the metrics, sound quality studies requires
+  several tool like audio signal filtering or jury
+  testing procedure fore instance.
+keywords:
+  - audio
+  - python
+  - signal-processing
+  - audio-analysis
+  - acoustic
+  - sound-quality
+  - sq-metrics
+license: Apache-2.0
