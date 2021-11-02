@@ -40,7 +40,6 @@ def comp_sharpness_aures(N, N_specific, is_stationary):
             gA = np.zeros((z.size))
             gA = 0.078 * (np.exp(0.171 * z) / z) * (N / np.log(N * 0.05 + 1))
             S = 0.11 * sum(N_specific * gA * z * 0.1) / N
-            print("Aures sharpness:", "%.2f" % S, "acum")
     else:
         S = np.zeros((N.size))
         gA = np.zeros((z.size, N.size))

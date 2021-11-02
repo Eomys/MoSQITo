@@ -34,6 +34,15 @@ def calc_main_loudness(spec_third, field_type):
     nm :  numpy.ndarray
         Core loudness
     """
+    # Ref. ISO 532-1:2017 paragraph A.3
+    # The table A.3 giving the weights of the 1/3 band levels for
+    # center freq. below 300 Hz is only specified for levels up to 120 dB
+    # If one of the first 11 bands (from 25 to 250 Hz) exceed 120 dB the
+    # Zwicker method cannot be applied.
+    if np.max(spec_third[0:11]) > 120.0:
+        raise ValueError("1/3 octave band value exceed 120 dB, for which " +
+                         "the Zwicker method is no longer valid.")
+
     #
     # Date tables definition (variable names and description according to
     # Zwicker:1991)
