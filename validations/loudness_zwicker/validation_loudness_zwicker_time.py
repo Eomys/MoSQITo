@@ -426,5 +426,5 @@ def check_compliance(loudness, signal):
 
 
 if __name__ == "__main__":
-    # for i in range(20):
-    validation_loudness_zwicker_time(signal[10])
+    for i in range(3, 20):
+        validation_loudness_zwicker_time(signal[i])
