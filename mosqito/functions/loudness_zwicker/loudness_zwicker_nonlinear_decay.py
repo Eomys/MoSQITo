@@ -26,7 +26,7 @@ def calc_nl_loudness(core_loudness):
     """
     # Initialization
     sample_rate = 2000
-    nl_loudness = core_loudness
+    nl_loudness = core_loudness.copy()
     # Factor for virtual upsampling/inner iterations
     nl_iter = 24
     # Time constants for non_linear temporal decay
@@ -73,7 +73,7 @@ def calc_nl_loudness(core_loudness):
                 ui += delta
         nl_lp = calc_nl_lp(core_loudness[i_cl, i_time + 1], nl_lp)
         nl_loudness[i_cl, i_time + 1] = nl_lp["uo_last"]
-    return core_loudness
+    return nl_loudness
 
 
 def calc_nl_lp(ui, nl_lp):
@@ -104,7 +104,7 @@ def calc_nl_lp(ui, nl_lp):
                 uo = ui  # lower than ui
             u2 = uo
     else:
-        if abs(ui - nl_lp["uo_last"] < 1e-5):  # case 2 (charge)
+        if abs(ui - nl_lp["uo_last"]) < 1e-5:  # case 2 (charge)
             uo = ui
             if uo > nl_lp["u2_last"]:  # case 2.1
                 u2 = (nl_lp["u2_last"] - ui) * nl_lp["B"][5] + ui
