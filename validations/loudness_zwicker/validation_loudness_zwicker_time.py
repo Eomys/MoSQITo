@@ -192,7 +192,7 @@ def validation_loudness_zwicker_time(signal):
     loudness = comp_loudness(False, sig, fs, signal["field"])
 
     # Check ISO 532-1 compliance
-    assert check_compliance(loudness, signal)
+    check_compliance(loudness, signal)
 
 
 def check_compliance(loudness, signal):
