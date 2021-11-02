@@ -3,5 +3,3 @@ scipy
 pytest
 matplotlib
 scidatatool
-h5py
-cloudpickle
