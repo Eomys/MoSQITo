@@ -8,14 +8,13 @@ message: >-
   metadata from this file.
 type: software
 authors:
-  - given-names: Green Forge Coop
+  - family-names: Green Forge Coop
 identifiers:
   - type: doi
     value: 10.5281/zenodo.5284054
     description: >-
       This DOI represents all versions, and will
       always resolve to the latest one.
-repository-code: "https://github.com/Eomys/MoSQITo"
 abstract: >-
   Sound quality (SQ) metrics are developed by
   acoustic engineers and researchers to provide an
