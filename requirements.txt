@@ -2,5 +2,4 @@ numpy
 scipy
 pytest
 matplotlib
-pyuff
 scidatatool
