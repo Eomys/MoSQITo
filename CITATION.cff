@@ -8,13 +8,9 @@ message: >-
   metadata from this file.
 type: software
 authors:
-  - family-names: Green Forge Coop
-identifiers:
-  - type: doi
-    value: 10.5281/zenodo.5284054
-    description: >-
-      This DOI represents all versions, and will
-      always resolve to the latest one.
+  - given-names:
+    family-names: Green Forge Coop
+doi: 10.5281/zenodo.5284054
 abstract: >-
   Sound quality (SQ) metrics are developed by
   acoustic engineers and researchers to provide an
