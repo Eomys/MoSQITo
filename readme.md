@@ -35,11 +35,34 @@ It is written in Python, one of the most popular free programming language in th
 
 Tutorials are available in the [tutorials](./tutorials/) folder. Documentation and validation of the MOSQITO functions are available in the [documentation](./documentation/) folder.
 
+## Getting MOSQITO
+MOSQITO is available on [pip](https://pypi.org/project/pip/). Simply type in a shell the following command:
+
+    pip install mosqito
+
+This command line should download and install MOSQITO on your computer, along with all the needed dependencies.
+
+If you need to import .uff or .unv files, you will need the pyuff package dependency. Note that 'pyuff' is released under the GPL license which prevents MOSQITO from being used in other software that must be under a more permissive license. To include the 'pyuff' dependancy anyway, type the following command:
+
+    pip install mosqito[uff]
+
 ## Contact
 
-You can contact us on Github by opening an issue (to request a feature, ask a question or report a bug).
+You can contact us on Github by opening an issue (to request a feature, ask a question or report a bug). 
 
-## How to cite MOSQITO
+## Citing MOSQITO
 
-If you use MOSQITO for your research activities and need to cite the software in a publication, please use the following citation:
-TODO
+If you are using MOSQITO in your research activities, please help our scientific visibility by citing our work! You can use the following citation in APA format:
+
+Green Forge Coop. MOSQITO [Computer software]. https://doi.org/10.5281/zenodo.5284054
+
+If you need to cite the current release of MOSQITO, please use the "Cite this repository" feature in the "About" section of this Github repository.
+
+
+## Publications citing MOSQITO
+
+Glesser, M., Ni, S., Degrendele, K., Wanty, S., & Le Besnerais, J. (2021). Sound quality analysis of Electric Drive Units under different switching control strategies. Automotive NVH Comfort Congress, Le Mans , France.
+
+San Millán-Castillo, R., Latorre-Iglesias, E., Glesser, M., Wanty, S., Jiménez-Caminero, D., & Álvarez-Jimeno, J.M. (2021). MOSQITO: an open-source and free toolbox for sound quality metrics in the industry and education. *INTER-NOISE and NOISE-CON Congress and Conference Proceedings*.
+
+
