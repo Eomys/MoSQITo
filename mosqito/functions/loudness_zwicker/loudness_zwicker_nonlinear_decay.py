@@ -52,17 +52,17 @@ def calc_nl_loudness(core_loudness):
     ]
     nl_lp = {"B": B}
 
-    for i_cl in np.arange(np.shape(core_loudness)[0]):
+    for i_cl in np.arange(np.shape(nl_loudness)[0]):
         # At beginning capacitors C1 and C2 are discharged
         nl_lp["uo_last"] = 0
         nl_lp["u2_last"] = 0
 
-        for i_time in np.arange(np.shape(core_loudness)[1] - 1):
+        for i_time in np.arange(np.shape(nl_loudness)[1] - 1):
             # interpolation steps between current and next sample
             delta = (
-                core_loudness[i_cl, i_time + 1] - core_loudness[i_cl, i_time]
+                nl_loudness[i_cl, i_time + 1] - nl_loudness[i_cl, i_time]
             ) / nl_iter
-            ui = core_loudness[i_cl, i_time]
+            ui = nl_loudness[i_cl, i_time]
             nl_lp = calc_nl_lp(ui, nl_lp)
             nl_loudness[i_cl, i_time] = nl_lp["uo_last"]
             ui += delta
@@ -71,7 +71,7 @@ def calc_nl_loudness(core_loudness):
             for i_in in np.arange(1, nl_iter):
                 nl_lp = calc_nl_lp(ui, nl_lp)
                 ui += delta
-        nl_lp = calc_nl_lp(core_loudness[i_cl, i_time + 1], nl_lp)
+        nl_lp = calc_nl_lp(nl_loudness[i_cl, i_time + 1], nl_lp)
         nl_loudness[i_cl, i_time + 1] = nl_lp["uo_last"]
     return nl_loudness
 
