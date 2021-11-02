@@ -26,7 +26,7 @@ def calc_nl_loudness(core_loudness):
     """
     # Initialization
     sample_rate = 2000
-    nl_loudness = core_loudness
+    nl_loudness = core_loudness.copy()
     # Factor for virtual upsampling/inner iterations
     nl_iter = 24
     # Time constants for non_linear temporal decay
@@ -52,17 +52,17 @@ def calc_nl_loudness(core_loudness):
     ]
     nl_lp = {"B": B}
 
-    for i_cl in np.arange(np.shape(core_loudness)[0]):
+    for i_cl in np.arange(np.shape(nl_loudness)[0]):
         # At beginning capacitors C1 and C2 are discharged
         nl_lp["uo_last"] = 0
         nl_lp["u2_last"] = 0
 
-        for i_time in np.arange(np.shape(core_loudness)[1] - 1):
+        for i_time in np.arange(np.shape(nl_loudness)[1] - 1):
             # interpolation steps between current and next sample
             delta = (
-                core_loudness[i_cl, i_time + 1] - core_loudness[i_cl, i_time]
+                nl_loudness[i_cl, i_time + 1] - nl_loudness[i_cl, i_time]
             ) / nl_iter
-            ui = core_loudness[i_cl, i_time]
+            ui = nl_loudness[i_cl, i_time]
             nl_lp = calc_nl_lp(ui, nl_lp)
             nl_loudness[i_cl, i_time] = nl_lp["uo_last"]
             ui += delta
@@ -71,9 +71,9 @@ def calc_nl_loudness(core_loudness):
             for i_in in np.arange(1, nl_iter):
                 nl_lp = calc_nl_lp(ui, nl_lp)
                 ui += delta
-        nl_lp = calc_nl_lp(core_loudness[i_cl, i_time + 1], nl_lp)
+        nl_lp = calc_nl_lp(nl_loudness[i_cl, i_time + 1], nl_lp)
         nl_loudness[i_cl, i_time + 1] = nl_lp["uo_last"]
-    return core_loudness
+    return nl_loudness
 
 
 def calc_nl_lp(ui, nl_lp):
@@ -104,7 +104,7 @@ def calc_nl_lp(ui, nl_lp):
                 uo = ui  # lower than ui
             u2 = uo
     else:
-        if abs(ui - nl_lp["uo_last"] < 1e-5):  # case 2 (charge)
+        if abs(ui - nl_lp["uo_last"]) < 1e-5:  # case 2 (charge)
             uo = ui
             if uo > nl_lp["u2_last"]:  # case 2.1
                 u2 = (nl_lp["u2_last"] - ui) * nl_lp["B"][5] + ui

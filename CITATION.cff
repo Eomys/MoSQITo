@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Green Forge Coop
+    given-names:
+title: MOSQITO
+version: 0.3.3
+doi: 10.5281/zenodo.5419590
+date-released: 2021-09-03
+keywords:
+  - audio
+  - python
+  - signal-processing
+  - audio-analysis
+  - acoustic
+  - sound-quality
+  - sq-metrics
+license: Apache-2.0
