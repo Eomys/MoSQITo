@@ -10,7 +10,6 @@ import numpy as np
 # Local applications imports
 from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import (
     calc_main_loudness,
-    calc_main_loudness_ea,
 )
 from mosqito.functions.loudness_zwicker.loudness_zwicker_nonlinear_decay import (
     calc_nl_loudness,
@@ -54,14 +53,8 @@ def loudness_zwicker_time(third_octave_levels, field_type):
         Corresponding bark axis
     """
 
-    # Calculate core loudness
-    # num_sample_level = np.shape(third_octave_levels)[1]
-    # core_loudness = np.zeros((21, num_sample_level))
-    # for i in np.arange(num_sample_level - 1):
-    #     core_loudness[:, i] = calc_main_loudness(third_octave_levels[:, i], field_type)
-
-    # Calculate core loudness (vectorized version, need debugging)
-    core_loudness = calc_main_loudness_ea(third_octave_levels, field_type)
+    # Calculate core loudness (vectorized version)
+    core_loudness = calc_main_loudness(third_octave_levels, field_type)
 
     #
     # Nonlinearity
