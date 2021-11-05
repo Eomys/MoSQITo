@@ -2,7 +2,4 @@ numpy
 scipy
 pytest
 matplotlib
-pyuff
 scidatatool
-h5py
-cloudpickle

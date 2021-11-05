@@ -7,9 +7,14 @@ Created on Mon Nov 16 08:59:34 2020
 
 # Standard library imports
 import numpy as np
-import pyuff
 from scipy.io import wavfile, loadmat
 from scipy.signal import resample
+
+# Optional package import
+try:
+    import pyuff
+except ImportError:
+    pyuff = None
 
 # Local import
 from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
@@ -50,12 +55,12 @@ def load(is_stationary, file, calib=1, mat_signal="", mat_fs=""):
             signal = calib * signal / (2 ** 15 - 1)
         elif isinstance(signal[0], np.int32):
             signal = calib * signal / (2 ** 31 - 1)
+        elif isinstance(signal[0], np.float):
+            signal = calib * signal
 
     # load the .uff file content
-    elif file[-3:] == "uff" or file[-3:] == "UFF":
-        uff_file = pyuff.UFF(file)
-        data = uff_file.read_sets()
-        data.keys()
+    elif file[-3:].lower() == "uff" or file[-3:].lower() == "unv":
+        data = uff_load(file)
 
         # extract the signal values
         signal = data["data"]
@@ -141,10 +146,8 @@ def load2wav(
     """
 
     # Load the .uff file content
-    if file[-3:] == "uff" or file[-3:] == "UFF":
-        uff_file = pyuff.UFF(file)
-        data = uff_file.read_sets()
-        data.keys()
+    if file[-3:].lower() == "uff" or file[-3:].lower() == "unv":
+        data = uff_load(file)
 
         # extract the signal values
         signal = data["data"]
@@ -179,3 +182,12 @@ def load2wav(
     # create the .wav file
     newfile = file[:-3] + "wav"
     wavfile.write(newfile, sampling_freq, signal)
+
+
+def uff_load(file):
+    if pyuff is None:
+        raise RuntimeError("In order to load UFF files you need the 'pyuff' "
+                           "package.")
+    uff_file = pyuff.UFF(file)
+    data = uff_file.read_sets()
+    return data

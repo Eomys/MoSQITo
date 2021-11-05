@@ -11,7 +11,7 @@ import numpy as np
 from mosqito.functions.oct3filter.oct3level import oct3level
 
 
-def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type="stationary", dec_factor=24):
+def oct3spec(sig, fs, fc_min=25, fc_max=12500, sig_type="stationary", dec_factor=24):
     """Calculate third-octave band spectrum
 
     Calculate the rms level of the signal "sig" sampled at freqency "fs"
@@ -55,6 +55,8 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type="stationary", dec_factor
     # Définition of the range of preferred filter center frequency
     fpref = np.array(
         [
+            16,
+            20,
             25,
             31.5,
             40,
@@ -83,11 +85,15 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type="stationary", dec_factor
             8000,
             10000,
             12500,
+            16000,
+            20000,
         ]
     )
 
     fexact = np.array(
         [
+            15.849,
+            19.953,
             25.119,
             31.623,
             39.811,
@@ -116,6 +122,8 @@ def oct3spec(sig, fs, fc_min=20, fc_max=20000, sig_type="stationary", dec_factor
             7943,
             10000,
             12589,
+            15849,
+            19953,
         ]
     )
 
