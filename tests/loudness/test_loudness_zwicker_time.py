@@ -53,3 +53,8 @@ def test_loudness_zwicker_time():
 
     # Check ISO 532-1 compliance
     assert check_compliance(loudness, signal, "./tests/output/")
+
+
+# test de la fonction
+if __name__ == "__main__":
+    test_loudness_zwicker_time()

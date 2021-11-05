@@ -204,13 +204,17 @@ def check_compliance(loudness, signal, out_dir):
 
     Parameters
     ----------
-    N : float
-        Calculated loudness [sones]
-    N_specific : numpy.ndarray
-        Specific loudness [sones/bark]
-    bark_axis : numpy.ndarray
-        Corresponding bark axis
-    signal : dict
+    loudness: dict
+        {
+            "name": "Loudness",
+            "values": N: float/numpy.array
+                loudness value
+            "specific values": N_specific: numpy.array
+                specific loudness values
+            "freqs": bark_axis: numpy.array
+                frequency axis corresponding to N_specific values in bark
+        }
+    signal: dict
         {
             "data_file": <Path to reference input signal>,
             "N_file": <Path to reference calculated loudness versus time>
@@ -218,6 +222,8 @@ def check_compliance(loudness, signal, out_dir):
             "N_specif_bark": <Bark value of the reference calculation>
         }
         Dictionary containing link to ref. data
+    out_dir: str
+        path to the directory to store the results
 
     Outputs
     -------

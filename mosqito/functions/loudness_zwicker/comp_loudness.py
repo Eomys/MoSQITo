@@ -35,12 +35,16 @@ def comp_loudness(is_stationary, signal, fs, field_type="free"):
 
     Outputs
     -------
-    N: float/numpy.array
-        loudness value
-    N_specific: numpy.array
-        specific loudness values
-    bark_axis: numpy.array
-        frequency axis correpsondong to N_specific values in bark
+    output : dict
+        {
+            "name": "Loudness",
+            "values": N: float/numpy.array
+                loudness value
+            "specific values": N_specific: numpy.array
+                specific loudness values
+            "freqs": bark_axis: numpy.array
+                frequency axis corresponding to N_specific values in bark
+        }
     """
 
     third_spec = comp_third_spec(is_stationary, signal, fs)
@@ -84,12 +88,16 @@ def comp_loudness_from_3spec(
 
     Outputs
     -------
-    N: float/numpy.array
-        loudness value
-    N_specific: numpy.array
-        specific loudness values
-    bark_axis: numpy.array
-        frequency axis correpsondong to N_specific values in bark
+    output : dict
+        {
+            "name": "Loudness",
+            "values": N: float/numpy.array
+                loudness value
+            "specific values": N_specific: numpy.array
+                specific loudness values
+            "freqs": bark_axis: numpy.array
+                frequency axis corresponding to N_specific values in bark
+        }
     """
 
     if is_stationary == True:

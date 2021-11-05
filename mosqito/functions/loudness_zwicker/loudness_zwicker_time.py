@@ -9,7 +9,7 @@ import numpy as np
 
 # Local applications imports
 from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import (
-    calc_main_loudness,
+    calc_main_loudness_ea as calc_main_loudness,
 )
 from mosqito.functions.loudness_zwicker.loudness_zwicker_nonlinear_decay import (
     calc_nl_loudness,
