@@ -3,23 +3,16 @@
 @author: Daniel Jiménez-Caminero Costa
 """
 import numpy as np
-import math
-import scipy as sp
 import matplotlib.pyplot as plt
-from scipy.signal import welch
+
 
 # Project Imports
 from mosqito.functions.hearing_model.sone2phone import sone2phone
-from mosqito.functions.hearing_model.phone2spl import phone2spl
 from mosqito.functions.hearing_model.comp_loudness_alt import comp_loudness
 from mosqito.functions.hearing_model.equal_loudness_contours import (
     equal_loudness_contours,
 )
 from mosqito.functions.hearing_model.sine_wave_generator import sine_wave_generator
-
-import sys
-
-sys.path.append("../../..")
 
 
 def hearing_model_validation():
@@ -66,13 +59,12 @@ def hearing_model_validation():
             mean_tot_loudness = np.mean(tot_loudness)
             loudness.append(sone2phone(mean_tot_loudness))
 
-        plt.semilogx(freq_vec, spl_vec, col + ":")
+        plt.semilogx(freq_vec, phon * np.ones(freq_vec.size), col + ":")
         plt.semilogx(freq_vec, loudness, col, label=str(phon) + " phons")
 
     plt.xlim(left=100, right=10100)
-    plt.ylabel("Sound pressure level [dB SPL]")
+    plt.ylabel("Loudness [Phons]")
     plt.xlabel("Frequency [Hz]")
-    plt.title("Specific loudness contours")
     plt.grid(which="both", linestyle="-", color="grey")
     plt.xticks(
         [20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000],

@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 from mosqito.functions.hearing_model.rectified_band_pass_signals import (
     rectified_band_pass_signals,
 )
+from mosqito.functions.hearing_model.loudness_function import (
+    loudness_function as loudness_function,
+)
 
 
 def comp_loudness(signal, sb=2048, sh=1024):
@@ -97,17 +100,6 @@ def comp_loudness(signal, sb=2048, sh=1024):
         0.0622,
     ]
 
-    """ NON-LINEARITY. SOUND PRESSURE INTO SPECIFIC LOUDNESS """
-    p_0 = 2e-5
-    # c_N: In sones/bark
-    c_N = 0.0217406
-    alpha = 1.50
-    v_i = np.array(
-        [1.0, 0.6602, 0.0864, 0.6384, 0.0328, 0.4068, 0.2082, 0.3994, 0.6434]
-    )
-    thresh = np.array([15.0, 25.0, 35.0, 45.0, 55.0, 65.0, 75.0, 85.0])
-    p_ti = p_0 * 10 ** (thresh / 20)
-
     """Rectified band-pass signals (5.1.5)"""
     # # sb and sh for Tonality
     # z = np.linspace(0.5, 26.5, num=53, endpoint=True)
@@ -142,13 +134,7 @@ def comp_loudness(signal, sb=2048, sh=1024):
         of sound pressure to specific loudness that does the the auditory system. After this point, the
         computation is done equally to every block in which we have divided our signal.
         """
-        exp = (v_i[1:] - v_i[:-1]) / alpha
-        prod = np.prod(
-            (1 + (rms_block_value / p_ti[:, np.newaxis]) ** alpha)
-            ** exp[:, np.newaxis],
-            axis=0,
-        )
-        a_prime = c_N * rms_block_value / p_0 * prod
+        a_prime = loudness_function(rms_block_value)
 
         """SPECIFIC LOUDNESS CONSIDERING THE THRESHOLD IN QUIET (5.1.8)
 

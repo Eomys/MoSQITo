@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import scipy as sp
+import scipy.signal as sp_signal
 
 from mosqito.functions.hearing_model.ear_filter_design import ear_filter_design
 from mosqito.functions.hearing_model.gen_auditory_filters_centre_freq import (
@@ -11,7 +11,7 @@ from mosqito.functions.hearing_model.gammatone import gammatone
 from mosqito.functions.hearing_model.segmentation_blocks import segmentation_blocks
 
 
-def rectified_band_pass_signals(signal, sb=2048, sh=1024):
+def rectified_band_pass_signals(sig, sb=2048, sh=1024):
     """Compute the rectified band-pass signals as per Clause 5.1.5 of ECMA-418-2:2020
 
     Calculation of the rectified band-pass signals along the 53 critical band rates
@@ -49,9 +49,9 @@ def rectified_band_pass_signals(signal, sb=2048, sh=1024):
     signal much more than it is intended to.
     """
     sos_ear = ear_filter_design()
-    # signal_filtered = sp.signal.sosfiltfilt(sos_ear, signal, axis=0)
-    b, a = sp.signal.sos2tf(sos_ear)
-    signal_filtered = sp.signal.lfilter(a, b, signal, axis=0)
+    signal_filtered = sp_signal.sosfilt(sos_ear, sig, axis=0)
+    # b, a = sp_signal.sos2tf(sos_ear)
+    # signal_filtered = sp_signal.lfilter(a, b, sig, axis=0)
 
     """ AUDITORY FILTERING BANK (5.1.3)
 
@@ -84,9 +84,10 @@ def rectified_band_pass_signals(signal, sb=2048, sh=1024):
 
     block_array_rect = []
     for band_number in range(53):
-        bm_mod, am_mod = gammatone(
-            centre_freq[band_number], order=filter_order_k, fs=fs
-        )
+        # bm_mod, am_mod = gammatone(
+        #     centre_freq[band_number], order=filter_order_k, fs=fs
+        # )
+        bm_mod, am_mod = sp_signal.gammatone(centre_freq[band_number], "fir", fs=fs)
 
         """ 
         "scipy.signal.lfilter" instead of "scipy.signal.filtfilt" in order to maintain consistency. That process 
@@ -97,7 +98,7 @@ def rectified_band_pass_signals(signal, sb=2048, sh=1024):
         band_pass_signal = (
             2.0
             * (
-                sp.signal.lfilter(
+                sp_signal.lfilter(
                     bm_mod,
                     am_mod,
                     signal_filtered,
