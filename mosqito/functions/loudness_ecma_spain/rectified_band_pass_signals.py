@@ -23,8 +23,7 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
     Parameters
     ----------
     signal: numpy.array
-        'Pa', time signal values. It can be, stereo (2 dimensions) or mono (1 dimension).The sampling frequency of the
-        signal must be 48000 Hz.
+        'Pa', time signal values. The sampling frequency of the signal must be 48000 Hz.
     sb: int or list of int
         block size.
     sh: int or list of int
@@ -86,10 +85,10 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
 
     block_array_rect = []
     for band_number in range(53):
-        # bm_mod, am_mod = gammatone(
-        #     centre_freq[band_number], order=filter_order_k, fs=fs
-        # )
-        bm_mod, am_mod = sp_signal.gammatone(centre_freq[band_number], "fir", fs=fs)
+        bm_mod, am_mod = gammatone(
+            centre_freq[band_number], order=filter_order_k, fs=fs
+        )
+        # bm_mod, am_mod = sp_signal.gammatone(centre_freq[band_number], "fir", fs=fs)
 
         """ 
         "scipy.signal.lfilter" instead of "scipy.signal.filtfilt" in order to maintain consistency. That process 

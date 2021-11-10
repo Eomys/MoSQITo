@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from scipy import signal
+import scipy.signal as sp_signal
 from numpy import (
     log10,
     abs as np_abs,
@@ -13,14 +13,17 @@ from numpy.random import normal as random
 import matplotlib.pyplot as plt
 
 from mosqito.functions.loudness_ecma_spain.ear_filter_design import ear_filter_design
+from mosqito.functions.loudness_ecma_spain.sine_wave_generator import (
+    sine_wave_generator,
+)
 
 # generate outer and middle/inner ear filter coeeficient
 sos_ear = ear_filter_design()
 
-b, a = signal.sos2tf(sos_ear)
+b, a = sp_signal.sos2tf(sos_ear)
 
 # Compute the frequency response of the filter
-w, h = signal.sosfreqz(sos_ear, worN=1500, fs=48000)
+w, h = sp_signal.sosfreqz(sos_ear, worN=1500, fs=48000)
 db = 20 * log10(np_maximum(np_abs(h), 1e-5))
 
 # Generate figure to be compared to figure F.3 from ECMA-74:2019
@@ -31,6 +34,17 @@ plt.ylim((-25, 11))
 plt.xlabel("Frequency [Hz]")
 plt.ylabel("Level [dB]")
 plt.show()
+
+# Generate test signal
+signal, _ = sine_wave_generator(
+    fs=48000,
+    t=1,
+    spl_value=60,
+    freq=1000,
+)
+signal_filtered = sp_signal.sosfilt(sos_ear, signal, axis=0)
+# 20*np.log10(np.sqrt(np.mean(signal ** 2))/(2e-5))
+pass
 
 # # Generate white noise
 # fs = 48000
