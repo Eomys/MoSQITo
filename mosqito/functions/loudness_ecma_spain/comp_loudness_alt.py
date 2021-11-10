@@ -6,10 +6,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Project Imports
-from mosqito.functions.hearing_model.rectified_band_pass_signals import (
+from mosqito.functions.loudness_ecma_spain.rectified_band_pass_signals import (
     rectified_band_pass_signals,
 )
-from mosqito.functions.hearing_model.loudness_function import (
+from mosqito.functions.loudness_ecma_spain.loudness_function import (
     loudness_function as loudness_function,
 )
 

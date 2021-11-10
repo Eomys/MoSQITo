@@ -4,7 +4,7 @@ from scipy.signal import gammatone as scipy_gamma, freqz
 from numpy import log10, abs as np_abs
 import matplotlib.pyplot as plt
 
-from mosqito.functions.hearing_model.gammatone import gammatone as mosqito_gamma
+from mosqito.functions.loudness_ecma_spain.gammatone import gammatone as mosqito_gamma
 
 freq = 400
 fs = 48000

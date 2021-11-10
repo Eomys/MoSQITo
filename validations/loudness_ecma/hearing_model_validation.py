@@ -9,13 +9,15 @@ import matplotlib.pyplot as plt
 from scipy.signal import welch
 
 # Project Imports
-from mosqito.functions.hearing_model.sone2phone import sone2phone
-from mosqito.functions.hearing_model.phone2spl import phone2spl
-from mosqito.functions.hearing_model.comp_loudness import comp_loudness
-from mosqito.functions.hearing_model.equal_loudness_contours import (
+from mosqito.functions.loudness_ecma_spain.sone2phone import sone2phone
+from mosqito.functions.loudness_ecma_spain.phone2spl import phone2spl
+from mosqito.functions.loudness_ecma_spain.comp_loudness import comp_loudness
+from mosqito.functions.loudness_ecma_spain.equal_loudness_contours import (
     equal_loudness_contours,
 )
-from mosqito.functions.hearing_model.sine_wave_generator import sine_wave_generator
+from mosqito.functions.loudness_ecma_spain.sine_wave_generator import (
+    sine_wave_generator,
+)
 
 import sys
 
