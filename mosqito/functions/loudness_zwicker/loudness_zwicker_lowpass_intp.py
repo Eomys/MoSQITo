@@ -94,9 +94,6 @@ def loudness_zwicker_lowpass_intp_ea(loudness, tau, sample_rate):
     # Rechape into a vector.
     ui_delta = ui_delta.reshape(lp_iter*num_samples)
 
-    # Sustituir este bucle for por  scipy.signal.lfilter https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.lfilter.html
-    # ui_delta_filt = scipy.signal.lfilter (b0 , a0, ui_delta  )
-    #filt_loudness = ui_delta_filt.reshape(loudness.shape[0],lp_iter).T[:,0]
     # Apply the filter.
     ui_delta = signal.lfilter([b0], [1,-a1], ui_delta, axis=- 1, zi=None)
     
