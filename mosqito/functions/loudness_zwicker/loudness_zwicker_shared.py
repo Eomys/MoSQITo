@@ -473,7 +473,7 @@ def calc_slopes(nm):
     N_specific = np.zeros(int(24 / 0.1))
     #
     # Step to first and subsequent critical bands
-    for i in np.arange(21):
+    for i in np.arange(1,21):
         zup[i] += 0.0001
         ig = i - 1
         if ig > 7:
