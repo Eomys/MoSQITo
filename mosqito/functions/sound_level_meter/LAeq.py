@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov 10 20:20:08 2021
+Created on Mon Nov 15 16:02:08 2021
 
-@author: Igarciac
+@author: Igarciac117 
 """
 
 import numpy as np
@@ -92,9 +92,12 @@ freq = np.array(
 
 def LAeq (spectrum,freq):
     spectrum_A = A_weighting(spectrum,freq)
-    solution = Leq(spectrum_A)
+    LAeq = Leq(spectrum_A)
+    
     print(spectrum_A)
-    print(solution)
+    print(LAeq)
     print("hola LAeq")
+
+    return LAeq
 
 #LAeq(spectrum_pink, freq)

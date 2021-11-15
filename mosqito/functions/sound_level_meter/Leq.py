@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov 10 20:20:08 2021
+Created on Mon Nov 15 15:10:08 2021
 
-@author: Igarciac
+@author: Igarciac117 
 """
 
 import numpy as np
@@ -62,7 +62,7 @@ def Leq(spectrum):
     print(Leq_sum)
     print(Leq)
     print("hola Leq")
-    
+
     return Leq
 
 #Leq(spectrum_Leq)
