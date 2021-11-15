@@ -43,16 +43,10 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
     elif len(sh) != 53:
         raise ValueError("ERROR: len(sh) shall be either 1 or 53")
 
-    """ OUTER AND MIDDLE EAR FILTERING (5.1.2)
+    # OUTER AND MIDDLE EAR FILTERING (5.1.2)
 
-    It is important to use the "filtfilt" version of the filter in order to reduce the lag in the results.
-    The Auditory Filtering Bank must be done by filtering with a non zero-phase filter in order to avoid filtering the
-    signal much more than it is intended to.
-    """
     sos_ear = ear_filter_design()
     signal_filtered = sp_signal.sosfilt(sos_ear, sig, axis=0)
-    # b, a = sp_signal.sos2tf(sos_ear)
-    # signal_filtered = sp_signal.lfilter(a, b, sig, axis=0)
 
     """ AUDITORY FILTERING BANK (5.1.3)
 

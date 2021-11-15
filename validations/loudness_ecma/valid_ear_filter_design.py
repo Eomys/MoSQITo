@@ -56,6 +56,7 @@ plt.ylabel("Level [dB]")
 
 plt.semilogx(freq, level, "o", label="Filtered sine signal")
 plt.legend()
-plt.show()
-
-pass
+plt.savefig(
+    "./validations/loudness_ecma/output/" + "validation_ear_filter_design.png",
+    format="png",
+)
