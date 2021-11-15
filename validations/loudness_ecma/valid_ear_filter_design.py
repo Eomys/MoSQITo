@@ -8,12 +8,18 @@ from numpy import (
     sqrt,
     mean,
 )
-from numpy.random import normal as random
 import matplotlib.pyplot as plt
 
 from mosqito.functions.loudness_ecma_spain.ear_filter_design import ear_filter_design
 from mosqito.functions.loudness_ecma_spain.sine_wave_generator import (
     sine_wave_generator,
+)
+
+# Data import
+# Threshold in quiet
+from validations.loudness_ecma.input.ear_filter_ecma import (
+    freq as freq_ecma,
+    level as level_ecma,
 )
 
 # generate outer and middle/inner ear filter coeeficient
@@ -46,8 +52,9 @@ while f < 20000:
     freq.append(f)
     f *= 2
 
-# Generate figure to be compared to figure F.3 from ECMA-74:2019
-plt.semilogx(w, db, label="Frequency response")
+# Generate figure to be compared to Figure 3 from ECMA 418-2:2020
+plt.semilogx(w, db, label="MOSQITO filter response")
+plt.semilogx(freq_ecma, level_ecma, label="ECMA Filter response")
 plt.grid(which="both")
 plt.xlim((20, 20000))
 plt.ylim((-25, 11))
