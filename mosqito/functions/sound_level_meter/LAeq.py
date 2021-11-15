@@ -8,12 +8,11 @@ Created on Wed Nov 10 20:20:08 2021
 import numpy as np
 
 # Local imports
-from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
-from mosqito.functions.sound_level_meter.Leq import Leq
+from Leq import Leq
 from mosqito.functions.shared.A_weighting import A_weighting
 
 # pink_noise 40.0 dB
-signal = np.array(
+spectrum_pink = np.array(
     [
         40.0,
         40.0,
@@ -91,12 +90,11 @@ freq = np.array(
         ]
     )
 
-def LAeq (signal,freq):
-    spectrum_A = A_weighting(signal,freq)
-
-    Leq(spectrum_A)
+def LAeq (spectrum,freq):
+    spectrum_A = A_weighting(spectrum,freq)
+    solution = Leq(spectrum_A)
+    print(spectrum_A)
+    print(solution)
     print("hola LAeq")
 
-LAeq(signal, freq)
-
-## print(calc_third_octave_levels(signal, 48000))
+#LAeq(spectrum_pink, freq)
