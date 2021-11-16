@@ -40,8 +40,10 @@ def calc_main_loudness(spec_third, field_type):
     # If one of the first 11 bands (from 25 to 250 Hz) exceed 120 dB the
     # Zwicker method cannot be applied.
     if np.max(spec_third[0:11]) > 120.0:
-        raise ValueError("1/3 octave band value exceed 120 dB, for which " +
-                         "the Zwicker method is no longer valid.")
+        raise ValueError(
+            "1/3 octave band value exceed 120 dB, for which "
+            + "the Zwicker method is no longer valid."
+        )
 
     #
     # Date tables definition (variable names and description according to
@@ -279,9 +281,11 @@ def calc_main_loudness_ea(spec_third, field_type):
     # contours 'xp' and calculation of the intensities for 1/3 oct.
     # bands up to 315 Hz
 
-    # Prepare al arrays to work with
+    # Prepare all arrays to work with
+    if len(spec_third.shape) == 1:
+        spec_third = spec_third[:, np.newaxis]
     spec_third_aux = spec_third[: dll.shape[1], :]
-    spec_third_aux[:, -1] = 0
+    # spec_third_aux[:, -1] = 0
 
     # Convert rap, dll in 3 dimensional array
     # 1. generate the array shape

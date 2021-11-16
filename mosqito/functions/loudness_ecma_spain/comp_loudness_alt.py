@@ -6,12 +6,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Project Imports
-from mosqito.functions.hearing_model.rectified_band_pass_signals import (
+from mosqito.functions.loudness_ecma_spain.rectified_band_pass_signals import (
     rectified_band_pass_signals,
 )
-from mosqito.functions.hearing_model.loudness_function import (
+from mosqito.functions.loudness_ecma_spain.loudness_function import (
     loudness_function as loudness_function,
 )
+
+# Data import
+# Threshold in quiet
+from mosqito.functions.loudness_ecma_spain.loudness_ecma_data import ltq_z
 
 
 def comp_loudness(signal, sb=2048, sh=1024):
@@ -21,12 +25,13 @@ def comp_loudness(signal, sb=2048, sh=1024):
 
     Parameters
     ----------
-    validation: boolean
-        Default value is set to 'False'. It is used to mark whether complete validation is done or not.
-
     signal: numpy.array
-        'Pa', time signal values. It can be, stereo (2 dimensions) or mono (1 dimension).The sampling frequency of the
+        time signal valuesin 'Pa'. It can be, stereo (2 dimensions) or mono (1 dimension).The sampling frequency of the
         signal must be 48000 Hz.
+    sb: int or list of int
+        block size.
+    sh: int or list of int
+        Hop size.
 
     Returns
     -------
@@ -40,65 +45,6 @@ def comp_loudness(signal, sb=2048, sh=1024):
         represents a certain block of audio (in chronological order). If the input signal is stereo, another matrix
         dimension is added.
     """
-
-    """ CONSIDERATION OF THRESHOLD IN QUIET """
-    # "The specific loudness in each band z is zero if it is at or below a critical-band-dependent specific loudness
-    # threshold LTQ(z)"
-    ltq_z = [
-        0.3310,
-        0.1625,
-        0.1051,
-        0.0757,
-        0.0576,
-        0.0453,
-        0.0365,
-        0.0298,
-        0.0247,
-        0.0207,
-        0.0176,
-        0.0151,
-        0.0131,
-        0.0115,
-        0.0103,
-        0.0093,
-        0.0086,
-        0.0081,
-        0.0077,
-        0.0074,
-        0.0073,
-        0.0072,
-        0.0071,
-        0.0072,
-        0.0073,
-        0.0074,
-        0.0076,
-        0.0079,
-        0.0082,
-        0.0086,
-        0.0092,
-        0.0100,
-        0.0109,
-        0.0122,
-        0.0138,
-        0.0157,
-        0.0172,
-        0.0180,
-        0.0180,
-        0.0177,
-        0.0176,
-        0.0177,
-        0.0182,
-        0.0190,
-        0.0202,
-        0.0217,
-        0.0237,
-        0.0263,
-        0.0296,
-        0.0339,
-        0.0398,
-        0.0485,
-        0.0622,
-    ]
 
     """Rectified band-pass signals (5.1.5)"""
     # # sb and sh for Tonality

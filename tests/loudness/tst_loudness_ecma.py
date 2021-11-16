@@ -5,13 +5,15 @@ import pytest
 import numpy as np
 
 # Local application imports
-from mosqito.functions.hearing_model.sine_wave_generator import sine_wave_generator
-from mosqito.functions.hearing_model.comp_loudness_alt import comp_loudness
-from mosqito.functions.hearing_model.sone2phone import sone2phone
+from mosqito.functions.loudness_ecma_spain.sine_wave_generator import (
+    sine_wave_generator,
+)
+from mosqito.functions.loudness_ecma_spain.comp_loudness_alt import comp_loudness
+from mosqito.functions.loudness_ecma_spain.sone2phone import sone2phone
 
 
-@pytest.mark.loudness_ecma  # to skip or run only loudness ecma tests
-def test_loudness_ecma():
+# @pytest.mark.loudness_ecma  # to skip or run only loudness ecma tests
+def tst_loudness_ecma():
     """Test function for the Loudness_ecma calculation
 
     Parameters
@@ -41,4 +43,4 @@ def test_loudness_ecma():
 
 # test de la fonction
 if __name__ == "__main__":
-    test_loudness_ecma()
+    tst_loudness_ecma()
