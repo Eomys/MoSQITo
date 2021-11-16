@@ -59,9 +59,7 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
 
     block_array_rect = []
     for band_number in range(53):
-        bm_mod, am_mod = gammatone(
-            centre_freq[band_number], order=filter_order_k, fs=fs
-        )
+        bm_mod, am_mod = gammatone(centre_freq[band_number], k=filter_order_k, fs=fs)
         # bm_mod, am_mod = sp_signal.gammatone(centre_freq[band_number], "fir", fs=fs)
 
         """ 
