@@ -8,3 +8,23 @@
                  tercio de octava).
 """
 
+#-- Importar librerias
+import numpy as np
+
+#-- Declaración de variables
+
+"""
+    Parameters
+    ----------
+    - data: fichero.csv con los Lp promedio de las banda de tercio de octava.
+
+    Outputs
+    -------
+    - prominent_tone: array con pares fc:Lp_promedio donde se detectan tonos prominentes.
+"""
+
+#-- prueba inicial
+print('Hola Mundo')
+A = np.array([[1,2,3],
+             [4,5,6]])
+print(A)
