@@ -8,7 +8,7 @@
                  tercio de octava).
 """
 
-#-- Importar librerias
+#-- Librerias
 import numpy as np
 import csv
 
@@ -27,6 +27,6 @@ import csv
 
 #-- Primera prueba --> Objetivo: leer e imprimmir el contenido del fichero.csv
 with open('data.csv') as csvfile:
-    filereader = csv.reader(csvfile, delimiter=',')
+    filereader = csv.reader(csvfile)
     for row in filereader:
         print(row)
