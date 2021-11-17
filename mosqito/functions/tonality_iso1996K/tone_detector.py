@@ -10,8 +10,7 @@
 
 #-- Importar librerias
 import numpy as np
-
-#-- Declaración de variables
+import csv
 
 """
     Parameters
@@ -23,8 +22,11 @@ import numpy as np
     - prominent_tone: array con pares fc:Lp_promedio donde se detectan tonos prominentes.
 """
 
-#-- prueba inicial
-print('Hola Mundo')
-A = np.array([[1,2,3],
-             [4,5,6]])
-print(A)
+#-- Obtener Lp promedio para las bandas de tercio de octava
+#-- del fichero.csv
+
+#-- Primera prueba --> Objetivo: leer e imprimmir el contenido del fichero.csv
+with open('data.csv') as csvfile:
+    filereader = csv.reader(csvfile, delimiter=',')
+    for row in filereader:
+        print(row)
