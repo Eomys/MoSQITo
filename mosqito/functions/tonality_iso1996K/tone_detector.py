@@ -25,8 +25,9 @@ import csv
 #-- Obtener Lp promedio para las bandas de tercio de octava
 #-- del fichero.csv
 
-#-- Primera prueba --> Objetivo: leer e imprimmir el contenido del fichero.csv
-with open('data.csv') as csvfile:
-    filereader = csv.reader(csvfile)
-    for row in filereader:
-        print(row)
+#-- 1º --> Objetivo: leer e imprimmir el contenido del fichero.csv
+#-- 2º --> Objetivo: obtener una lista con los arrays de las filas
+with open('data.csv', 'r') as csvfile:
+    data = list(csv.reader(csvfile, delimiter=","))
+
+print(data[0])
