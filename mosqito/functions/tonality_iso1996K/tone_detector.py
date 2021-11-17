@@ -39,3 +39,6 @@ Lp_promedio = data[1][1:32]
 #-- 3º --> Objetivo: Crear un diccionario {'frecuencia central':'Lp promedio banda 1/3 oct'}
 dict_oct3_levels = dict(zip(frec_centrales, Lp_promedio))
 print(dict_oct3_levels)
+
+#-- Con todo esto quiero crear una funcion a la que se le pase como entrada el archivo.csv
+#-- y como salida devuelva un diccionario con el par {'frecuencia central':'Lp promedio banda 1/3 oct'}
