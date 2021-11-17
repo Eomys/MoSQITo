@@ -30,4 +30,12 @@ import csv
 with open('data.csv', 'r') as csvfile:
     data = list(csv.reader(csvfile, delimiter=","))
 
-print(data[0])
+#print(data)
+frec_centrales = data[0][1:32]
+#print(frec_centrales)
+Lp_promedio = data[1][1:32]
+#print(Lp_promedio)
+
+#-- 3º --> Objetivo: Crear un diccionario {'frecuencia central':'Lp promedio banda 1/3 oct'}
+dict_oct3_levels = dict(zip(frec_centrales, Lp_promedio))
+print(dict_oct3_levels)
