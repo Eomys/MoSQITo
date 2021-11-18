@@ -9,6 +9,7 @@
 """
 
 #-- Librerias
+from types import ClassMethodDescriptorType
 import numpy as np
 import csv
 
@@ -61,8 +62,18 @@ for x in range (0, Lp_len):
     if x > 0 and x < 30:
         print("------------------")
         print(frec_centrales[x-1], ":", Lp_promedio[x-1])
+        Lp_anterior = Lp_promedio[x-1]
         print(frec_centrales[x], ":", Lp_promedio[x])
+        Lp = Lp_promedio[x]
         print(frec_centrales[x+1], ":", Lp_promedio[x+1])
+        Lp_posterior = Lp_promedio[x+1]
         print("------------------")
-    
+
+        #-- Comparar niveles para determinar si es un tono prominente.
+        if x > 0 and x < 9:
+            print("BAJA FRECUENCIA")
+        elif x > 8 and x < 14:
+            print("MEDIA FRECUENCIA")
+        elif x > 13 and x < 30:
+            print("ALTA FRECUENCIA")
 print("------------------------------------------")
