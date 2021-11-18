@@ -28,7 +28,10 @@ import csv
 #-- 1º --> Objetivo: leer e imprimmir el contenido del fichero.csv
 #-- 2º --> Objetivo: obtener una lista con los arrays de las filas
 #-- 3º --> Objetivo: Crear un diccionario {'frecuencia central':'Lp promedio banda 1/3 oct'}
-#.. 4º --> Objetivo: Crear función para crear el diccionario con los datos del archivo.csv
+#-- 4º --> Objetivo: Crear función para crear el diccionario con los datos del archivo.csv
+#-- OBJETIVOS 3º Y 4º NO SIRVEN.
+#-- 5º --> Objetivo: Con las listas de las frecuencias centrales y los Lp promedio crear una funcion para
+#--                  obtener los tonos prominentes.
 
 #-- Fichero a leer --> Mas adelante cambiar para introducir nombre del fichero por linea de comandos.
 file = 'data.csv'
@@ -39,12 +42,37 @@ def create_data_dict(file):
     with open('data.csv', 'r') as csvfile:
         data = list(csv.reader(csvfile, delimiter=","))
 
-    #-- Crear el diccionario con lo datos extraidos.
-    frec_centrales = data[0][1:32]
-    Lp_promedio = data[1][1:32]
-    oct3_levels = dict(zip(frec_centrales, Lp_promedio))
+    #-- Obtener las listas de las frec.centrales y los Lp_promedio.
+    fc = data[0][1:32]
+    Lp_mean = data[1][1:32]
 
-    return oct3_levels
+    return fc, Lp_mean
 
-dict_oct3_levels = create_data_dict(file)
-print(dict_oct3_levels)
+frec_centrales, Lp_promedio = create_data_dict(file)
+
+#-- Longitud de las listas, las 2 tienen la misma long.
+Lp_len = len(Lp_promedio)
+print(Lp_len)
+
+#-- Creadas las listas. Itinerar lista Lp_promedio
+print("------------------------------------------")
+
+for x in range (0, Lp_len):
+    if x == 0:
+        print("------------------")
+        print(Lp_promedio[x])
+        print(Lp_promedio[x+1])
+        print("------------------")
+    elif x > 0 and x < 31:
+        print("------------------")
+        print(Lp_promedio[x-1])
+        print(Lp_promedio[x])
+        print(Lp_promedio[x+1])
+        print("------------------")
+    else:
+        print("------------------")
+        print(Lp_promedio[x-1])
+        print(Lp_promedio[x])
+        print("------------------")
+
+print("------------------------------------------")
