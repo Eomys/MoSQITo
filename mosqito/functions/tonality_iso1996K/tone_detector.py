@@ -58,21 +58,11 @@ print(Lp_len)
 print("------------------------------------------")
 
 for x in range (0, Lp_len):
-    if x == 0:
+    if x > 0 and x < 30:
         print("------------------")
-        print(Lp_promedio[x])
-        print(Lp_promedio[x+1])
+        print(frec_centrales[x-1], ":", Lp_promedio[x-1])
+        print(frec_centrales[x], ":", Lp_promedio[x])
+        print(frec_centrales[x+1], ":", Lp_promedio[x+1])
         print("------------------")
-    elif x > 0 and x < 31:
-        print("------------------")
-        print(Lp_promedio[x-1])
-        print(Lp_promedio[x])
-        print(Lp_promedio[x+1])
-        print("------------------")
-    else:
-        print("------------------")
-        print(Lp_promedio[x-1])
-        print(Lp_promedio[x])
-        print("------------------")
-
+    
 print("------------------------------------------")
