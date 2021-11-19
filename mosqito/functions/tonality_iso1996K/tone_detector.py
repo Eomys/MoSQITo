@@ -21,10 +21,7 @@ import csv
     - prominent_tones: diccionario con pares {fc:Lp_mean} donde se detectan tonos prominentes.
 """
 
-#-- Obtener Lp promedio para las bandas de tercio de octava
-#-- del fichero.csv
-
-#-- Fichero a leer --> Mas adelante cambiar para introducir nombre del fichero por linea de comandos.
+#-- Fichero a leer --> Se debe introducir el nombre del fichero por linea de comandos.
 file = input('Enter the data file name: ')
 
 
@@ -39,14 +36,10 @@ def tone_detector(file):
 
     #-- Longitud de las listas, las 2 tienen la misma long.
     Lp_len = len(Lp_mean)
-    print(Lp_len)
 
     #-- Lista donde se guardaran los indices correspondientes a las posiciones donde hay 
     #-- un tono prominente
     index_tone_list = []
-
-    #-- Creadas las listas. Itinerar lista Lp_mean
-    print("------------------------------------------")
 
     for x in range (0, Lp_len):
         if x > 0 and x < 30:
@@ -57,35 +50,27 @@ def tone_detector(file):
 
             #-- calculamos la diferencia
             Lp_diff_prev = Lp - Lp_prev
-            print(Lp_diff_prev)
             Lp_diff_post = Lp - Lp_post
-            print(Lp_diff_post)
 
             #-- Comparar niveles para determinar si es un tono prominente.
             if x > 0 and x < 9:
-                print("BAJA FRECUENCIA --> diferencia 15 dB")
+                #-- "BAJA FRECUENCIA --> diferencia 15 dB"
                 if Lp_diff_prev >= 15 and Lp_diff_post >= 15:
                     #-- hay un tono en x, guardamos su valor.
                     index_tone_list.append(x)
                 
             elif x > 8 and x < 14:
-                print("MEDIA FRECUENCIA --> diferencia 8 dB")
+                #-- "MEDIA FRECUENCIA --> diferencia 8 dB"
                 if Lp_diff_prev >= 8 and Lp_diff_post >= 8:
                     #-- hay un tono en x, guardamos su valor.
                     index_tone_list.append(x)
             elif x > 13 and x < 30:
-                print("ALTA FRECUENCIA --> diferencia 5 dB")
+                #-- "ALTA FRECUENCIA --> diferencia 5 dB"
                 if Lp_diff_prev >= 5 and Lp_diff_post >= 5:
                     #-- hay un tono en x, guardamos su valor.
                     index_tone_list.append(x)
-    print("------------------------------------------")
-    print("-------------LISTA POSICIONES DE LOS TONOS-------------")
-    print(index_tone_list)
-
-    #-- Ya tengo las posiciones de los tonos en la lista, ahora debo buscar los datos correspondientes
-    #-- en ambas listas y mostrar dichos datos.
-
-    #-- Ahora si voy a crear un diccionario en el que se guardarán los datos correspondientes a los
+                    
+    #-- Diccionario en el que se guardarán los datos correspondientes a los
     #-- tonos prominentes, es decir,  {fc : Lp_mean} 
     prominent_tones = {}
 
@@ -95,6 +80,7 @@ def tone_detector(file):
         value = Lp_mean[index]
         prominent_tones[key] = value
     
+    #-- Retorno de la función.
     return prominent_tones
 
 #-- FUNCIONA!!!!!
