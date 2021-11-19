@@ -9,7 +9,6 @@
 """
 
 #-- Librerias
-from types import ClassMethodDescriptorType
 import numpy as np
 import csv
 
@@ -50,6 +49,8 @@ def create_data_dict(file):
     return fc, Lp_mean
 
 frec_centrales, Lp_promedio = create_data_dict(file)
+
+#---------------------------HAY QUE CONVERTIR TODO ESTO EN UNA FUNCIÓN-------------------------------------
 
 #-- Longitud de las listas, las 2 tienen la misma long.
 Lp_len = len(Lp_promedio)
@@ -95,3 +96,19 @@ for x in range (0, Lp_len):
 print("------------------------------------------")
 print("-------------LISTA POSICIONES DE LOS TONOS-------------")
 print(index_tone_list)
+
+#-- Ya tengo las posiciones de los tonos en la lista, ahora debo buscar los datos correspondientes
+#-- en ambas listas y mostrar dichos datos.
+
+#-- Ahora si voy a crear un diccionario en el que se guardarán los datos correspondientes a los
+#-- tonos prominentes, es decir,  {fc : Lp_promedio} 
+prominent_tones = {}
+
+for i in range (0, len(index_tone_list)):
+    index = index_tone_list[i]
+    key = frec_centrales[index]
+    value = Lp_promedio[index]
+    prominent_tones[key] = value
+
+#-- FUNCIONA!!!!!
+print(prominent_tones)
