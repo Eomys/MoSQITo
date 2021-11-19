@@ -14,6 +14,6 @@ from tonality_iso1996K import tone_detector
 #-- Fichero a leer --> Se debe introducir el nombre del fichero por linea de comandos.
 file = input('Enter the data file name: ')
 
-#-- Comprobar funcionamiento
+#-- Comprobar funcionamiento --> FUNCIONA CORRECTAMENTE
 tonos_prominentes = tone_detector(file)
 print(tonos_prominentes)
