@@ -22,16 +22,16 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
 
     Parameters
     ----------
-    signal: numpy.array
-        'Pa', time signal values. The sampling frequency of the signal must be 48000 Hz.
+    sig: numpy.array
+        time signal in Pa. The sampling frequency of the signal must be 48000 Hz.
     sb: int or list of int
         block size.
     sh: int or list of int
         Hop size.
     Returns
     -------
-    block_array_rect: list of numpy.array
-        rectified band-pass signals
+    block_array_rect: numpy.array
+        rectified band-pass signals (size: N_bark x N_block x sb)
     """
 
     if isinstance(sb, int):
@@ -43,52 +43,31 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
     elif len(sh) != 53:
         raise ValueError("ERROR: len(sh) shall be either 1 or 53")
 
-    # OUTER AND MIDDLE EAR FILTERING (5.1.2)
+    # OUTER AND MIDDLE EAR FILTERING (ECMA 418-2 section 5.1.2)
 
     sos_ear = ear_filter_design()
     signal_filtered = sp_signal.sosfilt(sos_ear, sig, axis=0)
 
-    # AUDITORY FILTERING BANK (5.1.3)
+    # AUDITORY FILTERING BANK (ECMA 418-2 section 5.1.3)
 
-    # Order of the Outer and Middle ear filter
-    filter_order_k = 5
-    # Sampling frequency
-    fs = 48000.00
     # Auditory filters centre frequencies
     centre_freq = gen_auditory_filters_centre_freq()
 
     block_array_rect = []
     for band_number in range(53):
-        bm_mod, am_mod = gammatone(centre_freq[band_number], k=filter_order_k, fs=fs)
-        # bm_mod, am_mod = sp_signal.gammatone(centre_freq[band_number], "fir", fs=fs)
-
-        """ 
-        "scipy.signal.lfilter" instead of "scipy.signal.filtfilt" in order to maintain consistency. That process 
-        makes possible to obtain a signal "band_pass_signal" that does not line up in time with the original signal 
-        because of the non zero-phase filtering of "lfilter", but it has a more appropriate slope than filtfilt. 
-        By using filtfilt the slope is that high that filters too much the signal. 
-        """
-        band_pass_signal = (
-            2.0
-            * (
-                sp_signal.lfilter(
-                    bm_mod,
-                    am_mod,
-                    signal_filtered,
-                    axis=0,
-                )
-            ).real
+        # Compute the filter coefficient for the current critical band
+        bm_mod, am_mod = gammatone(centre_freq[band_number])
+        # Filter the signal
+        band_pass_signal = sp_signal.lfilter(
+            bm_mod,
+            am_mod,
+            signal_filtered,
+            axis=0,
         )
+        band_pass_signal = 2.0 * band_pass_signal.real
 
-        """SEGMENTATION OF THE SIGNAL INTO BLOCKS (5.1.4)
+        # SEGMENTATION OF THE SIGNAL INTO BLOCKS (ECMA 418-2 section 5.1.4)
 
-        The segmentation of the signal is done in order to obtain results for intervals of time, not for the whole
-        duration of the signal. The reason behind this decision resides in the fact that processing the signal in its
-        full length at one time could end up in imprecise results. By using a "for loop", we are able to decompose the
-        signal array "band_pass_signal_hr" into blocks. "sb_array" is the block size which changes depending on the
-        "band_number" in which we are processing the signal. "sh_array" is the step size, the time shift to the next
-        block.
-        """
         block_array = segmentation_blocks(
             band_pass_signal, sb[band_number], sh[band_number], dim=1
         )
@@ -102,4 +81,5 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
         """
         block_array_rect.append(np.clip(block_array, a_min=0.00, a_max=None))
 
+    block_array_rect = np.array(block_array_rect)
     return block_array_rect
