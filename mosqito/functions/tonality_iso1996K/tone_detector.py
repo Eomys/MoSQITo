@@ -55,25 +55,43 @@ frec_centrales, Lp_promedio = create_data_dict(file)
 Lp_len = len(Lp_promedio)
 print(Lp_len)
 
+#-- Lista donde se guardaran los indices correspondientes a las posiciones donde hay 
+#-- un tono prominente
+index_tone_list = []
+
 #-- Creadas las listas. Itinerar lista Lp_promedio
 print("------------------------------------------")
 
 for x in range (0, Lp_len):
     if x > 0 and x < 30:
-        print("------------------")
-        print(frec_centrales[x-1], ":", Lp_promedio[x-1])
-        Lp_anterior = Lp_promedio[x-1]
-        print(frec_centrales[x], ":", Lp_promedio[x])
-        Lp = Lp_promedio[x]
-        print(frec_centrales[x+1], ":", Lp_promedio[x+1])
-        Lp_posterior = Lp_promedio[x+1]
-        print("------------------")
+        #-- Variables a comparar
+        Lp_prev = int(Lp_promedio[x-1])
+        Lp = int(Lp_promedio[x])
+        Lp_post = int(Lp_promedio[x+1])
+
+        #-- calculamos la diferencia
+        Lp_diff_prev = Lp - Lp_prev
+        print(Lp_diff_prev)
+        Lp_diff_post = Lp - Lp_post
+        print(Lp_diff_post)
 
         #-- Comparar niveles para determinar si es un tono prominente.
         if x > 0 and x < 9:
-            print("BAJA FRECUENCIA")
+            print("BAJA FRECUENCIA --> diferencia 15 dB")
+            if Lp_diff_prev >= 15 and Lp_diff_post >= 15:
+                #-- hay un tono en x, guardamos su valor.
+                index_tone_list.append(x)
+            
         elif x > 8 and x < 14:
-            print("MEDIA FRECUENCIA")
+            print("MEDIA FRECUENCIA --> diferencia 8 dB")
+            if Lp_diff_prev >= 8 and Lp_diff_post >= 8:
+                #-- hay un tono en x, guardamos su valor.
+                index_tone_list.append(x)
         elif x > 13 and x < 30:
-            print("ALTA FRECUENCIA")
+            print("ALTA FRECUENCIA --> diferencia 5 dB")
+            if Lp_diff_prev >= 5 and Lp_diff_post >= 5:
+                #-- hay un tono en x, guardamos su valor.
+                index_tone_list.append(x)
 print("------------------------------------------")
+print("-------------LISTA POSICIONES DE LOS TONOS-------------")
+print(index_tone_list)
