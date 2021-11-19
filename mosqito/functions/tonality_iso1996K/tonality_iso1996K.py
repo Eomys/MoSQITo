@@ -11,23 +11,18 @@
 #-- Librerias
 import csv
 
-"""
-    Parameters
-    ----------
-    - file: fichero.csv con los Lp promedio de las banda de tercio de octava.
-
-    Outputs
-    -------
-    - prominent_tones: diccionario con pares {fc:Lp_mean} donde se detectan tonos prominentes.
-"""
-
-#-- Fichero a leer --> Se debe introducir el nombre del fichero por linea de comandos.
-file = input('Enter the data file name: ')
-
-
 def tone_detector(file):
+    """
+        Parameters
+        ----------
+        - file: fichero.csv con los Lp promedio de las banda de tercio de octava.
+
+        Outputs
+        -------
+        - prominent_tones: diccionario con pares {fc:Lp_mean} donde se detectan tonos prominentes.
+    """
     #-- Leer el archivo y extraer los datos
-    with open('data.csv', 'r') as csvfile:
+    with open(file, 'r') as csvfile:
         data = list(csv.reader(csvfile, delimiter=","))
 
     #-- Obtener las listas de las frec.centrales y los Lp_promedio.
@@ -83,6 +78,3 @@ def tone_detector(file):
     #-- Retorno de la función.
     return prominent_tones
 
-#-- FUNCIONA!!!!!
-tonos_prominentes = tone_detector(file)
-print(tonos_prominentes)
