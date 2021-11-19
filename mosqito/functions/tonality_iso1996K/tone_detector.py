@@ -2,14 +2,13 @@
 """
     Autor: Cristina Taboada (TinaTabo)
     Fecha inicio: 17/11/2021
-    Fecha última modificación: 17/11/2021
+    Fecha última modificación: 19/11/2021
     Descripción: Función para detectar tonos prominentes a partir de un archivo
                  .csv de datos (niveles de presión sonora promediados para cada
                  tercio de octava).
 """
 
 #-- Librerias
-import numpy as np
 import csv
 
 """
@@ -25,16 +24,8 @@ import csv
 #-- Obtener Lp promedio para las bandas de tercio de octava
 #-- del fichero.csv
 
-#-- 1º --> Objetivo: leer e imprimmir el contenido del fichero.csv
-#-- 2º --> Objetivo: obtener una lista con los arrays de las filas
-#-- 3º --> Objetivo: Crear un diccionario {'frecuencia central':'Lp promedio banda 1/3 oct'}
-#-- 4º --> Objetivo: Crear función para crear el diccionario con los datos del archivo.csv
-#-- OBJETIVOS 3º Y 4º NO SIRVEN.
-#-- 5º --> Objetivo: Con las listas de las frecuencias centrales y los Lp promedio crear una funcion para
-#--                  obtener los tonos prominentes.
-
 #-- Fichero a leer --> Mas adelante cambiar para introducir nombre del fichero por linea de comandos.
-file = 'data.csv'
+file = input('Enter the data file name: ')
 
 
 def tone_detector(file):
