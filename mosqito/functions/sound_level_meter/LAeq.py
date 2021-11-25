@@ -11,47 +11,7 @@ import numpy as np
 from Leq import Leq
 from mosqito.functions.shared.A_weighting import A_weighting
 
-# pink_noise 40.0 dB
-spectrum_pink = np.array(
-    [
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
-)
-
-freq = np.array(
+freq_standard = np.array(
         [
             10,
             12.5,
@@ -90,14 +50,132 @@ freq = np.array(
         ]
     )
 
-def LAeq (spectrum,freq):
-    spectrum_A = A_weighting(spectrum,freq)
-    LAeq = Leq(spectrum_A)
+# pink_noise 40.0 dB samples
+spectrum_pink_first_sample = [
+        10.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+    ]
+spectrum_pink_second_sample = [
+        20.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+    ]
+spectrum_pink_third_sample = [
+        30.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+    ]
+
+# pink noise signal
+pink_noise_samples = [spectrum_pink_first_sample, spectrum_pink_second_sample, spectrum_pink_third_sample]
+pink_noise_signal = np.array(pink_noise_samples)
+
+def LAeq (spectrum_signal_samples,freq):
+    signal_sample_A = []
+    for i in range(spectrum_signal_samples.shape[0]):
+        signal_sample_A.append(A_weighting(spectrum_signal_samples[i],freq))
     
-    print(spectrum_A)
-    print(LAeq)
+    spectrum_signal_samples_A = np.array(signal_sample_A)
+
+    LAeq = Leq(spectrum_signal_samples_A, freq)
+    #print(spectrum_signal_samples_A)
+    print(LAeq)  
     print("hola LAeq")
 
     return LAeq
 
-#LAeq(spectrum_pink, freq)
+LAeq(pink_noise_signal, freq_standard)
