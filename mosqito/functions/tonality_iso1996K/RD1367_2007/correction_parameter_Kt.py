@@ -6,3 +6,14 @@
                  descrita en el Anexo IV punto 3.3. Correcion por componentes tonales (Kt),
                  impulsiva (Ki) y bajas frecuencias (Kf), del RD 1763/2007.
 """
+
+
+"""
+        Parameters
+        ----------
+        - file: fichero.csv con los Lp promedio de las banda de tercio de octava.
+
+        Outputs
+        -------
+        - Kt: parámetro de corrección por componentes tonales Kt.
+"""
