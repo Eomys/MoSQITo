@@ -16,3 +16,4 @@ In this folder, you will find the documentation and validation of the different 
 - [Sharpness of stationary and time-varying signals](./sharpness.md)
 - [Roughness of stationary and time-varying signals (Daniel and Weber method)](./roughness.md)
 - [Tone-to-noise ratio and Prominence ratio of stationary and time-varying signals](./tone-to-noise-prominence-ratio.md)
+- [Third octave band tonality according to ISO 1996 annex K](./tonality_ISO1996K.md)
