@@ -17,6 +17,6 @@ For the users that would like to use MOSQITO independently, a scripting interfac
 Each function in the function library shall come with:
 - a documentation presenting the sources used for the implementation and showing how the implementation is validated (in the [documentation folder](.)) 
 - a tutorial (in the [tutorial folder](../tutorials))
-- a unit test (in the [tests folder](../mosqito/tests)) 
+- a unit test (in the [tests folder](../tests)) 
 
 The scripting interface, relies upon an object oriented approach. All operations on audio signals are managed through the Audio class and its methods.
