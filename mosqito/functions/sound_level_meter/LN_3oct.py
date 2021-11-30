@@ -1,17 +1,123 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Nov 15 16:02:08 2021
-
-@author: Igarciac117 
-"""
-
+from mosqito.functions.shared.level import comp_level
 import numpy as np
 
-# Local imports
-from Leq import Leq
-from mosqito.functions.shared.C_weighting import C_weighting
+# pink_noise 40.0 dB samples
+spectrum_pink_first_sample = [
+        1.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+    ]
 
-freq_standard = np.array(
+spectrum_pink_second_sample = [
+        50.0,
+        50.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        1.0,
+    ]
+
+spectrum_pink_third_sample = [
+        100.0,
+        40.0,
+        50.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        80.0,
+    ]
+
+# pink noise signal
+pink_noise_samples = [spectrum_pink_first_sample, spectrum_pink_second_sample, spectrum_pink_third_sample]
+pink_noise_signal = np.array(pink_noise_samples)
+
+freq = np.array(
         [
             10,
             12.5,
@@ -19,7 +125,7 @@ freq_standard = np.array(
             20,
             25,
             31.5,
-            40,
+            20,
             50,
             63,
             80,
@@ -50,132 +156,19 @@ freq_standard = np.array(
         ]
     )
 
-# pink_noise 40.0 dB samples
-spectrum_pink_first_sample = [
-        10.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
-spectrum_pink_second_sample = [
-        20.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
-spectrum_pink_third_sample = [
-        30.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
+def LN_3oct(spectrum_signal_samples, freq):
+    print('percentiles using interpolation = ', "linear")
 
-# pink noise signal
-pink_noise_samples = [spectrum_pink_first_sample, spectrum_pink_second_sample, spectrum_pink_third_sample]
-pink_noise_signal = np.array(pink_noise_samples)
+    main_freq = np.zeros(spectrum_signal_samples.shape[0])
+    for i in range(freq.shape[0]):
+        for j in range(spectrum_signal_samples.shape[0]):
+            main_freq[j] = spectrum_signal_samples[j,i]
+        
+        L90 = np.percentile(main_freq, 10,interpolation='linear') 
+        L50 = np.percentile(main_freq, 50,interpolation='linear') 
+        L25 = np.percentile(main_freq, 75,interpolation='linear')
 
-def LCeq (spectrum_signal_samples,freq):
-    signal_sample_C = []
-    for i in range(spectrum_signal_samples.shape[0]):
-        signal_sample_C.append(C_weighting(spectrum_signal_samples[i],freq))
-    
-    spectrum_signal_samples_C = np.array(signal_sample_C)
+        print(freq[i])
+        print('L90 = ',L90,', median = ',L50,' L25 = ',L25)
 
-    LCeq = Leq(spectrum_signal_samples_C, freq)
-    #print(spectrum_signal_samples_A)
-    print(LCeq)  
-    print("hola LAeq")
-
-    return LCeq
-
-LCeq(pink_noise_signal, freq_standard)
+LN_3oct(pink_noise_signal,freq)
