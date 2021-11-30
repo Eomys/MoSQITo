@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mosqito.functions.hearing_model.loudness_function import (
+from mosqito.functions.loudness_ecma_spain.loudness_function import (
     loudness_function as loudness_function,
 )
 

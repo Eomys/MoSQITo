@@ -3,8 +3,12 @@
 import matplotlib.pyplot as plt
 
 # Local application imports
-from mosqito.functions.hearing_model.sine_wave_generator import sine_wave_generator
-from mosqito.functions.hearing_model.segmentation_blocks import segmentation_blocks
+from mosqito.functions.loudness_ecma_spain.sine_wave_generator import (
+    sine_wave_generator,
+)
+from mosqito.functions.loudness_ecma_spain.segmentation_blocks import (
+    segmentation_blocks,
+)
 
 signal, _ = sine_wave_generator(
     fs=48000,

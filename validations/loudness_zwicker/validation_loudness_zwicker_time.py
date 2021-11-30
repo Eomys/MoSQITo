@@ -192,10 +192,10 @@ def validation_loudness_zwicker_time(signal):
     loudness = comp_loudness(False, sig, fs, signal["field"])
 
     # Check ISO 532-1 compliance
-    check_compliance(loudness, signal)
+    check_compliance(loudness, signal, "./validations/loudness_zwicker/output/")
 
 
-def check_compliance(loudness, signal):
+def check_compliance(loudness, signal, out_dir):
     """Check the comppiance of loudness calc. to ISO 532-1
 
     Check the compliance of the input data N and N_specific
@@ -204,13 +204,17 @@ def check_compliance(loudness, signal):
 
     Parameters
     ----------
-    N : float
-        Calculated loudness [sones]
-    N_specific : numpy.ndarray
-        Specific loudness [sones/bark]
-    bark_axis : numpy.ndarray
-        Corresponding bark axis
-    signal : dict
+    loudness: dict
+        {
+            "name": "Loudness",
+            "values": N: float/numpy.array
+                loudness value
+            "specific values": N_specific: numpy.array
+                specific loudness values
+            "freqs": bark_axis: numpy.array
+                frequency axis corresponding to N_specific values in bark
+        }
+    signal: dict
         {
             "data_file": <Path to reference input signal>,
             "N_file": <Path to reference calculated loudness versus time>
@@ -218,6 +222,8 @@ def check_compliance(loudness, signal):
             "N_specif_bark": <Bark value of the reference calculation>
         }
         Dictionary containing link to ref. data
+    out_dir: str
+        path to the directory to store the results
 
     Outputs
     -------
@@ -412,7 +418,7 @@ def check_compliance(loudness, signal):
             else:
                 flag = "FAILED_"
             plt.savefig(
-                "./validations/loudness_zwicker/output/"
+                out_dir
                 + flag
                 + "validation_loudness_zwicker_time_"
                 + file_name.split("/")[-1][:-4]
@@ -426,5 +432,5 @@ def check_compliance(loudness, signal):
 
 
 if __name__ == "__main__":
-    for i in range(3, 20):
+    for i in range(20):
         validation_loudness_zwicker_time(signal[i])
