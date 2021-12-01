@@ -1,6 +1,4 @@
-from mosqito.functions.shared.level import comp_level
 import numpy as np
-from numpy.lib.function_base import percentile
 
 # pink_noise 40.0 dB samples
 spectrum_pink_first_sample = [
@@ -194,25 +192,19 @@ freq = np.array(
         ]
     )
 
-def LN_3oct(spectrum_signal_samples, freq):
-    print('percentiles using interpolation = ', "linear")
+def max_3oct(spectrum_signal_samples, freq):
 
     main_freq = np.zeros(spectrum_signal_samples.shape[0])
-    percentile = np.zeros(freq.share[0])
+    max_value = np.zeros(freq.shape[0])
     for i in range(freq.shape[0]):
         for j in range(spectrum_signal_samples.shape[0]):
             main_freq[j] = spectrum_signal_samples[j,i]
         
-        L90 = np.percentile(main_freq, 10,interpolation='linear')
-        percentile[i] = L90
-        L50 = np.percentile(main_freq, 50,interpolation='linear') 
-        L25 = np.percentile(main_freq, 75,interpolation='linear')
+        max_value[i] = max(main_freq) 
 
         print(freq[i])
-        print('L90 = ',L90,', median = ',L50,' L25 = ',L25)
-
-        print(percentile)
+        print(max_value)
     
-    return percentile
+    return max_value
 
-LN_3oct(pink_noise_signal,freq)
+max_3oct(pink_noise_signal,freq)
