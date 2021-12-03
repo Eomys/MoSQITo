@@ -16,6 +16,9 @@ from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import (
 from mosqito.functions.loudness_zwicker.loudness_zwicker_time import (
     loudness_zwicker_time,
 )
+from mosqito.functions.loudness_zwicker.calc_third_octave_levels import (
+    calc_third_octave_levels,
+)
 
 
 def comp_loudness(is_stationary, signal, fs, field_type="free"):
@@ -47,14 +50,14 @@ def comp_loudness(is_stationary, signal, fs, field_type="free"):
         }
     """
 
-    third_spec = comp_third_spec(is_stationary, signal, fs)
-
     if is_stationary == True:
+        third_spec = comp_third_spec(is_stationary, signal, fs)
         N, N_specific = loudness_zwicker_stationary(
             third_spec["values"], third_spec["freqs"], field_type
         )
     elif is_stationary == False:
-        N, N_specific = loudness_zwicker_time(third_spec["values"], field_type)
+        spec_third, _, _ = calc_third_octave_levels(signal, fs)
+        N, N_specific = loudness_zwicker_time(spec_third, field_type)
 
     # critical band rate scale
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))

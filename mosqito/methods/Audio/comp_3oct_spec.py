@@ -5,7 +5,7 @@ from numpy import squeeze
 from SciDataTool import Data1D, DataTime, DataFreq
 
 from mosqito.functions.shared.A_weighting import A_weighting
-from mosqito.functions.oct3filter.calc_third_octave_levels import (
+from mosqito.functions.loudness_zwicker.calc_third_octave_levels import (
     calc_third_octave_levels,
 )
 from mosqito.functions.oct3filter.oct3spec import oct3spec
