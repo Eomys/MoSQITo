@@ -176,27 +176,27 @@ def analyseData(filters, data, freqDict=None, plot=False):
     return meanSignal
 
 
-# if __name__ == "__main__":
-#     fs = 48000
+if __name__ == "__main__":
+    fs = 48000
 
-#     freqs = getFrequencies(60, 20000, 1)
-#     filters = designFilters(freqs, fs, plot=False)
-#     # data
-#     t = np.arange(0, 1, 1 / fs)
-#     s = np.sin(2 * np.pi * 1000 * t)
-#     # filter
-#     filteredSignal = filterData(filters, s)
+    freqs = getFrequencies(60, 20000, 1)
+    filters = designFilters(freqs, fs, plot=False)
+    # data
+    t = np.arange(0, 1, 1 / fs)
+    s = np.sin(2 * np.pi * 1000 * t)
+    # filter
+    filteredSignal = filterData(filters, s)
 
-#     # analyse
-#     rmsData = analyseData(filters, s, freqs, plot=False)
+    # analyse
+    rmsData = analyseData(filters, s, freqs, plot=False)
 
-#     #plot
-#     plt.figure('Results')
-#     plt.subplot(1, 2, 1)
-#     plt.title('Filtered signal')
-#     plt.plot(filteredSignal)
-#     plt.subplot(1, 2, 2)
-#     plt.title('RMS signal')
-#     plt.step(freqs['f'][:,1],rmsData)
-#     plt.xscale('log')
-#     plt.show()
+    # plot
+    plt.figure("Results")
+    plt.subplot(1, 2, 1)
+    plt.title("Filtered signal")
+    plt.plot(filteredSignal)
+    plt.subplot(1, 2, 2)
+    plt.title("RMS signal")
+    plt.step(freqs["f"][:, 1], rmsData)
+    plt.xscale("log")
+    plt.show()

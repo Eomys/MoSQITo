@@ -10,6 +10,11 @@ import numpy as np
 
 # Local imports
 from mosqito.functions.oct3filter.oct3spec import oct3spec
+from mosqito.functions.noctfilter.n_oct_filter import (
+    getFrequencies,
+    designFilters,
+    analyseData,
+)
 
 
 def comp_third_spec(is_stationary, signal, fs):
@@ -36,6 +41,11 @@ def comp_third_spec(is_stationary, signal, fs):
 
     if is_stationary == True:
         spec_third, third_axis = oct3spec(signal, fs)
+        f_dict = getFrequencies(25, 12500, 3)
+        filters = designFilters(f_dict, fs, plot=False)
+        rmsData = analyseData(filters, signal, f_dict, plot=False)
+        spec_third = 20 * np.log10((rmsData) / (2 * 10 ** -5))
+
         time_axis = []
     # elif is_stationary == False:
     #     spec_third, third_axis, time_axis = calc_third_octave_levels(signal, fs)
