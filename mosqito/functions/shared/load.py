@@ -186,8 +186,9 @@ def load2wav(
 
 def uff_load(file):
     if pyuff is None:
-        raise RuntimeError("In order to load UFF files you need the 'pyuff' "
-                           "package.")
+        raise RuntimeError(
+            "In order to load UFF files you need the 'pyuff' " "package."
+        )
     uff_file = pyuff.UFF(file)
     data = uff_file.read_sets()
     return data
