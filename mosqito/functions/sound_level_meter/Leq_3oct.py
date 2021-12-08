@@ -168,7 +168,7 @@ pink_noise_signal = np.array(pink_noise_samples)
 
 #-----------------------------------------------------------------------------------------------------------------------------------
 
-def Leq(spectrum_signal_samples, freq):
+def Leq_3oct(spectrum_signal_samples, freq):
     """Calculate the Leq of the frequency bands you choose, returns the calculated Leq values for each band.
     Each one is calculated with the levels (dB) of its band in the different samples.
 
