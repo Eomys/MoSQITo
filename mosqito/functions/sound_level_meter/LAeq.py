@@ -168,28 +168,30 @@ pink_noise_signal = np.array(pink_noise_samples)
 #-----------------------------------------------------------------------------------------------------------------------------------
 
 def LAeq (spectrum_signal_samples,freq):
-    """You choose the frequencies you want to study, the LAeq of each frequency is calculated independently 
-    with their respective levels (dB) collected in each sample.  
+    """Calculate the LAeq of the frequency bands you choose, returns the calculated LAeq values for each band.
+    Each one is calculated with the levels (dBA) of its band in the different samples.
 
     Parameters
     ----------
     spectrum_signal_samples : numpy.ndarray
-        array in which each line is the db values of a sample.
+        array which each line is the dB values of the frequency bands in a sample.
     freq : numpy.ndarray
-        array with the frequencies you want to calculate the LAeq 
+        array with the frequency bands you want to calculate the LAeq.
 
     Outputs
     -------
-    LAeq : numpy.ndarray
-        a list of the Leq values for each frequency
+    Leq_freq : numpy.ndarray
+        a list of the Leq values (dBA) for each frequency band.
     """
-    # Empty array to save in each line the values in dBA of each sample 
+    # Empty list to keep the lists. Each list is the dBA values for each frequency band in a sample. 
     signal_sample_A = []
-    # Take all the lines with values in dB and convert them to dBA. Save dBA lines to a new array. 
+    # Take the lines of the array one by one and perform the function to transform the values in dB to dBA.
+    # Save dBA lists in the list "signal_sample_A". 
     for i in range(spectrum_signal_samples.shape[0]):
         signal_sample_A.append(A_weighting(spectrum_signal_samples[i],freq))
+    # Create an array in which each list of "signal_sample_A" is a line of the array. 
     spectrum_signal_samples_A = np.array(signal_sample_A)
-    # Calculate the Leq of each frequency with the new dBA values. 
+    # Calculate Leq of each frequency bands with the new dBA values. 
     LAeq = Leq(spectrum_signal_samples_A, freq)
     
     # THIS IS NOT PART OF THE PROGRAM-----------------------------------------------------------------------------------------

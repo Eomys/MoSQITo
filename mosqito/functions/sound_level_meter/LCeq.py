@@ -10,6 +10,7 @@ import numpy as np
 
 # Local imports
 from Leq import Leq
+#DOES NOT WORK THIS LINE I DON'T KNOW WHY
 from mosqito.functions.shared.C_weighting import C_weighting
 
 #THIS IS NOT A PART OF THE FUNCTION, it is a signal created by me to test if it works ------------------------------------------------
@@ -168,33 +169,35 @@ pink_noise_signal = np.array(pink_noise_samples)
 #------------------------------------------------------------------------------------------------------------------------------------
 
 def LCeq (spectrum_signal_samples,freq):
-    """You choose the frequencies you want to study, the LAeq of each frequency is calculated independently 
-    with their respective levels (dB) collected in each sample.  
+    """Calculate the LCeq of the frequency bands you choose, returns the calculated LCeq values for each band.
+    Each one is calculated with the levels (dBC) of its band in the different samples.
 
     Parameters
     ----------
     spectrum_signal_samples : numpy.ndarray
-        array in which each line is the db values of a sample.
+        array which each line is the dB values of the frequency bands in a sample.
     freq : numpy.ndarray
-        array with the frequencies you want to calculate the LAeq 
+        array with the frequency bands you want to calculate the LCeq.
 
     Outputs
     -------
-    LCeq : numpy.ndarray
-        a list of the Leq values for each frequency
+    Leq_freq : numpy.ndarray
+        a list of the Leq values (dBC) for each frequency band.
     """
-    # Empty array to save in each line the values in dBC of each sample
+    # Empty list to keep the lists. Each list is the dBC values for each frequency band in a sample.
     signal_sample_C = []
-    # Take all the lines with values in dB and convert them to dBC. Save dBA lines to a new array.
+    # Take the lines of the array one by one and perform the function to transform the values in dB to dBC.
+    # Save dBC lists in the list "signal_sample_C".
     for i in range(spectrum_signal_samples.shape[0]):
         signal_sample_C.append(C_weighting(spectrum_signal_samples[i],freq))
+    # Create an array in which each list of "signal_sample_C" is a line of the array.
     spectrum_signal_samples_C = np.array(signal_sample_C)
-    # Calculate the Leq of each frequency with the new dBC values.
+    # Calculate Leq of each frequency bands with the new dBC values.
     LCeq = Leq(spectrum_signal_samples_C, freq)
 
 # THIS IS NOT PART OF THE PROGRAM-------------------------------------------------------------------------------------------
     print(LCeq)  
-    print("hola LAeq")
+    print("hola LCeq")
 #-----------------------------------------------------------------------------------------------------------------------------
     return LCeq
 

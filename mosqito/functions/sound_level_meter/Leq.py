@@ -169,31 +169,31 @@ pink_noise_signal = np.array(pink_noise_samples)
 #-----------------------------------------------------------------------------------------------------------------------------------
 
 def Leq(spectrum_signal_samples, freq):
-    """You choose the frequencies you want to study, the Leq of each frequency is calculated independently 
-    with their respective levels (dB) collected in each sample.  
+    """Calculate the Leq of the frequency bands you choose, returns the calculated Leq values for each band.
+    Each one is calculated with the levels (dB) of its band in the different samples.
 
     Parameters
     ----------
     spectrum_signal_samples : numpy.ndarray
-        array in which each line is the db values of a sample.
+        array which each line is the dB values of the frequency bands in a sample.
     freq : numpy.ndarray
-        array with the frequencies you want to calculate the Leq 
+        array with the frequency bands you want to calculate the Leq.
 
     Outputs
     -------
     Leq_freq : numpy.ndarray
-        a list of the Leq values for each frequency
+        a list of the Leq values (dB) for each frequency band.
     """
-    # Creating a list of zeros of the size of the frequencies (to put the values of Leq).
+    # Creating a list of zeros of the size of the frequency bands (to keep the Leq values).
     Leq_freq = np.zeros(freq.shape)
-    # For each frequency you perform the operation.
+    # For each frequency band you perform the operation.
     for i in range(freq.shape[0]):
         sum = 0
-        # Performs the summation with all the values of the frequency in the different samples.
+        # Performs the summation with all the values of the frequency band in the different samples.
         for j in range(spectrum_signal_samples.shape[0]):  
             # Operation: summation(10^(level(db)[i]/10))
             sum = sum + 10.0**(spectrum_signal_samples[j,i]/10.0)
-        # save the Leq value in the box corresponding to the frequency from which the calculation is being made.
+        # Keep the Leq value in the box corresponding to the frequency band from which the calculation is being made.
         # Operation: 10 x log(base 10)[1/number of samples x sum]
         Leq_freq[i] = 10.0 * math.log(((1/spectrum_signal_samples.shape[0])*sum),10)
 
