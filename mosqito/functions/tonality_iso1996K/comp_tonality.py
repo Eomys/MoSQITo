@@ -30,7 +30,14 @@ def comp_tonality(signal, fs):
 
     # -- Obtain the lists of the central frequencies and the average Lp
     fc = third_spec["freqs"]
+    print("----------------Fc----------------")
+    print(fc)
+    print(len(fc))
+    print("----------------------------------")
     Lp_mean = third_spec["values"]
+    print("----------------Lp----------------")
+    print(Lp_mean)
+    print("----------------------------------")
 
     # -- Length of the lists, the 2 have the same length.
     Lp_len = len(Lp_mean)
