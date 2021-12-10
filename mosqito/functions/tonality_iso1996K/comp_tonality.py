@@ -47,41 +47,62 @@ def comp_tonality(signal, fs):
     for i in range (0, len(Lp_mean)):
         level = Lp_mean[i][0]
         Lp.append(level)
-
     print(Lp)
 
     # -- List where the indexes corresponding to the positions where there is 
     # -- a prominent tone will be stored.
     index_tone_list = []
 
-"""    for x in range(0, Lp_len):
-        if x > 0 and x < 27:  # dirty correction, to be improved
-            # -- Variables to compare
-            Lp_prev = int(Lp_mean[x - 1])
-            Lp = int(Lp_mean[x])
-            Lp_post = int(Lp_mean[x + 1])
+    #-- length of the lists
+    idx = len(fc) - 1
 
-            # -- calculate the difference
-            Lp_diff_prev = Lp - Lp_prev
-            Lp_diff_post = Lp - Lp_post
+    #-- level differences depending on the frequency range to determine if there 
+    #-- is a prominent pitch.
+    diff_low_freqs = 15.0
+    diff_medium_freqs = 8.0
+    diff_high_freqs = 5.0
 
-            # -- Compare levels to determine if it is a prominent tone.
-            if x > 0 and x < 9:
-                # -- "LOW FREQUENCY --> difference 15 dB".
-                if Lp_diff_prev >= 15 and Lp_diff_post >= 15:
-                    # -- there is a tone in x, we store its value.
-                    index_tone_list.append(x)
+    for x in range(0, idx):
+        # -- Variables to compare
+        if x == 0:
+            Lp_prev = 0
+            Lp_central = Lp[x]
+            Lp_post = Lp[x + 1]
+        else:
+            Lp_prev = Lp[x - 1]
+            Lp_central = Lp[x]
+            Lp_post = Lp[x + 1]
 
-            elif x > 8 and x < 14:
-                # -- "HALF FREQUENCY --> difference 8 dB"
-                if Lp_diff_prev >= 8 and Lp_diff_post >= 8:
-                    # -- there is a tone in x, we store its value.
-                    index_tone_list.append(x)
-            elif x > 13 and x < 30:
-                # -- "HIGH FREQUENCY --> 5 dB difference".
-                if Lp_diff_prev >= 5 and Lp_diff_post >= 5:
-                    # -- there is a tone in x, we store its value.
-                    index_tone_list.append(x)
+        #-- calculate the difference
+        Lp_diff_prev = abs(Lp_central - Lp_prev)
+        Lp_diff_post = abs(Lp_central - Lp_post)
+        print("---------------------")
+        print(int(Lp_diff_prev))
+        print(int(Lp_diff_post))
+        print("---------------------")
+
+        #-- if the value of the difference is constant with respect to the bands below and above 
+        #-- the one studied, we obtain the value of the difference and proceed to check if we have 
+        #-- found a prominent tone.
+        
+        if x > fc.index(25.0) and x < fc.index(160.0):
+            # -- "LOW FREQUENCY --> difference 15 dB".
+            if int(Lp_diff_prev) == int(Lp_diff_post) and Lp_diff_prev >= diff_low_freqs and Lp_diff_post >= diff_low_freqs:
+                # -- there is a tone in x, we store its value.
+                index_tone_list.append(x)
+
+        elif x > fc.index(125.0) and x < fc.index(500.0):
+            # -- "HALF FREQUENCY --> difference 8 dB"
+            if int(Lp_diff_prev) == int(Lp_diff_post) and Lp_diff_prev >= diff_medium_freqs and Lp_diff_post >= diff_medium_freqs:
+                # -- there is a tone in x, we store its value.
+                index_tone_list.append(x)
+        elif x > fc.index(400.0) and x < fc.index(12500.0):
+            # -- "HIGH FREQUENCY --> 5 dB difference".
+            if int(Lp_diff_prev) == int(Lp_diff_post)and Lp_diff_prev >= diff_high_freqs and Lp_diff_post >= diff_high_freqs:
+                # -- there is a tone in x, we store its value.
+                index_tone_list.append(x)
+
+    print(index_tone_list)
 
     # -- Dictionary in which the data corresponding to the prominent tones 
     # -- will be stored, i.e. {fc : Lp_mean}
@@ -90,12 +111,14 @@ def comp_tonality(signal, fs):
     for i in range(0, len(index_tone_list)):
         index = index_tone_list[i]
         key = fc[index]
-        value = Lp_mean[index]
+        value = Lp[index]
         prominent_tones[key] = value
+
+    print(prominent_tones)
 
     # -- Return of the function.
     return prominent_tones
-"""
+
 
 #-- Main call to the function for its execution.
 if __name__ == "__main__":
