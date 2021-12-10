@@ -11,7 +11,8 @@ from mosqito.functions.shared.load import load
 
 def comp_tonality(signal, fs):
     """
-    <Descirption in english ;-)>
+    <Function to obtain the prominent tones of a given signal 
+    according to the procedure described in ISO 1996-2 Annex K.>
 
     Parameters
     ----------
@@ -23,30 +24,37 @@ def comp_tonality(signal, fs):
     Outputs
     -------
     prominent_tones: dictionary
-        dictionary with {fc:Lp_mean} pairs where prominent tones are detected.
+        dictionary with {fc:Lp} pairs where prominent tones are detected.
     """
 
+    #-- we obtain the data of the Lp in thirds of octave of the signal of which 
+    #-- we want to know the prominent tones
     third_spec = comp_third_spec(is_stationary=True, signal=signal, fs=fs)
 
     # -- Obtain the lists of the central frequencies and the average Lp
-    fc = third_spec["freqs"]
-    print("----------------Fc----------------")
-    print(fc)
-    print(len(fc))
-    print("----------------------------------")
-    Lp_mean = third_spec["values"]
-    print("----------------Lp----------------")
-    print(Lp_mean)
-    print("----------------------------------")
+    freqs = third_spec["freqs"]
+    values = third_spec["values"]
 
-    # -- Length of the lists, the 2 have the same length.
-    Lp_len = len(Lp_mean)
+    #-- list of center frequencies
+    fc = freqs.tolist()
+    print(fc)
+
+    #-- list of the average Lp corresponding to each third octave band
+    Lp_mean = values.tolist()
+    #-- Lp_mean is a list of lists, we create 
+    #-- a single list with the data of each list.
+    Lp = []
+    for i in range (0, len(Lp_mean)):
+        level = Lp_mean[i][0]
+        Lp.append(level)
+
+    print(Lp)
 
     # -- List where the indexes corresponding to the positions where there is 
     # -- a prominent tone will be stored.
     index_tone_list = []
 
-    for x in range(0, Lp_len):
+"""    for x in range(0, Lp_len):
         if x > 0 and x < 27:  # dirty correction, to be improved
             # -- Variables to compare
             Lp_prev = int(Lp_mean[x - 1])
@@ -87,6 +95,7 @@ def comp_tonality(signal, fs):
 
     # -- Return of the function.
     return prominent_tones
+"""
 
 #-- Main call to the function for its execution.
 if __name__ == "__main__":
