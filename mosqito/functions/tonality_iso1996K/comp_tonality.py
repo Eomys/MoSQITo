@@ -37,7 +37,6 @@ def comp_tonality(signal, fs):
 
     #-- list of center frequencies
     fc = freqs.tolist()
-    print(fc)
 
     #-- list of the average Lp corresponding to each third octave band
     Lp_mean = values.tolist()
@@ -47,7 +46,6 @@ def comp_tonality(signal, fs):
     for i in range (0, len(Lp_mean)):
         level = Lp_mean[i][0]
         Lp.append(level)
-    print(Lp)
 
     # -- List where the indexes corresponding to the positions where there is 
     # -- a prominent tone will be stored.
@@ -76,10 +74,6 @@ def comp_tonality(signal, fs):
         #-- calculate the difference
         Lp_diff_prev = Lp_central - Lp_prev
         Lp_diff_post = Lp_central - Lp_post
-        print("---------------------")
-        print(int(Lp_diff_prev))
-        print(int(Lp_diff_post))
-        print("---------------------")
 
         #-- if the value of the difference is constant with respect to the bands below and above 
         #-- the one studied, we obtain the value of the difference and proceed to check if we have 
@@ -101,8 +95,6 @@ def comp_tonality(signal, fs):
             if int(Lp_diff_prev) == int(Lp_diff_post)and Lp_diff_prev >= diff_high_freqs and Lp_diff_post >= diff_high_freqs:
                 # -- there is a tone in x, we store its value.
                 index_tone_list.append(x)
-
-    print(index_tone_list)
 
     # -- Dictionary in which the data corresponding to the prominent tones 
     # -- will be stored, i.e. {fc : Lp_mean}
