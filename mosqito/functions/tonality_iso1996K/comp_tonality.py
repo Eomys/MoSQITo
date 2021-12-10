@@ -66,16 +66,16 @@ def comp_tonality(signal, fs):
         # -- Variables to compare
         if x == 0:
             Lp_prev = 0
-            Lp_central = Lp[x]
-            Lp_post = Lp[x + 1]
+            Lp_central = abs(Lp[x])
+            Lp_post = abs(Lp[x + 1])
         else:
-            Lp_prev = Lp[x - 1]
-            Lp_central = Lp[x]
-            Lp_post = Lp[x + 1]
+            Lp_prev = abs(Lp[x - 1])
+            Lp_central = abs(Lp[x])
+            Lp_post = abs(Lp[x + 1])
 
         #-- calculate the difference
-        Lp_diff_prev = abs(Lp_central - Lp_prev)
-        Lp_diff_post = abs(Lp_central - Lp_post)
+        Lp_diff_prev = Lp_central - Lp_prev
+        Lp_diff_post = Lp_central - Lp_post
         print("---------------------")
         print(int(Lp_diff_prev))
         print(int(Lp_diff_post))
@@ -84,7 +84,7 @@ def comp_tonality(signal, fs):
         #-- if the value of the difference is constant with respect to the bands below and above 
         #-- the one studied, we obtain the value of the difference and proceed to check if we have 
         #-- found a prominent tone.
-        
+
         if x > fc.index(25.0) and x < fc.index(160.0):
             # -- "LOW FREQUENCY --> difference 15 dB".
             if int(Lp_diff_prev) == int(Lp_diff_post) and Lp_diff_prev >= diff_low_freqs and Lp_diff_post >= diff_low_freqs:
@@ -114,8 +114,6 @@ def comp_tonality(signal, fs):
         value = Lp[index]
         prominent_tones[key] = value
 
-    print(prominent_tones)
-
     # -- Return of the function.
     return prominent_tones
 
@@ -124,4 +122,5 @@ def comp_tonality(signal, fs):
 if __name__ == "__main__":
     sig, fs = load(True, "tests/input/1KHZ60DB.WAV", calib=1)
     tones = comp_tonality(sig, fs)
+    print(tones)
     pass
