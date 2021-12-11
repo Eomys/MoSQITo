@@ -227,8 +227,9 @@ def max_level_3oct(spectrum_signal_samples, freq):
         # Save the values of a frequency band.
         for j in range(spectrum_signal_samples.shape[0]):
             main_freq[j] = spectrum_signal_samples[j,i]
-        #Calculate the maximum with the values.
+        # Calculate the maximum with the values.
         max_level_3oct[i] = max(main_freq) 
+
 #this is not part of the program-----------------------------------------------------------------------------------------
         print(freq[i])
         print(max_level_3oct)

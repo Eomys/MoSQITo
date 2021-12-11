@@ -216,8 +216,8 @@ def LN_3oct(spectrum_signal_samples, freq):
 
     Outputs
     -------
-    percentile : numpy.ndarray
-        a list of the percentile values for each frequency band.
+    percentile_L90 : numpy.ndarray
+        the 90_ percentiles of each frequency band.
     """
     # Empty array to keep the levels (dB) of each one of the samples of a specific frequency band.  
     main_freq = np.zeros(spectrum_signal_samples.shape[0])
@@ -233,7 +233,7 @@ def LN_3oct(spectrum_signal_samples, freq):
         # Save the values of a frequency band.
         for j in range(spectrum_signal_samples.shape[0]):
             main_freq[j] = spectrum_signal_samples[j,i]
-            #Calculate the percentiles with the values. "q" of np.percentile = 100 - N (N of LN).
+            # Calculate the percentiles with the values. "q" of np.percentile = 100 - N (N of LN).
             L90 = np.percentile(main_freq, 10,interpolation='linear')
             L50 = np.percentile(main_freq, 50,interpolation='linear') 
             L25 = np.percentile(main_freq, 75,interpolation='linear')

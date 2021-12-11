@@ -1,6 +1,17 @@
-from mosqito.functions.shared.level import comp_level
+# -*- coding: utf-8 -*-
+"""
+Created on Wen Dic 1 18:08:08 2021
+
+@author: Igarciac117 
+"""
+
+# Third party imports
 import numpy as np
 
+#Local imports. THIS IS NOT PART OF THE PROGRAM------------------------------------------------------------------------------------
+from mosqito.functions.shared.level import comp_level
+
+#THIS IS NOT A PART OF THE FUNCTION, it is a signal created by me to test if it works ------------------------------------------------
 white_noise_time = np.array(
     [
         20.0,
@@ -147,17 +158,31 @@ freq = np.array(
 
 fs = 1
 nb_points = 100
-
 data = comp_level(white_noise_time, fs, nb_points)
-
-signal_db = (data['values'])
+signal_db = np.array(data['values'])
+#print(signal_db)
+#-----------------------------------------------------------------------------------------------------------------
 
 def min_level(db_samples_signal):
-    
-    min_value = min(db_samples_signal)
-    
-    print(min_value)
+    """Calculate the minimum value of the series of levels (dB) collected over time (samples)
 
-    return min_value
+    Parameters
+    ----------
+    db_samples_signal : numpy.ndarray
+        array in which each line is the db values of a sample.
+
+    Outputs
+    -------
+    minimum : numpy.ndarray
+        return the minimum value of the samples.
+    """
+    # Save the minimum level.
+    min_level = min(db_samples_signal)
+
+# this is not part of the program----------------------------------------------------------------------------------------
+    print(min_level)
+#------------------------------------------------------------------------------------------------------------------------
+
+    return min_level
 
 min_level(signal_db)

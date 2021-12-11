@@ -182,7 +182,7 @@ def Leq_3oct(spectrum_signal_samples, freq):
     Outputs
     -------
     Leq_freq : numpy.ndarray
-        a list of the Leq values (dB) for each frequency band.
+        the Leq values (dB) for each frequency band.
     """
     # Creating a list of zeros of the size of the frequency bands (to keep the Leq values).
     Leq_freq = np.zeros(freq.shape)
