@@ -40,6 +40,12 @@ def comp_tonality(signal, fs):
 
     #-- list of the average Lp corresponding to each third octave band
     Lp_mean = values.tolist()
+
+    """-------BORRAR AL FINAL-------"""
+    print(fc)
+    print(Lp_mean)
+    """-----------------------------"""
+
     #-- Lp_mean is a list of lists, we create 
     #-- a single list with the data of each list.
     Lp = []
@@ -112,7 +118,7 @@ def comp_tonality(signal, fs):
 
 #-- Main call to the function for its execution.
 if __name__ == "__main__":
-    sig, fs = load(True, "tests/input/1KHZ60DB.WAV", calib=1)
+    sig, fs = load(True, "tests\input\TONE2000HZ.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print(tones)
     pass
