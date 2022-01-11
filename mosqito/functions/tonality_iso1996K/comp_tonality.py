@@ -50,8 +50,8 @@ def comp_tonality(signal, fs):
     
 
     """-------BORRAR AL FINAL-------"""
-    print(fc)
-    print(Lp)
+    #print(fc)
+    #print(Lp)
     """-----------------------------"""
 
     # -- List where the indexes corresponding to the positions where there is 
@@ -83,10 +83,10 @@ def comp_tonality(signal, fs):
         Lp_diff_post = Lp_central - Lp_post
 
         """----------BORRAR AL FINAL-----------"""
-        print("++++++++++++++++++")
-        print(Lp_diff_prev)
-        print(Lp_diff_post)
-        print("++++++++++++++++++")
+       # print("++++++++++++++++++")
+       # print(Lp_diff_prev)
+       # print(Lp_diff_post)
+       # print("++++++++++++++++++")
         """------------------------------------"""
 
 
@@ -96,18 +96,18 @@ def comp_tonality(signal, fs):
 
         if x > fc.index(25.0) and x < fc.index(160.0):
             # -- "LOW FREQUENCY --> difference 15 dB".
-            if int(Lp_diff_prev) == int(Lp_diff_post) and Lp_diff_prev >= diff_low_freqs and Lp_diff_post >= diff_low_freqs:
+            if Lp_diff_prev >= diff_low_freqs and Lp_diff_post >= diff_low_freqs:
                 # -- there is a tone in x, we store its value.
                 index_tone_list.append(x)
 
         elif x > fc.index(125.0) and x < fc.index(500.0):
             # -- "HALF FREQUENCY --> difference 8 dB"
-            if int(Lp_diff_prev) == int(Lp_diff_post) and Lp_diff_prev >= diff_medium_freqs and Lp_diff_post >= diff_medium_freqs:
+            if Lp_diff_prev >= diff_medium_freqs and Lp_diff_post >= diff_medium_freqs:
                 # -- there is a tone in x, we store its value.
                 index_tone_list.append(x)
         elif x > fc.index(400.0) and x < fc.index(12500.0):
             # -- "HIGH FREQUENCY --> 5 dB difference".
-            if int(Lp_diff_prev) == int(Lp_diff_post)and Lp_diff_prev >= diff_high_freqs and Lp_diff_post >= diff_high_freqs:
+            if Lp_diff_prev >= diff_high_freqs and Lp_diff_post >= diff_high_freqs:
                 # -- there is a tone in x, we store its value.
                 index_tone_list.append(x)
 
@@ -137,6 +137,14 @@ if __name__ == "__main__":
     print("---------------")
 
     #-- CORRECTO --
+    """----PRUEBA--TONO--200-Hz----"""
+    sig, fs = load(True, "tests\input\TONE200HZ.wav", calib=1)
+    tones = comp_tonality(sig, fs)
+    print("----RESULT-----")
+    print(tones)
+    print("---------------")
+
+    #-- CORRECTO --
     """----PRUEBA--TONO--1-KHz----"""
     sig, fs = load(True, "tests/input/1KHZ60DB.WAV", calib=1)
     tones = comp_tonality(sig, fs)
@@ -152,9 +160,17 @@ if __name__ == "__main__":
     print(tones)
     print("---------------")
 
-    #-- INCORRECTO --
+    #-- CORRECTO --
     """----PRUEBA--TONO--4-KHz----"""
     sig, fs = load(True, "tests\input\TONE4000HZ.wav", calib=1)
+    tones = comp_tonality(sig, fs)
+    print("----RESULT-----")
+    print(tones)
+    print("---------------")
+
+    #-- CORRECTO --
+    """----PRUEBA--TONO--5000-Hz----"""
+    sig, fs = load(True, "tests\input\TONE5000HZ.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
