@@ -41,17 +41,18 @@ def comp_tonality(signal, fs):
     #-- list of the average Lp corresponding to each third octave band
     Lp_mean = values.tolist()
 
-    """-------BORRAR AL FINAL-------"""
-    print(fc)
-    print(Lp_mean)
-    """-----------------------------"""
-
     #-- Lp_mean is a list of lists, we create 
     #-- a single list with the data of each list.
     Lp = []
     for i in range (0, len(Lp_mean)):
         level = Lp_mean[i][0]
         Lp.append(level)
+    
+
+    """-------BORRAR AL FINAL-------"""
+    print(fc)
+    print(Lp)
+    """-----------------------------"""
 
     # -- List where the indexes corresponding to the positions where there is 
     # -- a prominent tone will be stored.
@@ -82,8 +83,10 @@ def comp_tonality(signal, fs):
         Lp_diff_post = Lp_central - Lp_post
 
         """----------BORRAR AL FINAL-----------"""
+        print("++++++++++++++++++")
         print(Lp_diff_prev)
         print(Lp_diff_post)
+        print("++++++++++++++++++")
         """------------------------------------"""
 
 
