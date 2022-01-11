@@ -81,6 +81,12 @@ def comp_tonality(signal, fs):
         Lp_diff_prev = Lp_central - Lp_prev
         Lp_diff_post = Lp_central - Lp_post
 
+        """----------BORRAR AL FINAL-----------"""
+        print(Lp_diff_prev)
+        print(Lp_diff_post)
+        """------------------------------------"""
+
+
         #-- if the value of the difference is constant with respect to the bands below and above 
         #-- the one studied, we obtain the value of the difference and proceed to check if we have 
         #-- found a prominent tone.
@@ -118,7 +124,37 @@ def comp_tonality(signal, fs):
 
 #-- Main call to the function for its execution.
 if __name__ == "__main__":
+
+    #-- CORRECTO --
+    """----PRUEBA--TONO--100-Hz----"""
+    sig, fs = load(True, "tests\input\TONE100HZ.wav", calib=1)
+    tones = comp_tonality(sig, fs)
+    print("----RESULT-----")
+    print(tones)
+    print("---------------")
+
+    #-- CORRECTO --
+    """----PRUEBA--TONO--1-KHz----"""
+    sig, fs = load(True, "tests/input/1KHZ60DB.WAV", calib=1)
+    tones = comp_tonality(sig, fs)
+    print("----RESULT-----")
+    print(tones)
+    print("---------------")
+
+    #-- CORRECTO --
+    """----PRUEBA--TONO--2-KHz----"""
     sig, fs = load(True, "tests\input\TONE2000HZ.wav", calib=1)
     tones = comp_tonality(sig, fs)
+    print("----RESULT-----")
     print(tones)
+    print("---------------")
+
+    #-- INCORRECTO --
+    """----PRUEBA--TONO--4-KHz----"""
+    sig, fs = load(True, "tests\input\TONE4000HZ.wav", calib=1)
+    tones = comp_tonality(sig, fs)
+    print("----RESULT-----")
+    print(tones)
+    print("---------------")
+
     pass
