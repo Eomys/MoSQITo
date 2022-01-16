@@ -12,4 +12,4 @@ These calculations are based on the comparison of time-averaged sound pressure l
 
 
 ### References
-UNE-ISO 1996:2020. Acoustics. Description, measurement and evaluation of environmental noise. Part 2: Determination of sound pressure levels.
+ (ojo - mirar la referencia correcta (inglés)) ISO 1996:2020. Acoustics. Description, measurement and evaluation of environmental noise. Part 2: Determination of sound pressure levels.
