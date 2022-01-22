@@ -176,4 +176,12 @@ if __name__ == "__main__":
     print(tones)
     print("---------------")
 
+    #-- INCORRECTO --
+    """----PRUEBA--SEÑAL--TONAL----"""
+    sig, fs = load(True, "tests\input\prueba.wav", calib=1)
+    tones = comp_tonality(sig, fs)
+    print("----RESULT-----")
+    print(tones)
+    print("---------------")
+
     pass
