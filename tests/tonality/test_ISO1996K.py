@@ -28,6 +28,7 @@ def test_ISO1996K():
     print("----RESULT-----")
     print(tones)
     print("---------------")
+    assert tones == {100.0: 84.85146128088218}
 
     #-- CORRECTO --
     """----PRUEBA--TONO--200-Hz----"""
@@ -36,6 +37,7 @@ def test_ISO1996K():
     print("----RESULT-----")
     print(tones)
     print("---------------")
+    assert tones == {200.0: 84.85835085762665}
 
     #-- CORRECTO --
     """----PRUEBA--TONO--1-KHz----"""
@@ -44,6 +46,7 @@ def test_ISO1996K():
     print("----RESULT-----")
     print(tones)
     print("---------------")
+    assert tones == {1000.0: 63.962211067656554}
 
     #-- CORRECTO --
     """----PRUEBA--TONO--2-KHz----"""
@@ -52,6 +55,7 @@ def test_ISO1996K():
     print("----RESULT-----")
     print(tones)
     print("---------------")
+    assert tones == {2000.0: 84.95769475723816}
 
     #-- CORRECTO --
     """----PRUEBA--TONO--4-KHz----"""
@@ -60,6 +64,7 @@ def test_ISO1996K():
     print("----RESULT-----")
     print(tones)
     print("---------------")
+    assert tones == {4000.0: 84.95769513303429}
 
     #-- CORRECTO --
     """----PRUEBA--TONO--5000-Hz----"""
@@ -68,5 +73,4 @@ def test_ISO1996K():
     print("----RESULT-----")
     print(tones)
     print("---------------")
-
-    # assert tones ==
+    assert tones == {5000.0: 84.95769534548218}
