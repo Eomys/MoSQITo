@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Nov 15 15:10:08 2021
+Created on Mon Jan 24 20:23:42 2022
 
 @author: Igarciac117 
 """
@@ -11,9 +11,7 @@ import math
 
 # Local imports
 from mosqito.functions.shared.load import load
-
-#Local imports. THIS IS NOT PART OF THE PROGRAM------------------------------------------------------------------------------------
-from signal_3oct import signal_3oct
+from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
 
 def Leq_3oct(spectrum_signal_samples, freq):
     """Calculate the Leq of the frequency bands you choose, returns the calculated Leq values for each band.
@@ -32,7 +30,7 @@ def Leq_3oct(spectrum_signal_samples, freq):
         the Leq values (dB) for each frequency band.
     """
     # Creating a list of zeros of the size of the frequency bands (to keep the Leq values).
-    Leq_freq = np.zeros(freq.shape)
+    Leq_3oct = np.zeros(freq.shape)
     # For each frequency band you perform the operation.
     for i in range(freq.shape[0]):
         sum = 0
@@ -42,23 +40,18 @@ def Leq_3oct(spectrum_signal_samples, freq):
             sum = sum + 10.0**(spectrum_signal_samples[j,i]/10.0)
         # Keep the Leq value in the box corresponding to the frequency band from which the calculation is being made.
         # Operation: 10 x log(base 10)[1/number of samples x sum]
-        Leq_freq[i] = 10.0 * math.log(((1/spectrum_signal_samples.shape[0])*sum),10)
+        Leq_3oct[i] = 10.0 * math.log(((1/spectrum_signal_samples.shape[0])*sum),10)
 
-    #THIS IS NOT PART OF THE FUNCTION----------------------------------------------------------------------------------------------
-    #print(spectrum_signal_samples)
-    #print(Leq_freq)
-    #print("hola Leq")
-    #-------------------------------------------------------------------------------------------------------------------------------
+    return Leq_3oct
+
+
+if __name__ == "__main__":
     
-    return Leq_freq
+    sig, fs = load(True, r"Programas_y_repositorios\MoSQITo\tests\input\white_noise_200_2000_Hz_stationary.wav", calib=1)
 
+    spectrum_signal_samples = calc_third_octave_levels(sig,fs)[0]
+    freq = np.array(calc_third_octave_levels(sig,fs)[1])
 
-signal = signal_3oct()
-signal_db = np.array(signal['db'])
-signal_freq = signal['fr']
-
-Leq_3oct(signal_db, signal_freq)
-
-#if __name__ == "__main__":
-    #sig, fs = load(True, "Programas_y_repositorios\MoSQITo\tests\input\white_noise_200_2000_Hz_stationary.wav", calib=1)
-    #Leq = Leq_3oct()
+    Leq = Leq_3oct(spectrum_signal_samples,freq)
+    print(Leq)
+    pass
