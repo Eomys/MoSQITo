@@ -13,162 +13,10 @@ from Leq_3oct import Leq_3oct
 #DOES NOT WORK THIS LINE I DON'T KNOW WHY
 from mosqito.functions.shared.C_weighting import C_weighting
 
-#THIS IS NOT A PART OF THE FUNCTION, it is a signal created by me to test if it works ------------------------------------------------
-freq_standard = np.array(
-        [
-            10,
-            12.5,
-            16,
-            20,
-            25,
-            31.5,
-            40,
-            50,
-            63,
-            80,
-            100,
-            125,
-            160,
-            200,
-            250,
-            315,
-            400,
-            500,
-            630,
-            800,
-            1000,
-            1250,
-            1600,
-            2000,
-            2500,
-            3150,
-            4000,
-            5000,
-            6300,
-            8000,
-            10000,
-            12500,
-            16000,
-            20000,
-        ]
-    )
+#Local imports. THIS IS NOT PART OF THE PROGRAM------------------------------------------------------------------------------------
+from signal_3oct import signal_3oct
 
-# pink_noise 40.0 dB samples
-spectrum_pink_first_sample = [
-        10.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
-spectrum_pink_second_sample = [
-        20.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
-spectrum_pink_third_sample = [
-        30.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
-
-# pink noise signal
-pink_noise_samples = [spectrum_pink_first_sample, spectrum_pink_second_sample, spectrum_pink_third_sample]
-pink_noise_signal = np.array(pink_noise_samples)
-#------------------------------------------------------------------------------------------------------------------------------------
-
-def LCeq (spectrum_signal_samples,freq):
+def LCeq_3oct (spectrum_signal_samples,freq):
     """Calculate the LCeq of the frequency bands you choose, returns the calculated LCeq values for each band.
     Each one is calculated with the levels (dBC) of its band in the different samples.
 
@@ -193,12 +41,17 @@ def LCeq (spectrum_signal_samples,freq):
     # Create an array in which each list of "signal_sample_C" is a line of the array.
     spectrum_signal_samples_C = np.array(signal_sample_C)
     # Calculate Leq of each frequency bands with the new dBC values.
-    LCeq = Leq_3oct(spectrum_signal_samples_C, freq)
+    LCeq_3oct = Leq_3oct(spectrum_signal_samples_C, freq)
 
 # THIS IS NOT PART OF THE PROGRAM-------------------------------------------------------------------------------------------
-    print(LCeq)  
+    print(LCeq_3oct)  
     print("hola LCeq")
 #-----------------------------------------------------------------------------------------------------------------------------
-    return LCeq
+    return LCeq_3oct
 
-LCeq(pink_noise_signal, freq_standard)
+
+signal = signal_3oct()
+signal_db = np.array(signal['db'])
+signal_freq = signal['fr']
+
+LCeq_3oct(signal_db, signal_freq)

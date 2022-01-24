@@ -9,120 +9,7 @@ Created on Wen Dic 1 18:08:08 2021
 import numpy as np
 
 #Local imports. THIS IS NOT PART OF THE PROGRAM------------------------------------------------------------------------------------
-from mosqito.functions.shared.level import comp_level
-
-#THIS IS NOT A PART OF THE FUNCTION, it is a signal created by me to test if it works ------------------------------------------------
-white_noise_time = np.array(
-    [
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-        20.0,
-    ]
-)
-
-fs = 1
-nb_points = 100
-
-data = comp_level(white_noise_time, fs, nb_points)
-signal_db = np.array(data['values'])
-#-------------------------------------------------------------------------------------------------------------------------------------
+from signal_time import signal_time
 
 def LN(db_samples_signal):
     """Calculate the percentile you want to study from a series of levels (dB) collected over time (samples)  
@@ -152,4 +39,4 @@ def LN(db_samples_signal):
 
     return percentiles
 
-LN(signal_db)
+LN(signal_time())

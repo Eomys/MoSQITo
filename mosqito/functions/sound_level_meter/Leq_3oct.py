@@ -9,164 +9,11 @@ Created on Mon Nov 15 15:10:08 2021
 import numpy as np
 import math
 
+# Local imports
+from mosqito.functions.shared.load import load
 
-#THIS IS NOT A PART OF THE FUNCTION, it is a signal created by me to test if it works ------------------------------------------------
-freq_standard = np.array(
-        [
-            10,
-            12.5,
-            16,
-            20,
-            25,
-            31.5,
-            40,
-            50,
-            63,
-            80,
-            100,
-            125,
-            160,
-            200,
-            250,
-            315,
-            400,
-            500,
-            630,
-            800,
-            1000,
-            1250,
-            1600,
-            2000,
-            2500,
-            3150,
-            4000,
-            5000,
-            6300,
-            8000,
-            10000,
-            12500,
-            16000,
-            20000,
-        ]
-    )
-
-# pink_noise 40.0 dB samples
-spectrum_pink_first_sample = [
-        50.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
-
-spectrum_pink_second_sample = [
-        40.0,
-        50.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
-
-spectrum_pink_third_sample = [
-        40.0,
-        40.0,
-        50.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
-
-# pink noise signal
-pink_noise_samples = [spectrum_pink_first_sample, spectrum_pink_second_sample, spectrum_pink_third_sample]
-pink_noise_signal = np.array(pink_noise_samples)
-
-#-----------------------------------------------------------------------------------------------------------------------------------
+#Local imports. THIS IS NOT PART OF THE PROGRAM------------------------------------------------------------------------------------
+from signal_3oct import signal_3oct
 
 def Leq_3oct(spectrum_signal_samples, freq):
     """Calculate the Leq of the frequency bands you choose, returns the calculated Leq values for each band.
@@ -198,11 +45,20 @@ def Leq_3oct(spectrum_signal_samples, freq):
         Leq_freq[i] = 10.0 * math.log(((1/spectrum_signal_samples.shape[0])*sum),10)
 
     #THIS IS NOT PART OF THE FUNCTION----------------------------------------------------------------------------------------------
-    print(spectrum_signal_samples)
-    print(Leq_freq)
-    print("hola Leq")
+    #print(spectrum_signal_samples)
+    #print(Leq_freq)
+    #print("hola Leq")
     #-------------------------------------------------------------------------------------------------------------------------------
     
     return Leq_freq
 
-#Leq(pink_noise_signal, freq_standard)
+
+signal = signal_3oct()
+signal_db = np.array(signal['db'])
+signal_freq = signal['fr']
+
+Leq_3oct(signal_db, signal_freq)
+
+#if __name__ == "__main__":
+    #sig, fs = load(True, "Programas_y_repositorios\MoSQITo\tests\input\white_noise_200_2000_Hz_stationary.wav", calib=1)
+    #Leq = Leq_3oct()

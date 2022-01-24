@@ -8,200 +8,8 @@ Created on Mon Nov 15 15:10:08 2021
 # Third party imports
 import numpy as np
 
-#THIS IS NOT A PART OF THE FUNCTION, it is a signal created by me to test if it works ------------------------------------------------
-# pink_noise 40.0 dB samples
-spectrum_pink_first_sample = [
-        1.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-    ]
-
-spectrum_pink_second_sample = [
-        50.0,
-        50.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        1.0,
-    ]
-
-spectrum_pink_third_sample = [
-        100.0,
-        40.0,
-        50.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        80.0,
-    ]
-
-spectrum_pink_4_sample = [
-        100.0,
-        40.0,
-        50.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        40.0,
-        80.0,
-    ]
-
-# pink noise signal
-pink_noise_samples = [spectrum_pink_first_sample, spectrum_pink_second_sample, spectrum_pink_third_sample, spectrum_pink_4_sample]
-pink_noise_signal = np.array(pink_noise_samples)
-
-freq = np.array(
-        [
-            10,
-            12.5,
-            16,
-            20,
-            25,
-            31.5,
-            20,
-            50,
-            63,
-            80,
-            100,
-            125,
-            160,
-            200,
-            250,
-            315,
-            400,
-            500,
-            630,
-            800,
-            1000,
-            1250,
-            1600,
-            2000,
-            2500,
-            3150,
-            4000,
-            5000,
-            6300,
-            8000,
-            10000,
-            12500,
-            16000,
-            20000,
-        ]
-    )
-
-#-----------------------------------------------------------------------------------------------------------------------------------
+#Local imports. THIS IS NOT PART OF THE PROGRAM------------------------------------------------------------------------------------
+from signal_3oct import signal_3oct
 
 def LN_3oct(spectrum_signal_samples, freq):
     """Calculate the percentiles of the frequency bands you choose, returns the results for each frequency band.
@@ -243,9 +51,14 @@ def LN_3oct(spectrum_signal_samples, freq):
         percentile_L50[i] = L50
         percentile_L25[i] = L25
 # THIS IS NOT PART OF THE FUNCTION --------------------------------------------------------------------------------------    
-    print(freq)
+    #print(freq)
     print(percentile_L90)
 #------------------------------------------------------------------------------------------------------------------------
     return percentile_L90
 
-LN_3oct(pink_noise_signal,freq)
+
+signal = signal_3oct()
+signal_db = np.array(signal['db'])
+signal_freq = signal['fr']
+
+LN_3oct(signal_db, signal_freq)
