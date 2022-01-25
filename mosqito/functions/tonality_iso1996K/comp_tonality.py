@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
     Author: Cristina Taboada (TinaTabo)
-    Start date: 17/11/2021
+    Start date: 17/11/2021 
 """
 
 # Local imports
