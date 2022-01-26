@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Nov 15 16:02:08 2021
+Created on Wed Jan 27 18:07:36 2022
 
 @author: Igarciac117 
 """
 
 # Third party imports
 import numpy as np
-from sympy import zeros
 
 # Local imports
 from Leq_3oct import Leq_3oct
