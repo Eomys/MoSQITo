@@ -10,11 +10,9 @@ import numpy as np
 
 # Local imports
 from Leq_3oct import Leq_3oct
-#DOES NOT WORK THIS LINE I DON'T KNOW WHY
+from mosqito.functions.shared.load import load
+from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
 from mosqito.functions.shared.C_weighting import C_weighting
-
-#Local imports. THIS IS NOT PART OF THE PROGRAM------------------------------------------------------------------------------------
-from signal_3oct import signal_3oct
 
 def LCeq_3oct (spectrum_signal_samples,freq):
     """Calculate the LCeq of the frequency bands you choose, returns the calculated LCeq values for each band.
@@ -23,35 +21,36 @@ def LCeq_3oct (spectrum_signal_samples,freq):
     Parameters
     ----------
     spectrum_signal_samples : numpy.ndarray
-        array which each line is the dB values of the frequency bands in a sample.
+        array which each column is the dB values of the frequency bands in a sample.
     freq : numpy.ndarray
         array with the frequency bands you want to calculate the LCeq.
 
     Outputs
     -------
-    Leq_freq : numpy.ndarray
+    LCeq_3oct : numpy.ndarray
         a list of the Leq values (dBC) for each frequency band.
     """
     # Empty list to keep the lists. Each list is the dBC values for each frequency band in a sample.
     signal_sample_C = []
     # Take the lines of the array one by one and perform the function to transform the values in dB to dBC.
-    # Save dBC lists in the list "signal_sample_C".
     for i in range(spectrum_signal_samples.shape[0]):
-        signal_sample_C.append(C_weighting(spectrum_signal_samples[i],freq))
-    # Create an array in which each list of "signal_sample_C" is a line of the array.
+        # Save dBC values lists in the list "signal_sample_C".
+        signal_sample_C.append(C_weighting(spectrum_signal_samples.T[i],freq))
+    # Create an array in which each list of "signal_sample_C" is a column of the array.
     spectrum_signal_samples_C = np.array(signal_sample_C)
     # Calculate Leq of each frequency bands with the new dBC values.
     LCeq_3oct = Leq_3oct(spectrum_signal_samples_C, freq)
 
-# THIS IS NOT PART OF THE PROGRAM-------------------------------------------------------------------------------------------
-    print(LCeq_3oct)  
-    print("hola LCeq")
-#-----------------------------------------------------------------------------------------------------------------------------
     return LCeq_3oct
 
 
-signal = signal_3oct()
-signal_db = np.array(signal['db'])
-signal_freq = signal['fr']
+if __name__ == "__main__":
+    
+    sig, fs = load(True,r"Programas_y_repositorios\MoSQITo\tests\input\white_noise_200_2000_Hz_stationary.wav", calib=1)
 
-LCeq_3oct(signal_db, signal_freq)
+    spectrum_signal_samples = calc_third_octave_levels(sig,fs)[0]
+    freq = np.array(calc_third_octave_levels(sig,fs)[1])
+
+    LCeq = LCeq_3oct(spectrum_signal_samples,freq)
+    print(LCeq)
+    pass
