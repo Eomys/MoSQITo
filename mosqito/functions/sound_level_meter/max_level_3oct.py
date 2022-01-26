@@ -42,6 +42,7 @@ def max_level_3oct(spectrum_signal_samples, freq):
 
     return max_level_3oct
 
+
 if __name__ == "__main__":
     
     sig, fs = load(True,r"Programas_y_repositorios\MoSQITo\tests\input\white_noise_200_2000_Hz_stationary.wav", calib=1)
