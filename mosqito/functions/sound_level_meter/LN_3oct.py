@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Nov 15 15:10:08 2021
+Created on Thu Jan 27 00:45:30 2022
 
 @author: Igarciac117 
 """
@@ -21,7 +21,7 @@ def LN_3oct(spectrum_signal_samples, freq):
     spectrum_signal_samples : numpy.ndarray
         array which each column is the dB values of the frequency bands in a sample.
     freq : numpy.ndarray
-        array with the frequency bands you want to calculate the Leq.
+        array with the frequency bands you want to calculate the LN.
 
     Outputs
     -------
