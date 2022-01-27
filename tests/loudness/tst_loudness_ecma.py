@@ -27,13 +27,13 @@ def tst_loudness_ecma():
 
     signal, _ = sine_wave_generator(
         fs=48000,
-        t=1,
-        spl_value=60,
+        t=0.25,
+        spl_value=40,
         freq=1000,
     )
     n_array = comp_loudness(signal)
     specific_loudness = np.array(n_array)
-    tot_loudness = np.sum(specific_loudness, axis=0)
+    tot_loudness = np.sum(specific_loudness * 0.5, axis=0)
     mean_tot_loudness = np.mean(tot_loudness)
     phon_loudness_value = sone2phone(mean_tot_loudness)
     assert phon_loudness_value < 60.1 and phon_loudness_value > 59.9
