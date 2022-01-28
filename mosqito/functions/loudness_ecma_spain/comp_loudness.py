@@ -9,7 +9,6 @@ from scipy.signal import welch
 
 # Project Imports
 from mosqito.functions.shared.load import load
-from mosqito.functions.hearing_model.sine_wave_generator import sine_wave_generator
 from mosqito.functions.hearing_model.ear_filter_design import ear_filter_design
 from mosqito.functions.hearing_model.gen_auditory_filters_centre_freq import (
     gen_auditory_filters_centre_freq,

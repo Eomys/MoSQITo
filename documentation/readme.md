@@ -13,6 +13,7 @@ In this folder, you will find the documentation and validation of the different 
 
 - [Loudness of stationary signals (Zwicker method)](./loudness-stationary.md)
 - [Loudness of time varying signals (Zwicker method)](./loudness-time-varying.md)
+- [Loudness of time varying signals (ECMA method)](./loudness-ecma.md)
 - [Sharpness of stationary and time-varying signals](./sharpness.md)
 - [Roughness of stationary and time-varying signals (Daniel and Weber method)](./roughness.md)
 - [Tone-to-noise ratio and Prominence ratio of stationary and time-varying signals](./tone-to-noise-prominence-ratio.md)

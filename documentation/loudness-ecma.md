@@ -10,3 +10,5 @@ The ECMA loudness calculation is evaluated as proposed in the annex A of the sta
 
 ### References
 
+ECMA-418-2, Psychoacoustic metrics for ITT equipment — Part 2 (models based on human perception), 1st edition (December 2020)
+ISO 226:2003, Acoustics — Normal equal-loudness-level contours

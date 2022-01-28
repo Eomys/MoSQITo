@@ -5,15 +5,15 @@ The scope of the project is to implement the following first set of
 metrics:
 
 |                                                    | Reference                                            | Validated                                          | Available                                     | Under dev. | To do |
-|:-------------------------------------------------- |:---------------------------------------------------- |:--------------------------------------------------:|:---------------------------------------------:|:----------:|:-----:|
+|:-------------------------------------------------- |:---------------------------------------------------- |:-------------------------------------------:|:---------------------------------------------:|:----------:|:-----:|
 | Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | [x](./loudness-stationary.md)               | x |  |  |
 | Loudness for non-stationary<br>(Zwicker method)    | DIN 45631/A1:2010<br>ISO 532-1:2017 §6               | [x](./loudness-time-varying.md)             | x |  |  |
 | Loudness for non-stationary<br>(ECMA method)       | ECMA 418-2:2019, annex F<br>Sottek, 2016             | [x](./loudness-ecma.md)                     | x |  |  |
 | Roughness                                          | Daniel and Weber, 1997                               | [x](../validations/roughness_danielweber)   | x |  |  |
 | Roughness                                          | ECMA-418-2:2020                                      |                                             |  |  | x |
-| Fluctuation Strength                               | To be defined                                        |                                            |            |      | x
-| Sharpness                                          | DIN 45692:2009                                       | [x](./sharpness.md)        | x             |            |       |
-| Tonality (Hearing model)                           | ECMA-74:2019 annex G                                 |                 |                          | x          |       |
+| Fluctuation Strength                               | To be defined                                        |                                             |  |  | x |
+| Sharpness                                          | DIN 45692:2009                                       | [x](./sharpness.md)                         | x |  |  |
+| Tonality (Hearing model)                           | ECMA-74:2019 annex G                                 |                                             |  | x |  |
 
 As a second priority, the project could address the following metrics:
 
