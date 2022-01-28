@@ -4,10 +4,10 @@ from scipy.signal import gammatone as scipy_gamma, freqz
 from numpy import log10, abs as np_abs
 import matplotlib.pyplot as plt
 
-from mosqito.functions.loudness_ecma_spain.gammatone import (
+from mosqito.functions.loudness_ecma.gammatone import (
     gammatone as mosqito_gamma,
 )
-from mosqito.functions.loudness_ecma_spain.gen_auditory_filters_centre_freq import (
+from mosqito.functions.loudness_ecma.gen_auditory_filters_centre_freq import (
     gen_auditory_filters_centre_freq,
 )
 

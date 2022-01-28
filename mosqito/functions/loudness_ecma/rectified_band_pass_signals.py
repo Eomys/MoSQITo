@@ -3,12 +3,12 @@
 import numpy as np
 import scipy.signal as sp_signal
 
-from mosqito.functions.loudness_ecma_spain.ear_filter_design import ear_filter_design
-from mosqito.functions.loudness_ecma_spain.gen_auditory_filters_centre_freq import (
+from mosqito.functions.loudness_ecma.ear_filter_design import ear_filter_design
+from mosqito.functions.loudness_ecma.gen_auditory_filters_centre_freq import (
     gen_auditory_filters_centre_freq,
 )
-from mosqito.functions.loudness_ecma_spain.gammatone import gammatone
-from mosqito.functions.loudness_ecma_spain.segmentation_blocks import (
+from mosqito.functions.loudness_ecma.gammatone import gammatone
+from mosqito.functions.loudness_ecma.segmentation_blocks import (
     segmentation_blocks,
 )
 

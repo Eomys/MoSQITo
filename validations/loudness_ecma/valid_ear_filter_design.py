@@ -10,7 +10,7 @@ from numpy import (
 )
 import matplotlib.pyplot as plt
 
-from mosqito.functions.loudness_ecma_spain.ear_filter_design import ear_filter_design
+from mosqito.functions.loudness_ecma.ear_filter_design import ear_filter_design
 from mosqito.functions.shared.sine_wave_generator import (
     sine_wave_generator,
 )

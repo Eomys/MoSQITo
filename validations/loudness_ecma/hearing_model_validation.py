@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from scipy.optimize import root_scalar
 
 # Project Imports
-from mosqito.functions.loudness_ecma_spain.comp_loudness_alt import comp_loudness
-from mosqito.functions.loudness_ecma_spain.equal_loudness_contours import (
+from mosqito.functions.loudness_ecma.comp_loudness_alt import comp_loudness
+from mosqito.functions.loudness_ecma.equal_loudness_contours import (
     equal_loudness_contours,
 )
 from mosqito.functions.shared.sine_wave_generator import (

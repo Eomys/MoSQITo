@@ -6,16 +6,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Project Imports
-from mosqito.functions.loudness_ecma_spain.rectified_band_pass_signals import (
+from mosqito.functions.loudness_ecma.rectified_band_pass_signals import (
     rectified_band_pass_signals,
 )
-from mosqito.functions.loudness_ecma_spain.loudness_function import (
+from mosqito.functions.loudness_ecma.loudness_function import (
     loudness_function as loudness_function,
 )
 
 # Data import
 # Threshold in quiet
-from mosqito.functions.loudness_ecma_spain.loudness_ecma_data import ltq_z
+from mosqito.functions.loudness_ecma.loudness_ecma_data import ltq_z
 
 
 def comp_loudness(signal, sb=2048, sh=1024):
