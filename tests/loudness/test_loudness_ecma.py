@@ -8,7 +8,7 @@ import numpy as np
 from mosqito.functions.shared.sine_wave_generator import (
     sine_wave_generator,
 )
-from mosqito.functions.loudness_ecma.comp_loudness_alt import comp_loudness
+from mosqito.functions.loudness_ecma.comp_loudness import comp_loudness
 
 
 @pytest.mark.loudness_ecma  # to skip or run only loudness ecma tests
