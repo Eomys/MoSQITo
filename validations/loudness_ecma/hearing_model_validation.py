@@ -40,7 +40,8 @@ def comp_loudness_wrapper(spl, freq=1000, n_1kHz=0):
     signal, _ = sine_wave_generator(fs, duration, spl, freq)
 
     # compute loudness for the test signal
-    n_specific = np.array(comp_loudness(signal))
+    n_specific, _ = comp_loudness(signal)
+    n_specific = np.array(n_specific)
     n_tot = np.sum(n_specific, axis=0)
     n_tot_mean = np.mean(n_tot[5:])
 

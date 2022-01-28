@@ -22,7 +22,8 @@ def test_loudness_ecma():
         spl_value=80,
         freq=1000,
     )
-    n_specific = np.array(comp_loudness(signal))
+    n_specific, _ = comp_loudness(signal)
+    n_specific = np.array(n_specific)
     n_tot = np.sum(n_specific, axis=0)
     n_tot_mean_1kHz = np.mean(n_tot[5:])
 
@@ -33,7 +34,8 @@ def test_loudness_ecma():
         spl_value=78.73977248964925,
         freq=5000,
     )
-    n_specific = np.array(comp_loudness(signal))
+    n_specific, _ = comp_loudness(signal)
+    n_specific = np.array(n_specific)
     n_tot = np.sum(n_specific, axis=0)
     n_tot_mean_5kHz = np.mean(n_tot[5:])
 

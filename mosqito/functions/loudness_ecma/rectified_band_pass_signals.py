@@ -14,11 +14,11 @@ from mosqito.functions.loudness_ecma.segmentation_blocks import (
 
 
 def rectified_band_pass_signals(sig, sb=2048, sh=1024):
-    """Compute the rectified band-pass signals as per Clause 5.1.5 of ECMA-418-2:2020
+    """Compute the rectified band-pass signals as per Clause 5.1.2 to 5.1.5 of
+    ECMA-418-2:2020
 
     Calculation of the rectified band-pass signals along the 53 critical band rates
     scale. Each band pass signal is segmented into time blocks according to sb and sh
-
 
     Parameters
     ----------
@@ -60,14 +60,7 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
     block_array_rect = []
     for band_number in range(53):
         bm_mod, am_mod = gammatone(centre_freq[band_number], k=filter_order_k, fs=fs)
-        # bm_mod, am_mod = sp_signal.gammatone(centre_freq[band_number], "fir", fs=fs)
 
-        """ 
-        "scipy.signal.lfilter" instead of "scipy.signal.filtfilt" in order to maintain consistency. That process 
-        makes possible to obtain a signal "band_pass_signal" that does not line up in time with the original signal 
-        because of the non zero-phase filtering of "lfilter", but it has a more appropriate slope than filtfilt. 
-        By using filtfilt the slope is that high that filters too much the signal. 
-        """
         band_pass_signal = (
             2.0
             * (
@@ -80,26 +73,26 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
             ).real
         )
 
-        """SEGMENTATION OF THE SIGNAL INTO BLOCKS (5.1.4)
+        # SEGMENTATION OF THE SIGNAL INTO BLOCKS (5.1.4)
 
-        The segmentation of the signal is done in order to obtain results for intervals of time, not for the whole
-        duration of the signal. The reason behind this decision resides in the fact that processing the signal in its
-        full length at one time could end up in imprecise results. By using a "for loop", we are able to decompose the
-        signal array "band_pass_signal_hr" into blocks. "sb_array" is the block size which changes depending on the
-        "band_number" in which we are processing the signal. "sh_array" is the step size, the time shift to the next
-        block.
-        """
+        # The segmentation of the signal is done in order to obtain results for intervals of time, not for the whole
+        # duration of the signal. The reason behind this decision resides in the fact that processing the signal in its
+        # full length at one time could end up in imprecise results. By using a "for loop", we are able to decompose the
+        # signal array "band_pass_signal_hr" into blocks. "sb_array" is the block size which changes depending on the
+        # "band_number" in which we are processing the signal. "sh_array" is the step size, the time shift to the next
+        # block.
+
         block_array = segmentation_blocks(
-            band_pass_signal, sb[band_number], sh[band_number], dim=1
+            band_pass_signal, sb[band_number], sh[band_number]
         )
 
-        """RECTIFICATION (5.1.5)
+        # RECTIFICATION (5.1.5)
 
-        This part acts as the activation of the auditory nerves when the basilar membrane vibrates in a certain
-        direction. In order to rectify the signal we are using "np.clip" which establish a minimum and a maximum value
-        for the signal. "a_min" is set to 0 float, while "a_max" is set to "None" in order to consider the positive
-        value of the signal.
-        """
+        # This part acts as the activation of the auditory nerves when the basilar membrane vibrates in a certain
+        # direction. In order to rectify the signal we are using "np.clip" which establish a minimum and a maximum value
+        # for the signal. "a_min" is set to 0 float, while "a_max" is set to "None" in order to consider the positive
+        # value of the signal.
+
         block_array_rect.append(np.clip(block_array, a_min=0.00, a_max=None))
 
     return block_array_rect
