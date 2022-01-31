@@ -30,7 +30,7 @@ def comp_tonality(signal, fs):
     #-- we obtain the data of the Lp in thirds of octave of the signal of which 
     #-- we want to know the prominent tones
     third_spec = comp_third_spec(is_stationary=True, signal=signal, fs=fs)
-
+    
     # -- Obtain the lists of the central frequencies and the average Lp
     freqs = third_spec["freqs"]
     values = third_spec["values"]
