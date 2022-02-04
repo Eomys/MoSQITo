@@ -61,7 +61,9 @@ If you need to cite the current release of MOSQITO, please use the "Cite this re
 
 ## Publications citing MOSQITO
 
-Glesser, M., Ni, S., Degrendele, K., Wanty, S., & Le Besnerais, J. (2021, October 13-14). *Sound quality analysis of Electric Drive Units under different switching control strategies* [Paper presentation]. Automotive NVH Comfort Congress 2021, Le Mans , France.
+M. Glesser, S. Wanty, K. Degrendele, J. L. Besnerais, and S. Ni, *“Perceived sound quality analysis of Electric Drive Units under different switching control strategies,”* in 12th Aachen Acoustic Colloquium, Aachen, Nov. 2021.
+
+M. Glesser, S. Ni, K. Degrendele, S. Wanty, and J. L. Besnerais, *“Sound quality analysis of Electric Drive Units under differentswitching control strategies,”* in SIA Automotive NVH comfort, Le Mans, 2021.
 
 San Millán-Castillo, R., Latorre-Iglesias, E., Glesser, M., Wanty, S., Jiménez-Caminero, D., & Álvarez-Jimeno, J.M. (2021). MOSQITO: an open-source and free toolbox for sound quality metrics in the industry and education. *INTER-NOISE and NOISE-CON Congress and Conference Proceedings*, 12, 1164-1175. https://doi.org/10.3397/IN-2021-1767
 
