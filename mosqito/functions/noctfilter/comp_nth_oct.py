@@ -38,7 +38,7 @@ def comp_nth_spec(signal, fs, fmin=25, fmax=12500, n=3):
 
     freq = [nominal_center_freq(f, n) for f in f_dict["f"][:, 1]]
 
-    return spectrum
+    return spectrum, freq
 
 
 if __name__ == "__main__":
@@ -47,4 +47,4 @@ if __name__ == "__main__":
         "./validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
         calib=2 * 2 ** 0.5,
     )
-    spectrum = comp_nth_spec(signal, fs)
+    spectrum, freq = comp_nth_spec(signal, fs)

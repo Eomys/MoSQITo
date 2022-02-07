@@ -33,7 +33,7 @@ def getFrequencies(fstart, fend, b, G=10, fr=1000):
     x = -1000
     f2 = 0
     while f2 <= fend:
-        # Excact midband frequencies
+        # Exact midband frequencies
         if b % 2 == 0:  # even
             fm = (G ** ((2 * x - 59) / (2 * b))) * (fr)
         else:  # odd

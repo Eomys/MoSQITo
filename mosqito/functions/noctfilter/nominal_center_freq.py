@@ -52,6 +52,8 @@ def index_of_frequency(frequency, fraction=1, ref=1000, G=10):
     .. math:: x = round{b \\frac{\log{f/f_{ref} }}{\log{G} }}
     .. note:: This equation is not part of the standard. However, it follows from :func:`exact_center_frequency`.
     """
+    if G == 10:
+        G = 10 ** (3 / 10)  # Base ten
     fraction = np.asarray(fraction)
     uneven = (fraction % 2).astype("bool")
     return (
@@ -117,8 +119,8 @@ def nominal_center_freq(center, fraction):
     elif b == 3:
         n = index_of_frequency(x, b)
 
-        if -20 <= n < 14:  # Correspond to indices when n=0 corresponds to 1000 Hz
-            return NOMINAL_THIRD_OCTAVE_CENTER_FREQUENCIES[n + 20]
+        if -16 <= n < 14:  # Correspond to indices when n=0 corresponds to 1000 Hz
+            return NOMINAL_THIRD_OCTAVE_CENTER_FREQUENCIES[n + 16]
         elif n >= 14:
             return 10.0 * nominal_center_freq(
                 exact_center_frequency(n - 10, b), b
