@@ -111,7 +111,7 @@ def test_loudness_zwicker_wav():
     }
 
     # Load signal and compute third octave band spectrum
-    sig, fs = load(True, signal["data_file"], calib=2 * 2 ** 0.5)
+    sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
 
     # Compute Loudness
     loudness = comp_loudness(True, sig, fs)

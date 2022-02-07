@@ -10,7 +10,6 @@ from mosqito.functions.noctfilter.n_oct_filter import (
 )
 
 signal, fs = load(
-    True,
     "./validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
     calib=2 * 2 ** 0.5,
 )

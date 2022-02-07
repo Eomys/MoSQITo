@@ -49,6 +49,6 @@ def test_tnr():
 
     for i in range(len(signal)):
         # Load signal
-        audio, fs = load(signal[i]["is_stationary"], signal[i]["data_file"])
+        audio, fs = load(signal[i]["data_file"])
         # Compute tone-to-noise ratio
         tnr = comp_tnr(signal[i]["is_stationary"], audio, fs, prominence=True)
