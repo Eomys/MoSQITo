@@ -1,3 +1,5 @@
+from numpy import log10
+
 from mosqito.functions.noctfilter.n_oct_filter import (
     getFrequencies,
     designFilters,
@@ -7,7 +9,7 @@ from mosqito.functions.noctfilter.nominal_center_freq import nominal_center_freq
 from mosqito.functions.shared.load import load
 
 
-def comp_nth_spec(signal, fs, fmin=25, fmax=12500, n=3):
+def comp_nth_oct(signal, fs, fmin=25, fmax=12500, n=3):
     """nth-octave band spectrum calculation
 
     Parameters
@@ -36,15 +38,16 @@ def comp_nth_spec(signal, fs, fmin=25, fmax=12500, n=3):
     filters = designFilters(f_dict, fs, plot=False)
     spectrum = analyseData(filters, signal, f_dict, plot=False)
 
+    spec_dB = 20 * log10((spectrum) / (2e-5))
+
     freq = [nominal_center_freq(f, n) for f in f_dict["f"][:, 1]]
 
-    return spectrum, freq
+    return spec_dB, freq
 
 
 if __name__ == "__main__":
     signal, fs = load(
-        True,
         "./validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
         calib=2 * 2 ** 0.5,
     )
-    spectrum, freq = comp_nth_spec(signal, fs)
+    spectrum, freq = comp_nth_oct(signal, fs)
