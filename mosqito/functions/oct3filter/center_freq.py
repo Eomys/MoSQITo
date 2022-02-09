@@ -1,0 +1,59 @@
+import numpy as np
+
+
+def center_freq(fmin, fmax, n=3, G=10, fr=1000):
+    """
+    Compute nth octave filter frequencies
+
+    References:
+        ANSI S1.1-1986 (ASA 65-1986): Specifications for
+        Octave-Band and Fractional-Octave-Band Analog and
+        Digital Filters.
+
+    Parameters
+    ----------
+    fmin : float
+        Min frequency band [Hz]
+    fmax : float
+        Max frequency band [Hz]
+    n : int
+        number of bands pr octave
+    G : int
+        System for specifying the exact geometric mean frequencies.
+        Can be base 2 or base 10
+    fr : int
+        Reference frequency. Shall be set to 1 kHz for audible frequency
+        range, to 1 Hz for infrasonic range (f < 20 Hz) and to 1 MHz for
+        ultrasonic range (f > 31.5 kHz)
+
+    Outputs
+    -------
+    f_exact : ndarray
+        Exact center frequencies
+    k : ndarray
+        Band numbers such that f_exact = fr for k=0
+    """
+
+    # determine band numbers
+    b = 1 / n
+    if G == 2:
+        U = 2 ** b  # ANSI eq2
+    elif G == 10:
+        U = 10 ** (3 * b / 10)  # ANSI eq4
+    else:
+        raise ValueError(
+            """ERROR: Only base 2 and base 10 are allowed for nth
+            octave center freqeuncy definition"""
+        )
+    [kmin, kmax] = np.round(np.log10(np.array([fmin, fmax]) / fr) / np.log10(U), 0)
+    k = np.arange(kmin, kmax + 1)
+
+    # compute ANSI eq1
+    f_exact = fr * U ** k
+
+    return f_exact, k
+
+
+if __name__ == "__main__":
+    f_exact, k = center_freq(25, 12500, n=1, G=10, fr=1000)
+    pass
