@@ -50,6 +50,11 @@ def load(is_stationary, file, calib=1, mat_signal="", mat_fs=""):
     if file[-3:] == "wav" or file[-3:] == "WAV":
         fs, signal = wavfile.read(file)
 
+        # manage multichannel files
+        if signal.ndim > 1:
+            signal = signal[:, 0]
+            print("[Info] Multichannel signal loaded. Keeping only first channel")
+
         # calibration factor for the signal to be in Pa
         if isinstance(signal[0], np.int16):
             signal = calib * signal / (2 ** 15 - 1)
@@ -84,7 +89,7 @@ def load(is_stationary, file, calib=1, mat_signal="", mat_fs=""):
     if fs != 48000:
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
-        print("Signal resampled to 48 kHz to allow calculation.")
+        print("[Info] Signal resampled to 48 kHz to allow calculation.")
 
     return signal, fs
 
@@ -186,8 +191,9 @@ def load2wav(
 
 def uff_load(file):
     if pyuff is None:
-        raise RuntimeError("In order to load UFF files you need the 'pyuff' "
-                           "package.")
+        raise RuntimeError(
+            "In order to load UFF files you need the 'pyuff' " "package."
+        )
     uff_file = pyuff.UFF(file)
     data = uff_file.read_sets()
     return data
