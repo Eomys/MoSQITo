@@ -174,9 +174,9 @@ if __name__ == "__main__":
     print(tones)
     print("---------------")
 
-    # -- CORRECTO --
-    """----PRUEBA--TONO--5000-Hz----"""
-    sig, fs = load(True, "mosqito/functions/tonality_iso1996K/prueba.wav", calib=1)
+    # -- INCORRECTO --
+    """----PRUEBA----"""
+    sig, fs = load(True, "tests\input\MULTITONE.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
