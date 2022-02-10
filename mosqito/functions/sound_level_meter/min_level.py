@@ -7,9 +7,11 @@ Created on Wen Dic 1 18:08:08 2021
 
 # Third party imports
 import numpy as np
+import math
 
-#Local imports. THIS IS NOT PART OF THE PROGRAM------------------------------------------------------------------------------------
-from signal_time import signal_time
+# Local imports
+from mosqito.functions.shared.load import load
+from mosqito.methods.Audio.compute_level import compute_level
 
 def min_level(db_samples_signal):
     """Calculate the minimum value of the series of levels (dB) collected over time (samples)
@@ -27,10 +29,21 @@ def min_level(db_samples_signal):
     # Save the minimum level.
     min_level = min(db_samples_signal)
 
-# this is not part of the program----------------------------------------------------------------------------------------
-    print(min_level)
-#------------------------------------------------------------------------------------------------------------------------
-
     return min_level
 
-min_level(signal_time())
+if __name__ == "__main__":
+    
+    sig, fs = load(True, r"Programas_y_repositorios\MoSQITo\tests\input\Test signal 3 (1 kHz 60 dB).wav", calib=1)
+    sig_dB = np.array(sig)
+
+    #Lp = 20 log10 (p/p0)
+    for i in range(sig_dB.shape[0]):
+        if sig_dB[i] <= 0.0:
+            sig_dB[i] = 0
+        else:
+            sig_dB[i] = 20.0 * math.log((sig[i]/0.00002),10)
+        
+    min = min_level(sig_dB)
+    print (min)
+    
+    pass
