@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
-"""
-@date Created on Fri Mar 13 2020
-@author martin_g for Eomys
-"""
 
 # Standard library imports
 import numpy as np
 
 # Local application imports
-from mosqito.functions.oct3filter.oct3level import oct3level
+from mosqito.functions.oct3filter.filter_bandwidth import filter_bandwidth
+from mosqito.functions.oct3filter.n_oct_filter import n_oct_filter
 from mosqito.functions.oct3filter.center_freq import center_freq
 
 
-def comp_noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000, dec_factor=24):
+def comp_noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     """Compute nth-octave band spectrum
 
     Calculate the rms level of the signal "sig" sampled at freqency "fs"
@@ -46,24 +43,15 @@ def comp_noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000, dec_factor=24):
         Corresponding preferred third octave band center frequencies
     """
 
-    # Check for high fc/fs causing filter design issue [ref needed]
-    if fc < fs / 200:
-        raise ValueError(
-            """ERROR: Design not possible. Filter center frequency shall
-            verify: fc > fs / 200"""
-        )
+    # Get filters center frequencies
+    fc_vec, _ = center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
 
-    # Check for Nyquist-Shannon criteria
-    if max(fc) > 0.88 * (fs / 2):
-        raise ValueError(
-            """ERROR: Design not possible. Filter center frequency shall
-            verify: fc <= 0.88 * (fs / 2)."""
-        )
+    # Compute the filters bandwidth
+    alpha_vec = filter_bandwidth(fc_vec, n=n)
 
     # Calculation of the rms level of the signal in each band
-    for fc in f_exact:
-        spec[i, :] = oct3level(sig, fs, fc, sig_type, dec_factor)
-        i += 1
+    spec = []
+    for fc, alpha in zip(fc_vec, alpha_vec):
+        spec.append(n_oct_filter(sig, fs, fc, alpha))
 
-    spec = 20 * np.log10((spec + 1e-12) / (2 * 10 ** -5))
-    return spec, fpref
+    return np.array(spec)

@@ -16,15 +16,15 @@ def center_freq(fmin, fmax, n=3, G=10, fr=1000):
         Min frequency band [Hz]
     fmax : float
         Max frequency band [Hz]
-    n : int
-        number of bands pr octave
-    G : int
+    n : int, optional
+        number of bands pr octave. Default to 3
+    G : int, optional
         System for specifying the exact geometric mean frequencies.
-        Can be base 2 or base 10
-    fr : int
+        Can be base 2 or base 10. Default to base 10
+    fr : int, optional
         Reference frequency. Shall be set to 1 kHz for audible frequency
         range, to 1 Hz for infrasonic range (f < 20 Hz) and to 1 MHz for
-        ultrasonic range (f > 31.5 kHz)
+        ultrasonic range (f > 31.5 kHz). Default to 1000 Hz
 
     Outputs
     -------
@@ -43,7 +43,7 @@ def center_freq(fmin, fmax, n=3, G=10, fr=1000):
     else:
         raise ValueError(
             """ERROR: Only base 2 and base 10 are allowed for nth
-            octave center freqeuncy definition"""
+            octave center frequency definition"""
         )
     [kmin, kmax] = np.round(np.log10(np.array([fmin, fmax]) / fr) / np.log10(U), 0)
     k = np.arange(kmin, kmax + 1)
