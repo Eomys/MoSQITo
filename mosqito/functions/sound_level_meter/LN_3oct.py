@@ -49,6 +49,7 @@ def LN_3oct(spectrum_signal_samples, freq):
         # Save in each array the values corresponding to its percentile. Each value of the array line belongs
         # to a frequency band.
         print(freq[i])
+        print("---------------------------------------------------------------------------------")
         print("Percentile_90: ")
         percentile_L90[i] = L90
         print(L90)
@@ -64,7 +65,7 @@ def LN_3oct(spectrum_signal_samples, freq):
 
 if __name__ == "__main__":
     
-    sig, fs = load(True, r"Programas_y_repositorios\MoSQITo\tests\input\white_noise_200_2000_Hz_stationary.wav", calib=1)
+    sig, fs = load(True, r"Programas_y_repositorios\MoSQITo\tests\input\Test signal 3 (1 kHz 60 dB).wav", calib=1)
 
     spectrum_signal_samples = calc_third_octave_levels(sig,fs)[0]
     freq = np.array(calc_third_octave_levels(sig,fs)[1])

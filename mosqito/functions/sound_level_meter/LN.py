@@ -7,9 +7,10 @@ Created on Wen Dic 1 18:08:08 2021
 
 # Third party imports
 import numpy as np
+import math
 
-#Local imports. THIS IS NOT PART OF THE PROGRAM------------------------------------------------------------------------------------
-from signal_time import signal_time
+# Local imports
+from mosqito.functions.shared.load import load
 
 def LN(db_samples_signal):
     """Calculate the percentile you want to study from a series of levels (dB) collected over time (samples)  
@@ -32,11 +33,22 @@ def LN(db_samples_signal):
     # Save the calculated percentile values.
     percentiles = np.array([L25,L50,L90])
 
-#This is not part of the program ---------------------------------------------------------------------------------------------
-    print('L90 = ',L90,', median = ',L50,' L25 = ',L25)
-    print(percentiles)
-#--------------------------------------------------------------------------------------------------------------------------------
-
     return percentiles
 
-LN(signal_time())
+
+if __name__ == "__main__":
+    
+    sig, fs = load(True, r"Programas_y_repositorios\MoSQITo\tests\input\Test signal 3 (1 kHz 60 dB).wav", calib=1)
+    sig_dB = np.array(sig)
+
+    #Lp = 20 log10 (p/p0)
+    for i in range(sig_dB.shape[0]):
+        if sig_dB[i] <= 0.0:
+            sig_dB[i] = 0
+        else:
+            sig_dB[i] = 20.0 * math.log((sig[i]/0.00002),10)
+        
+    percentile = LN(sig_dB)
+    print(percentile)
+    
+    pass
