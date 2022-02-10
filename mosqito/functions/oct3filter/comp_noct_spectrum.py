@@ -44,7 +44,7 @@ def comp_noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     """
 
     # Get filters center frequencies
-    fc_vec, _ = center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
+    fc_vec, fpref = center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
 
     # Compute the filters bandwidth
     alpha_vec = filter_bandwidth(fc_vec, n=n)
@@ -54,4 +54,4 @@ def comp_noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     for fc, alpha in zip(fc_vec, alpha_vec):
         spec.append(n_oct_filter(sig, fs, fc, alpha))
 
-    return np.array(spec)
+    return np.array(spec), fpref

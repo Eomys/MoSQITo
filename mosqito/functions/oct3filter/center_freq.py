@@ -1,5 +1,10 @@
 import numpy as np
 
+from mosqito.functions.oct3filter.nominal_frequency import (
+    NOMINAL_OCTAVE_CENTER_FREQUENCIES,
+    NOMINAL_THIRD_OCTAVE_CENTER_FREQUENCIES,
+)
+
 
 def center_freq(fmin, fmax, n=3, G=10, fr=1000):
     """
@@ -30,8 +35,6 @@ def center_freq(fmin, fmax, n=3, G=10, fr=1000):
     -------
     f_exact : ndarray
         Exact center frequencies
-    k : ndarray
-        Band numbers such that f_exact = fr for k=0
     """
 
     # determine band numbers
@@ -46,14 +49,35 @@ def center_freq(fmin, fmax, n=3, G=10, fr=1000):
             octave center frequency definition"""
         )
     [kmin, kmax] = np.round(np.log10(np.array([fmin, fmax]) / fr) / np.log10(U), 0)
-    k = np.arange(kmin, kmax + 1)
+
+    # Band numbers such that f_exact = fr for k=0
+    k = np.arange(kmin, kmax + 1).astype(int)
 
     # compute ANSI eq1
     f_exact = fr * U ** k
 
-    return f_exact, k
+    ####
+    # get normalized frequencies
+    ####
+
+    f_nom = f_exact.copy()
+
+    if n == 1:
+        freq = NOMINAL_OCTAVE_CENTER_FREQUENCIES
+    elif n == 3:
+        freq = NOMINAL_THIRD_OCTAVE_CENTER_FREQUENCIES
+    if n == 1 or n == 3:
+        i_ref = np.where(freq == fr)[0][0]
+        ind = np.where(k >= -i_ref) and np.where(k < len(freq) - i_ref)
+        f_nom[ind] = freq[k[ind] + i_ref]
+
+    # TODO
+    # Manage other values of n
+    # Manage band outside the known bands
+
+    return f_exact, f_nom
 
 
 if __name__ == "__main__":
-    f_exact, k = center_freq(25, 12500, n=1, G=10, fr=1000)
+    f_exact, f_nom = center_freq(25, 50000, n=3, G=10, fr=1000)
     pass
