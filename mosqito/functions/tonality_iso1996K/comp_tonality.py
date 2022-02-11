@@ -176,7 +176,7 @@ if __name__ == "__main__":
 
     # -- INCORRECTO --
     """----PRUEBA----"""
-    sig, fs = load(True, "tests\input\MULTITONE.wav", calib=1)
+    sig, fs = load(True, "tests\input\prueba.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
