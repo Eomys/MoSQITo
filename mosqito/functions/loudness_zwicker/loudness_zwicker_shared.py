@@ -34,17 +34,6 @@ def calc_main_loudness(spec_third, field_type):
     nm :  numpy.ndarray
         Core loudness
     """
-    # Ref. ISO 532-1:2017 paragraph A.3
-    # The table A.3 giving the weights of the 1/3 band levels for
-    # center freq. below 300 Hz is only specified for levels up to 120 dB
-    # If one of the first 11 bands (from 25 to 250 Hz) exceed 120 dB the
-    # Zwicker method cannot be applied.
-    if np.max(spec_third[0:11]) > 120.0:
-        raise ValueError(
-            "1/3 octave band value exceed 120 dB, for which "
-            + "the Zwicker method is no longer valid."
-        )
-
     #
     # Date tables definition (variable names and description according to
     # Zwicker:1991)
@@ -74,60 +63,15 @@ def calc_main_loudness(spec_third, field_type):
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.5, -1.6, -3.2, -5.4, -5.6, -4, -1.5, 2, 5, 12]
     )
     # Level difference between free and diffuse sound fields
-    ddf = np.array(
-        [
-            0,
-            0,
-            0.5,
-            0.9,
-            1.2,
-            1.6,
-            2.3,
-            2.8,
-            3,
-            2,
-            0,
-            -1.4,
-            -2,
-            -1.9,
-            -1,
-            0.5,
-            3,
-            4,
-            4.3,
-            4,
-        ]
-    )
+    ddf = np.array([0,0,0.5,0.9,1.2,1.6,2.3,2.8,3,2,0,-1.4,-2,-1.9,-1,0.5,3,4,4.3,4,])
     # Adaptation of 1/3 oct. band levels to the corresponding critical
     # band level
-    dcb = np.array(
-        [
-            -0.25,
-            -0.6,
-            -0.8,
-            -0.8,
-            -0.5,
-            0,
-            0.5,
-            1.1,
-            1.5,
-            1.7,
-            1.8,
-            1.8,
-            1.7,
-            1.6,
-            1.4,
-            1.2,
-            0.8,
-            0.5,
-            0,
-            -0.5,
-        ]
-    )
+    dcb = np.array([-0.25,-0.6,-0.8,-0.8,-0.5,0,0.5,1.1,1.5,1.7,1.8,1.8,1.7,1.6,1.4,1.2,0.8,0.5,0,-0.5,])
     #
     # Correction of 1/3 oct. band levels according to equal loudness
     # contours 'xp' and calculation of the intensities for 1/3 oct.
     # bands up to 315 Hz
+
     #Prepare al arrays to work with
     if spec_third.ndim == 1:
         #This is for the test only for test_loudness_zwicker_3oct because only one array of one col is given and this routine needs 2 or more
@@ -215,9 +159,7 @@ def calc_main_loudness(spec_third, field_type):
     # taking into account the dependance of absolute threshold
     # within this critical band
     korry = 0.4 + 0.32 * nm[0] ** 0.2
-    # nm[0,korry <= 1] *= korry    removed due to a errors found in some vases with array dimensions when filtering with korry <= 1
-    mask =korry <= 1 
-    nm[0] =  np.multiply(nm[0, mask] ,  korry)
+    nm[0,korry <= 1] *= korry
     nm[:,-1] = 0
     if spec_third.ndim == 1 or spec_third.shape[1] == 1:
         #This is for the test only for test_loudness_zwicker_3oct because only one array of one col is given and this routine needs 2 or more
@@ -226,9 +168,28 @@ def calc_main_loudness(spec_third, field_type):
         
     return nm
 
+def get_rns_index (array_nm, vector_rns, equal_too = False ):
+    if len(array_nm.shape)==1:
+        wide, = array_nm.shape
+        deep, = vector_rns.shape
+        array_aux = np.round(np.tile(array_nm , [deep,1] ),8)
+        rns_array = np.round(np.ones([wide,deep])*vector_rns,8).T
+    else:
+        wide,length = array_nm.shape   
+        deep, = vector_rns.shape
+        array_aux = np.round(np.tile(array_nm , [deep,1,1] ),8)
+        rns_array = np.round((np.ones([wide,length,deep])*vector_rns),8).transpose(2,0,1)
+        # indexes = (array_aux < rns_array).sum(axis=0)
+        # indexes[indexes==18] = 17
+    if equal_too:
+        indexes = (array_aux <= rns_array).sum(axis=0)
+    else:
+        indexes = (array_aux < rns_array).sum(axis=0)
+    indexes[indexes==18] = 17
+    
+    return indexes
 
-
-
+ 
 def calc_slopes(nm):
     """"""
     # Upper limits of approximated critical bands in terms of critical
@@ -309,77 +270,193 @@ def calc_slopes(nm):
         ]
     )
 
-    #
-    # Start values
-    j = 0
-    N = 0
-    z1 = 0
-    n1 = 0
-    iz = 0
-    z = 0.1
-    N_specific = np.zeros(int(24 / 0.1))
-    #
-    # Step to first and subsequent critical bands
-    for i in np.arange(21):
-        zup[i] += 0.0001
-        ig = i - 1
-        if ig > 7:
-            ig = 7
-        while z1 < zup[i]:
-            if n1 <= nm[i]:
-                if n1 < nm[i]:
-                    #
-                    # Determination of the number j corresponding to the range
-                    # of specific loudness
-                    j = 0
-                    while rns[j] > nm[i] and j < 17:
-                        j += 1
-                #
-                # Contribution of unmasked main loudness to total loudness
-                # and calculation of values N_specific(iz) with a spacing of
-                # z = iz * 0.1 bark
-                z2 = zup[i]
-                n2 = nm[i]
-                N = N + n2 * (z2 - z1)
-                while z < z2:
-                    N_specific[iz] = n2
-                    iz += 1
-                    z += 0.1
-            else:
-                #
-                # Decision wether the critical band in question is completely
-                # or partially masked by accessory loudness
-                n2 = rns[j]
-                if n2 < nm[i]:
-                    n2 = nm[i]
-                dz = (n1 - n2) / usl[j, ig]
-                z2 = z1 + dz
-                if z2 > zup[i]:
-                    z2 = zup[i]
-                    dz = z2 - z1
-                    n2 = n1 - dz * usl[j, ig]
-                #
-                # Contribution of accessory loudness to total loudness
-                N = N + dz * (n1 + n2) / 2
-                while z < z2:
-                    N_specific[iz] = n1 - (z - z1) * usl[j, ig]
-                    iz += 1
-                    z += 0.1
-            #
-            # Step to next segment
-            while n2 <= rns[j] and j < 17:
-                j += 1
-            if n2 <= rns[j] and j >= 17:
-                j = 17
-            z1 = z2
-            n1 = n2
-    #
-    # Final correction
-    if N < 0:
-        N = 0
-    if N <= 16:
-        N = np.floor(N * 1000 + 0.5) / 1000
-    else:
-        N = np.floor(N * 100 + 0.5) / 100
 
+    # From Ernesto Avedillo 13/feb/2022
+    # Considering the original routine if ig > 7:ig = 7 until ig = 21 so I can append the last column until usl.shape = (18,21)
+    usl_reshaped =np.append(usl,np.tile(usl[:,7],13).reshape(13,18).T,axis = 1)
+
+
+    # For test, in case nm has only 1 col.
+    len_1_nm = False
+    if len(nm.shape) == 1:
+        len_1_nm = True
+        nm=np.append(nm,nm).reshape(2,21).T
+
+    # Start values
+    data_length = nm.shape[1]
+    nm_wide =  nm.shape[0]
+    spec_length = 240
+    dec_compare = 8
+    ## Working array variables
+    n2_array_specific = np.ones(( spec_length, data_length)) 
+    z2_array_specific = np.ones(( spec_length, data_length)) 
+    usl_array_specific = np.ones(( spec_length, data_length)) 
+    dz_array_specific = np.ones(( spec_length, data_length)) 
+    rns_values_specific = np.ones(( spec_length, data_length)) 
+    #Create a zup vector called zup_ea to define the position in the N_spezific array.
+    zup_ea =(np.copy(zup)*10).astype(np.int32)
+    zup_ea = np.append(zup_ea,0)
+    
+    #Create a complete array of ZUP vectors with shape nm elements in a row
+    zup_array_ea = (np.ones(( nm_wide, data_length)).T * zup).T
+    #crearte an array of z values 0.1 increase
+
+    #Prepare the array N_specific for output
+    # For all cases where nm[:,col-1] < nm[:,col]
+    N_specific = np.ones(( spec_length, data_length))  
+    #I save the first values for first raws defined in zup_ea
+    #N_specific[:zup_ea[0],:] = np.multiply(N_specific[:zup_ea[0],:] , nm[1])
+    # I complete the rest of the matrix extending the array 21  to 240
+    for i in np.arange(nm_wide-1):
+        N_specific[zup_ea[i-1]:zup_ea[i],:] = nm[i]
+    
+    N= np.zeros(data_length)
+   
+    nm_aux = np.copy(nm)
+    #nm_aux [0] = nm[1]
+
+    #obtain the rns indexes for each value of the nm matrix.
+    #rns_ind = get_rns_index (nm, rns ,equal_too = True )
+    rns_ind = get_rns_index (nm, rns )
+    #save in an array the values corresponding to this index
+    rns_values = rns[rns_ind]
+    
+    # search usl_array for each nm cell
+    usl_array_ind = np.array([rns_ind.T,  np.ones((zup.shape[0],data_length)).T *np.arange(21)], dtype=int).transpose(1,2,0) 
+    usl_array = usl_reshaped[usl_array_ind[:,:,0],usl_array_ind[:,:,1]].T
+    #create a 240 x nm shape[1] array to save the dz values equal to z2-z1
+    dz = np.zeros((nm_wide,data_length))
+    dz = zup_array_ea - np.roll(zup_array_ea,1,axis=0) 
+    
+    dz[0,:] = zup[1]
+    dz[1,:] = zup[1]
+    
+
+    for i in np.arange(nm_wide):
+        n2_array_specific[zup_ea[i-1]:zup_ea[i],:] = nm[i]
+        dz_array_specific[zup_ea[i-1]:zup_ea[i],:] = dz[i]
+        z2_array_specific[zup_ea[i-1]:zup_ea[i],:] = zup_array_ea[i]
+        usl_array_specific[zup_ea[i-1]:zup_ea[i],:] =  usl_array[i]
+        rns_values_specific[zup_ea[i-1]:zup_ea[i],:] =  rns_values[i]
+    
+    j = 1
+    n1_aux = np.zeros(data_length)
+    z1_aux = np.zeros(data_length)
+
+    for i in np.arange(nm_wide):
+        # for all cases nm_aux[i-1]>nm_aux[i]
+        j=zup_ea[i-1]
+        indexes = get_rns_index (n2_array_specific[j-1], rns  )
+        rns_values_specific [j] = rns[indexes]
+        usl_array_specific[j] =  usl_reshaped[indexes,i-1]
+
+        mask_n1_bigger_nm = np.round(n2_array_specific[j-1],dec_compare) >np.round(nm_aux[i],dec_compare)
+        # For all n1 <= nm[i] calculate (N = N + n2 * (z2 - z1))
+        N[np.logical_not(mask_n1_bigger_nm)]  += (n2_array_specific[j]*(z2_array_specific[j] - z1_aux) )  [np.logical_not(mask_n1_bigger_nm)]
+        n1_aux[np.logical_not(mask_n1_bigger_nm)] = np.copy(n2_array_specific[j])[np.logical_not(mask_n1_bigger_nm)]
+        z1_aux[np.logical_not(mask_n1_bigger_nm)] = np.copy(z2_array_specific[j])[np.logical_not(mask_n1_bigger_nm)]
+        
+        if mask_n1_bigger_nm.sum() > 0:
+            # For all n1 > nm[i] calculate z2,dz n2.
+            # This routine
+                # n2 = rns[j]
+                # if n2 < nm[i]:
+                #     n2 = nm[i]
+                # dz = (n1 - n2) / usl[j, ig]
+                # z2 = z1 + dz
+                # if z2 > zup[i]:
+                #     z2 = zup[i]
+                #     dz = z2 - z1
+                #     n2 = n1 - dz * usl[j, ig]
+            # Can be subtituted by
+                # max_rns_nm = max(rns[j],nm[i])
+                # z2_ea = min((n1-max_rns_nm)/usl[j,ig]+z1,zup[i])
+                # dz_ea = z2_ea - z1
+                # n2_ea = n1 - dz_ea * usl[j,ig]
+
+            Max_rns_nm_Array  = np.maximum(rns_values_specific [j-1],nm[i])  
+            z2_array_specific[j,mask_n1_bigger_nm] = np.minimum( np.divide(n1_aux - Max_rns_nm_Array , usl_array_specific[j]) + z1_aux  , zup[i]) [mask_n1_bigger_nm]  
+            dz_array_specific[j,mask_n1_bigger_nm] = (z2_array_specific[j] - z1_aux )[mask_n1_bigger_nm]
+            n2_array_specific[j,mask_n1_bigger_nm] = (n1_aux- np.multiply (dz_array_specific[j] , usl_array_specific[j]))[mask_n1_bigger_nm]
+
+            # Calculate N for all n1 > nm[i]
+            
+            N[mask_n1_bigger_nm] += ( dz_array_specific[j] * (n1_aux + n2_array_specific[j]) / 2) [mask_n1_bigger_nm]
+            
+            # get value of z 
+            z_array = np.ones(data_length)*zup[i-1]+0.1
+
+            for j in np.arange(zup_ea[i-1],zup_ea[i]): 
+                
+                # Save values from previous calculation (only after second loop)
+                if j != zup_ea[i-1]:
+                    z2_array_specific[j,mask_n1_bigger_nm] =z2_array_specific[j-1,mask_n1_bigger_nm]
+                    n2_array_specific[j,mask_n1_bigger_nm] = n2_array_specific[j-1,mask_n1_bigger_nm]
+                    dz_array_specific[j,mask_n1_bigger_nm] = dz_array_specific[j-1,mask_n1_bigger_nm] 
+                    usl_array_specific[j,mask_n1_bigger_nm] = usl_array_specific[j-1,mask_n1_bigger_nm] 
+                    rns_values_specific[j,mask_n1_bigger_nm] = rns_values_specific[j-1,mask_n1_bigger_nm] 
+                
+                # Sometimes a second loop is necesary if z > z2
+                mask_z_bigger_z2 =np.logical_and(mask_n1_bigger_nm,np.round(z2_array_specific[j],dec_compare)<=np.round(z_array,dec_compare))
+                if mask_z_bigger_z2.sum() > 0:
+                    indexes = get_rns_index (n2_array_specific[j,mask_z_bigger_z2], rns ,equal_too = True)
+                    rns_values_specific [j,mask_z_bigger_z2] = rns[indexes]
+                    usl_array_specific[j,mask_z_bigger_z2] =  usl_reshaped[indexes,i-1]
+                    # Save Copy de Z2 y N2
+                    n1_aux [mask_z_bigger_z2]= n2_array_specific[j,mask_z_bigger_z2]
+                    z1_aux [mask_z_bigger_z2]= z2_array_specific[j,mask_z_bigger_z2]
+                    
+                    #Vuelvo al inicio del loop y reviso de nuevo que n2 sea menor que nm
+                    #Vuelvo a calcular mask_n1_bigger_nm 
+                    #Para los valores de n1_aux<=nm[i]
+                    mask_z_bigger_z2_1 = np.logical_and(mask_z_bigger_z2,np.round(n1_aux,dec_compare)<=np.round(nm[i],dec_compare))
+                    n2_array_specific[j,mask_z_bigger_z2_1] = nm[i,mask_z_bigger_z2_1]
+                    z2_array_specific[j,mask_z_bigger_z2_1] = zup[i]
+                    dz_array_specific[j,mask_z_bigger_z2_1] = (z2_array_specific[j] - z1_aux)[mask_z_bigger_z2_1]
+                    # Recalculate N
+                    N[mask_z_bigger_z2_1] += (  n2_array_specific[j] * ( z2_array_specific[j] - z1_aux)) [mask_z_bigger_z2_1]
+
+                    # For Values n1_aux>nm[i] after second loop
+                    mask_z_bigger_z2_2 = np.logical_and(mask_z_bigger_z2,np.round(n1_aux,dec_compare)>np.round(nm[i],dec_compare))
+                    Max_rns_nm_Array  = np.maximum(rns_values_specific [j],nm[i])  
+                    z2_array_specific[j,mask_z_bigger_z2_2] = np.minimum( np.divide(n1_aux - Max_rns_nm_Array , usl_array_specific[j]) + z1_aux , zup[i]) [mask_z_bigger_z2_2]  
+                    dz_array_specific[j,mask_z_bigger_z2_2] = (z2_array_specific[j] - z1_aux)[mask_z_bigger_z2_2]
+                    n2_array_specific[j,mask_z_bigger_z2_2] = (n1_aux- np.multiply (dz_array_specific[j] , usl_array_specific[j]))[mask_z_bigger_z2_2]
+                    # Recalculate N
+                    N[mask_z_bigger_z2_2] += ( dz_array_specific[j] * (n1_aux + n2_array_specific[j]) / 2) [mask_z_bigger_z2_2]
+                    N_specific [j,mask_z_bigger_z2_2] = (n1_aux - np.multiply((z_array - z1_aux),usl_array_specific[j]))[mask_z_bigger_z2_2]
+
+                    #For the rest of the values  Where z < z2 calculate N_Specific
+                    mask_z_rest = np.logical_xor(mask_z_bigger_z2,mask_n1_bigger_nm)
+                    N_specific [j,mask_z_rest] = (n1_aux - np.multiply((z_array - z1_aux),usl_array_specific[j]))[mask_z_rest]
+                    z_array+=0.1
+                    
+                    # Generate a new mask for n1 > nm[i]                    
+                    mask_n1_bigger_nm = np.logical_xor(mask_n1_bigger_nm ,  mask_z_bigger_z2_1)
+
+                else:
+                    N_specific [j,mask_n1_bigger_nm] = (n1_aux - np.multiply((z_array - z1_aux),usl_array_specific[j]))[mask_n1_bigger_nm]
+                    z_array+=0.1
+                    
+                z1_aux = np.copy(z2_array_specific[j])
+                n1_aux = np.copy(n2_array_specific[j])
+
+                if mask_n1_bigger_nm.sum() == 0:
+                    break
+            z1_aux = np.copy(z2_array_specific[zup_ea[i]-1])
+            n1_aux = np.copy(n2_array_specific[zup_ea[i]-1])
+
+            indexes = get_rns_index (n2_array_specific[j,mask_z_bigger_z2], rns ,equal_too = True )
+            rns_values_specific [j,mask_z_bigger_z2] = rns[indexes]
+            usl_array_specific[j,mask_z_bigger_z2] =  usl_reshaped[indexes,i-1]
+             
+                
+    N[N<0] = 0
+    N[N<=16] = np.floor (N[N<=16] * 1000 + 0.5 ) / 1000
+    N[N>16] = np.floor (N[N>16] * 100 + 0.5 ) / 100
+    if len_1_nm:
+        N = N[0]
+        N_specific = N_specific[:,0]
+    
     return N, N_specific
+ 
