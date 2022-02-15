@@ -9,12 +9,15 @@ Created on Mon Nov 16 09:23:56 2020
 import numpy as np
 
 # Local imports
-from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
+from mosqito.functions.noct_spectrum.comp_noct_spectrum import comp_noct_spectrum
 from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import (
     loudness_zwicker_stationary,
 )
 from mosqito.functions.loudness_zwicker.loudness_zwicker_time import (
     loudness_zwicker_time,
+)
+from mosqito.functions.loudness_zwicker.calc_third_octave_levels import (
+    calc_third_octave_levels,
 )
 
 
@@ -47,14 +50,13 @@ def comp_loudness(is_stationary, signal, fs, field_type="free"):
         }
     """
 
-    third_spec = comp_third_spec(is_stationary, signal, fs)
-
     if is_stationary == True:
-        N, N_specific = loudness_zwicker_stationary(
-            third_spec["values"], third_spec["freqs"], field_type
-        )
+        third_spec, freq = comp_noct_spectrum(signal, fs, fmin=24, fmax=12600)
+        third_spec = 20 * np.log10(third_spec / 2e-5)
+        N, N_specific = loudness_zwicker_stationary(third_spec, freq, field_type)
     elif is_stationary == False:
-        N, N_specific = loudness_zwicker_time(third_spec["values"], field_type)
+        spec_third, _, _ = calc_third_octave_levels(signal, fs)
+        N, N_specific = loudness_zwicker_time(spec_third, field_type)
 
     # critical band rate scale
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
