@@ -8,7 +8,7 @@ Created on Mon Dec 21 16:44:36 2020
 import numpy as np
 
 # Local import
-from mosqito.functions.oct3filter.getFrequencies import getFrequencies
+from mosqito.functions.noct_spectrum.getFrequencies import getFrequencies
 
 
 def spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):

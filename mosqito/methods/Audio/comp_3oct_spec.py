@@ -8,7 +8,7 @@ from mosqito.functions.shared.A_weighting import A_weighting
 from mosqito.functions.loudness_zwicker.calc_third_octave_levels import (
     calc_third_octave_levels,
 )
-from mosqito.functions.oct3filter.comp_noct_spectrum import comp_noct_spectrum
+from mosqito.functions.noct_spectrum.comp_noct_spectrum import comp_noct_spectrum
 
 
 def comp_3oct_spec(

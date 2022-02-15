@@ -4,9 +4,9 @@
 import numpy as np
 
 # Local application imports
-from mosqito.functions.oct3filter.filter_bandwidth import filter_bandwidth
-from mosqito.functions.oct3filter.n_oct_filter import n_oct_filter
-from mosqito.functions.oct3filter.center_freq import center_freq
+from mosqito.functions.noct_spectrum.filter_bandwidth import filter_bandwidth
+from mosqito.functions.noct_spectrum.n_oct_filter import n_oct_filter
+from mosqito.functions.noct_spectrum.center_freq import center_freq
 
 
 def comp_noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):

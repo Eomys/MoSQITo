@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from mosqito.functions.shared.load import load
-from mosqito.functions.oct3filter.comp_noct_spectrum import comp_noct_spectrum
+from mosqito.functions.noct_spectrum.comp_noct_spectrum import comp_noct_spectrum
 
 signal, fs = load(
     "./validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
