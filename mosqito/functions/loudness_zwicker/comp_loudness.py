@@ -9,7 +9,7 @@ Created on Mon Nov 16 09:23:56 2020
 import numpy as np
 
 # Local imports
-from mosqito.functions.noctfilter.comp_nth_oct import comp_nth_oct
+from mosqito.functions.oct3filter.comp_noct_spectrum import comp_noct_spectrum
 from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import (
     loudness_zwicker_stationary,
 )
@@ -51,7 +51,8 @@ def comp_loudness(is_stationary, signal, fs, field_type="free"):
     """
 
     if is_stationary == True:
-        third_spec, freq = comp_nth_oct(signal, fs, fmin=25, fmax=12500, n=3)
+        third_spec, freq = comp_noct_spectrum(signal, fs, fmin=24, fmax=12600)
+        third_spec = 20 * np.log10(third_spec / 2e-5)
         N, N_specific = loudness_zwicker_stationary(third_spec, freq, field_type)
     elif is_stationary == False:
         spec_third, _, _ = calc_third_octave_levels(signal, fs)

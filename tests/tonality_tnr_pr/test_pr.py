@@ -51,3 +51,7 @@ def test_pr():
         audio, fs = load(signal[i]["data_file"])
         # Compute tone-to-noise ratio
         pr = comp_pr(signal[i]["is_stationary"], audio, fs, prominence=True)
+
+
+if __name__ == "__main__":
+    test_pr()
