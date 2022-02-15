@@ -120,7 +120,31 @@ def test_loudness_zwicker_wav():
     assert check_compliance(loudness, signal, "./tests/output/")
 
 
+@pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
+def test_loudness_zwicker_44100Hz():
+    """Test function for the script loudness_zwicker_stationary
+    with input .wav file sampled at 44.1 kHz
+    """
+    # Test signal as input for stationary loudness
+    # (from ISO 532-1 annex B3) resampled
+    signal = {
+        "data_file": "tests/input/Test signal 3 (1 kHz 60 dB)_44100Hz.wav",
+        "N": 4.019,
+        "N_specif_file": "tests/input/test_signal_3.csv",
+    }
+
+    # Load signal and compute third octave band spectrum
+    sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
+
+    # Compute Loudness
+    loudness = comp_loudness(True, sig, fs)
+
+    # Check ISO 532-1 compliance
+    assert check_compliance(loudness, signal, "./tests/output/")
+
+
 # test de la fonction
 if __name__ == "__main__":
     # test_loudness_zwicker_3oct()
-    test_loudness_zwicker_wav()
+    # test_loudness_zwicker_wav()
+    test_loudness_zwicker_44100Hz()
