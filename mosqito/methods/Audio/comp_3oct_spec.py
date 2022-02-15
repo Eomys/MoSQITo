@@ -8,7 +8,7 @@ from mosqito.functions.shared.A_weighting import A_weighting
 from mosqito.functions.loudness_zwicker.calc_third_octave_levels import (
     calc_third_octave_levels,
 )
-from mosqito.functions.oct3filter.oct3spec import oct3spec
+from mosqito.functions.oct3filter.comp_noct_spectrum import comp_noct_spectrum
 
 
 def comp_3oct_spec(
@@ -29,17 +29,16 @@ def comp_3oct_spec(
 
     # Compute third octave band spectrum
     if self.is_stationary:
-        third_spec, freq_val = oct3spec(
-            self.signal.values, self.fs, fc_min=fc_min, fc_max=fc_max
+        third_spec, freq_val = comp_noct_spectrum(
+            self.signal.values, self.fs, fmin=fc_min, fmax=fc_max, n=3
         )
     else:
         third_spec, freq_val, time_val = calc_third_octave_levels(
             self.signal.values, self.fs
         )
-
-    # dB -> lin
-    # Todo clean all code related to db to lin, use SciDataTool if possible
-    third_spec = 2e-5 * 10 ** (third_spec / 20)
+        # dB -> lin
+        # Todo clean all code related to db to lin, use SciDataTool if possible
+        third_spec = 2e-5 * 10 ** (third_spec / 20)
 
     # Define axis objects
     frequency = Data1D(
