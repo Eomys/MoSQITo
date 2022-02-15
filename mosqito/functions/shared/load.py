@@ -26,8 +26,13 @@ def load(file, calib=1, mat_signal="", mat_fs=""):
     ----------
     file : string
         string path to the signal file
-    calib : float
-        calibration factor for the signal to be in [pa]
+    calib : float, optional
+        Amplification factor. Shall be equal to 1 if the imported signal
+        is already in Pascal [pa]. In some cases (while working with .wav
+        files, for instance) the original signal in Pa, of amplitude A, is
+        scaled to A/factor before being exported. When using the present
+        function with such file, the factor shall be defined as input parameter
+        (calib=factor) to be able to scale the signal back to Pascal.
     mat_signal : string
         in case of a .mat file, name of the signal variable
     mat_fs : string
@@ -44,6 +49,11 @@ def load(file, calib=1, mat_signal="", mat_fs=""):
     # load the .wav file content
     if file[-3:] == "wav" or file[-3:] == "WAV":
         fs, signal = wavfile.read(file)
+
+        # manage multichannel files
+        if signal.ndim > 1:
+            signal = signal[:, 0]
+            print("[Info] Multichannel signal loaded. Keeping only first channel")
 
         # calibration factor for the signal to be in Pa
         if isinstance(signal[0], np.int16):
@@ -79,7 +89,7 @@ def load(file, calib=1, mat_signal="", mat_fs=""):
     if fs != 48000:
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
-        print("Signal resampled to 48 kHz to allow calculation.")
+        print("[Info] Signal resampled to 48 kHz to allow calculation.")
 
     return signal, fs
 
