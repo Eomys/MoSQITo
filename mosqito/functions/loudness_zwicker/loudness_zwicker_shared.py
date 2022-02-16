@@ -303,7 +303,7 @@ def calc_slopes(nm):
 
     #Prepare the array N_specific for output
     # For all cases where nm[:,col-1] < nm[:,col]
-    N_specific = np.ones(( spec_length, data_length))  
+    N_specific = np.zeros(( spec_length, data_length))  
     #I save the first values for first raws defined in zup_ea
     #N_specific[:zup_ea[0],:] = np.multiply(N_specific[:zup_ea[0],:] , nm[1])
     # I complete the rest of the matrix extending the array 21  to 240
