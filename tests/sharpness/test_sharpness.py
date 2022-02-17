@@ -36,7 +36,7 @@ def test_sharpness():
     signal = {"data_file": r"tests\input\1KHZ60DB.wav", "S": 1}
 
     # Load signal
-    sig, fs = load(True, signal["data_file"], calib=1)
+    sig, fs = load(signal["data_file"], calib=1)
 
     # Compute sharpness
     sharpness = comp_sharpness(True, sig, fs, method="din")
