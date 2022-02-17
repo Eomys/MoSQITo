@@ -16,8 +16,7 @@ from numpy import (
 
 
 def gammatone(freq, k=5, fs=48000, is_plot=False):
-    """
-    ECMA-418-2 Gammatone filter design
+    """ECMA-418-2 Gammatone filter design
 
     This function computes the coefficients of a gammatone digital filter according to ECMA-418-2 section 5.1.3.
 

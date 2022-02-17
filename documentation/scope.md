@@ -13,7 +13,7 @@ metrics:
 | Roughness                                          | ECMA-418-2:2020                                      |                                             |  |  | x |
 | Fluctuation Strength                               | To be defined                                        |                                             |  |  | x |
 | Sharpness                                          | DIN 45692:2009                                       | [x](./sharpness.md)                         | x |  |  |
-| Tonality (Hearing model)                           | ECMA-74:2019 annex G                                 |                                             |  | x |  |
+| Tonality (Hearing model)                           | ECMA-74:2019 annex G                                 |                                             |  |   | x |
 
 As a second priority, the project could address the following metrics:
 
@@ -24,7 +24,8 @@ As a second priority, the project could address the following metrics:
 | Sharpness (using <br>Moore/Glasberg loudness)                                       | Hales-Swift<br>and Gee, 2017          |           |           |            | x     |
 | Tone-to-noise ratio / Prominence <br> ratio (occupational noise,<br>discrete tones) | ECMA-74:2019 annex D<br>ISO 7719:2018 |           | x         |            |       |
 | Tone-to-noise ratio<br>(environmental noise,<br>automatic tone detection)           | DIN 45681                             |           |           |            | x     |
-| Tone-to-noise ratio<br>(environmental noise)                                        | ISO 1996-2                            |           |           |            | x     |
+| Audibility of tone in noise <br>(Engineering method)                                | ISO 1996-2 annex J                    |           |           |             |   x   |
+| Audibility of tone in noise <br>(Survey method)                                     | ISO 1996-2 annex K                    |           |           |       x     |       |
 | Tone-to-noise ratio<br>(environmental noise)                                        | ANSI S1.13:2005                       |           |           |            | x     |
 
 
