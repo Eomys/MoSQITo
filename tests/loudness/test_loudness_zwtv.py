@@ -12,10 +12,10 @@ from validations.loudness_zwicker.validation_loudness_zwicker_time import (
 
 
 @pytest.mark.loudness_zwtv  # to skip or run only loudness zwicker time-varying tests
-def test_loudness_zwicker_time():
+def test_loudness_zwtv():
     """Test function for the script loudness_zwicker_time
 
-    Test function for the script loudness_zwicker_time with
+    Test function for the script loudness_zwtv with
     .wav file as input. The input file is provided by ISO 532-1 annex
     B4 and B5, the compliance is assessed according to section 6.1 of the
     standard. One .png compliance plot is generated.
@@ -56,4 +56,4 @@ def test_loudness_zwicker_time():
 
 # test de la fonction
 if __name__ == "__main__":
-    test_loudness_zwicker_time()
+    test_loudness_zwtv()
