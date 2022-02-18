@@ -3,17 +3,19 @@
 import numpy as np
 import scipy.signal as sp_signal
 
-from mosqito.functions.loudness_ecma.ear_filter_design import ear_filter_design
-from mosqito.functions.loudness_ecma.gen_auditory_filters_centre_freq import (
-    gen_auditory_filters_centre_freq,
+from mosqito.sq_metrics.loudness.loudness_ecma._ear_filter_design import (
+    _ear_filter_design,
 )
-from mosqito.functions.loudness_ecma.gammatone import gammatone
-from mosqito.functions.loudness_ecma.segmentation_blocks import (
-    segmentation_blocks,
+from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq import (
+    _auditory_filters_centre_freq,
+)
+from mosqito.sq_metrics.loudness.loudness_ecma._gammatone import _gammatone
+from mosqito.sq_metrics.loudness.loudness_ecma._segmentation_blocks import (
+    _segmentation_blocks,
 )
 
 
-def rectified_band_pass_signals(sig, sb=2048, sh=1024):
+def _rectified_band_pass_signals(sig, sb=2048, sh=1024):
     """Compute the rectified band-pass signals as per Clause 5.1.2 to 5.1.5 of
     ECMA-418-2:2020
 
@@ -45,7 +47,7 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
 
     # OUTER AND MIDDLE EAR FILTERING (5.1.2)
 
-    sos_ear = ear_filter_design()
+    sos_ear = _ear_filter_design()
     signal_filtered = sp_signal.sosfilt(sos_ear, sig, axis=0)
 
     # AUDITORY FILTERING BANK (5.1.3)
@@ -55,11 +57,11 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
     # Sampling frequency
     fs = 48000.00
     # Auditory filters centre frequencies
-    centre_freq = gen_auditory_filters_centre_freq()
+    centre_freq = _auditory_filters_centre_freq()
 
     block_array_rect = []
     for band_number in range(53):
-        bm_mod, am_mod = gammatone(centre_freq[band_number], k=filter_order_k, fs=fs)
+        bm_mod, am_mod = _gammatone(centre_freq[band_number], k=filter_order_k, fs=fs)
 
         band_pass_signal = (
             2.0
@@ -82,7 +84,7 @@ def rectified_band_pass_signals(sig, sb=2048, sh=1024):
         # "band_number" in which we are processing the signal. "sh_array" is the step size, the time shift to the next
         # block.
 
-        block_array = segmentation_blocks(
+        block_array = _segmentation_blocks(
             band_pass_signal, sb[band_number], sh[band_number]
         )
 

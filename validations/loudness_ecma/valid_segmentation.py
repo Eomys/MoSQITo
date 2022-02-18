@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 from mosqito.functions.shared.sine_wave_generator import (
     sine_wave_generator,
 )
-from mosqito.functions.loudness_ecma.segmentation_blocks import (
-    segmentation_blocks,
+from mosqito.sq_metrics.loudness.loudness_ecma._segmentation_blocks import (
+    _segmentation_blocks,
 )
 
 signal, _ = sine_wave_generator(
@@ -16,7 +16,7 @@ signal, _ = sine_wave_generator(
     spl_value=60,
     freq=40,
 )
-blocks = segmentation_blocks(signal, 8192, 2048)
+blocks = _segmentation_blocks(signal, 8192, 2048)
 
 plt.subplot(211)
 plt.plot(signal)

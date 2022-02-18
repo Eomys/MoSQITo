@@ -6,17 +6,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Project Imports
-from mosqito.functions.loudness_ecma.rectified_band_pass_signals import (
-    rectified_band_pass_signals,
+from mosqito.sq_metrics.loudness.loudness_ecma._rectified_band_pass_signals import (
+    _rectified_band_pass_signals,
 )
-from mosqito.functions.loudness_ecma.nonlinearity import nonlinearity
+from mosqito.sq_metrics.loudness.loudness_ecma._nonlinearity import _nonlinearity
 
 # Data import
 # Threshold in quiet
-from mosqito.functions.loudness_ecma.loudness_ecma_data import ltq_z
+from mosqito.sq_metrics.loudness.loudness_ecma._loudness_ecma_data import ltq_z
 
 
-def comp_loudness(signal, sb=2048, sh=1024):
+def loudness_ecma(signal, sb=2048, sh=1024):
     """Calculation of the specific and total loudness according to ECMA-418-2 section 5
 
     Parameters
@@ -43,7 +43,7 @@ def comp_loudness(signal, sb=2048, sh=1024):
 
     # Computaton of rectified band-pass signals
     # (section 5.1.2 to 5.1.5 of the standard)
-    block_array_rect = rectified_band_pass_signals(signal, sb, sh)
+    block_array_rect = _rectified_band_pass_signals(signal, sb, sh)
 
     # # sb and sh for Tonality
     # z = np.linspace(0.5, 26.5, num=53, endpoint=True)
@@ -71,7 +71,7 @@ def comp_loudness(signal, sb=2048, sh=1024):
         # This section covers the other part of the calculations needed to consider the non-linear transformation
         # of sound pressure to specific loudness that does the the auditory system. After this point, the
         # computation is done equally to every block in which we have divided our signal.
-        a_prime = nonlinearity(rms_block_value)
+        a_prime = _nonlinearity(rms_block_value)
 
         # SPECIFIC LOUDNESS CONSIDERING THE THRESHOLD IN QUIET (section 5.1.8)
         # The next calculation helps us obtain the result for the specific loudness - specific loudness with

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def nonlinearity(p):
+def _nonlinearity(p):
     """Apply the compressive nonlinearity of the auditory system to the
     rectified band pass signal rms values according to ECMA 418-2 section 5.1.7
 

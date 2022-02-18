@@ -2,7 +2,7 @@ from numpy import arange
 from numpy import sinh
 
 
-def gen_auditory_filters_centre_freq():
+def _auditory_filters_centre_freq():
     """
     Auditory filter bank center frequencies generation
 
@@ -35,4 +35,4 @@ def gen_auditory_filters_centre_freq():
 
 
 if __name__ == "__main__":
-    centre_freq = gen_auditory_filters_centre_freq()
+    centre_freq = _auditory_filters_centre_freq()

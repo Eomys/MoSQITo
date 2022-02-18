@@ -2,7 +2,7 @@
 from numpy import column_stack
 
 
-def ear_filter_design():
+def _ear_filter_design():
     """Return second-order filter coefficients of outer and middle/inner ear filter according to
     ECMA-418-2:2020 section 5.1.2.
 

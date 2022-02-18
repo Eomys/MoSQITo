@@ -10,7 +10,9 @@ from numpy import (
 )
 import matplotlib.pyplot as plt
 
-from mosqito.functions.loudness_ecma.ear_filter_design import ear_filter_design
+from mosqito.sq_metrics.loudness.loudness_ecma._ear_filter_design import (
+    _ear_filter_design,
+)
 from mosqito.functions.shared.sine_wave_generator import (
     sine_wave_generator,
 )
@@ -23,7 +25,7 @@ from validations.loudness_ecma.input.ear_filter_ecma import (
 )
 
 # generate outer and middle/inner ear filter coeeficient
-sos_ear = ear_filter_design()
+sos_ear = _ear_filter_design()
 
 b, a = sp_signal.sos2tf(sos_ear)
 

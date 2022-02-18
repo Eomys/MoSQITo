@@ -4,18 +4,18 @@ from scipy.signal import gammatone as scipy_gamma, freqz
 from numpy import log10, abs as np_abs
 import matplotlib.pyplot as plt
 
-from mosqito.functions.loudness_ecma.gammatone import (
-    gammatone as mosqito_gamma,
+from mosqito.sq_metrics.loudness.loudness_ecma._gammatone import (
+    _gammatone as mosqito_gamma,
 )
-from mosqito.functions.loudness_ecma.gen_auditory_filters_centre_freq import (
-    gen_auditory_filters_centre_freq,
+from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq import (
+    _auditory_filters_centre_freq,
 )
 
 # Sampling frequency
 fs = 48000
 
 # Auditory filters centre frequencies
-centre_freq = gen_auditory_filters_centre_freq()
+centre_freq = _auditory_filters_centre_freq()
 freq = centre_freq[17]
 
 # Compute auditory filter coefficients

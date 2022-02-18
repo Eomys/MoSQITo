@@ -8,7 +8,7 @@ import numpy as np
 from mosqito.functions.shared.sine_wave_generator import (
     sine_wave_generator,
 )
-from mosqito.functions.loudness_ecma.comp_loudness import comp_loudness
+from mosqito.sq_metrics import loudness_ecma
 
 
 @pytest.mark.loudness_ecma  # to skip or run only loudness ecma tests
@@ -22,7 +22,7 @@ def test_loudness_ecma():
         spl_value=80,
         freq=1000,
     )
-    n_specific, _ = comp_loudness(signal)
+    n_specific, _ = loudness_ecma(signal)
     n_specific = np.array(n_specific)
     n_tot = np.sum(n_specific, axis=0)
     n_tot_mean_1kHz = np.mean(n_tot[5:])
@@ -34,7 +34,7 @@ def test_loudness_ecma():
         spl_value=78.73977248964925,
         freq=5000,
     )
-    n_specific, _ = comp_loudness(signal)
+    n_specific, _ = loudness_ecma(signal)
     n_specific = np.array(n_specific)
     n_tot = np.sum(n_specific, axis=0)
     n_tot_mean_5kHz = np.mean(n_tot[5:])
