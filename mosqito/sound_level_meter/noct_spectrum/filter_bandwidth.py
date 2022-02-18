@@ -4,7 +4,7 @@
 import numpy as np
 
 # local import
-from mosqito.functions.noct_spectrum.center_freq import center_freq
+from mosqito.sound_level_meter.noct_spectrum.center_freq import center_freq
 
 
 def filter_bandwidth(fc, n=3, N=3):

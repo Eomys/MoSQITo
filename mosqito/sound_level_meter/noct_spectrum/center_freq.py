@@ -1,6 +1,6 @@
 import numpy as np
 
-from mosqito.functions.noct_spectrum.nominal_frequency import (
+from mosqito.sound_level_meter.noct_spectrum.nominal_frequency import (
     NOMINAL_OCTAVE_CENTER_FREQUENCIES,
     NOMINAL_THIRD_OCTAVE_CENTER_FREQUENCIES,
 )

@@ -9,7 +9,9 @@ Created on Mon Nov 16 09:23:56 2020
 import numpy as np
 
 # Local imports
-from mosqito.functions.noct_spectrum.comp_noct_spectrum import comp_noct_spectrum
+from mosqito.sound_level_meter.noct_spectrum.comp_noct_spectrum import (
+    comp_noct_spectrum,
+)
 from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import (
     loudness_zwicker_stationary,
 )

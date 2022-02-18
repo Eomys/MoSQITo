@@ -2,7 +2,9 @@ import pyuff
 import matplotlib.pyplot as plt
 import numpy as np
 
-from mosqito.functions.noct_spectrum.comp_noct_spectrum import comp_noct_spectrum
+from mosqito.sound_level_meter.noct_spectrum.comp_noct_spectrum import (
+    comp_noct_spectrum,
+)
 
 
 def valid_nthoctave(is_gen_txt=False):
