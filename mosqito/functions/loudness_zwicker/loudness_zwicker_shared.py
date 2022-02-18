@@ -56,17 +56,105 @@ def calc_main_loudness(spec_third, field_type):
     )
     # Critical band level at absolute threshold without taking into
     # account the transmission characteristics of the ear
-    ltq = np.array([30, 18, 12, 8, 7, 6, 5, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
+    ltq = np.array(
+        [
+            30, 
+            18, 
+            12, 
+            8, 
+            7, 
+            6, 
+            5, 
+            4, 
+            3, 
+            3, 
+            3, 
+            3, 
+            3, 
+            3, 
+            3, 
+            3, 
+            3, 
+            3, 
+            3, 
+            3
+        ]
+    )
     # Correction of levels according to the transmission characteristics
     # of the ear
     a0 = np.array(
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.5, -1.6, -3.2, -5.4, -5.6, -4, -1.5, 2, 5, 12]
+        [
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            -0.5, 
+            -1.6, 
+            -3.2, 
+            -5.4, 
+            -5.6, 
+            -4, 
+            -1.5, 
+            2, 
+            5, 
+            12
+        ]
     )
     # Level difference between free and diffuse sound fields
-    ddf = np.array([0,0,0.5,0.9,1.2,1.6,2.3,2.8,3,2,0,-1.4,-2,-1.9,-1,0.5,3,4,4.3,4,])
+    ddf = np.array(
+        [
+            0,
+            0,
+            0.5,
+            0.9,
+            1.2,
+            1.6,
+            2.3,
+            2.8,
+            3,2,
+            0,
+            -1.4,
+            -2,
+            -1.9,
+            -1,
+            0.5,
+            3,4,
+            4.3,
+            4,
+        ]
+    )
     # Adaptation of 1/3 oct. band levels to the corresponding critical
     # band level
-    dcb = np.array([-0.25,-0.6,-0.8,-0.8,-0.5,0,0.5,1.1,1.5,1.7,1.8,1.8,1.7,1.6,1.4,1.2,0.8,0.5,0,-0.5,])
+    dcb = np.array(
+        [
+            -0.25,
+            -0.6,
+            -0.8,
+            -0.8,
+            -0.5,
+            0,
+            0.5,
+            1.1,
+            1.5,
+            1.7,
+            1.8,
+            1.8,
+            1.7,
+            1.6,
+            1.4,
+            1.2,
+            0.8,
+            0.5,
+            0,
+            -0.5,
+        ]
+    )
     #
     # Correction of 1/3 oct. band levels according to equal loudness
     # contours 'xp' and calculation of the intensities for 1/3 oct.
@@ -75,10 +163,10 @@ def calc_main_loudness(spec_third, field_type):
     #Prepare al arrays to work with
     if spec_third.ndim == 1:
         #This is for the test only for test_loudness_zwicker_3oct because only one array of one col is given and this routine needs 2 or more
-        spec_third_adapted = (np.ones(spec_third.shape[0]*100).reshape(spec_third.shape[0],100).T * spec_third).T
+        spec_third_adapted = (np.ones((spec_third.shape[0],100)).T * spec_third).T
     elif spec_third.shape[1] == 1:
         #This line is only for testing test_loudness_zwicker_wav(), only in case one col in spec third is given.
-        spec_third_adapted = (np.ones(spec_third.shape[0]*100).reshape(spec_third.shape[0],100).T * spec_third[:,0]).T
+        spec_third_adapted = (np.ones((spec_third.shape[0],100)).T * spec_third[:,0]).T
     else:
         #Fomn common wav files where more htan one col is given.
         spec_third_adapted = spec_third
@@ -88,7 +176,7 @@ def calc_main_loudness(spec_third, field_type):
     
     # Convert rap, dll in 3 dimensional array
     # 1. generate the array shape
-    base_mat = np.ones(dll.shape[0]*dll.shape[1]*spec_third_aux.shape[1]).reshape(dll.shape[0],dll.shape[1],spec_third_aux.shape[1]) 
+    base_mat = np.ones((dll.shape[0],dll.shape[1],spec_third_aux.shape[1])) 
     # 2. start saving data in rap and DLL array
     rap_mat = np.array([base_mat[:,i,:].T * rap for i in np.arange(dll.shape[1])]).transpose(2,0,1)
     dll_mat = np.array([np.multiply(base_mat[:,:,i] , dll) for i in np.arange(spec_third_adapted.shape[1])]).transpose(1,2,0)
@@ -162,13 +250,28 @@ def calc_main_loudness(spec_third, field_type):
     nm[0,korry <= 1] *= korry
     nm[:,-1] = 0
     if spec_third.ndim == 1 or spec_third.shape[1] == 1:
-        #This is for the test only for test_loudness_zwicker_3oct because only one array of one col is given and this routine needs 2 or more
-        #This line is only for testing test_loudness_zwicker_wav(), only in case one col in spec third is given.
+        #This is only for test_loudness_zwicker_3oct because only one array of one col is given and this routine needs 2 or more
+        #This line is only also for testing test_loudness_zwicker_wav(), only in case one col in spec third is given.
         nm = nm[:,1]
         
     return nm
-
+#
 def get_rns_index (array_nm, vector_rns, equal_too = False ):
+    """Function that returns the index in the array vector_rns for each value of srray _nm  
+    
+    Parameters
+    ----------
+    array_nm : numpy.ndarray, values of the matrix toget the indexes
+       
+    vector_rns:reference vector to get indexes
+    equal_too : boolean
+
+    Outputs
+    -------
+    indexes :  numpy.ndarray 
+        Array of indexes
+    """
+
     if len(array_nm.shape)==1:
         wide, = array_nm.shape
         deep, = vector_rns.shape
@@ -312,7 +415,7 @@ def calc_slopes(nm):
     
     N= np.zeros(data_length)
    
-    nm_aux = np.copy(nm)
+    #nm_aux = np.copy(nm)
     #nm_aux [0] = nm[1]
 
     #obtain the rns indexes for each value of the nm matrix.
@@ -344,13 +447,13 @@ def calc_slopes(nm):
     z1_aux = np.zeros(data_length)
 
     for i in np.arange(nm_wide):
-        # for all cases nm_aux[i-1]>nm_aux[i]
+        # for all cases where nm[i-1]>nm[i]
         j=zup_ea[i-1]
         indexes = get_rns_index (n2_array_specific[j-1], rns  )
         rns_values_specific [j] = rns[indexes]
         usl_array_specific[j] =  usl_reshaped[indexes,i-1]
 
-        mask_n1_bigger_nm = np.round(n2_array_specific[j-1],dec_compare) >np.round(nm_aux[i],dec_compare)
+        mask_n1_bigger_nm = np.round(n2_array_specific[j-1],dec_compare) >np.round(nm[i],dec_compare)
         # For all n1 <= nm[i] calculate (N = N + n2 * (z2 - z1))
         N[np.logical_not(mask_n1_bigger_nm)]  += (n2_array_specific[j]*(z2_array_specific[j] - z1_aux) )  [np.logical_not(mask_n1_bigger_nm)]
         n1_aux[np.logical_not(mask_n1_bigger_nm)] = np.copy(n2_array_specific[j])[np.logical_not(mask_n1_bigger_nm)]
