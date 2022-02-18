@@ -9,7 +9,7 @@ import numpy as np
 from scipy import signal
 
 # Local application imports
-from mosqito.sq_metrics.loudness.loudness_zwst.square_and_smooth import (
+from mosqito.sq_metrics.loudness.loudness_zwtv.square_and_smooth import (
     square_and_smooth,
 )
 
@@ -281,4 +281,4 @@ def calc_third_octave_levels(sig, fs):
             (sig_filt[::dec_factor] + tiny_value) / i_ref
         )
 
-    return third_octave_level, freq, time_axis
+    return third_octave_level, time_axis, freq

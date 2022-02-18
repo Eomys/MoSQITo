@@ -11,7 +11,7 @@ import pytest
 from pandas import ExcelFile, read_excel
 
 # Local application imports
-from mosqito.sq_metrics.loudness.loudness_zwst.comp_loudness import comp_loudness
+from mosqito.sq_metrics import loudness_zwtv
 from mosqito.functions.shared.load import load
 from validations.loudness_zwicker.validation_loudness_zwicker_time import (
     check_compliance,
@@ -38,10 +38,10 @@ def test_loudness_zwicker_time():
     # Test signal as input for time-varying loudness
     # (from ISO 532-1 annex B4)
     signal = {
-        "data_file": "tests/input/Test signal 6 (tone 250 Hz 30 dB - 80 dB).wav",
+        "data_file": "tests/input/Test signal 10 (tone pulse 1 kHz 10 ms 70 dB).wav",
         "xls": "tests/input/Results and tests for synthetic signals (time varying loudness).xlsx",
-        "tab": "Test signal 6",
-        "N_specif_bark": 2.5,
+        "tab": "Test signal 10",
+        "N_specif_bark": 8.5,
         "field": "free",
     }
 
@@ -49,7 +49,13 @@ def test_loudness_zwicker_time():
     sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
 
     # Compute Loudness
-    loudness = comp_loudness(False, sig, fs, signal["field"])
+    N, N_spec, bark_axis, _ = loudness_zwtv(sig, fs, signal["field"])
+    loudness = {
+        "name": "Loudness",
+        "values": N,
+        "specific values": N_spec,
+        "freqs": bark_axis,
+    }
 
     # Check ISO 532-1 compliance
     assert check_compliance(loudness, signal, "./tests/output/")

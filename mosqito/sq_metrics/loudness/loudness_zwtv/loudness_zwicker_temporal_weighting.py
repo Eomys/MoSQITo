@@ -5,7 +5,7 @@
 """
 
 # Local application import
-from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_lowpass_intp import (
+from mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwicker_lowpass_intp import (
     loudness_zwicker_lowpass_intp,
 )
 

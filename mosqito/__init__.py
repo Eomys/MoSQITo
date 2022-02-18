@@ -1,4 +1,5 @@
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst
+from mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv import loudness_zwtv
 
 
 # Colors and linestyles

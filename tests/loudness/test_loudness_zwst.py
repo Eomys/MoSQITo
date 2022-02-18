@@ -10,14 +10,14 @@ import matplotlib.pyplot as plt
 import pytest
 
 # Local application imports
-from mosqito.sq_metrics import loudness_zwst
-from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_shared import (
-    calc_main_loudness,
-)
-from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_shared import (
-    calc_slopes,
-)
 from mosqito.functions.shared.load import load
+from mosqito.sq_metrics import loudness_zwst
+from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
+    _main_loudness,
+)
+from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
+    _calc_slopes,
+)
 from validations.loudness_zwicker.validation_loudness_zwicker_stationary import (
     check_compliance,
 )
@@ -52,8 +52,8 @@ def test_loudness_zwicker_3oct():
 
     #
     # Compute loudness
-    Nm = calc_main_loudness(test_signal_1, field_type="free")
-    N, N_specific = calc_slopes(Nm)
+    Nm = _main_loudness(test_signal_1, field_type="free")
+    N, N_specific = _calc_slopes(Nm)
     loudness = {"values": N, "specific values": N_specific}
     #
     # Asser complaiance

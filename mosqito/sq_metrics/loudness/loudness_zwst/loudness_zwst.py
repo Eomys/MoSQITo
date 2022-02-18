@@ -7,11 +7,11 @@ import numpy as np
 from mosqito.sound_level_meter.noct_spectrum.comp_noct_spectrum import (
     comp_noct_spectrum,
 )
-from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_shared import (
-    calc_main_loudness,
+from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
+    _main_loudness,
 )
-from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_shared import (
-    calc_slopes,
+from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
+    _calc_slopes,
 )
 
 
@@ -55,11 +55,11 @@ def loudness_zwst(signal, fs, field_type="free"):
     spec_third = 20 * np.log10(spec_third / 2e-5)
     #
     # Compute main loudness
-    Nm = calc_main_loudness(spec_third, field_type)
+    Nm = _main_loudness(spec_third, field_type)
     #
     # Computation of specific loudness pattern and integration of overall
     # loudness by attaching slopes towards higher frequencies
-    N, N_specific = calc_slopes(Nm)
+    N, N_specific = _calc_slopes(Nm)
     #
     # Define Bark axis
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))

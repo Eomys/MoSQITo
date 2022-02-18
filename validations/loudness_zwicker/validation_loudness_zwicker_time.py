@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from pandas import ExcelFile, read_excel
 
 # Local application imports
-from mosqito.sq_metrics.loudness.loudness_zwst.comp_loudness import comp_loudness
+from mosqito.sq_metrics import loudness_zwtv
 from mosqito.functions.shared.load import load
 
 
@@ -189,7 +189,13 @@ def validation_loudness_zwicker_time(signal):
     sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
 
     # Compute Loudness
-    loudness = comp_loudness(False, sig, fs, signal["field"])
+    N, N_spec, bark_axis, _ = loudness_zwtv(sig, fs, signal["field"])
+    loudness = {
+        "name": "Loudness",
+        "values": N,
+        "specific values": N_spec,
+        "freqs": bark_axis,
+    }
 
     # Check ISO 532-1 compliance
     check_compliance(loudness, signal, "./validations/loudness_zwicker/output/")
