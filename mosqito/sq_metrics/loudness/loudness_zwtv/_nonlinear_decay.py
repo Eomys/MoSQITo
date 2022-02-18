@@ -11,7 +11,7 @@ import math
 import numpy as np
 
 
-def calc_nl_loudness(core_loudness):
+def _nl_loudness(core_loudness):
     """Simulate the nonlinear temporal decay of the hearing system
 
     Parameters
@@ -63,20 +63,20 @@ def calc_nl_loudness(core_loudness):
                 nl_loudness[i_cl, i_time + 1] - nl_loudness[i_cl, i_time]
             ) / nl_iter
             ui = nl_loudness[i_cl, i_time]
-            nl_lp = calc_nl_lp(ui, nl_lp)
+            nl_lp = _nl_lp(ui, nl_lp)
             nl_loudness[i_cl, i_time] = nl_lp["uo_last"]
             ui += delta
 
             # inner iterations
             for i_in in np.arange(1, nl_iter):
-                nl_lp = calc_nl_lp(ui, nl_lp)
+                nl_lp = _nl_lp(ui, nl_lp)
                 ui += delta
-        nl_lp = calc_nl_lp(nl_loudness[i_cl, i_time + 1], nl_lp)
+        nl_lp = _nl_lp(nl_loudness[i_cl, i_time + 1], nl_lp)
         nl_loudness[i_cl, i_time + 1] = nl_lp["uo_last"]
     return nl_loudness
 
 
-def calc_nl_lp(ui, nl_lp):
+def _nl_lp(ui, nl_lp):
     """Calculates Uo(t) from Ui(t) using UoLast and U2Last
 
     Parameters

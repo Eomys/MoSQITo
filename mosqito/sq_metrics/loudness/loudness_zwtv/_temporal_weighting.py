@@ -5,12 +5,12 @@
 """
 
 # Local application import
-from mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwicker_lowpass_intp import (
-    loudness_zwicker_lowpass_intp,
+from mosqito.sq_metrics.loudness.loudness_zwtv._lowpass_intp import (
+    _lowpass_intp,
 )
 
 
-def loudness_zwicker_temporal_weighting(loudness):
+def _temporal_weighting(loudness):
     """Temporal weighting of total loudness
 
     Two first-order low-pass filters (time constants 3,5 ms
@@ -30,9 +30,9 @@ def loudness_zwicker_temporal_weighting(loudness):
     """
     sample_rate = 2000
     tau = 3.5 * 10 ** -3
-    filt_loudness_1 = loudness_zwicker_lowpass_intp(loudness, tau, sample_rate)
+    filt_loudness_1 = _lowpass_intp(loudness, tau, sample_rate)
     tau = 70 * 10 ** -3
-    filt_loudness_2 = loudness_zwicker_lowpass_intp(loudness, tau, sample_rate)
+    filt_loudness_2 = _lowpass_intp(loudness, tau, sample_rate)
 
     loudness = 0.47 * filt_loudness_1 + 0.53 * filt_loudness_2
 

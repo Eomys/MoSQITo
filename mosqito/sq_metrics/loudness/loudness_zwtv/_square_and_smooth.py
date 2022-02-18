@@ -9,7 +9,7 @@ import numpy as np
 from scipy import signal
 
 
-def square_and_smooth(sig, center_freq, fs):
+def _square_and_smooth(sig, center_freq, fs):
     """3rd order low-pass filtering (See ISO 532-1 section 6.3)
 
     Parameters

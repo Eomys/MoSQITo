@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-@date Created on Mon May 25 2020
-@author martin_g for Eomys
-"""
 
 # Third party imports
-import numpy as np
-import matplotlib.pyplot as plt
 import pytest
-from pandas import ExcelFile, read_excel
 
 # Local application imports
 from mosqito.sq_metrics import loudness_zwtv

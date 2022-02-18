@@ -9,7 +9,7 @@ import math
 import numpy as np
 
 
-def loudness_zwicker_lowpass_intp(loudness, tau, sample_rate):
+def _lowpass_intp(loudness, tau, sample_rate):
     """1st order low-pass with linear interpolation of signal for
     increased precision
 

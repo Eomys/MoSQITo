@@ -9,12 +9,12 @@ import numpy as np
 from scipy import signal
 
 # Local application imports
-from mosqito.sq_metrics.loudness.loudness_zwtv.square_and_smooth import (
-    square_and_smooth,
+from mosqito.sq_metrics.loudness.loudness_zwtv._square_and_smooth import (
+    _square_and_smooth,
 )
 
 
-def calc_third_octave_levels(sig, fs):
+def _third_octave_levels(sig, fs):
     """3rd octave filtering, squaring, smoothing, level calculation and
     downsampling to temporal resolution: 0,5 ms, i.e. sampling rate: 2 kHz
 
@@ -275,7 +275,7 @@ def calc_third_octave_levels(sig, fs):
         # Calculate center frequency of filter
         center_freq = 10 ** ((i_bands - 16) / 10) * 1000
         # Squaring and smoothing of filtered signal
-        sig_filt = square_and_smooth(sig_filt, center_freq, 48000)
+        sig_filt = _square_and_smooth(sig_filt, center_freq, 48000)
         # SPL calculation and decimation
         third_octave_level[i_bands, :] = 10 * np.log10(
             (sig_filt[::dec_factor] + tiny_value) / i_ref

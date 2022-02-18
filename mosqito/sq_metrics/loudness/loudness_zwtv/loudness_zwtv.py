@@ -14,14 +14,14 @@ from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
     _calc_slopes,
 )
-from mosqito.sq_metrics.loudness.loudness_zwtv.calc_third_octave_levels import (
-    calc_third_octave_levels,
+from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import (
+    _third_octave_levels,
 )
-from mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwicker_nonlinear_decay import (
-    calc_nl_loudness,
+from mosqito.sq_metrics.loudness.loudness_zwtv._nonlinear_decay import (
+    _nl_loudness,
 )
-from mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwicker_temporal_weighting import (
-    loudness_zwicker_temporal_weighting,
+from mosqito.sq_metrics.loudness.loudness_zwtv._temporal_weighting import (
+    _temporal_weighting,
 )
 
 
@@ -64,14 +64,14 @@ def loudness_zwtv(
     """
 
     # Compute third octave band spectrum vs. time
-    spec_third, time_axis, _ = calc_third_octave_levels(signal, fs)
+    spec_third, time_axis, _ = _third_octave_levels(signal, fs)
 
     # Calculate core loudness (vectorized version)
     core_loudness = _main_loudness(spec_third, field_type)
 
     #
     # Nonlinearity
-    core_loudness = calc_nl_loudness(core_loudness)
+    core_loudness = _nl_loudness(core_loudness)
     #
     # Calculation of specific loudness
     loudness = np.zeros(np.shape(core_loudness)[1])
@@ -82,7 +82,7 @@ def loudness_zwtv(
         )
     #
     # temporal weigthing
-    filt_loudness = loudness_zwicker_temporal_weighting(loudness)
+    filt_loudness = _temporal_weighting(loudness)
     #
     # Decimation from temporal resolution 0.5 ms to 2ms and return
     dec_factor = 4
