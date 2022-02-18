@@ -10,19 +10,23 @@ import matplotlib.pyplot as plt
 import pytest
 
 # Local application imports
-from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import (
-    loudness_zwicker_stationary,
+from mosqito.sq_metrics import loudness_zwst
+from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_shared import (
+    calc_main_loudness,
 )
-from mosqito.functions.loudness_zwicker.comp_loudness import comp_loudness
+from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_shared import (
+    calc_slopes,
+)
 from mosqito.functions.shared.load import load
 from validations.loudness_zwicker.validation_loudness_zwicker_stationary import (
     check_compliance,
 )
+from tests.input.Test_signal_1 import test_signal_1
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
 def test_loudness_zwicker_3oct():
-    """Test function for the script loudness_zwicker_stationary
+    """Test function for the script loudness_zwst
 
     Test function for the script loudness_zwicker_stationary with
     third octave band spectrum as input. The input spectrum is
@@ -38,50 +42,22 @@ def test_loudness_zwicker_3oct():
     -------
     None
     """
-    # Third octave levels as input for stationary loudness
-    # (from ISO 532-1 annex B2)
-    test_signal_1 = np.array(
-        [
-            -60,
-            -60,
-            78,
-            79,
-            89,
-            72,
-            80,
-            89,
-            75,
-            87,
-            85,
-            79,
-            86,
-            80,
-            71,
-            70,
-            72,
-            71,
-            72,
-            74,
-            69,
-            65,
-            67,
-            77,
-            68,
-            58,
-            45,
-            30.0,
-        ]
-    )
 
-    signal = {
+    # Target values
+    target = {
         "data_file": "Test signal 1.txt",
         "N": 83.296,
         "N_specif_file": "tests/input/test_signal_1.csv",
     }
-    N, N_specific = loudness_zwicker_stationary(test_signal_1)
-    loudness = {"values": N, "specific values": N_specific}
 
-    tst = check_compliance(loudness, signal, "./tests/output/")
+    #
+    # Compute loudness
+    Nm = calc_main_loudness(test_signal_1, field_type="free")
+    N, N_specific = calc_slopes(Nm)
+    loudness = {"values": N, "specific values": N_specific}
+    #
+    # Asser complaiance
+    tst = check_compliance(loudness, target, "./tests/output/")
     assert tst
 
 
@@ -114,7 +90,13 @@ def test_loudness_zwicker_wav():
     sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
 
     # Compute Loudness
-    loudness = comp_loudness(True, sig, fs)
+    N, N_specific, bark_axis = loudness_zwst(sig, fs)
+    loudness = {
+        "name": "Loudness",
+        "values": N,
+        "specific values": N_specific,
+        "freqs": bark_axis,
+    }
 
     # Check ISO 532-1 compliance
     assert check_compliance(loudness, signal, "./tests/output/")
@@ -137,7 +119,13 @@ def test_loudness_zwicker_44100Hz():
     sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
 
     # Compute Loudness
-    loudness = comp_loudness(True, sig, fs)
+    N, N_specific, bark_axis = loudness_zwst(sig, fs)
+    loudness = {
+        "name": "Loudness",
+        "values": N,
+        "specific values": N_specific,
+        "freqs": bark_axis,
+    }
 
     # Check ISO 532-1 compliance
     assert check_compliance(loudness, signal, "./tests/output/")
@@ -146,5 +134,5 @@ def test_loudness_zwicker_44100Hz():
 # test de la fonction
 if __name__ == "__main__":
     # test_loudness_zwicker_3oct()
-    # test_loudness_zwicker_wav()
-    test_loudness_zwicker_44100Hz()
+    test_loudness_zwicker_wav()
+    # test_loudness_zwicker_44100Hz()

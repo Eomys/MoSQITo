@@ -9,7 +9,7 @@ Created on Mon Nov 16 10:00:50 2020
 import numpy as np
 
 # Local imports
-from mosqito.functions.loudness_zwicker.comp_loudness import comp_loudness
+from mosqito.sq_metrics import loudness_zwst
 from mosqito.functions.sharpness.sharpness_aures import comp_sharpness_aures
 from mosqito.functions.sharpness.sharpness_din import comp_sharpness_din
 from mosqito.functions.sharpness.sharpness_bismarck import comp_sharpness_bismarck
@@ -48,27 +48,19 @@ def comp_sharpness(is_stationary, signal, fs, method="din", skip=0):
     ):
         raise ValueError("ERROR: method must be 'din', 'aures', 'bismarck', 'fastl'")
 
-    loudness = comp_loudness(is_stationary, signal, fs)
+    N, N_specific, _ = loudness_zwst(signal, fs)
 
     if method == "din":
-        S = comp_sharpness_din(
-            loudness["values"], loudness["specific values"], is_stationary
-        )
+        S = comp_sharpness_din(N, N_specific, is_stationary)
 
     elif method == "aures":
-        S = comp_sharpness_aures(
-            loudness["values"], loudness["specific values"], is_stationary
-        )
+        S = comp_sharpness_aures(N, N_specific, is_stationary)
 
     elif method == "bismarck":
-        S = comp_sharpness_bismarck(
-            loudness["values"], loudness["specific values"], is_stationary
-        )
+        S = comp_sharpness_bismarck(N, N_specific, is_stationary)
 
     elif method == "fastl":
-        S = comp_sharpness_fastl(
-            loudness["values"], loudness["specific values"], is_stationary
-        )
+        S = comp_sharpness_fastl(N, N_specific, is_stationary)
 
     if is_stationary == False:
         # Cut transient effect

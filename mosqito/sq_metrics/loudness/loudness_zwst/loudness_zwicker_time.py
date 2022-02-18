@@ -8,14 +8,16 @@
 import numpy as np
 
 # Local applications imports
-from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import (
+from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_shared import (
     calc_main_loudness_ea as calc_main_loudness,
 )
-from mosqito.functions.loudness_zwicker.loudness_zwicker_nonlinear_decay import (
+from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_nonlinear_decay import (
     calc_nl_loudness,
 )
-from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
-from mosqito.functions.loudness_zwicker.loudness_zwicker_temporal_weighting import (
+from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_shared import (
+    calc_slopes,
+)
+from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwicker_temporal_weighting import (
     loudness_zwicker_temporal_weighting,
 )
 

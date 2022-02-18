@@ -11,7 +11,7 @@ import pytest
 from pandas import ExcelFile, read_excel
 
 # Local application imports
-from mosqito.functions.loudness_zwicker.comp_loudness import comp_loudness
+from mosqito.sq_metrics.loudness.loudness_zwst.comp_loudness import comp_loudness
 from mosqito.functions.shared.load import load
 from validations.loudness_zwicker.validation_loudness_zwicker_time import (
     check_compliance,

@@ -11,10 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Local application imports
-from mosqito.functions.loudness_zwicker.comp_loudness import comp_loudness
-from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import (
-    loudness_zwicker_stationary,
-)
+from mosqito.sq_metrics import loudness_zwst
 from mosqito.functions.shared.load import load
 
 

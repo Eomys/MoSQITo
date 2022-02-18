@@ -1,3 +1,6 @@
+from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst
+
+
 # Colors and linestyles
 COLORS = [
     "#69c3c5",
