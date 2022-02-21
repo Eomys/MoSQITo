@@ -12,7 +12,7 @@ import numpy as np
 from Leq_3oct import Leq_3oct
 from mosqito.functions.shared.load import load
 from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
-from mosqito.functions.shared.C_weighting import C_weighting
+from C_weighting import C_weighting
 
 def LCeq_3oct (spectrum_signal_samples,freq):
     """Calculate the LCeq of the frequency bands you choose, returns the calculated LCeq values for each band.
@@ -32,12 +32,25 @@ def LCeq_3oct (spectrum_signal_samples,freq):
     """
     # Empty list to keep the lists. Each list is the dBC values for each frequency band in a sample.
     signal_sample_C = []
-    # Take the lines of the array one by one and perform the function to transform the values in dB to dBC.
-    for i in range(spectrum_signal_samples.shape[0]):
+    print("--------------------Lo que entra------------------------------")
+    print(spectrum_signal_samples)
+    print("--------------------Lo que entra en el cWEighfhhcj------------------------------")
+    print(spectrum_signal_samples.T)
+    # Take the columns of the array one by one and perform the function to transform the values in dB to dBC.
+    for i in range(spectrum_signal_samples.shape[1]):
         # Save dBC values lists in the list "signal_sample_C".
         signal_sample_C.append(C_weighting(spectrum_signal_samples.T[i],freq))
-    # Create an array in which each list of "signal_sample_C" is a column of the array.
-    spectrum_signal_samples_C = np.array(signal_sample_C)
+    # Create an array in which each sample in dBC is a line of the array.
+    spectrum_signal_samples_C_T = np.array(signal_sample_C)
+    # You have to do the transpose of the matrix to be able to put each sample in a column
+    spectrum_signal_samples_C = np.transpose(spectrum_signal_samples_C_T)
+    print("--------------------spectrum_signal_traspuesta------------------------------")
+    print(spectrum_signal_samples_C_T)
+    print("-------------------Spectrum_signal_C_ENTRADA------------------------------")
+    print(spectrum_signal_samples_C)
+    print(spectrum_signal_samples_C.shape[0])
+    print(spectrum_signal_samples_C.shape[1])
+
     # Calculate Leq of each frequency bands with the new dBC values.
     LCeq_3oct = Leq_3oct(spectrum_signal_samples_C, freq)
 
@@ -46,7 +59,7 @@ def LCeq_3oct (spectrum_signal_samples,freq):
 
 if __name__ == "__main__":
     
-    sig, fs = load(True,r"Programas_y_repositorios\MoSQITo\tests\input\Test signal 3 (1 kHz 60 dB).wav", calib=1)
+    sig, fs = load(True,r"Programas_y_repositorios\MoSQITo\tests\input\1KHZ60DB.WAV", calib=1)
 
     spectrum_signal_samples = calc_third_octave_levels(sig,fs)[0]
     freq = np.array(calc_third_octave_levels(sig,fs)[1])

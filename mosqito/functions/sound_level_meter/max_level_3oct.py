@@ -38,14 +38,14 @@ def max_level_3oct(spectrum_signal_samples, freq):
         for j in range(spectrum_signal_samples.shape[1]):
             main_freq[j] = spectrum_signal_samples[i,j]
         # Calculate the maximum with the values.
-        max_level_3oct[i] = max(main_freq) 
+        max_level_3oct[i] = max(main_freq)
 
     return max_level_3oct
 
 
 if __name__ == "__main__":
     
-    sig, fs = load(True,r"Programas_y_repositorios\MoSQITo\tests\input\white_noise_200_2000_Hz_stationary.wav", calib=1)
+    sig, fs = load(True,r"Programas_y_repositorios\MoSQITo\tests\input\1KHZ60DB.WAV", calib=1)
 
     spectrum_signal_samples = calc_third_octave_levels(sig,fs)[0]
     freq = np.array(calc_third_octave_levels(sig,fs)[1])

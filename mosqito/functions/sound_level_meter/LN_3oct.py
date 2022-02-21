@@ -65,7 +65,7 @@ def LN_3oct(spectrum_signal_samples, freq):
 
 if __name__ == "__main__":
     
-    sig, fs = load(True, r"Programas_y_repositorios\MoSQITo\tests\input\Test signal 3 (1 kHz 60 dB).wav", calib=1)
+    sig, fs = load(True, r"Programas_y_repositorios\MoSQITo\tests\input\1KHZ60DB.WAV", calib=1)
 
     spectrum_signal_samples = calc_third_octave_levels(sig,fs)[0]
     freq = np.array(calc_third_octave_levels(sig,fs)[1])

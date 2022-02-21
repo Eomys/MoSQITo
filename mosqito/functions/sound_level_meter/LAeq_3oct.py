@@ -36,8 +36,10 @@ def LAeq_3oct (spectrum_signal_samples,freq):
     for i in range(spectrum_signal_samples.shape[1]):
         # Save dBA values lists in the list "signal_sample_A".
         signal_sample_A.append(A_weighting(spectrum_signal_samples.T[i],freq))
-    # Create an array in which each list of "signal_sample_A" is a column of the array. 
-    spectrum_signal_samples_A = np.array(signal_sample_A)
+   # Create an array in which each sample in dBA is a line of the array.
+    spectrum_signal_samples_A_T = np.array(signal_sample_A)
+    # You have to do the transpose of the array to be able to put each sample in a column
+    spectrum_signal_samples_A = np.transpose(spectrum_signal_samples_A_T)
     # Calculate Leq of each frequency bands with the new dBA values.
     LAeq_3oct = Leq_3oct(spectrum_signal_samples_A, freq)
     
@@ -46,10 +48,12 @@ def LAeq_3oct (spectrum_signal_samples,freq):
 
 if __name__ == "__main__":
     
-    sig, fs = load(True,r"Programas_y_repositorios\MoSQITo\tests\input\Test signal 3 (1 kHz 60 dB).wav", calib=1)
+    sig, fs = load(True,r"Programas_y_repositorios\MoSQITo\tests\input\1KHZ60DB.WAV", calib=1)
 
     spectrum_signal_samples = calc_third_octave_levels(sig,fs)[0]
     freq = np.array(calc_third_octave_levels(sig,fs)[1])
+    print(spectrum_signal_samples)
+    print(freq)
 
     LAeq = LAeq_3oct(spectrum_signal_samples,freq)
     print(LAeq)
