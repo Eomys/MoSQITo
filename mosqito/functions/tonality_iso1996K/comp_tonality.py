@@ -49,8 +49,8 @@ def comp_tonality(signal, fs):
         Lp.append(level)
 
     """-------BORRAR AL FINAL-------"""
-    print(fc)
-    print(Lp)
+    # print(fc)
+    # print(Lp)
     """-----------------------------"""
 
     # -- List where the indexes corresponding to the positions where there is
@@ -176,7 +176,7 @@ if __name__ == "__main__":
 
     # -- INCORRECTO --
     """----PRUEBA----"""
-    sig, fs = load(True, "tests\input\prueba.wav", calib=1)
+    sig, fs = load(True, "tests\input\MULTITONE.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
