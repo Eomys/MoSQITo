@@ -9,7 +9,7 @@ Created on Thu Sep 10 12:22:23 2020
 import numpy as np
 
 
-def comp_sharpness_aures(N, N_specific, is_stationary):
+def _comp_sharpness_aures(N, N_specific, is_stationary):
     """Sharpness calculation
 
     The code is based on W. Aures' equation to determine sharpness

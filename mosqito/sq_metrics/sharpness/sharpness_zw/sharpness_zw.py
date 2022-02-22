@@ -10,13 +10,19 @@ import numpy as np
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwst
-from mosqito.functions.sharpness.sharpness_aures import comp_sharpness_aures
-from mosqito.functions.sharpness.sharpness_din import comp_sharpness_din
-from mosqito.functions.sharpness.sharpness_bismarck import comp_sharpness_bismarck
-from mosqito.functions.sharpness.sharpness_fastl import comp_sharpness_fastl
+from mosqito.sq_metrics.sharpness.sharpness_zw._sharpness_aures import (
+    _comp_sharpness_aures,
+)
+from mosqito.sq_metrics.sharpness.sharpness_zw._sharpness_din import _comp_sharpness_din
+from mosqito.sq_metrics.sharpness.sharpness_zw._sharpness_bismarck import (
+    _comp_sharpness_bismarck,
+)
+from mosqito.sq_metrics.sharpness.sharpness_zw._sharpness_fastl import (
+    _comp_sharpness_fastl,
+)
 
 
-def comp_sharpness(is_stationary, signal, fs, method="din", skip=0):
+def sharpness_zw(is_stationary, signal, fs, method="din", skip=0):
     """Acoustic sharpness calculation according to different methods:
         Aures, Von Bismarck, DIN 45692, Fastl
 
@@ -51,16 +57,16 @@ def comp_sharpness(is_stationary, signal, fs, method="din", skip=0):
     N, N_specific, _ = loudness_zwst(signal, fs)
 
     if method == "din":
-        S = comp_sharpness_din(N, N_specific, is_stationary)
+        S = _comp_sharpness_din(N, N_specific, is_stationary)
 
     elif method == "aures":
-        S = comp_sharpness_aures(N, N_specific, is_stationary)
+        S = _comp_sharpness_aures(N, N_specific, is_stationary)
 
     elif method == "bismarck":
-        S = comp_sharpness_bismarck(N, N_specific, is_stationary)
+        S = _comp_sharpness_bismarck(N, N_specific, is_stationary)
 
     elif method == "fastl":
-        S = comp_sharpness_fastl(N, N_specific, is_stationary)
+        S = _comp_sharpness_fastl(N, N_specific, is_stationary)
 
     if is_stationary == False:
         # Cut transient effect
