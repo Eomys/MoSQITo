@@ -8,7 +8,7 @@ Created on Mon Nov  9 10:11:27 2020
 import numpy as np
 
 
-def a0tab(bark_axis):
+def _ear_filter_coeff(bark_axis):
     """Zwicker coefficient for the transmission between outer and inner ear
 
     See E. Zwicker, H. Fastl: Psychoacoustics. Springer,Berlin, Heidelberg, 1990.

@@ -8,7 +8,7 @@ Created on Fri Nov  6 10:29:02 2020
 import numpy as np
 
 
-def gzi_definition(center_freq):
+def _gzi_weighting(center_freq):
     """ Weighting function for the specific roughness given by Aures """
 
     gr_x = np.arange(0, 25, 1)

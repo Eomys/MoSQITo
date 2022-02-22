@@ -9,11 +9,11 @@ import pytest
 
 # Local application imports
 from mosqito.functions.shared.load import load
-from mosqito.functions.tonality_tnr_pr.comp_pr import comp_pr
+from mosqito.sq_metrics import prominence_ratio_ecma
 
 
 @pytest.mark.pr  # to skip or run PR test
-def test_pr():
+def test_pr_ecma():
     """Test function for the prominence ratio calculation of an audio signal
 
     Validation function for the Audio_signal class "comp_tnr" method with signal array
@@ -50,8 +50,10 @@ def test_pr():
         # Load signal
         audio, fs = load(signal[i]["data_file"])
         # Compute tone-to-noise ratio
-        pr = comp_pr(signal[i]["is_stationary"], audio, fs, prominence=True)
+        pr = prominence_ratio_ecma(
+            signal[i]["is_stationary"], audio, fs, prominence=True
+        )
 
 
 if __name__ == "__main__":
-    test_pr()
+    test_pr_ecma()

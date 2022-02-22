@@ -11,11 +11,11 @@ import pytest
 
 # Local application imports
 from mosqito.functions.shared.load import load
-from mosqito.functions.sharpness.comp_sharpness import comp_sharpness
+from mosqito.sq_metrics import sharpness_din
 
 
 @pytest.mark.sharpness_din  # to skip or run sharpness test
-def test_sharpness():
+def test_sharpness_din():
     """Test function for the sharpness calculation of an audio signal
 
     Test function for the function "comp_roughness" with 'din' method.
@@ -39,10 +39,9 @@ def test_sharpness():
     sig, fs = load(signal["data_file"], calib=1)
 
     # Compute sharpness
-    sharpness = comp_sharpness(True, sig, fs, method="din")
-    S = sharpness["values"]
+    sharpness = sharpness_din(True, sig, fs, method="din")
 
-    assert check_compliance(S, signal)
+    assert check_compliance(sharpness, signal)
 
 
 def check_compliance(S, signal):
@@ -79,4 +78,4 @@ def check_compliance(S, signal):
 
 # test de la fonction
 if __name__ == "__main__":
-    test_sharpness()
+    test_sharpness_din()
