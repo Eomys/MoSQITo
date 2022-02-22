@@ -14,7 +14,7 @@ from tests.roughness.signals_test_generation import signal_test
 
 
 @pytest.mark.roughness_dw  # to skip or run only Daniel and Weber roughness tests
-def test_roughness():
+def test_roughness_danielweber():
     """Test function for the roughness calculation of a audio signal
 
     Test function for the script "comp_roughness" method with signal array
@@ -79,4 +79,4 @@ def check_compliance(R):
 
 # test de la fonction
 if __name__ == "__main__":
-    test_roughness()
+    test_roughness_danielweber()
