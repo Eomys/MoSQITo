@@ -33,7 +33,7 @@ def test_sharpness():
     """
 
     # Input signal from DIN 45692_2009E
-    signal = {"data_file": "tests/input/1KHZ60DB.wav", "S": 1}
+    signal = {"data_file": r"tests\input\1KHZ60DB.wav", "S": 1}
 
     # Load signal
     sig, fs = load(signal["data_file"], calib=1)
