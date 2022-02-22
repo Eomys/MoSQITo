@@ -9,7 +9,7 @@ import numpy as np
 import math
 
 
-def H_function(n, fs):
+def _H_weighting(n, fs):
     """Weighting functions Hi definition for each 1-bark-wide interval i
 
     The code is based on the article "Psychoacoustical roughness:

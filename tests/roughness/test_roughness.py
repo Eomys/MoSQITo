@@ -9,7 +9,7 @@ Created on Mon Oct 19 13:41:37 2020
 import pytest
 
 # Local application imports
-from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness
+from mosqito.sq_metrics import roughness_danielweber
 from tests.roughness.signals_test_generation import signal_test
 
 
@@ -37,7 +37,7 @@ def test_roughness():
     stimulus = signal_test(fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=60)
 
     # Roughness calculation
-    R = comp_roughness(stimulus, fs=44100, overlap=0)
+    R = roughness_danielweber(stimulus, fs=44100, overlap=0)
 
     # Check compliance
     tst = check_compliance(R)

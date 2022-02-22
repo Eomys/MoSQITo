@@ -12,15 +12,17 @@ import math
 
 # Local imports
 from mosqito.functions.shared.LTQ import LTQ
-from mosqito.functions.roughness_danielweber.gzi_weighting_function import (
-    gzi_definition,
+from mosqito.sq_metrics.roughness.roughness_danielweber._gzi_weighting import (
+    _gzi_weighting,
 )
-from mosqito.functions.roughness_danielweber.H_weighting_function import H_function
-from mosqito.functions.roughness_danielweber.a0_zwicker import a0tab
+from mosqito.sq_metrics.roughness.roughness_danielweber._H_weighting import _H_weighting
+from mosqito.sq_metrics.roughness.roughness_danielweber._ear_filter_coeff import (
+    _ear_filter_coeff,
+)
 from mosqito.functions.shared.conversion import freq2bark, db2amp, amp2db, bark2freq
 
 
-def comp_roughness(signal, fs, overlap):
+def roughness_danielweber(signal, fs, overlap):
     """Roughness calculation of a signal sampled at 48kHz.
 
     The code is based on the algorithm described in "Psychoacoustical roughness:
@@ -46,7 +48,6 @@ def comp_roughness(signal, fs, overlap):
            time axis
 
     """
-    print("Roughness is being calculated")
 
     # -----------------------------------Stage 0------------------------------------
     # -------Creation of overlapping frames of 200 ms from the input signal---------
@@ -64,9 +65,9 @@ def comp_roughness(signal, fs, overlap):
     time = np.linspace(0, len(signal) / fs, num=nb_frame)
 
     # Initialization of the weighting functions H and g
-    hWeight = H_function(n, fs)
+    hWeight = _H_weighting(n, fs)
     # Aures modulation depth weighting function
-    gzi = gzi_definition(np.arange(1, 48, 1) / 2)
+    gzi = _gzi_weighting(np.arange(1, 48, 1) / 2)
 
     R = np.zeros((nb_frame))
     for i_frame in range(nb_frame):
@@ -90,7 +91,7 @@ def comp_roughness(signal, fs, overlap):
 
         # Calculate Zwicker a0 factor (transfer characteristic of the outer and inner ear)
         a0 = np.zeros((n))
-        a0[nZ - 1] = db2amp(a0tab(barks), ref=1)
+        a0[nZ - 1] = db2amp(_ear_filter_coeff(barks), ref=1)
         spectrum = a0 * spectrum
 
         # Conversion of the spectrum into dB
