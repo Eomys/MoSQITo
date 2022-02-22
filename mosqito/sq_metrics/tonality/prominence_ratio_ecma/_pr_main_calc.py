@@ -21,7 +21,7 @@ from mosqito.functions.tonality_tnr_pr.screening_for_tones import screening_for_
 from mosqito.functions.tonality_tnr_pr.find_highest_tone import find_highest_tone
 
 
-def pr_main_calc(signal, fs):
+def _pr_main_calc(signal, fs):
     """
         Calculation of the tone-to noise ratio according to the method described
         in ECMA 74, annex D.
