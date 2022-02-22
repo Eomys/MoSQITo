@@ -10,19 +10,21 @@ import numpy as np
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwst
-from mosqito.sq_metrics.sharpness.sharpness_zw._sharpness_aures import (
+from mosqito.sq_metrics.sharpness.sharpness_din._sharpness_aures import (
     _comp_sharpness_aures,
 )
-from mosqito.sq_metrics.sharpness.sharpness_zw._sharpness_din import _comp_sharpness_din
-from mosqito.sq_metrics.sharpness.sharpness_zw._sharpness_bismarck import (
+from mosqito.sq_metrics.sharpness.sharpness_din._sharpness_din import (
+    _comp_sharpness_din,
+)
+from mosqito.sq_metrics.sharpness.sharpness_din._sharpness_bismarck import (
     _comp_sharpness_bismarck,
 )
-from mosqito.sq_metrics.sharpness.sharpness_zw._sharpness_fastl import (
+from mosqito.sq_metrics.sharpness.sharpness_din._sharpness_fastl import (
     _comp_sharpness_fastl,
 )
 
 
-def sharpness_zw(is_stationary, signal, fs, method="din", skip=0):
+def sharpness_din(is_stationary, signal, fs, method="din", skip=0):
     """Acoustic sharpness calculation according to different methods:
         Aures, Von Bismarck, DIN 45692, Fastl
 
@@ -74,6 +76,4 @@ def sharpness_zw(is_stationary, signal, fs, method="din", skip=0):
         cut_index = np.argmin(np.abs(time - skip))
         S = S[cut_index:]
 
-    output = {"name": "sharpness", "method": method, "values": S, "skip": skip}
-
-    return output
+    return S
