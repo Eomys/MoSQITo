@@ -35,14 +35,14 @@ def test_pr_ecma():
     signal.append(
         {
             "is_stationary": True,
-            "data_file": r"tests\input\white_noise_442_1768_Hz_stationary.wav",
+            "data_file": "tests/input/white_noise_442_1768_Hz_stationary.wav",
         }
     )
 
     signal.append(
         {
             "is_stationary": False,
-            "data_file": r"tests\input\white_noise_442_1768_Hz_varying.wav",
+            "data_file": "tests/input/white_noise_442_1768_Hz_varying.wav",
         }
     )
 
