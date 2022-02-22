@@ -232,10 +232,4 @@ def roughness_danielweber(signal, fs, overlap):
 
         R[i_frame] = 0.25 * sum(R_spec)
 
-        output = {
-            "name": "Roughness",
-            "values": R,
-            "time": time,
-        }
-
-    return output
+    return R, time

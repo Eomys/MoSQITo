@@ -37,7 +37,12 @@ def test_roughness():
     stimulus = signal_test(fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=60)
 
     # Roughness calculation
-    R = roughness_danielweber(stimulus, fs=44100, overlap=0)
+    roughness, time = roughness_danielweber(stimulus, fs=44100, overlap=0)
+    R = {
+        "name": "Roughness",
+        "values": roughness,
+        "time": time,
+    }
 
     # Check compliance
     tst = check_compliance(R)
