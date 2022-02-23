@@ -211,7 +211,7 @@ def validation_sharpness(noise):
 
     for i in range(len(noise)):
         # Load signal
-        sig, fs = load(True, noise[i]["data_file"], calib=1)
+        sig, fs = load(noise[i]["data_file"], calib=1)
 
         # Compute sharpness
         S = comp_sharpness(True, sig, fs, method="din")

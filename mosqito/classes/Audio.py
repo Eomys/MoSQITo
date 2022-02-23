@@ -47,7 +47,6 @@ class Audio:
 
         # Import audio signal
         values, fs = load(
-            is_stationary,
             file,
             calib=calib,
             mat_signal=mat_signal,
