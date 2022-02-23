@@ -6,7 +6,7 @@ import pytest
 # Local application imports
 from mosqito.sq_metrics import loudness_zwtv
 from mosqito.utils.load import load
-from validations.loudness_zwicker.validation_loudness_zwicker_time import (
+from validations.sq_metrics.loudness_zwtv.validation_loudness_zwtv import (
     check_compliance,
 )
 

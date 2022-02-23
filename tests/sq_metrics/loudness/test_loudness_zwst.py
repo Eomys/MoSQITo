@@ -18,8 +18,8 @@ from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
     _calc_slopes,
 )
-from validations.loudness_zwicker.validation_loudness_zwicker_stationary import (
-    check_compliance,
+from validations.sq_metrics.loudness_zwst.validation_loudness_zwst import (
+    _check_compliance,
 )
 from tests.input.Test_signal_1 import test_signal_1
 
@@ -57,7 +57,7 @@ def test_loudness_zwicker_3oct():
     loudness = {"values": N, "specific values": N_specific}
     #
     # Asser complaiance
-    tst = check_compliance(loudness, target, "./tests/output/")
+    tst = _check_compliance(loudness, target, "./tests/output/")
     assert tst
 
 
@@ -99,7 +99,7 @@ def test_loudness_zwicker_wav():
     }
 
     # Check ISO 532-1 compliance
-    assert check_compliance(loudness, signal, "./tests/output/")
+    assert _check_compliance(loudness, signal, "./tests/output/")
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
@@ -128,7 +128,7 @@ def test_loudness_zwicker_44100Hz():
     }
 
     # Check ISO 532-1 compliance
-    assert check_compliance(loudness, signal, "./tests/output/")
+    assert _check_compliance(loudness, signal, "./tests/output/")
 
 
 # test de la fonction

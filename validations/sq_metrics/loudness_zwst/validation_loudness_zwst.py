@@ -13,9 +13,15 @@ import matplotlib.pyplot as plt
 # Local application imports
 from mosqito.sq_metrics import loudness_zwst
 from mosqito.utils.load import load
+from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
+    _main_loudness,
+)
+from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
+    _calc_slopes,
+)
 
 
-def validation_loudness_zwicker_3oct():
+def validation_loudness_zwst_3oct():
     """Test function for the script loudness_zwicker_stationary
 
     Test function for the script loudness_zwicker_stationary with
@@ -70,42 +76,48 @@ def validation_loudness_zwicker_3oct():
     signal = {
         "data_file": "Test signal 1.txt",
         "N": 83.296,
-        "N_specif_file": "./validations/loudness_zwicker/data/ISO_532-1/test_signal_1.csv",
+        "N_specif_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532-1/test_signal_1.csv",
     }
 
-    N, N_specific = loudness_zwicker_stationary(test_signal_1)
+    #
+    # Compute loudness
+    Nm = _main_loudness(test_signal_1, field_type="free")
+    N, N_specific = _calc_slopes(Nm)
     loudness = {"values": N, "specific values": N_specific}
-    _ = check_compliance(loudness, signal, "./validations/loudness_zwicker/output/")
+    _ = _check_compliance(
+        loudness, signal, "./validations/sq_metrics/loudness_zwst/output/"
+    )
 
-    # Test signal as input for stationary loudness
-    # (from ISO 532-1 annex B3)
 
+#
+# Test signal as input for stationary loudness
+#  # (from ISO 532-1 annex B3)
 
 signal = np.zeros((4), dtype=dict)
 
 signal[0] = {
-    "data_file": "./validations/loudness_zwicker/data/ISO_532-1/Test signal 2 (250 Hz 80 dB).wav",
+    "data_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532-1/Test signal 2 (250 Hz 80 dB).wav",
     "N": 14.655,
-    "N_specif_file": "./validations/loudness_zwicker/data/ISO_532-1/test_signal_2.csv",
+    "N_specif_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532-1/test_signal_2.csv",
 }
 signal[1] = {
-    "data_file": "./validations/loudness_zwicker/data/ISO_532-1/Test signal 3 (1 kHz 60 dB).wav",
+    "data_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532-1/Test signal 3 (1 kHz 60 dB).wav",
     "N": 4.019,
-    "N_specif_file": "./validations/loudness_zwicker/data/ISO_532-1/test_signal_3.csv",
+    "N_specif_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532-1/test_signal_3.csv",
 }
 signal[2] = {
-    "data_file": "./validations/loudness_zwicker/data/ISO_532-1/Test signal 4 (4 kHz 40 dB).wav",
+    "data_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532-1/Test signal 4 (4 kHz 40 dB).wav",
     "N": 1.549,
-    "N_specif_file": "./validations/loudness_zwicker/data/ISO_532-1/test_signal_4.csv",
+    "N_specif_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532-1/test_signal_4.csv",
 }
 signal[3] = {
-    "data_file": "./validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
+    "data_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
     "N": 10.498,
-    "N_specif_file": "./validations/loudness_zwicker/data/ISO_532-1/test_signal_5.csv",
+    "N_specif_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532-1/test_signal_5.csv",
 }
 
 
-def validation_loudness_zwicker_wav(signal):
+def validation_loudness_zwst(signal):
     """Test function for the script loudness_zwicker_stationary
 
     Test function for the script loudness_zwicker_stationary with
@@ -126,13 +138,21 @@ def validation_loudness_zwicker_wav(signal):
     sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
 
     # Compute Loudness
-    loudness = comp_loudness(True, sig, fs)
+    N, N_specific, bark_axis = loudness_zwst(sig, fs)
+    loudness = {
+        "name": "Loudness",
+        "values": N,
+        "specific values": N_specific,
+        "freqs": bark_axis,
+    }
 
     # Check ISO 532-1 compliance
-    _ = check_compliance(loudness, signal, "./validations/loudness_zwicker/output/")
+    _ = _check_compliance(
+        loudness, signal, "./validations/sq_metrics/loudness_zwst/output/"
+    )
 
 
-def check_compliance(loudness, iso_ref, out_dir):
+def _check_compliance(loudness, iso_ref, out_dir):
     """Check the compliance of loudness calc. to ISO 532-1
 
     Check the compliance of the input data N and N_specific
@@ -238,10 +258,7 @@ def check_compliance(loudness, iso_ref, out_dir):
     plt.title("N = " + str(N) + " sone (ISO ref. " + str(N_iso) + " sone)", color=clr)
     file_name = "_".join(iso_ref["data_file"].split(" "))
     plt.savefig(
-        out_dir
-        + "validation_loudness_zwicker_stationary_"
-        + file_name.split("/")[-1][:-4]
-        + ".png",
+        out_dir + "validation_loudness_zwst_" + file_name.split("/")[-1][:-4] + ".png",
         format="png",
     )
     plt.clf()
@@ -250,6 +267,6 @@ def check_compliance(loudness, iso_ref, out_dir):
 
 # test de la fonction
 if __name__ == "__main__":
-    validation_loudness_zwicker_3oct()
-    for i in range(4):
-        validation_loudness_zwicker_wav(signal[i])
+    validation_loudness_zwst_3oct()
+    for i in range(len(signal)):
+        validation_loudness_zwst(signal[i])
