@@ -1,5 +1,5 @@
 # MOSQITO Documentation
-## Loudness of stationary signals (Zwicker method)
+## Loudness: Zwicker method for stationary signals
 
 ### Introduction
 

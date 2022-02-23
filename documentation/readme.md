@@ -11,9 +11,9 @@ In this folder, you will find the documentation and validation of the different 
 
 ## Sound Quality metrics
 
-- [Loudness of stationary signals (Zwicker method)](./loudness_zwst.md)
-- [Loudness of time varying signals (Zwicker method)](./loudness-time-varying.md)
-- [Loudness of time varying signals (ECMA method)](./loudness-ecma.md)
-- [Sharpness of stationary and time-varying signals](./sharpness.md)
-- [Roughness of stationary and time-varying signals (Daniel and Weber method)](./roughness.md)
+- [Loudness according to Zwicker method for stationary signals](./loudness_zwst.md)
+- [Loudness: according to Zwicker method for time varying signals](./loudness-zwtv.md)
+- [Loudness according to ECMA standard (aka Hearing Model of Sottek)](./loudness-ecma.md)
+- [Sharpness according to DIN standard](./sharpness_din.md)
+- [Roughness (Daniel and Weber method)](./roughness_danielweber.md)
 - [Tone-to-noise ratio and Prominence ratio of stationary and time-varying signals](./tone-to-noise-prominence-ratio.md)
