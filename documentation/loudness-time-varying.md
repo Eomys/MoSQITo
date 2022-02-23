@@ -7,7 +7,7 @@ The acoustic loudness calculation according to Zwicker method was initially intr
 In MOSQITO, the code is based on the C++ program published with ISO 532-1:2017.
 
 ### Validation of the implementation
-The ISO 532-1:2017 standard provides a set of synthetic and technical signals covering representative applications to be used to validate any of its implementation. The standards also provides the compliance requirements. A step by step description of how to use MOSQITO to calculate the loudness and the specific loudness from a .wav file is given in [this tutorial](../tutorials/tuto_loudness.ipynb).
+The ISO 532-1:2017 standard provides a set of synthetic and technical signals covering representative applications to be used to validate any of its implementation. The standards also provides the compliance requirements. A step by step description of how to use MOSQITO to calculate the loudness and the specific loudness from a .wav file is given in [this tutorial](../tutorials/tuto_loudness_zwtv.ipynb).
 
 Annex B4 of the standard provides .wav files of synthetic signals to be used as input for time-varying loudness calculation. The plots below compare the MOSQITO loudness calculations for the test signal n°6 to the compliance requirements of the standards. MOSQITO implementation passes successfully the 8 tests from annex B4 (all compliance plots can be found in [this folder](../tests/loudness/output)). 
 
