@@ -11,7 +11,7 @@ In this folder, you will find the documentation and validation of the different 
 
 ## Sound Quality metrics
 
-- [Loudness of stationary signals (Zwicker method)](./loudness-stationary.md)
+- [Loudness of stationary signals (Zwicker method)](./loudness_zwst.md)
 - [Loudness of time varying signals (Zwicker method)](./loudness-time-varying.md)
 - [Loudness of time varying signals (ECMA method)](./loudness-ecma.md)
 - [Sharpness of stationary and time-varying signals](./sharpness.md)

@@ -2,7 +2,7 @@
 ## Loudness of time varying signals (Zwicker method)
 
 ### Introduction
-The acoustic loudness calculation according to Zwicker method was initially introduced for [steady signals](./loudness-stationary.md). It was extended to arbitrary non-stationary sounds as an appendix of DIN 45631 standard (DIN 45631/A1:2010). In 2017, this method is included in the revision of ISO 532 (as section 6 of part 1, dedicated to Zwicker method). Note that, for normative continuity, the method is still in accordance with ISO 226:1987 equal loudness contours (instead of newer ISO 226:2003 definition).
+The acoustic loudness calculation according to Zwicker method was initially introduced for [steady signals](./loudness_zwst.md). It was extended to arbitrary non-stationary sounds as an appendix of DIN 45631 standard (DIN 45631/A1:2010). In 2017, this method is included in the revision of ISO 532 (as section 6 of part 1, dedicated to Zwicker method). Note that, for normative continuity, the method is still in accordance with ISO 226:1987 equal loudness contours (instead of newer ISO 226:2003 definition).
 
 In MOSQITO, the code is based on the C++ program published with ISO 532-1:2017.
 
