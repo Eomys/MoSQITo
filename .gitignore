@@ -3,3 +3,4 @@ __pycache__/
 .vscode/
 .ipynb_checkpoints/
 tests/output
+/validations/sq_metrics/roughness_danielweber/roughness_implementations_comparison.png
