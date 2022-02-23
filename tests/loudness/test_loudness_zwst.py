@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import pytest
 
 # Local application imports
-from mosqito.functions.shared.load import load
+from mosqito.utils.load import load
 from mosqito.sq_metrics import loudness_zwst
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
     _main_loudness,

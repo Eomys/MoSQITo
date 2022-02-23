@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.functions.sharpness.comp_sharpness import comp_sharpness
-from mosqito.functions.shared.load import load
+from mosqito.utils.load import load
 
 # Signals and results from DIN 45692_2009E, chapter 6
 broadband = np.zeros((20), dtype=dict)

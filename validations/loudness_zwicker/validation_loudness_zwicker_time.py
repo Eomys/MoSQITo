@@ -13,7 +13,7 @@ from pandas import ExcelFile, read_excel
 
 # Local application imports
 from mosqito.sq_metrics import loudness_zwtv
-from mosqito.functions.shared.load import load
+from mosqito.utils.load import load
 
 
 # Test signals as input for time-varying loudness

@@ -11,7 +11,7 @@ from numpy.fft import fft, ifft
 import math
 
 # Local imports
-from mosqito.functions.shared.LTQ import LTQ
+from mosqito.utils.LTQ import LTQ
 from mosqito.sq_metrics.roughness.roughness_danielweber._gzi_weighting import (
     _gzi_weighting,
 )
@@ -19,7 +19,7 @@ from mosqito.sq_metrics.roughness.roughness_danielweber._H_weighting import _H_w
 from mosqito.sq_metrics.roughness.roughness_danielweber._ear_filter_coeff import (
     _ear_filter_coeff,
 )
-from mosqito.functions.shared.conversion import freq2bark, db2amp, amp2db, bark2freq
+from mosqito.utils.conversion import freq2bark, db2amp, amp2db, bark2freq
 
 
 def roughness_danielweber(signal, fs, overlap):

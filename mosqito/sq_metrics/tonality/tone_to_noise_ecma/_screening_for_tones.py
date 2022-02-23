@@ -8,7 +8,9 @@ Created on Wed Dec 16 20:23:01 2020
 import numpy as np
 
 # Mosqito functions import
-from mosqito.functions.shared.spectrum_smoothing import spectrum_smoothing
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._spectrum_smoothing import (
+    _spectrum_smoothing,
+)
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._LTH import _LTH
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import _critical_band
 
@@ -52,7 +54,7 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
     # Detection of the tonal candidates according to their level
 
     # Creation of the smoothed spectrum
-    smooth_spec = spectrum_smoothing(freqs, spec_db, 24, low_freq, high_freq, freqs)
+    smooth_spec = _spectrum_smoothing(freqs, spec_db, 24, low_freq, high_freq, freqs)
 
     if method == "smoothed":
 

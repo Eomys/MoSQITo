@@ -5,7 +5,7 @@ import pytest
 import numpy as np
 
 # Local application imports
-from mosqito.functions.shared.sine_wave_generator import (
+from mosqito.utils.sine_wave_generator import (
     sine_wave_generator,
 )
 from mosqito.sq_metrics import loudness_ecma

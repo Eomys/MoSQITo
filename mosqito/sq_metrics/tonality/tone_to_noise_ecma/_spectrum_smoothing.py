@@ -11,7 +11,7 @@ import numpy as np
 from mosqito.sound_level_meter.noct_spectrum.getFrequencies import getFrequencies
 
 
-def spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):
+def _spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):
     """
         Compute smoothed spectrum according to the n-th octave band chosen
 

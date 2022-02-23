@@ -3,7 +3,7 @@
 import matplotlib.pyplot as plt
 
 # Local application imports
-from mosqito.functions.shared.sine_wave_generator import (
+from mosqito.utils.sine_wave_generator import (
     sine_wave_generator,
 )
 from mosqito.sq_metrics.loudness.loudness_ecma._segmentation_blocks import (

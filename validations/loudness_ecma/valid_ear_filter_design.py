@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from mosqito.sq_metrics.loudness.loudness_ecma._ear_filter_design import (
     _ear_filter_design,
 )
-from mosqito.functions.shared.sine_wave_generator import (
+from mosqito.utils.sine_wave_generator import (
     sine_wave_generator,
 )
 

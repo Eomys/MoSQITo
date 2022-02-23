@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.sq_metrics import loudness_zwst
-from mosqito.functions.shared.load import load
+from mosqito.utils.load import load
 
 
 def validation_loudness_zwicker_3oct():

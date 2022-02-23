@@ -11,7 +11,7 @@ from numpy.fft import fft
 # from scipy.signal import welch, periodogram
 
 # Local functions imports
-from mosqito.functions.shared.conversion import amp2db
+from mosqito.utils.conversion import amp2db
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import (
     _critical_band,
     _lower_critical_band,

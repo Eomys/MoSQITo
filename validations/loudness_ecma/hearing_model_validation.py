@@ -9,7 +9,7 @@ from mosqito.sq_metrics.loudness.loudness_ecma.comp_loudness import comp_loudnes
 from mosqito.sq_metrics.loudness.utils.equal_loudness_contours import (
     equal_loudness_contours,
 )
-from mosqito.functions.shared.sine_wave_generator import (
+from mosqito.utils.sine_wave_generator import (
     sine_wave_generator,
 )
 

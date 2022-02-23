@@ -10,7 +10,7 @@ import numpy as np
 import pytest
 
 # Local application imports
-from mosqito.functions.shared.load import load
+from mosqito.utils.load import load
 from mosqito.sq_metrics import sharpness_din
 
 

@@ -9,7 +9,7 @@ import numpy as np
 from numpy.fft import fft
 
 # Local functions imports
-from mosqito.functions.shared.conversion import amp2db
+from mosqito.utils.conversion import amp2db
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import _critical_band
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._screening_for_tones import (
     _screening_for_tones,
