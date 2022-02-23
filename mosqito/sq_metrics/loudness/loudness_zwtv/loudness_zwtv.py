@@ -88,6 +88,7 @@ def loudness_zwtv(
     dec_factor = 4
     N = filt_loudness[::dec_factor]
     N_spec = spec_loudness[:, ::dec_factor]
+    time_axis = time_axis[::dec_factor]
     #
     # Build bark axis
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))

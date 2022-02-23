@@ -42,13 +42,18 @@ def test_loudness_zwtv():
     sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
-    N, N_spec, bark_axis, _ = loudness_zwtv(sig, fs, signal["field"])
+    N, N_spec, bark_axis, time_axis = loudness_zwtv(sig, fs, signal["field"])
     loudness = {
         "name": "Loudness",
         "values": N,
         "specific values": N_spec,
         "freqs": bark_axis,
     }
+
+    # Check axis dimensions
+    assert len(N) == len(time_axis)
+    assert N_spec.shape[1] == len(time_axis)
+    assert N_spec.shape[0] == len(bark_axis)
 
     # Check ISO 532-1 compliance
     assert _check_compliance(loudness, signal, "./tests/output/")
