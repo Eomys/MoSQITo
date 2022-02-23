@@ -5,15 +5,15 @@ The scope of the project is to implement the following first set of
 metrics:
 
 |                                                    | Reference                                            | Validated                                          | Available                                     | Under dev. | To do |
-|:-------------------------------------------------- |:---------------------------------------------------- |:--------------------------------------------------:|:---------------------------------------------:|:----------:|:-----:|
-| Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | [x](../validations/loudness_zwicker/output) | [x](./loudness-stationary.md)   |            |       |
-| Loudness for non-stationary<br>(Zwicker method)    | DIN 45631/A1:2010<br>ISO 532-1:2017 §6               | [x](../validations/loudness_zwicker/output) | [x](./loudness-time-varying.md) |            |       |
-| Loudness for non-stationary<br>(ECMA-74 method)    | ECMA-74:2019, annex F<br>Sottek, 2016               |  |  |     x       |       |
-| Roughness                                          | Daniel and Weber, 1997                               | [x](../validations/roughness_danielweber)   | [x](./roughness.md)             |            |       |
-| Roughness | ECMA-418-2:2020 | |                                               |            | x     |
-| Fluctuation Strength                               | To be defined                                        |                                                    |                                               |            | x     |
-| Sharpness                                          | DIN 45692:2009                                       | [x](../validations/sharpness/output)        | [x](./sharpness.md)             |            |       |
-| Tonality (Hearing model)                           | ECMA-74:2019 annex G                                 |                                                    |                                               | x          |       |
+|:-------------------------------------------------- |:---------------------------------------------------- |:-------------------------------------------:|:---------------------------------------------:|:----------:|:-----:|
+| Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | [x](./loudness-stationary.md)               | x |  |  |
+| Loudness for non-stationary<br>(Zwicker method)    | DIN 45631/A1:2010<br>ISO 532-1:2017 §6               | [x](./loudness-time-varying.md)             | x |  |  |
+| Loudness for non-stationary<br>(ECMA method)       | ECMA 418-2:2019 section 5<br>Sottek, 2016            | [x](./loudness-ecma.md)                     | x |  |  |
+| Roughness                                          | Daniel and Weber, 1997                               | [x](../validations/roughness_danielweber)   | x |  |  |
+| Roughness                                          | ECMA-418-2:2020                                      |                                             |  |  | x |
+| Fluctuation Strength                               | To be defined                                        |                                             |  |  | x |
+| Sharpness                                          | DIN 45692:2009                                       | [x](./sharpness.md)                         | x |  |  |
+| Tonality (Hearing model)                           | ECMA-74:2019 annex G                                 |                                             |  |   | x |
 
 As a second priority, the project could address the following metrics:
 
@@ -24,7 +24,8 @@ As a second priority, the project could address the following metrics:
 | Sharpness (using <br>Moore/Glasberg loudness)                                       | Hales-Swift<br>and Gee, 2017          |           |           |            | x     |
 | Tone-to-noise ratio / Prominence <br> ratio (occupational noise,<br>discrete tones) | ECMA-74:2019 annex D<br>ISO 7719:2018 |           | x         |            |       |
 | Tone-to-noise ratio<br>(environmental noise,<br>automatic tone detection)           | DIN 45681                             |           |           |            | x     |
-| Tone-to-noise ratio<br>(environmental noise)                                        | ISO 1996-2                            |           |           |            | x     |
+| Audibility of tone in noise <br>(Engineering method)                                | ISO 1996-2 annex J                    |           |           |             |   x   |
+| Audibility of tone in noise <br>(Survey method)                                     | ISO 1996-2 annex K                    |           |           |       x     |       |
 | Tone-to-noise ratio<br>(environmental noise)                                        | ANSI S1.13:2005                       |           |           |            | x     |
 
 

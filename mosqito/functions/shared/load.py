@@ -16,23 +16,23 @@ try:
 except ImportError:
     pyuff = None
 
-# Local import
-from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
 
-
-def load(is_stationary, file, calib=1, mat_signal="", mat_fs=""):
+def load(file, calib=1, mat_signal="", mat_fs=""):
     """Extract the signal and its time axis from .wav or .uff file,
     resample the signal to 48 kHz, and affects its sampling frequency
     and time signal values.
 
     Parameters
     ----------
-    is_stationary : boolean
-        TRUE if the signal is stationary, FALSE if it is time-varying
     file : string
         string path to the signal file
-    calib : float
-        calibration factor for the signal to be in [pa]
+    calib : float, optional
+        Amplification factor. Shall be equal to 1 if the imported signal
+        is already in Pascal [pa]. In some cases (while working with .wav
+        files, for instance) the original signal in Pa, of amplitude A, is
+        scaled to A/factor before being exported. When using the present
+        function with such file, the factor shall be defined as input parameter
+        (calib=factor) to be able to scale the signal back to Pascal.
     mat_signal : string
         in case of a .mat file, name of the signal variable
     mat_fs : string
@@ -94,99 +94,99 @@ def load(is_stationary, file, calib=1, mat_signal="", mat_fs=""):
     return signal, fs
 
 
-def load2oct3(is_stationary, file, calib=1):
-    """Load .wav signal and output its third-octave band spectrum
+# def load2oct3(is_stationary, file, calib=1):
+#     """Load .wav signal and output its third-octave band spectrum
 
-    Parameters
-    ----------
-    is_stationary: boolean
-        True if the signal is stationary, False if it is time-varying
-    file : string
-        full path to the signal file
-    calib : float
-        calibration factor for the signal to be in [pa]
-
-
-    Outputs
-    -------
-    spec : numpy.ndarray
-        Third octave band spectrum of signal sig [dB re.2e-5 Pa]
-    fpref : numpy.ndarray
-        Corresponding preferred third octave band center frequencies
-    """
-
-    # Load the signal from its file
-    signal, fs = load(is_stationary, file, calib)
-
-    # Compute third-octave spectrum
-    output = comp_third_spec(is_stationary, signal, fs)
-
-    return output
+#     Parameters
+#     ----------
+#     is_stationary: boolean
+#         True if the signal is stationary, False if it is time-varying
+#     file : string
+#         full path to the signal file
+#     calib : float
+#         calibration factor for the signal to be in [pa]
 
 
-def load2wav(
-    is_stationary, file, sampling_freq, calib=1, encodage=16, mat_signal="", mat_fs=""
-):
-    """Load .uff or .mat file and create the corresponding .wav audio file
+#     Outputs
+#     -------
+#     spec : numpy.ndarray
+#         Third octave band spectrum of signal sig [dB re.2e-5 Pa]
+#     fpref : numpy.ndarray
+#         Corresponding preferred third octave band center frequencies
+#     """
 
-    Parameters
-    ----------
-    is_stationary: boolean
-        True if the signal is stationary, False if it is time-varying
-    file : string
-        full path to the signal file
-    sampling_freq : integer
-        sampling frequency of the created .wav file
-    calib : float
-        calibration factor for the signal to be in [pa]
-    encodage : integer
-        encodage of the signal, 16 for np.int16, 32 for np.int32
-    mat_signal : string
-        in case of a .mat file, name of the signal variable
-    mat_fs : string
-        in case of a .mat file, name of the sampling frequency variable
-    Output
-    ------
-    None
-    """
+#     # Load the signal from its file
+#     signal, fs = load(is_stationary, file, calib)
 
-    # Load the .uff file content
-    if file[-3:].lower() == "uff" or file[-3:].lower() == "unv":
-        data = uff_load(file)
+#     # Compute third-octave spectrum
+#     output = comp_third_spec(is_stationary, signal, fs)
 
-        # extract the signal values
-        signal = data["data"]
+#     return output
 
-        # calculate the sampling frequency
-        fs = int(1 / data["abscissa_inc"])
 
-    # Load the .mat file content
-    elif file[-3:] == "mat":
-        matfile = loadmat(file)
+# def load2wav(
+#     is_stationary, file, sampling_freq, calib=1, encodage=16, mat_signal="", mat_fs=""
+# ):
+#     """Load .uff or .mat file and create the corresponding .wav audio file
 
-        # extract the signal values and sampling frequency
-        signal = matfile[mat_signal][:, 0]
-        fs = matfile[mat_fs]
-        fs = fs[:, 0]
+#     Parameters
+#     ----------
+#     is_stationary: boolean
+#         True if the signal is stationary, False if it is time-varying
+#     file : string
+#         full path to the signal file
+#     sampling_freq : integer
+#         sampling frequency of the created .wav file
+#     calib : float
+#         calibration factor for the signal to be in [pa]
+#     encodage : integer
+#         encodage of the signal, 16 for np.int16, 32 for np.int32
+#     mat_signal : string
+#         in case of a .mat file, name of the signal variable
+#     mat_fs : string
+#         in case of a .mat file, name of the sampling frequency variable
+#     Output
+#     ------
+#     None
+#     """
 
-    else:
-        raise ValueError("""ERROR: only .mat or .uff file are supported""")
+#     # Load the .uff file content
+#     if file[-3:].lower() == "uff" or file[-3:].lower() == "unv":
+#         data = uff_load(file)
 
-    # Resample
-    if fs != sampling_freq:
-        signal = resample(signal, sampling_freq * int(len(signal) / fs))
+#         # extract the signal values
+#         signal = data["data"]
 
-    # calibration factor for the signal to be in Pa
-    if encodage == 16:
-        signal = signal * (2 ** 15 - 1) / calib
-        signal = signal.astype(np.int16)
+#         # calculate the sampling frequency
+#         fs = int(1 / data["abscissa_inc"])
 
-    elif encodage == 32:
-        signal = signal * (2 ** 31 - 1) / calib
-        signal = signal.astype(np.int32)
-    # create the .wav file
-    newfile = file[:-3] + "wav"
-    wavfile.write(newfile, sampling_freq, signal)
+#     # Load the .mat file content
+#     elif file[-3:] == "mat":
+#         matfile = loadmat(file)
+
+#         # extract the signal values and sampling frequency
+#         signal = matfile[mat_signal][:, 0]
+#         fs = matfile[mat_fs]
+#         fs = fs[:, 0]
+
+#     else:
+#         raise ValueError("""ERROR: only .mat or .uff file are supported""")
+
+#     # Resample
+#     if fs != sampling_freq:
+#         signal = resample(signal, sampling_freq * int(len(signal) / fs))
+
+#     # calibration factor for the signal to be in Pa
+#     if encodage == 16:
+#         signal = signal * (2 ** 15 - 1) / calib
+#         signal = signal.astype(np.int16)
+
+#     elif encodage == 32:
+#         signal = signal * (2 ** 31 - 1) / calib
+#         signal = signal.astype(np.int32)
+#     # create the .wav file
+#     newfile = file[:-3] + "wav"
+#     wavfile.write(newfile, sampling_freq, signal)
 
 
 def uff_load(file):

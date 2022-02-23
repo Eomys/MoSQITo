@@ -37,7 +37,6 @@ def import_signal(self, is_stationary, file, calib=1, mat_signal="", mat_fs=""):
 
     # Import audio signal
     values, fs = load(
-        is_stationary,
         file,
         calib=calib,
         mat_signal=mat_signal,
