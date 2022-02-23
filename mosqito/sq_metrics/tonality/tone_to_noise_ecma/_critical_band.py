@@ -7,7 +7,7 @@ Created on Fri Dec 11 09:04:04 2020
 import numpy as np
 
 
-def critical_band(f0):
+def _critical_band(f0):
     """Analytical definition of the critical band centered on f0
     according to ECMA-74 annex D.8"""
 
@@ -24,12 +24,12 @@ def critical_band(f0):
     return f1, f2
 
 
-def lower_critical_band(f0):
+def _lower_critical_band(f0):
     """Analytical definition of the critical band immediately below and contiguous
     with the critical band centered on f0 according to ECMA-74 annex D.10
     """
 
-    f2, _ = critical_band(f0)
+    f2, _ = _critical_band(f0)
 
     if f0 < 171.4:
         c0 = 20
@@ -49,12 +49,12 @@ def lower_critical_band(f0):
     return f1, f2
 
 
-def upper_critical_band(f0):
+def _upper_critical_band(f0):
     """Analytical definition of the critical band immediately above and contiguous
     with the critical band centered on f0 according to ECMA-74 annex D.10
     """
 
-    _, f1 = critical_band(f0)
+    _, f1 = _critical_band(f0)
 
     if f0 <= 1600:
         c0 = 149.5

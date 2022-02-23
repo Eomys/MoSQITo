@@ -7,7 +7,7 @@ Created on Thu Dec 10 16:54:02 2020
 import numpy as np
 
 
-def LTH(freqs):
+def _LTH(freqs):
     """Definition of the lower threshold of hearing according to
     ECMA-74 annex D.7.1"""
 

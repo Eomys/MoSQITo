@@ -10,13 +10,19 @@ from numpy.fft import fft
 
 # Local functions imports
 from mosqito.functions.shared.conversion import amp2db
-from mosqito.functions.tonality_tnr_pr.critical_band import critical_band
-from mosqito.functions.tonality_tnr_pr.screening_for_tones import screening_for_tones
-from mosqito.functions.tonality_tnr_pr.find_highest_tone import find_highest_tone
-from mosqito.functions.tonality_tnr_pr.peak_level import spectrum_peak_level
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import _critical_band
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._screening_for_tones import (
+    _screening_for_tones,
+)
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._find_highest_tone import (
+    _find_highest_tone,
+)
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._peak_level import (
+    _peak_level,
+)
 
 
-def tnr_main_calc(signal, fs):
+def _tnr_main_calc(signal, fs):
     """
         Calculation of the tone-to noise ratio according to the method described
         in ECMA 74, annex D.
@@ -65,7 +71,7 @@ def tnr_main_calc(signal, fs):
 
     #### Screening to find the potential tonal components ########################
 
-    peak_index = screening_for_tones(freqs, spec_db, "smoothed", 90, 11200)
+    peak_index = _screening_for_tones(freqs, spec_db, "smoothed", 90, 11200)
     nb_tones = len(peak_index)
 
     #### Evaluation of each candidate ############################################
@@ -79,7 +85,7 @@ def tnr_main_calc(signal, fs):
     while nb_tones > 0:
         ind = peak_index[0]
         if len(peak_index) > 1:
-            ind_p, ind_s, peak_index, nb_tones = find_highest_tone(
+            ind_p, ind_s, peak_index, nb_tones = _find_highest_tone(
                 freqs, spec_db, peak_index, nb_tones, ind
             )
         else:
@@ -96,13 +102,13 @@ def tnr_main_calc(signal, fs):
             if np.abs(fs - fp) < delta_f:
 
                 # tone SPL
-                Lp = spectrum_peak_level(freqs, spec_db, ind_p)
-                Ls = spectrum_peak_level(freqs, spec_db, ind_s)
+                Lp = _peak_level(freqs, spec_db, ind_p)
+                Ls = _peak_level(freqs, spec_db, ind_s)
 
                 Lt = 10 * np.log10(((10 ** (Lp / 10) + 10 ** (Ls / 10))))
 
                 # total SPL in the critical band
-                f1, f2 = critical_band(fp)
+                f1, f2 = _critical_band(fp)
                 low_limit_idx = np.argmin(np.abs(freqs - f1))
                 high_limit_idx = np.argmin(np.abs(freqs - f2))
 
@@ -122,7 +128,7 @@ def tnr_main_calc(signal, fs):
                 Lt = spec_db[ind_p]
 
                 # total SPL in the critical band
-                f1, f2 = critical_band(freqs[ind_p])
+                f1, f2 = _critical_band(freqs[ind_p])
                 low_limit_idx = np.argmin(np.abs(freqs - f1))
                 high_limit_idx = np.argmin(np.abs(freqs - f2))
 
@@ -134,10 +140,10 @@ def tnr_main_calc(signal, fs):
         # single tone in a critical band
         else:
             # tone SPL
-            Lt = spectrum_peak_level(freqs, spec_db, ind_p)
+            Lt = _peak_level(freqs, spec_db, ind_p)
 
             # total SPL in the critical band
-            f1, f2 = critical_band(freqs[ind_p])
+            f1, f2 = _critical_band(freqs[ind_p])
             low_limit_idx = np.argmin(np.abs(freqs - f1))
             high_limit_idx = np.argmin(np.abs(freqs - f2))
 

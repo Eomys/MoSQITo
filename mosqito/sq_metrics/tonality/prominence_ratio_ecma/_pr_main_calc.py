@@ -12,13 +12,17 @@ from numpy.fft import fft
 
 # Local functions imports
 from mosqito.functions.shared.conversion import amp2db
-from mosqito.functions.tonality_tnr_pr.critical_band import (
-    critical_band,
-    lower_critical_band,
-    upper_critical_band,
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import (
+    _critical_band,
+    _lower_critical_band,
+    _upper_critical_band,
 )
-from mosqito.functions.tonality_tnr_pr.screening_for_tones import screening_for_tones
-from mosqito.functions.tonality_tnr_pr.find_highest_tone import find_highest_tone
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._screening_for_tones import (
+    _screening_for_tones,
+)
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._find_highest_tone import (
+    _find_highest_tone,
+)
 
 
 def _pr_main_calc(signal, fs):
@@ -70,7 +74,7 @@ def _pr_main_calc(signal, fs):
 
     #### Screening to find the potential tonal components ########################
 
-    peak_index = screening_for_tones(freqs, spec_db, "smoothed", 90, 11200)
+    peak_index = _screening_for_tones(freqs, spec_db, "smoothed", 90, 11200)
     nb_tones = len(peak_index)
 
     #### Evaluation of each candidate ############################################
@@ -85,14 +89,14 @@ def _pr_main_calc(signal, fs):
 
         # Find the highest tone in the critical band
         if len(peak_index) > 1:
-            ind, _, peak_index, nb_tones = find_highest_tone(
+            ind, _, peak_index, nb_tones = _find_highest_tone(
                 freqs, spec_db, peak_index, nb_tones, ind
             )
 
         ft = freqs[ind]
 
         # Level of the middle critical band
-        f1, f2 = critical_band(ft)
+        f1, f2 = _critical_band(ft)
         low_limit_idx = np.argmin(np.abs(freqs - f1))
         high_limit_idx = np.argmin(np.abs(freqs - f2))
 
@@ -103,7 +107,7 @@ def _pr_main_calc(signal, fs):
             Lm = 0
 
         # Level of the lower critical band
-        f1, f2 = lower_critical_band(ft)
+        f1, f2 = _lower_critical_band(ft)
         low_limit = np.argmin(np.abs(freqs - f1))
         high_limit = np.argmin(np.abs(freqs - f2))
 
@@ -116,7 +120,7 @@ def _pr_main_calc(signal, fs):
         delta_f = f2 - f1
 
         # Level of the upper critical band
-        f1, f2 = upper_critical_band(ft)
+        f1, f2 = _upper_critical_band(ft)
         low_limit = np.argmin(np.abs(freqs - f1))
         high_limit = np.argmin(np.abs(freqs - f2))
 

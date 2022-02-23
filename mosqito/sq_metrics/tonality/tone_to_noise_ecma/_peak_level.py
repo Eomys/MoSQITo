@@ -8,7 +8,7 @@ Created on Tue Dec 22 10:26:48 2020
 import numpy as np
 
 
-def spectrum_peak_level(freqs, spec, peak_index):
+def _peak_level(freqs, spec, peak_index):
     """
         Correct the level of the peak present at peak_index
 

@@ -9,11 +9,11 @@ import numpy as np
 
 # Mosqito functions import
 from mosqito.functions.shared.spectrum_smoothing import spectrum_smoothing
-from mosqito.functions.tonality_tnr_pr.LTH import LTH
-from mosqito.functions.tonality_tnr_pr.critical_band import critical_band
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._LTH import _LTH
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import _critical_band
 
 
-def screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
+def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
     """
         Screening function to find the tonal candidates in a spectrum
 
@@ -65,7 +65,7 @@ def screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         indexx = np.where(spec_db[maxima] > smooth_spec[maxima] + 6)[0]
 
         # Criteria 3 : the level of the spectral line exceeds the threshold of hearing
-        threshold = LTH(freqs)
+        threshold = _LTH(freqs)
         audible = np.where(spec_db[maxima][indexx] > threshold[maxima][indexx] + 10)[0]
 
         index = np.arange(0, len(spec_db))[maxima][indexx][audible]
@@ -89,7 +89,7 @@ def screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         )[0]
 
         # Criteria 3 : the level of the spectral line exceeds the threshold of hearing
-        threshold = LTH(freqs)
+        threshold = _LTH(freqs)
         audible = np.where(spec_db[maxima][indexx] > threshold[maxima][indexx] + 10)[0]
 
         index = np.arange(0, len(spec_db))[maxima][indexx][audible]
@@ -130,7 +130,7 @@ def screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
             temp -= 1
 
         # Critical bandwidth
-        f1, f2 = critical_band(freqs[peak_index])
+        f1, f2 = _critical_band(freqs[peak_index])
         cb_width = f2 - f1
 
         # Tonal width

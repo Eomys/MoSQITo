@@ -8,10 +8,10 @@ Created on Wed Dec 16 20:23:01 2020
 import numpy as np
 
 # Mosqito functions import
-from mosqito.functions.tonality_tnr_pr.critical_band import critical_band
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import _critical_band
 
 
-def find_highest_tone(freqs, spec_db, index, nb_tones, ind):
+def _find_highest_tone(freqs, spec_db, index, nb_tones, ind):
     """
 
     Method to find the two highest tones in a given spectrum from a given index
@@ -44,7 +44,7 @@ def find_highest_tone(freqs, spec_db, index, nb_tones, ind):
 
     f = freqs[ind]
     # critical band centered on f
-    f1, f2 = critical_band(f)
+    f1, f2 = _critical_band(f)
     low_limit_idx = np.argmin(np.abs(freqs - f1))
     high_limit_idx = np.argmin(np.abs(freqs - f2))
 
@@ -67,7 +67,7 @@ def find_highest_tone(freqs, spec_db, index, nb_tones, ind):
 
         if ind_p != ind:
             # screening to find the highest value in the critical band centered on fp
-            ind_p, ind_s, index, nb_tones = find_highest_tone(
+            ind_p, ind_s, index, nb_tones = _find_highest_tone(
                 freqs, spec_db, index, nb_tones, ind_p
             )
 
