@@ -5,9 +5,9 @@ import pytest
 
 # Local application imports
 from mosqito.sq_metrics import loudness_zwtv
-from mosqito.utils.load import load
+from mosqito.utils import load
 from validations.sq_metrics.loudness_zwtv.validation_loudness_zwtv import (
-    check_compliance,
+    _check_compliance,
 )
 
 
@@ -39,7 +39,7 @@ def test_loudness_zwtv():
     }
 
     # Load signal and compute third octave band spectrum
-    sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
+    sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
     N, N_spec, bark_axis, _ = loudness_zwtv(sig, fs, signal["field"])
@@ -51,7 +51,7 @@ def test_loudness_zwtv():
     }
 
     # Check ISO 532-1 compliance
-    assert check_compliance(loudness, signal, "./tests/output/")
+    assert _check_compliance(loudness, signal, "./tests/output/")
 
 
 # test de la fonction

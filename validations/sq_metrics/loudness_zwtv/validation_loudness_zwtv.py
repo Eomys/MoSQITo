@@ -10,10 +10,11 @@ Created on Mon Dec 14 15:16:38 2020
 import numpy as np
 import matplotlib.pyplot as plt
 from pandas import ExcelFile, read_excel
+import warnings
 
 # Local application imports
 from mosqito.sq_metrics import loudness_zwtv
-from mosqito.utils.load import load
+from mosqito.utils import load
 
 
 # Test signals as input for time-varying loudness
@@ -186,7 +187,7 @@ def validation_loudness_zwtv(signal):
     """
 
     # Load signal and compute third octave band spectrum
-    sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
+    sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
     N, N_spec, bark_axis, _ = loudness_zwtv(sig, fs, signal["field"])
@@ -243,6 +244,9 @@ def _check_compliance(loudness, signal, out_dir):
     # Extract mosqito results
     N = loudness["values"]
     N_specific = loudness["specific values"]
+
+    # To avoid warning about excel file conditional formating
+    warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
 
     # Load ISO reference outputs
     xls_file = ExcelFile(signal["xls"])

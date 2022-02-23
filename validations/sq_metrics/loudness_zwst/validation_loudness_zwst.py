@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.sq_metrics import loudness_zwst
-from mosqito.utils.load import load
+from mosqito.utils import load
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
     _main_loudness,
 )
@@ -135,7 +135,7 @@ def validation_loudness_zwst(signal):
     """
 
     # Load signal and compute third octave band spectrum
-    sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
+    sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
     N, N_specific, bark_axis = loudness_zwst(sig, fs)

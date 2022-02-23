@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.sq_metrics import sharpness_din
-from mosqito.utils.load import load
+from mosqito.utils import load
 
 # Signals and results from DIN 45692_2009E, chapter 6
 broadband = np.zeros((20), dtype=dict)
@@ -211,7 +211,7 @@ def validation_sharpness_din(noise):
 
     for i in range(len(noise)):
         # Load signal
-        sig, fs = load(noise[i]["data_file"], calib=1)
+        sig, fs = load(noise[i]["data_file"], wav_calib=1)
 
         # Compute sharpness
         S = sharpness_din(True, sig, fs, method="din")

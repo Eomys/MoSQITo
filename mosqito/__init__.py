@@ -1,3 +1,6 @@
+from mosqito.sound_level_meter.noct_spectrum.comp_noct_spectrum import (
+    comp_noct_spectrum,
+)
 from mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma import loudness_ecma
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst
 from mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv import loudness_zwtv
@@ -15,6 +18,7 @@ from mosqito.sq_metrics.roughness.roughness_danielweber.roughness_danielweber im
 )
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din import sharpness_din
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon
+from mosqito.utils.load import load
 
 # Colors and linestyles
 COLORS = [

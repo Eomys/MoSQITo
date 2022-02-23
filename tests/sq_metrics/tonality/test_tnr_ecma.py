@@ -8,7 +8,7 @@ Created on Mon Feb  8 10:39:49 2021
 import pytest
 
 # Local application imports
-from mosqito.utils.load import load
+from mosqito.utils import load
 from mosqito.sq_metrics import (
     tone_to_noise_ecma,
 )

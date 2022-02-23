@@ -10,7 +10,7 @@ import numpy as np
 import pytest
 
 # Local application imports
-from mosqito.utils.load import load
+from mosqito.utils import load
 from mosqito.sq_metrics import sharpness_din
 
 
@@ -36,7 +36,7 @@ def test_sharpness_din():
     signal = {"data_file": "tests/input/1KHZ60DB.wav", "S": 1}
 
     # Load signal
-    sig, fs = load(signal["data_file"], calib=1)
+    sig, fs = load(signal["data_file"], wav_calib=1)
 
     # Compute sharpness
     sharpness = sharpness_din(True, sig, fs, method="din")

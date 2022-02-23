@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import pytest
 
 # Local application imports
-from mosqito.utils.load import load
+from mosqito.utils import load
 from mosqito.sq_metrics import loudness_zwst
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
     _main_loudness,
@@ -87,7 +87,7 @@ def test_loudness_zwicker_wav():
     }
 
     # Load signal and compute third octave band spectrum
-    sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
+    sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
     N, N_specific, bark_axis = loudness_zwst(sig, fs)
@@ -116,7 +116,7 @@ def test_loudness_zwicker_44100Hz():
     }
 
     # Load signal and compute third octave band spectrum
-    sig, fs = load(signal["data_file"], calib=2 * 2 ** 0.5)
+    sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
     N, N_specific, bark_axis = loudness_zwst(sig, fs)
