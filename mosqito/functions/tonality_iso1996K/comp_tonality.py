@@ -5,7 +5,7 @@
 """
 
 # Local imports
-from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
+from mosqito.functions.loudness_zwicker.calc_third_octave_levels import calc_third_octave_levels
 from mosqito.functions.shared.load import load
 
 
@@ -29,7 +29,10 @@ def comp_tonality(signal, fs):
 
     # -- we obtain the data of the Lp in thirds of octave of the signal of which
     # -- we want to know the prominent tones
-    third_spec = comp_third_spec(is_stationary=True, signal=signal, fs=fs)
+    third_spec = calc_third_octave_levels(signal=signal, fs=fs)
+""" a partir de aqui debo depurar y comprobar las nuevas salidas de la nueva funcion que calcula
+    el espectro en tercios de octava"""
+    print(third_spec)
 
     # -- Obtain the lists of the central frequencies and the average Lp
     freqs = third_spec["freqs"]
