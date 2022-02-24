@@ -104,8 +104,10 @@ def A_weighting(spectrum, freq_axis):
 
     A_pond = np.interp(freq_axis, freq_standard, A_standard)
 
-    spectrum_dBA = np.zeros(spectrum.shape)
-    for i in range(spectrum.shape[0]):
-        spectrum_dBA[i] = spectrum[i] + A_pond[i]
+#    spectrum_dBA = np.zeros(spectrum.shape)
+#    for i in range(spectrum.shape[0]):
+#        spectrum_dBA[i] = spectrum[i] + A_pond[i]
+    #Alternative for this calculation without using for next loop.
+    new_spectrum_dBA=spectrum + (np.ones(spectrum.shape).T*A_pond).T
 
     return spectrum_dBA
