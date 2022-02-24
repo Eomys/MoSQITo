@@ -1,9 +1,9 @@
 # MOSQITO Documentation
-## Tone-to-noise ratio (TNR) and Prominence ratio (PR) according to ECMA 74
+## Tone-to-noise ratio (TNR) and Prominence ratio (PR) according to ECMA 418-1
 
 ### Introduction
 
-The acoustic tonality metrics calculation was introduced in the ECMA 74. The calculation is based upon the comparison between the level of each tonal candidate and the  level of the surrounding spectrum. 
+The acoustic tonality metrics calculation was introduced in the ECMA 418-1. The calculation is based upon the comparison between the level of each tonal candidate and the  level of the surrounding spectrum. 
 
 The detection of the tonal candidates is not included in the ECMA 74. Two different methods have been added to detect the potential tonal components:
  - the method by Sottek using a smoothed spectrum,

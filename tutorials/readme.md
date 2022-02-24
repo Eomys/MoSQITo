@@ -12,6 +12,6 @@ In this folder, you will find the tutorials explaining how to use the different 
 
 - [Tutorial](./tuto_loudness_zwst.ipynb): How to compute **loudness (Zwicker method for stationary signals)**
 - [Tutorial](./tuto_loudness_zwtv.ipynb): How to compute **loudness (Zwicker method for time_varying signals)**
-- [Tutorial](./tuto_sharpness.ipynb): How to compute **sharpness**
-- [Tutorial](./tuto_roughness.ipynb): How to compute **roughness**
+- [Tutorial](./tuto_sharpness_din.ipynb): How to compute **sharpness**
+- [Tutorial](./tuto_roughness_danielweber.ipynb): How to compute **roughness**
 - [Tutorial](./tuto_TNR_PR.ipynb): How to compute **tonality** (work in progress)
