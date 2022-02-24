@@ -5,7 +5,7 @@
 """
 
 # Local imports
-from mosqito.functions.loudness_zwicker.calc_third_octave_levels import calc_third_octave_levels
+from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
 from mosqito.functions.shared.load import load
 
 
@@ -29,10 +29,8 @@ def comp_tonality(signal, fs):
 
     # -- we obtain the data of the Lp in thirds of octave of the signal of which
     # -- we want to know the prominent tones
-    third_spec = calc_third_octave_levels(signal=signal, fs=fs)
-""" a partir de aqui debo depurar y comprobar las nuevas salidas de la nueva funcion que calcula
-    el espectro en tercios de octava"""
-    print(third_spec)
+    third_spec = comp_third_spec(is_stationary=True, signal=signal, fs=fs)
+
 
     # -- Obtain the lists of the central frequencies and the average Lp
     freqs = third_spec["freqs"]
@@ -131,7 +129,7 @@ if __name__ == "__main__":
 
     # -- CORRECTO --
     """----PRUEBA--TONO--100-Hz----"""
-    sig, fs = load(True, "tests\input\TONE100HZ.wav", calib=1)
+    sig, fs = load("tests\input\TONE100HZ.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -139,7 +137,7 @@ if __name__ == "__main__":
 
     # -- CORRECTO --
     """----PRUEBA--TONO--200-Hz----"""
-    sig, fs = load(True, "tests\input\TONE200HZ.wav", calib=1)
+    sig, fs = load("tests\input\TONE200HZ.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -147,7 +145,7 @@ if __name__ == "__main__":
 
     # -- CORRECTO --
     """----PRUEBA--TONO--1-KHz----"""
-    sig, fs = load(True, "tests/input/1KHZ60DB.WAV", calib=1)
+    sig, fs = load("tests/input/1KHZ60DB.WAV", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -155,7 +153,7 @@ if __name__ == "__main__":
 
     # -- CORRECTO --
     """----PRUEBA--TONO--2-KHz----"""
-    sig, fs = load(True, "tests\input\TONE2000HZ.wav", calib=1)
+    sig, fs = load("tests\input\TONE2000HZ.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -163,7 +161,7 @@ if __name__ == "__main__":
 
     # -- CORRECTO --
     """----PRUEBA--TONO--4-KHz----"""
-    sig, fs = load(True, "tests\input\TONE4000HZ.wav", calib=1)
+    sig, fs = load("tests\input\TONE4000HZ.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -171,7 +169,7 @@ if __name__ == "__main__":
 
     # -- CORRECTO --
     """----PRUEBA--TONO--5000-Hz----"""
-    sig, fs = load(True, "tests\input\TONE5000HZ.wav", calib=1)
+    sig, fs = load("tests\input\TONE5000HZ.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -179,7 +177,7 @@ if __name__ == "__main__":
 
     # -- INCORRECTO --
     """----PRUEBA----"""
-    sig, fs = load(True, "tests\input\MULTITONE.wav", calib=1)
+    sig, fs = load("tests\input\ALARM.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
