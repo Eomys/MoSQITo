@@ -82,8 +82,21 @@ def load(file, calib=1, mat_signal="", mat_fs=""):
         fs = matfile[mat_fs]
         fs = fs[:, 0]
 
+    # load the .txt file content
+    elif file[-3:] == "txt":
+        # extract the values
+        data = np.loadtxt(file)
+        signal = data[:,1]
+        time = data[:,0]
+
+        # calibration for for the signal to be in Pa
+        signal = signal * calib
+        
+        # calculate sampling frequency
+        fs = 1/(time[1]-time[0])
+
     else:
-        raise ValueError("""ERROR: only .wav .mat or .uff files are supported""")
+        raise ValueError("""ERROR: only .wav .mat .uff or .txt files are supported""")
 
     # resample to 48kHz to allow calculation
     if fs != 48000:
