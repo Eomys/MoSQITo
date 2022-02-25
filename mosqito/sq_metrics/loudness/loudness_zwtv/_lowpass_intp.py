@@ -7,6 +7,8 @@
 # Standard library imports
 import math
 import numpy as np
+#Needed for the loudness_zwicker_lowpass_intp_ea function
+from scipy import signal
 
 
 def _lowpass_intp(loudness, tau, sample_rate):
@@ -36,16 +38,24 @@ def _lowpass_intp(loudness, tau, sample_rate):
     b0 = 1 - a1
     y1 = 0
 
-    for i in range(num_samples):
-        x0 = loudness[i]
-        y1 = b0 * x0 + a1 * y1
-        filt_loudness[i] = y1
+    delta = np.copy(loudness)
+    delta = np.roll(delta,-1)
+    delta [-1] = 0
+    delta = (delta - loudness) /  lp_iter
+    ui_delta = np.zeros(loudness.shape[0]*lp_iter).reshape(loudness.shape[0],lp_iter)
+    ui_delta [:,0] = loudness  
+    
+    #Create the array complete of deltas to apply the filter.
+    for i_in in np.arange(1, lp_iter):
+        ui_delta [:,i_in] = delta + ui_delta [:,i_in-1]  
+    
+    # Rechape into a vector.
+    ui_delta = ui_delta.reshape(lp_iter*num_samples)
 
-        # Linear interpolation steps between current and next sample
-        if i < num_samples - 1:
-            xd = (loudness[i + 1] - x0) / lp_iter
-            # Inner iterations/interpolation
-            for ii in range(lp_iter):
-                x0 += xd
-                y1 = b0 * x0 + a1 * y1
+    # Apply the filter.
+    ui_delta = signal.lfilter([b0], [1,-a1], ui_delta, axis=- 1, zi=None)
+    
+    # Reshape again to recover the first col.
+    ui_delta = ui_delta.reshape(loudness.shape[0],lp_iter)
+    filt_loudness = ui_delta[:,0]
     return filt_loudness
