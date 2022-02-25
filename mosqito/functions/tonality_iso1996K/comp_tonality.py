@@ -10,14 +10,14 @@ from mosqito.functions.noct_spectrum.comp_noct_spectrum import comp_noct_spectru
 from mosqito.functions.shared.load import load
 
 
-def comp_tonality(signal, fs):
+def comp_tonality(sig, fs):
     """
     <Function to obtain the prominent tones of a given signal
     according to the procedure described in ISO 1996-2 Annex K.>
 
     Parameters
     ----------
-    signal : numpy.array
+    sig : numpy.array
         time signal values
     fs : integer
         sampling frequency
@@ -36,7 +36,7 @@ def comp_tonality(signal, fs):
     # -- we obtain the data of the Lp in thirds of octave of the signal of which
     # -- we want to know the prominent tones
     # third_spec = comp_third_spec(is_stationary=True, signal=signal, fs=fs)
-    third_spec = comp_noct_spectrum(sig=signal, fs=fs, fmin=fmin, fmax=fmax)
+    third_spec = comp_noct_spectrum(sig=sig, fs=fs, fmin=fmin, fmax=fmax)
 
     #-- Returns a tuple with two arrays, one with the levels of each third octave band 
     #-- and the other with the center frequencies of each band.
@@ -46,23 +46,9 @@ def comp_tonality(signal, fs):
     # -- Obtain the lists of the central frequencies and the average Lp
     fc = third_spec[1].tolist()
     print(fc, type(fc), len(fc))
-    
+
     Lp = third_spec[0].tolist()
     print(Lp, type(Lp), len(Lp))
-
-    # -- list of center frequencies
-    #fc = freqs.tolist()
-
-    # -- list of the average Lp corresponding to each third octave band
-    #Lp_mean = values.tolist()
-
-    # -- Lp_mean is a list of lists, we create
-    # -- a single list with the data of each list.
-    #Lp = []
-    #for i in range(0, len(Lp_mean)):
-    #    level = Lp_mean[i][0]
-    #    Lp.append(level)
-
 
     # -- List where the indexes corresponding to the positions where there is
     # -- a prominent tone will be stored.
@@ -94,10 +80,10 @@ def comp_tonality(signal, fs):
         Lp_diff_post = Lp_central - Lp_post
 
         """----------BORRAR AL FINAL-----------"""
-        # print("++++++++++++++++++")
-        # print(Lp_diff_prev)
-        # print(Lp_diff_post)
-        # print("++++++++++++++++++")
+        print("++++++++++++++++++")
+        print(Lp_diff_prev)
+        print(Lp_diff_post)
+        print("++++++++++++++++++")
         """------------------------------------"""
 
         # -- if the value of the difference is constant with respect to the bands below and above
@@ -139,56 +125,8 @@ def comp_tonality(signal, fs):
 if __name__ == "__main__":
 
     # -- CORRECTO --
-    """----PRUEBA--TONO--100-Hz----"""
-    sig, fs = load("tests\input\TONE100HZ.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA--TONO--200-Hz----"""
-    sig, fs = load("tests\input\TONE200HZ.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
     """----PRUEBA--TONO--1-KHz----"""
     sig, fs = load("tests/input/1KHZ60DB.WAV", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA--TONO--2-KHz----"""
-    sig, fs = load("tests\input\TONE2000HZ.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA--TONO--4-KHz----"""
-    sig, fs = load("tests\input\TONE4000HZ.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA--TONO--5000-Hz----"""
-    sig, fs = load("tests\input\TONE5000HZ.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- INCORRECTO --
-    """----PRUEBA----"""
-    sig, fs = load("tests\input\MULTITONE_ALARM.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
