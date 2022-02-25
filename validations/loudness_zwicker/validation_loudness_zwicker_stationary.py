@@ -176,7 +176,6 @@ def check_compliance(loudness, iso_ref, out_dir):
     # Extract mosqito calculated values
     N = loudness["values"]
     N_specific = loudness["specific values"]
-
     # Test for ISO 532-1 comformance (section 5.1)
     tst_N = (
         N >= N_iso * 0.95

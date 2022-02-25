@@ -26,7 +26,7 @@ def calc_nl_loudness(core_loudness):
     """
     # Initialization
     sample_rate = 2000
-    nl_loudness = core_loudness.copy()
+    nl_loudness = np.copy(core_loudness)
     # Factor for virtual upsampling/inner iterations
     nl_iter = 24
     # Time constants for non_linear temporal decay
@@ -51,70 +51,67 @@ def calc_nl_loudness(core_loudness):
         math.exp(-delta_t / t_var),
     ]
     nl_lp = {"B": B}
+    #nl_lp["uo_last"] = 0
+    #nl_lp["u2_last"] = 0
 
-    for i_cl in np.arange(np.shape(nl_loudness)[0]):
-        # At beginning capacitors C1 and C2 are discharged
-        nl_lp["uo_last"] = 0
-        nl_lp["u2_last"] = 0
+    delta = np.copy(core_loudness,)
+    delta = np.roll(delta,-1,axis=1)
+    delta [:,-1] = 0
+    delta =  (delta - nl_loudness)/nl_iter
+    ui_delta = np.zeros(core_loudness.size*nl_iter).reshape(core_loudness.shape[0],core_loudness.shape[1],nl_iter)
+    ui_delta [:,:,0] = core_loudness
+    
+    for i_in in np.arange(1, nl_iter ): #
+        ui_delta [:,:,i_in] =  ui_delta [:,:,i_in-1] +delta #
+    
+    ui_delta = ui_delta.reshape(core_loudness.shape[0],core_loudness.shape[1]*nl_iter)
+    uo_mat = np.copy(ui_delta,)
+    # create u2_mat (equivalent to u2 last) and fill the first col.
+    u2_mat = np.zeros(uo_mat.shape[0]*uo_mat.shape[1]).reshape(uo_mat.shape[0],uo_mat.shape[1])
+    mask = core_loudness[:,0]>=1e-5
+    u2_mat[mask,0] = core_loudness[mask,0]*(1- nl_lp["B"][5])
+    
+    '''
+    Truth Table for u2 & uo
+    u2 = nl_lp["uo_last"] * nl_lp["B"][0] - nl_lp["u2_last"] * nl_lp["B"][1]
+    u2' = (nl_lp["u2_last"] - ui) * nl_lp["B"][5] + ui
+    ui < uo(j-1) | uo(j-1) > u2(j-1) | uo < ui  |u2 > uo  |uo' < ui  |abs(ui -  uo(j-1)) < 1e-5 | ui > u2(j-1) | uo                                      |  u2
+    ---------------------------------------------------------------
+        Truth           Truth           Truth      Truth       --             --                                 ui                                       ui
+        Truth           Truth           False      Truth       --             --                                 uo=f(uo(j-1),u2(j-1),B(2),B(3))          uo=f(uo(j-1),u2(j-1),B(2),B(3))
+        Truth           Truth           Truth      False       --             --                                 ui                                       u2=f(uo(j-1),u2(j-1),B(0),B(1))
+        Truth           Truth           False      False       --             --                                 uo=f(uo(j-1),u2(j-1),B(2),B(3))          u2=f(uo(j-1),u2(j-1),B(0),B(1))
+        Truth           False                                  Truth                                             ui                                       ui
+        Truth           False                                  False                                             uo=f(uo(j-1),B(4)                        uo=f(uo(j-1),B(4) 
+        False                                                                Truth                  Truth        ui                                       u2=f(u2(j-1),B(5),ui(j)
+        False                                                                Truth                  False        ui                                       ui
+        False                                                                False                  Truth        ui                                       u2=f(u2(j-1),B(5),ui(j)
+        False                                                                False                  False        ui                                       u2=f(u2(j-1),B(5),ui(j)
+ 
+    '''
+    for col in np.arange(core_loudness.shape[1]*nl_iter):
+        uo2 = uo_mat[:,col-1] * nl_lp["B"][2] - u2_mat[:,col-1] * nl_lp["B"][3]
+        mask = np.logical_and( uo_mat[:,col-1] > u2_mat[:,col-1] , uo2   >= ui_delta[:,col])
+        uo_mat [mask,col] = uo2[mask]  # in case uo higher than ui
 
-        for i_time in np.arange(np.shape(nl_loudness)[1] - 1):
-            # interpolation steps between current and next sample
-            delta = (
-                nl_loudness[i_cl, i_time + 1] - nl_loudness[i_cl, i_time]
-            ) / nl_iter
-            ui = nl_loudness[i_cl, i_time]
-            nl_lp = calc_nl_lp(ui, nl_lp)
-            nl_loudness[i_cl, i_time] = nl_lp["uo_last"]
-            ui += delta
+        uo2 = uo_mat[:,col-1] * nl_lp["B"][4] 
+        mask = np.logical_and( uo_mat[:,col-1] <= u2_mat[:,col-1] , uo2 >= ui_delta[:,col])
+        uo_mat [mask,col] = uo2[mask]  # in case uo_2 higher than ui
+       
+        u2_mat [:,col] = uo_mat [:,col]  # higher than uo
+        u22 = uo_mat[:,col-1] * nl_lp["B"][0] - u2_mat[:,col-1] * nl_lp["B"][1]
+        mask = np.logical_and(np.logical_and(ui_delta[:,col] < uo_mat[:,col-1] , uo_mat[:,col-1] > u2_mat[:,col-1]) , u22 <= uo_mat[:,col])
+        u2_mat [mask,col] = u22[mask]  #in case u22 lower than uo_last
 
-            # inner iterations
-            for i_in in np.arange(1, nl_iter):
-                nl_lp = calc_nl_lp(ui, nl_lp)
-                ui += delta
-        nl_lp = calc_nl_lp(nl_loudness[i_cl, i_time + 1], nl_lp)
-        nl_loudness[i_cl, i_time + 1] = nl_lp["uo_last"]
+        
+        u2_2 = (u2_mat [: , col-1] - ui_delta [: , col]) * nl_lp["B"][5] +  ui_delta[:,col]
+        mask = np.logical_and(   ui_delta [: , col] >= uo_mat [: , col-1]  , np.logical_not( np.logical_and( abs( ui_delta [: , col] - uo_mat [: , col-1]) < 1e-5 ,  uo_mat [: , col] <= u2_mat [:,col-1])))
+        u2_mat [mask,col] = u2_2[mask]  # lower than ui
+          
+    
+    
+    nl_loudness = uo_mat.reshape(core_loudness.shape[0],core_loudness.shape[1],nl_iter)[:,:,0]
+    uo_mat = uo_mat.reshape(core_loudness.shape[0],core_loudness.shape[1]*nl_iter)
+
     return nl_loudness
 
-
-def calc_nl_lp(ui, nl_lp):
-    """Calculates Uo(t) from Ui(t) using UoLast and U2Last
-
-    Parameters
-    ----------
-    ui : float
-        TODO: description cf. standard
-    nl_lp : dict
-        Parameters for non_linear temporal decay
-    Outputs
-    -------
-    nl_lp : dict
-        Updated parameters for non_linear temporal decay
-    """
-    if ui < nl_lp["uo_last"]:  # case 1 (discharge)
-        if nl_lp["uo_last"] > nl_lp["u2_last"]:  # case 1.1
-            u2 = nl_lp["uo_last"] * nl_lp["B"][0] - nl_lp["u2_last"] * nl_lp["B"][1]
-            uo = nl_lp["uo_last"] * nl_lp["B"][2] - nl_lp["u2_last"] * nl_lp["B"][3]
-            if uo < ui:  # uo can't become
-                uo = ui  # lower than ui
-            if u2 > uo:  # u2 can't become
-                u2 = uo  # higher than uo
-        else:  # case 1.2
-            uo = nl_lp["uo_last"] * nl_lp["B"][4]
-            if uo < ui:  # uo can't become
-                uo = ui  # lower than ui
-            u2 = uo
-    else:
-        if abs(ui - nl_lp["uo_last"]) < 1e-5:  # case 2 (charge)
-            uo = ui
-            if uo > nl_lp["u2_last"]:  # case 2.1
-                u2 = (nl_lp["u2_last"] - ui) * nl_lp["B"][5] + ui
-            else:  # case 2.2
-                u2 = ui
-        else:
-            uo = ui
-            u2 = (nl_lp["u2_last"] - ui) * nl_lp["B"][5] + ui
-    # Preparation for next step
-    nl_lp["uo_last"] = uo
-    nl_lp["u2_last"] = u2
-
-    return nl_lp

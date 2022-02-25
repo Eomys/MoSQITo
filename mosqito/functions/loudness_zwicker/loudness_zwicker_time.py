@@ -9,7 +9,7 @@ import numpy as np
 
 # Local applications imports
 from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import (
-    calc_main_loudness_ea as calc_main_loudness,
+    calc_main_loudness as calc_main_loudness,
 )
 from mosqito.functions.loudness_zwicker.loudness_zwicker_nonlinear_decay import (
     calc_nl_loudness,
@@ -61,13 +61,8 @@ def loudness_zwicker_time(third_octave_levels, field_type):
     core_loudness = calc_nl_loudness(core_loudness)
     #
     # Calculation of specific loudness
-    loudness = np.zeros(np.shape(core_loudness)[1])
-    spec_loudness = np.zeros((240, np.shape(core_loudness)[1]))
-    for i_time in np.arange(np.shape(core_loudness)[1]):
-        loudness[i_time], spec_loudness[:, i_time] = calc_slopes(
-            core_loudness[:, i_time]
-        )
-    #
+    loudness, spec_loudness  = calc_slopes(core_loudness)
+
     # temporal weigthing
     filt_loudness = loudness_zwicker_temporal_weighting(loudness)
     #

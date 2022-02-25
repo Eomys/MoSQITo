@@ -41,7 +41,6 @@ def test_sharpness():
     # Compute sharpness
     sharpness = comp_sharpness(True, sig, fs, method="din")
     S = sharpness["values"]
-
     assert check_compliance(S, signal)
 
 
