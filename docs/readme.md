@@ -8,12 +8,13 @@ In this folder, you will find the documentation and validation of the different 
 
 - [Scope of the project](./scope.md)
 - [Architecture of the toolbox](./architecture.md)
+- [How to contribute to MOSQITO](./contributing.md)
 
 ## Sound Quality metrics
 
 - [Loudness according to Zwicker method for stationary signals](./loudness_zwst.md)
-- [Loudness: according to Zwicker method for time varying signals](./loudness-zwtv.md)
-- [Loudness according to ECMA standard (aka Hearing Model of Sottek)](./loudness-ecma.md)
+- [Loudness: according to Zwicker method for time varying signals](./loudness_zwtv.md)
+- [Loudness according to ECMA standard (aka Hearing Model of Sottek)](./loudness_ecma.md)
 - [Sharpness according to DIN standard](./sharpness_din.md)
 - [Roughness (Daniel and Weber method)](./roughness_danielweber.md)
 - [Tone-to-noise ratio and Prominence ratio of stationary and time-varying signals](./tone-to-noise-prominence-ratio.md)
