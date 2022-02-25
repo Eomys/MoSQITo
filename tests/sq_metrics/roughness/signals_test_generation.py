@@ -71,9 +71,9 @@ def wav_test(fc, fmod, mdepth, fs, d, dB, folder):
         path of the folder where to store the file
     """
 
-    values = test_signal(fc, fmod, mdepth, fs, d, dB)
+    values = signal_test(fc, fmod, mdepth, fs, d, dB)
     values = values / (2 * 2 ** 0.5)
     values = values.astype(np.int16)
     write(
-        folder + "\Test_signal_fc" + str(fc) + "_fmod" + str(fmod) + ".wav", fs, values
+        folder + "/Test_signal_fc" + str(fc) + "_fmod" + str(fmod) + ".wav", fs, values
     )

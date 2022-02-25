@@ -11,6 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pandas import ExcelFile, read_excel
 import warnings
+import time
 
 # Local application imports
 from mosqito.sq_metrics import loudness_zwtv
@@ -190,7 +191,11 @@ def validation_loudness_zwtv(signal):
     sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
+    start = time.time()
     N, N_spec, bark_axis, _ = loudness_zwtv(sig, fs, signal["field"])
+    elapsed = time.time()
+    elapsed = (elapsed - start) * 1000.0
+    print("Time spent for " + signal["tab"] + " is: {:.2f}".format(elapsed))
     loudness = {
         "name": "Loudness",
         "values": N,

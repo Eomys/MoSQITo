@@ -9,7 +9,7 @@ import numpy as np
 
 # Local applications imports
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
-    _main_loudness_ea as _main_loudness,
+    _main_loudness,
 )
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
     _calc_slopes,
