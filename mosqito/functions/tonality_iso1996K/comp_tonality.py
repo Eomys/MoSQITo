@@ -5,7 +5,8 @@
 """
 
 # Local imports
-from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec
+#from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec <-- Borrar al final
+from mosqito.functions.noct_spectrum.comp_noct_spectrum import comp_noct_spectrum
 from mosqito.functions.shared.load import load
 
 
@@ -26,33 +27,42 @@ def comp_tonality(signal, fs):
     prominent_tones: dictionary
         dictionary with {fc:Lp} pairs where prominent tones are detected.
     """
+    #-- As the tonality is studied for the audible frequency range, 
+    #-- we set the minimum and maximum frequencies at 20 Hz and 20 kHz.
+    fmin = 25
+    fmax = 20000
+
 
     # -- we obtain the data of the Lp in thirds of octave of the signal of which
     # -- we want to know the prominent tones
-    third_spec = comp_third_spec(is_stationary=True, signal=signal, fs=fs)
+    # third_spec = comp_third_spec(is_stationary=True, signal=signal, fs=fs)
+    third_spec = comp_noct_spectrum(sig=signal, fs=fs, fmin=fmin, fmax=fmax)
 
+    #-- Returns a tuple with two arrays, one with the levels of each third octave band 
+    #-- and the other with the center frequencies of each band.
+    #-- Convert tuple to list for further processing
+    third_spec = list(third_spec)
 
     # -- Obtain the lists of the central frequencies and the average Lp
-    freqs = third_spec["freqs"]
-    values = third_spec["values"]
+    fc = third_spec[1].tolist()
+    print(fc, type(fc), len(fc))
+    
+    Lp = third_spec[0].tolist()
+    print(Lp, type(Lp), len(Lp))
 
     # -- list of center frequencies
-    fc = freqs.tolist()
+    #fc = freqs.tolist()
 
     # -- list of the average Lp corresponding to each third octave band
-    Lp_mean = values.tolist()
+    #Lp_mean = values.tolist()
 
     # -- Lp_mean is a list of lists, we create
     # -- a single list with the data of each list.
-    Lp = []
-    for i in range(0, len(Lp_mean)):
-        level = Lp_mean[i][0]
-        Lp.append(level)
+    #Lp = []
+    #for i in range(0, len(Lp_mean)):
+    #    level = Lp_mean[i][0]
+    #    Lp.append(level)
 
-    """-------BORRAR AL FINAL-------"""
-    # print(fc)
-    # print(Lp)
-    """-----------------------------"""
 
     # -- List where the indexes corresponding to the positions where there is
     # -- a prominent tone will be stored.
@@ -60,6 +70,7 @@ def comp_tonality(signal, fs):
 
     # -- length of the lists
     idx = len(fc) - 1
+    print(idx)
 
     # -- level differences depending on the frequency range to determine if there
     # -- is a prominent pitch.
@@ -177,7 +188,7 @@ if __name__ == "__main__":
 
     # -- INCORRECTO --
     """----PRUEBA----"""
-    sig, fs = load("tests\input\ALARM.wav", calib=1)
+    sig, fs = load("tests\input\MULTITONE_ALARM.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
