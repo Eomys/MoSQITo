@@ -8,28 +8,19 @@
 import numpy as np
 
 # Local applications imports
-from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
-    _main_loudness_ea as _main_loudness,
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import (
+    calc_main_loudness as calc_main_loudness,
 )
-from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
-    _calc_slopes,
+from mosqito.functions.loudness_zwicker.loudness_zwicker_nonlinear_decay import (
+    calc_nl_loudness,
 )
-from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import (
-    _third_octave_levels,
-)
-from mosqito.sq_metrics.loudness.loudness_zwtv._nonlinear_decay import (
-    _nl_loudness,
-)
-from mosqito.sq_metrics.loudness.loudness_zwtv._temporal_weighting import (
-    _temporal_weighting,
+from mosqito.functions.loudness_zwicker.loudness_zwicker_shared import calc_slopes
+from mosqito.functions.loudness_zwicker.loudness_zwicker_temporal_weighting import (
+    loudness_zwicker_temporal_weighting,
 )
 
 
-def loudness_zwtv(
-    signal,
-    fs,
-    field_type,
-):
+def loudness_zwicker_time(third_octave_levels, field_type):
     """Calculate Zwicker-loudness for time-varying signals
 
     Calculate the acoustic loudness according to Zwicker method for
@@ -45,10 +36,9 @@ def loudness_zwtv(
 
     Parameters
     ----------
-    signal : numpy.array
-        time signal values [Pa]
-    fs : integer
-        sampling frequency
+    third_octave_levels : numpy.ndarray
+        rms acoustic pressure [Pa] per third octave versus time
+        (temporal resolution = 0.5ms)
     field_type : str
         Type of soundfield corresponding to signal ("free" by
         default or "diffuse")
@@ -63,33 +53,21 @@ def loudness_zwtv(
         Corresponding bark axis
     """
 
-    # Compute third octave band spectrum vs. time
-    spec_third, time_axis, _ = _third_octave_levels(signal, fs)
-
     # Calculate core loudness (vectorized version)
-    core_loudness = _main_loudness(spec_third, field_type)
+    core_loudness = calc_main_loudness(third_octave_levels, field_type)
 
     #
     # Nonlinearity
-    core_loudness = _nl_loudness(core_loudness)
+    core_loudness = calc_nl_loudness(core_loudness)
     #
     # Calculation of specific loudness
-    loudness = np.zeros(np.shape(core_loudness)[1])
-    spec_loudness = np.zeros((240, np.shape(core_loudness)[1]))
-    for i_time in np.arange(np.shape(core_loudness)[1]):
-        loudness[i_time], spec_loudness[:, i_time] = _calc_slopes(
-            core_loudness[:, i_time]
-        )
-    #
+    loudness, spec_loudness  = calc_slopes(core_loudness)
+
     # temporal weigthing
-    filt_loudness = _temporal_weighting(loudness)
+    filt_loudness = loudness_zwicker_temporal_weighting(loudness)
     #
     # Decimation from temporal resolution 0.5 ms to 2ms and return
     dec_factor = 4
     N = filt_loudness[::dec_factor]
     N_spec = spec_loudness[:, ::dec_factor]
-    time_axis = time_axis[::dec_factor]
-    #
-    # Build bark axis
-    bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
-    return N, N_spec, bark_axis, time_axis
+    return N, N_spec
