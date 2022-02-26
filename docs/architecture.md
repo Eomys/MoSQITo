@@ -1,14 +1,20 @@
 # MOSQITO Documentation
-## Architecture of the toolbox
+## Architecture of MOSQITO
 
-From the point of view of the user, MOSQITO can be used in two way. 
+### From a user point of view
+All the functions available in MOSQITO can imported via the command:
+```python
+import mosqito
+```
 
-### MOSQITO as a function library 
-All functions available in MOSQITO are listed in [mosqito/functions](../mosqito/functions). Each folder corresponds to one specific function. Each function can be called by the main script comp_xxx contained the folders. 
+To import only a specific module like the sound quality metrics, the following command can be used:
+```python
+import mosqito.sq_metrics
+```
 
-As far as the SQ metrics are concerned, the main script takes as input argument the time signal (as numpy ndarray) and some computation parameter. It returns a dictionary with the calculated metrics.
+The code of all the functions available in MOSQITO is accessible in the [mosqitox](../mosqito) folder, sorted by module. Each subfolder containes one main function that is intended to be called by the user. The subfunctions are identified by a trailing underscore. Each main function is accompanied by a documentation (in the [docs](.) folder) and a tutorial (in the [tutorials](../tutorials) folder). For example, the function to compute the acoustic loudness according to the Zwicker method for stationary signals is called [loudness_zwst](../mosqito/sq_metrics/loudness/loudness_zwst/loudness_zwst.py) and can be found in the [mosqito/sq_metrics/loudness/loudness_zwst](../mosqito/sq_metrics/loudness/loudness_zwst/) folder. Its documentation is avalable in the [docs/loudness_zwst.md](../docs/loudness_zwst.md) file and
 
-Most of the plot functions are volontarily excluded from the function library. The objective is to focus on the functions related to sound quality and make them available for integration in other applications. 
+
 
 ### MOSQITO as a standalone SQ tool
 For the users that would like to use MOSQITO independently, a scripting interface to the functions mentionned above is proposed. This interface mainly relies on [SciDataTool](https://github.com/Eomys/SciDataTool), an open-source Python package for scientific data handling. Its objective is to provide a user-friendly, unified, flexible module to postprocess any kind of signal.
