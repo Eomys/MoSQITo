@@ -11,6 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pandas import ExcelFile, read_excel
 import warnings
+import time
 
 # Local application imports
 from mosqito.sq_metrics import loudness_zwtv
@@ -190,7 +191,14 @@ def validation_loudness_zwtv(signal):
     sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
+
+    start = time.time()
     N, N_spec, bark_axis, _ = loudness_zwtv(sig, fs, signal["field"])
+    end = time.time()
+    print("[Info] " + signal["tab"] +
+          " loudness_zwtv computation: {:2.2f} s".format(end - start)
+          )
+
     loudness = {
         "name": "Loudness",
         "values": N,
@@ -325,7 +333,8 @@ def _check_compliance(loudness, signal, out_dir):
             # Data to plot
             Ni = [N, N_specific[i_bark, :]]
             Ni_ref = [N_iso, N_specif_iso]
-            Ni_label = ["Loudness", "Specific loudness at " + str(bark) + " Bark"]
+            Ni_label = ["Loudness",
+                        "Specific loudness at " + str(bark) + " Bark"]
         else:
             #
             # Data to plot
@@ -359,8 +368,10 @@ def _check_compliance(loudness, signal, out_dir):
                 )
             #
             # Check compliance
-            comp_10 = np.array([comp[0, i] and comp[3, i] for i in np.arange(N.size)])
-            comp_5 = np.array([comp[1, i] and comp[2, i] for i in np.arange(N.size)])
+            comp_10 = np.array([comp[0, i] and comp[3, i]
+                                for i in np.arange(N.size)])
+            comp_5 = np.array([comp[1, i] and comp[2, i]
+                               for i in np.arange(N.size)])
             ind_10 = np.nonzero(comp_10 == 0)[0]
             ind_5 = np.nonzero(comp_5 == 0)[0]
             if ind_5.size == 0:
