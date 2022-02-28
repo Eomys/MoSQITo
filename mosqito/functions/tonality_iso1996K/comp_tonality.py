@@ -28,6 +28,8 @@ def comp_tonality(sig, fs):
     prominent_tones: dictionary
         dictionary with {fc:Lp} pairs where prominent tones are detected.
     """
+
+
     #-- As the tonality is studied for the audible frequency range, 
     #-- we set the minimum and maximum frequencies at 25 Hz and 20 kHz.
     fmin = 25
@@ -138,7 +140,7 @@ if __name__ == "__main__":
 
     # -- CORRECTO --
     """----PRUEBA--TONO--1-KHz----"""
-    sig, fs = load("tests/input/1KHZ60DB.WAV", calib=1)
+    sig, fs = load("tests/input/TONE1000HZ.WAV", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -161,7 +163,7 @@ if __name__ == "__main__":
     print("---------------")
 
     # -- CORRECTO --
-    """----PRUEBA--TONO--5000-Hz----"""
+    """----PRUEBA--TONO--5-KHz----"""
     sig, fs = load("tests\input\TONE5000HZ.wav", calib=1)
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
