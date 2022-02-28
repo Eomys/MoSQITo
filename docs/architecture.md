@@ -1,22 +1,29 @@
 # MOSQITO Documentation
-## Architecture of the toolbox
+## Architecture of MOSQITO
 
-From the point of view of the user, MOSQITO can be used in two way. 
+### From a user point of view
+All the functions available in MOSQITO can be imported via the command:
+```python
+import mosqito
+```
 
-### MOSQITO as a function library 
-All functions available in MOSQITO are listed in [mosqito/functions](../mosqito/functions). Each folder corresponds to one specific function. Each function can be called by the main script comp_xxx contained the folders. 
+To import only a specific module like the sound quality metrics, the following command can be used:
+```python
+import mosqito.sq_metrics
+```
 
-As far as the SQ metrics are concerned, the main script takes as input argument the time signal (as numpy ndarray) and some computation parameter. It returns a dictionary with the calculated metrics.
+The code of all the functions available in MOSQITO is accessible in the [mosqito](../mosqito) folder, sorted by module. Each subfolder contains one main function that is intended to be called by the user. The subfunctions are identified by a trailing underscore. Each main function is accompanied by a documentation (in the [docs](.) folder), a tutorial (in the [tutorials](../tutorials) folder) and a detailed validation of the implementation in the [validations](../validations) folder. 
 
-Most of the plot functions are volontarily excluded from the function library. The objective is to focus on the functions related to sound quality and make them available for integration in other applications. 
+For example, considering the function to compute the acoustic loudness according to the Zwicker method for stationary signals, the folowing elements can be found in MOSQITO:
+- source code of the function and subfunctions in the [mosqito/sq_metrics/loudness/loudness_zwst](../mosqito/sq_metrics/loudness/loudness_zwst/) folder,
+- source code of the main function in the [loudness_zwst.py](../mosqito/sq_metrics/loudness/loudness_zwst/loudness_zwst.py) file,
+- documentation in the [docs/loudness_zwst.md](../docs/loudness_zwst.md) file,  
+- tutorial explaining how to use the function in the [tutorials/tuto_loudness_zwst.ipynb](../tutorials/tuto_loudness_zwst.ipynb) file,
+- script used to validate the implementation by using the tests signals from the IS0 532-1 standard is available, together with the output of the validation process, in the [validations/sq_metrics/loudness_zwst](../validations/sq_metrics/loudness_zwst) folder.
 
-### MOSQITO as a standalone SQ tool
-For the users that would like to use MOSQITO independently, a scripting interface to the functions mentionned above is proposed. This interface mainly relies on [SciDataTool](https://github.com/Eomys/SciDataTool), an open-source Python package for scientific data handling. Its objective is to provide a user-friendly, unified, flexible module to postprocess any kind of signal.
+### From a developer point of view
 
-### Developer corner
-Each function in the function library shall come with:
-- a documentation presenting the sources used for the implementation and showing how the implementation is validated (in the [documentation folder](.)) 
-- a tutorial (in the [tutorial folder](../tutorials))
-- a unit test (in the [tests folder](../tests)) 
+For each feature, a unitary test shall be defined in the [tests](../tests/) folder. For instance the tests related to the function to compute the acoustic loudness according to the Zwicker method for stationary signals can be found in the [mosqito/tests/sq_metrics/loudness/test_loudness_zwst.py](../tests/sq_metrics/loudness/test_loudness_zwst.py) file.
 
-The scripting interface, relies upon an object oriented approach. All operations on audio signals are managed through the Audio class and its methods.
+
+
