@@ -8,20 +8,12 @@
 import numpy as np
 
 # Local applications imports
-from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
-    _main_loudness,
-)
-from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
-    _calc_slopes,
-)
+from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
+from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
+from mosqito.sq_metrics.loudness.loudness_zwtv._nonlinear_decay import _nl_loudness
+from mosqito.sq_metrics.loudness.loudness_zwtv._temporal_weighting import _temporal_weighting
 from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import (
     _third_octave_levels,
-)
-from mosqito.sq_metrics.loudness.loudness_zwtv._nonlinear_decay import (
-    _nl_loudness,
-)
-from mosqito.sq_metrics.loudness.loudness_zwtv._temporal_weighting import (
-    _temporal_weighting,
 )
 
 
@@ -31,7 +23,6 @@ def loudness_zwtv(
     field_type,
 ):
     """Calculate Zwicker-loudness for time-varying signals
-
     Calculate the acoustic loudness according to Zwicker method for
     time-varying signals.
     Normatice reference:
@@ -42,7 +33,6 @@ def loudness_zwtv(
     Note that for reasons of normative continuity, as defined in the
     preceeding standards, the method is in accordance with
     ISO 226:1987 equal loudness contours (instead of ISO 226:2003)
-
     Parameters
     ----------
     signal : numpy.array
@@ -52,7 +42,6 @@ def loudness_zwtv(
     field_type : str
         Type of soundfield corresponding to signal ("free" by
         default or "diffuse")
-
     Outputs
     -------
     N : float
@@ -74,13 +63,8 @@ def loudness_zwtv(
     core_loudness = _nl_loudness(core_loudness)
     #
     # Calculation of specific loudness
-    loudness = np.zeros(np.shape(core_loudness)[1])
-    spec_loudness = np.zeros((240, np.shape(core_loudness)[1]))
-    for i_time in np.arange(np.shape(core_loudness)[1]):
-        loudness[i_time], spec_loudness[:, i_time] = _calc_slopes(
-            core_loudness[:, i_time]
-        )
-    #
+    loudness, spec_loudness = _calc_slopes(core_loudness)
+
     # temporal weigthing
     filt_loudness = _temporal_weighting(loudness)
     #
@@ -92,4 +76,5 @@ def loudness_zwtv(
     #
     # Build bark axis
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
+
     return N, N_spec, bark_axis, time_axis

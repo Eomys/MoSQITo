@@ -51,37 +51,30 @@ def _nl_loudness(core_loudness):
         math.exp(-delta_t / t_var),
     ]
     nl_lp = {"B": B}
-    # nl_lp["uo_last"] = 0
-    # nl_lp["u2_last"] = 0
+    #nl_lp["uo_last"] = 0
+    #nl_lp["u2_last"] = 0
 
-    delta = np.copy(
-        core_loudness,
-    )
+    delta = np.copy(core_loudness,)
     delta = np.roll(delta, -1, axis=1)
     delta[:, -1] = 0
-    delta = (delta - nl_loudness) / nl_iter
-    ui_delta = np.zeros(core_loudness.size * nl_iter).reshape(
-        core_loudness.shape[0], core_loudness.shape[1], nl_iter
-    )
+    delta = (delta - nl_loudness)/nl_iter
+    ui_delta = np.zeros(core_loudness.size*nl_iter).reshape(
+        core_loudness.shape[0], core_loudness.shape[1], nl_iter)
     ui_delta[:, :, 0] = core_loudness
 
-    for i_in in np.arange(1, nl_iter):  #
-        ui_delta[:, :, i_in] = ui_delta[:, :, i_in - 1] + delta  #
+    for i_in in np.arange(1, nl_iter):
+        ui_delta[:, :, i_in] = ui_delta[:, :, i_in-1] + delta
 
     ui_delta = ui_delta.reshape(
-        core_loudness.shape[0], core_loudness.shape[1] * nl_iter
-    )
-    uo_mat = np.copy(
-        ui_delta,
-    )
+        core_loudness.shape[0], core_loudness.shape[1]*nl_iter)
+    uo_mat = np.copy(ui_delta,)
     # create u2_mat (equivalent to u2 last) and fill the first col.
-    u2_mat = np.zeros(uo_mat.shape[0] * uo_mat.shape[1]).reshape(
-        uo_mat.shape[0], uo_mat.shape[1]
-    )
+    u2_mat = np.zeros(uo_mat.shape[0]*uo_mat.shape[1]
+                      ).reshape(uo_mat.shape[0], uo_mat.shape[1])
     mask = core_loudness[:, 0] >= 1e-5
-    u2_mat[mask, 0] = core_loudness[mask, 0] * (1 - nl_lp["B"][5])
+    u2_mat[mask, 0] = core_loudness[mask, 0]*(1 - nl_lp["B"][5])
 
-    """
+    '''
     Truth Table for u2 & uo
     u2 = nl_lp["uo_last"] * nl_lp["B"][0] - nl_lp["u2_last"] * nl_lp["B"][1]
     u2' = (nl_lp["u2_last"] - ui) * nl_lp["B"][5] + ui
@@ -98,48 +91,35 @@ def _nl_loudness(core_loudness):
         False                                                                False                  Truth        ui                                       u2=f(u2(j-1),B(5),ui(j)
         False                                                                False                  False        ui                                       u2=f(u2(j-1),B(5),ui(j)
  
-    """
-    for col in np.arange(core_loudness.shape[1] * nl_iter):
-        uo2 = uo_mat[:, col - 1] * nl_lp["B"][2] - u2_mat[:, col - 1] * nl_lp["B"][3]
+    '''
+    for col in np.arange(core_loudness.shape[1]*nl_iter):
+        uo2 = uo_mat[:, col-1] * nl_lp["B"][2] - \
+            u2_mat[:, col-1] * nl_lp["B"][3]
         mask = np.logical_and(
-            uo_mat[:, col - 1] > u2_mat[:, col - 1], uo2 >= ui_delta[:, col]
-        )
+            uo_mat[:, col-1] > u2_mat[:, col-1], uo2 >= ui_delta[:, col])
         uo_mat[mask, col] = uo2[mask]  # in case uo higher than ui
 
-        uo2 = uo_mat[:, col - 1] * nl_lp["B"][4]
-        mask = np.logical_and(
-            uo_mat[:, col - 1] <= u2_mat[:, col - 1], uo2 >= ui_delta[:, col]
-        )
+        uo2 = uo_mat[:, col-1] * nl_lp["B"][4]
+        mask = np.logical_and(uo_mat[:, col-1] <=
+                              u2_mat[:, col-1], uo2 >= ui_delta[:, col])
         uo_mat[mask, col] = uo2[mask]  # in case uo_2 higher than ui
 
         u2_mat[:, col] = uo_mat[:, col]  # higher than uo
-        u22 = uo_mat[:, col - 1] * nl_lp["B"][0] - u2_mat[:, col - 1] * nl_lp["B"][1]
-        mask = np.logical_and(
-            np.logical_and(
-                ui_delta[:, col] < uo_mat[:, col - 1],
-                uo_mat[:, col - 1] > u2_mat[:, col - 1],
-            ),
-            u22 <= uo_mat[:, col],
-        )
+        u22 = uo_mat[:, col-1] * nl_lp["B"][0] - \
+            u2_mat[:, col-1] * nl_lp["B"][1]
+        mask = np.logical_and(np.logical_and(
+            ui_delta[:, col] < uo_mat[:, col-1], uo_mat[:, col-1] > u2_mat[:, col-1]), u22 <= uo_mat[:, col])
         u2_mat[mask, col] = u22[mask]  # in case u22 lower than uo_last
 
-        u2_2 = (u2_mat[:, col - 1] - ui_delta[:, col]) * nl_lp["B"][5] + ui_delta[
-            :, col
-        ]
-        mask = np.logical_and(
-            ui_delta[:, col] >= uo_mat[:, col - 1],
-            np.logical_not(
-                np.logical_and(
-                    abs(ui_delta[:, col] - uo_mat[:, col - 1]) < 1e-5,
-                    uo_mat[:, col] <= u2_mat[:, col - 1],
-                )
-            ),
-        )
+        u2_2 = (u2_mat[:, col-1] - ui_delta[:, col]) * \
+            nl_lp["B"][5] + ui_delta[:, col]
+        mask = np.logical_and(ui_delta[:, col] >= uo_mat[:, col-1], np.logical_not(np.logical_and(
+            abs(ui_delta[:, col] - uo_mat[:, col-1]) < 1e-5,  uo_mat[:, col] <= u2_mat[:, col-1])))
         u2_mat[mask, col] = u2_2[mask]  # lower than ui
 
     nl_loudness = uo_mat.reshape(
-        core_loudness.shape[0], core_loudness.shape[1], nl_iter
-    )[:, :, 0]
-    uo_mat = uo_mat.reshape(core_loudness.shape[0], core_loudness.shape[1] * nl_iter)
+        core_loudness.shape[0], core_loudness.shape[1], nl_iter)[:, :, 0]
+    uo_mat = uo_mat.reshape(
+        core_loudness.shape[0], core_loudness.shape[1]*nl_iter)
 
     return nl_loudness

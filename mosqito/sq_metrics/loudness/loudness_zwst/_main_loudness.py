@@ -66,11 +66,13 @@ def _main_loudness(spec_third, field_type):
     )
     # Critical band level at absolute threshold without taking into
     # account the transmission characteristics of the ear
-    ltq = np.array([30, 18, 12, 8, 7, 6, 5, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
+    ltq = np.array([30, 18, 12, 8, 7, 6, 5, 4, 3,
+                    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
     # Correction of levels according to the transmission characteristics
     # of the ear
     a0 = np.array(
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.5, -1.6, -3.2, -5.4, -5.6, -4, -1.5, 2, 5, 12]
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.5, -
+            1.6, -3.2, -5.4, -5.6, -4, -1.5, 2, 5, 12]
     )
     # Level difference between free and diffuse sound fields
     ddf = np.array(
@@ -131,7 +133,8 @@ def _main_loudness(spec_third, field_type):
     # Prepare al arrays to work with
     if spec_third.ndim == 1:
         # This is for the test only for test_loudness_zwicker_3oct because only one array of one col is given and this routine needs 2 or more
-        spec_third_adapted = (np.ones((spec_third.shape[0], 100)).T * spec_third).T
+        spec_third_adapted = (
+            np.ones((spec_third.shape[0], 100)).T * spec_third).T
     elif spec_third.shape[1] == 1:
         # This line is only for testing test_loudness_zwicker_wav(), only in case one col in spec third is given.
         spec_third_adapted = (

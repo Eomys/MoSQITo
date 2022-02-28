@@ -88,7 +88,8 @@ def _calc_slopes(nm):
 
     # From Ernesto Avedillo 13/feb/2022
     # Considering the original routine if ig > 7:ig = 7 until ig = 21 so I can append the last column until usl.shape = (18,21)
-    usl_reshaped = np.append(usl, np.tile(usl[:, 7], 13).reshape(13, 18).T, axis=1)
+    usl_reshaped = np.append(usl, np.tile(
+        usl[:, 7], 13).reshape(13, 18).T, axis=1)
 
     # For test, in case nm has only 1 col.
     len_1_nm = False
@@ -101,7 +102,7 @@ def _calc_slopes(nm):
     nm_wide = nm.shape[0]
     spec_length = 240
     dec_compare = 8
-    ## Working array variables
+    # Working array variables
     n2_array_specific = np.ones((spec_length, data_length))
     z2_array_specific = np.ones((spec_length, data_length))
     usl_array_specific = np.ones((spec_length, data_length))
@@ -122,7 +123,7 @@ def _calc_slopes(nm):
     # N_specific[:zup_ea[0],:] = np.multiply(N_specific[:zup_ea[0],:] , nm[1])
     # I complete the rest of the matrix extending the array 21  to 240
     for i in np.arange(nm_wide - 1):
-        N_specific[zup_ea[i - 1] : zup_ea[i], :] = nm[i]
+        N_specific[zup_ea[i - 1]: zup_ea[i], :] = nm[i]
 
     N = np.zeros(data_length)
 
@@ -148,11 +149,11 @@ def _calc_slopes(nm):
     dz[1, :] = zup[1]
 
     for i in np.arange(nm_wide):
-        n2_array_specific[zup_ea[i - 1] : zup_ea[i], :] = nm[i]
-        dz_array_specific[zup_ea[i - 1] : zup_ea[i], :] = dz[i]
-        z2_array_specific[zup_ea[i - 1] : zup_ea[i], :] = zup_array_ea[i]
-        usl_array_specific[zup_ea[i - 1] : zup_ea[i], :] = usl_array[i]
-        rns_values_specific[zup_ea[i - 1] : zup_ea[i], :] = rns_values[i]
+        n2_array_specific[zup_ea[i - 1]: zup_ea[i], :] = nm[i]
+        dz_array_specific[zup_ea[i - 1]: zup_ea[i], :] = dz[i]
+        z2_array_specific[zup_ea[i - 1]: zup_ea[i], :] = zup_array_ea[i]
+        usl_array_specific[zup_ea[i - 1]: zup_ea[i], :] = usl_array[i]
+        rns_values_specific[zup_ea[i - 1]: zup_ea[i], :] = rns_values[i]
 
     j = 1
     n1_aux = np.zeros(data_length)
@@ -199,14 +200,16 @@ def _calc_slopes(nm):
 
             Max_rns_nm_Array = np.maximum(rns_values_specific[j - 1], nm[i])
             z2_array_specific[j, mask_n1_bigger_nm] = np.minimum(
-                np.divide(n1_aux - Max_rns_nm_Array, usl_array_specific[j]) + z1_aux,
+                np.divide(n1_aux - Max_rns_nm_Array,
+                          usl_array_specific[j]) + z1_aux,
                 zup[i],
             )[mask_n1_bigger_nm]
             dz_array_specific[j, mask_n1_bigger_nm] = (z2_array_specific[j] - z1_aux)[
                 mask_n1_bigger_nm
             ]
             n2_array_specific[j, mask_n1_bigger_nm] = (
-                n1_aux - np.multiply(dz_array_specific[j], usl_array_specific[j])
+                n1_aux -
+                np.multiply(dz_array_specific[j], usl_array_specific[j])
             )[mask_n1_bigger_nm]
 
             # Calculate N for all n1 > nm[i]
@@ -246,24 +249,29 @@ def _calc_slopes(nm):
                 )
                 if mask_z_bigger_z2.sum() > 0:
                     indexes = _get_rns_index(
-                        n2_array_specific[j, mask_z_bigger_z2], rns, equal_too=True
+                        n2_array_specific[j,
+                                          mask_z_bigger_z2], rns, equal_too=True
                     )
                     rns_values_specific[j, mask_z_bigger_z2] = rns[indexes]
                     usl_array_specific[j, mask_z_bigger_z2] = usl_reshaped[
                         indexes, i - 1
                     ]
                     # Save Copy de Z2 y N2
-                    n1_aux[mask_z_bigger_z2] = n2_array_specific[j, mask_z_bigger_z2]
-                    z1_aux[mask_z_bigger_z2] = z2_array_specific[j, mask_z_bigger_z2]
+                    n1_aux[mask_z_bigger_z2] = n2_array_specific[j,
+                                                                 mask_z_bigger_z2]
+                    z1_aux[mask_z_bigger_z2] = z2_array_specific[j,
+                                                                 mask_z_bigger_z2]
 
                     # Vuelvo al inicio del loop y reviso de nuevo que n2 sea menor que nm
                     # Vuelvo a calcular mask_n1_bigger_nm
                     # Para los valores de n1_aux<=nm[i]
                     mask_z_bigger_z2_1 = np.logical_and(
                         mask_z_bigger_z2,
-                        np.round(n1_aux, dec_compare) <= np.round(nm[i], dec_compare),
+                        np.round(n1_aux, dec_compare) <= np.round(
+                            nm[i], dec_compare),
                     )
-                    n2_array_specific[j, mask_z_bigger_z2_1] = nm[i, mask_z_bigger_z2_1]
+                    n2_array_specific[j, mask_z_bigger_z2_1] = nm[i,
+                                                                  mask_z_bigger_z2_1]
                     z2_array_specific[j, mask_z_bigger_z2_1] = zup[i]
                     dz_array_specific[j, mask_z_bigger_z2_1] = (
                         z2_array_specific[j] - z1_aux
@@ -276,11 +284,14 @@ def _calc_slopes(nm):
                     # For Values n1_aux>nm[i] after second loop
                     mask_z_bigger_z2_2 = np.logical_and(
                         mask_z_bigger_z2,
-                        np.round(n1_aux, dec_compare) > np.round(nm[i], dec_compare),
+                        np.round(n1_aux, dec_compare) > np.round(
+                            nm[i], dec_compare),
                     )
-                    Max_rns_nm_Array = np.maximum(rns_values_specific[j], nm[i])
+                    Max_rns_nm_Array = np.maximum(
+                        rns_values_specific[j], nm[i])
                     z2_array_specific[j, mask_z_bigger_z2_2] = np.minimum(
-                        np.divide(n1_aux - Max_rns_nm_Array, usl_array_specific[j])
+                        np.divide(n1_aux - Max_rns_nm_Array,
+                                  usl_array_specific[j])
                         + z1_aux,
                         zup[i],
                     )[mask_z_bigger_z2_2]
@@ -293,16 +304,20 @@ def _calc_slopes(nm):
                     )[mask_z_bigger_z2_2]
                     # Recalculate N
                     N[mask_z_bigger_z2_2] += (
-                        dz_array_specific[j] * (n1_aux + n2_array_specific[j]) / 2
+                        dz_array_specific[j] *
+                        (n1_aux + n2_array_specific[j]) / 2
                     )[mask_z_bigger_z2_2]
                     N_specific[j, mask_z_bigger_z2_2] = (
-                        n1_aux - np.multiply((z_array - z1_aux), usl_array_specific[j])
+                        n1_aux - np.multiply((z_array - z1_aux),
+                                             usl_array_specific[j])
                     )[mask_z_bigger_z2_2]
 
                     # For the rest of the values  Where z < z2 calculate N_Specific
-                    mask_z_rest = np.logical_xor(mask_z_bigger_z2, mask_n1_bigger_nm)
+                    mask_z_rest = np.logical_xor(
+                        mask_z_bigger_z2, mask_n1_bigger_nm)
                     N_specific[j, mask_z_rest] = (
-                        n1_aux - np.multiply((z_array - z1_aux), usl_array_specific[j])
+                        n1_aux - np.multiply((z_array - z1_aux),
+                                             usl_array_specific[j])
                     )[mask_z_rest]
                     z_array += 0.1
 
@@ -313,7 +328,8 @@ def _calc_slopes(nm):
 
                 else:
                     N_specific[j, mask_n1_bigger_nm] = (
-                        n1_aux - np.multiply((z_array - z1_aux), usl_array_specific[j])
+                        n1_aux - np.multiply((z_array - z1_aux),
+                                             usl_array_specific[j])
                     )[mask_n1_bigger_nm]
                     z_array += 0.1
 
@@ -329,7 +345,8 @@ def _calc_slopes(nm):
                 n2_array_specific[j, mask_z_bigger_z2], rns, equal_too=True
             )
             rns_values_specific[j, mask_z_bigger_z2] = rns[indexes]
-            usl_array_specific[j, mask_z_bigger_z2] = usl_reshaped[indexes, i - 1]
+            usl_array_specific[j,
+                               mask_z_bigger_z2] = usl_reshaped[indexes, i - 1]
 
     N[N < 0] = 0
     N[N <= 16] = np.floor(N[N <= 16] * 1000 + 0.5) / 1000
