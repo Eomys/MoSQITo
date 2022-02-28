@@ -3,6 +3,8 @@
     Author: Cristina Taboada (TinaTabo)
     Start date: 17/11/2021 
 """
+# Standard library imports
+import math
 
 # Local imports
 #from mosqito.functions.oct3filter.comp_third_spectrum import comp_third_spec <-- Borrar al final
@@ -28,18 +30,17 @@ def comp_tonality(sig, fs):
         dictionary with {fc:Lp} pairs where prominent tones are detected.
     """
     #-- As the tonality is studied for the audible frequency range, 
-    #-- we set the minimum and maximum frequencies at 20 Hz and 20 kHz.
+    #-- we set the minimum and maximum frequencies at 25 Hz and 20 kHz.
     fmin = 25
     fmax = 20000
 
 
-    # -- we obtain the data of the Lp in thirds of octave of the signal of which
+    # -- we obtain the data of the Lp in Pa in thirds of octave of the signal of which
     # -- we want to know the prominent tones
-    # third_spec = comp_third_spec(is_stationary=True, signal=signal, fs=fs)
     third_spec = comp_noct_spectrum(sig=sig, fs=fs, fmin=fmin, fmax=fmax)
 
-    #-- Returns a tuple with two arrays, one with the levels of each third octave band 
-    #-- and the other with the center frequencies of each band.
+    #-- Returns a tuple with two arrays, one with the Lp_Pa of each third octave band 
+    #-- and the other with the center frequencies, fc, of each band.
     #-- Convert tuple to list for further processing
     third_spec = list(third_spec)
 
@@ -47,8 +48,18 @@ def comp_tonality(sig, fs):
     fc = third_spec[1].tolist()
     print(fc, type(fc), len(fc))
 
-    Lp = third_spec[0].tolist()
-    print(Lp, type(Lp), len(Lp))
+    Lp_Pa = third_spec[0].tolist()
+    print(Lp_Pa, type(Lp_Pa), len(Lp_Pa))
+
+    #-- Create a list with the Lp conversion in dB.
+    Lp = []
+    P_ref = 20e-06
+    for i in range(0, len(Lp_Pa)):
+        P = Lp_Pa[i]
+        level = 20*math.log10(P/P_ref)
+        Lp.append(level)
+
+#-------------------------------------------------------------------------------------------------------
 
     # -- List where the indexes corresponding to the positions where there is
     # -- a prominent tone will be stored.
@@ -80,10 +91,10 @@ def comp_tonality(sig, fs):
         Lp_diff_post = Lp_central - Lp_post
 
         """----------BORRAR AL FINAL-----------"""
-        print("++++++++++++++++++")
-        print(Lp_diff_prev)
-        print(Lp_diff_post)
-        print("++++++++++++++++++")
+        #print("++++++++++++++++++")
+        #print(Lp_diff_prev)
+        #print(Lp_diff_post)
+        #print("++++++++++++++++++")
         """------------------------------------"""
 
         # -- if the value of the difference is constant with respect to the bands below and above
