@@ -50,7 +50,7 @@ def comp_tonality(sig, fs):
 
     #-- Create a list with the Lp conversion in dB.
     Lp = []
-    P_ref = 20e-06
+    P_ref = 2e-05
     for i in range(0, len(Lp_Pa)):
         P = Lp_Pa[i]
         level = 20*math.log10(P/P_ref)
