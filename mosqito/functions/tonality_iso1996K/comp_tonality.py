@@ -33,7 +33,6 @@ def comp_tonality(sig, fs):
     fmin = 25
     fmax = 20000
 
-
     # -- we obtain the data of the Lp in Pa in thirds of octave of the signal of which
     # -- we want to know the prominent tones
     third_spec = comp_noct_spectrum(sig=sig, fs=fs, fmin=fmin, fmax=fmax)
@@ -45,10 +44,7 @@ def comp_tonality(sig, fs):
 
     # -- Obtain the lists of the central frequencies and the average Lp
     fc = third_spec[1].tolist()
-    #print(fc, type(fc), len(fc))
-
     Lp_Pa = third_spec[0].tolist()
-    #print(Lp_Pa, type(Lp_Pa), len(Lp_Pa))
 
     #-- Create a list with the Lp conversion in dB.
     Lp = []
@@ -57,8 +53,6 @@ def comp_tonality(sig, fs):
         P = Lp_Pa[i]
         level = 20*math.log10(P/P_ref)
         Lp.append(level)
-
-#-------------------------------------------------------------------------------------------------------
 
     # -- List where the indexes corresponding to the positions where there is
     # -- a prominent tone will be stored.
@@ -87,13 +81,6 @@ def comp_tonality(sig, fs):
         # -- calculate the difference
         Lp_diff_prev = Lp_central - Lp_prev
         Lp_diff_post = Lp_central - Lp_post
-
-        """----------BORRAR AL FINAL-----------"""
-        #print("++++++++++++++++++")
-        #print(Lp_diff_prev)
-        #print(Lp_diff_post)
-        #print("++++++++++++++++++")
-        """------------------------------------"""
 
         # -- if the value of the difference is constant with respect to the bands below and above
         # -- the one studied, we obtain the value of the difference and proceed to check if we have
