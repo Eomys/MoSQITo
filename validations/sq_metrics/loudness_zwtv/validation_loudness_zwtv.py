@@ -265,8 +265,7 @@ def _check_compliance(loudness, signal, out_dir):
             header=None,
             skiprows=10,
             usecols="B",
-            squeeze=True,
-        ).to_numpy()
+        ).squeeze("columns").to_numpy()
     )
     N_iso = N_iso[~np.isnan(N_iso)]
     N_specif_iso = np.transpose(
@@ -276,8 +275,7 @@ def _check_compliance(loudness, signal, out_dir):
             header=None,
             skiprows=10,
             usecols="L",
-            squeeze=True,
-        ).to_numpy()
+        ).squeeze("columns").to_numpy()
     )
     N_specif_iso = N_specif_iso[~np.isnan(N_specif_iso)]
 
