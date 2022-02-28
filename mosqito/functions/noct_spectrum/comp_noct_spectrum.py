@@ -38,7 +38,7 @@ def comp_noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     Outputs
     -------
     spec : numpy.ndarray
-        Third octave band spectrum of signal sig [dB re.2e-5 Pa]
+        Third octave band spectrum of signal sig (units: Pascals [Pa]).
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies
     """
