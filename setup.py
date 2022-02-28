@@ -36,7 +36,7 @@ setuptools.setup(
     ),
     packages=setuptools.find_packages(
         exclude=[
-            "documentation",
+            "docs",
             "tutorials",
             "validations",
             "tests",
@@ -51,5 +51,6 @@ setuptools.setup(
     python_requires=python_requires,
     install_requires=install_requires,
     tests_require=tests_require,
-    extras_require={"testing": tests_require, "uff": uff_require, "all": all_require},
+    extras_require={"testing": tests_require,
+                    "uff": uff_require, "all": all_require},
 )
