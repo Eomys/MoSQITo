@@ -4,8 +4,8 @@
 import numpy as np
 
 # Local application imports
-from mosqito.sound_level_meter.noct_spectrum.comp_noct_spectrum import (
-    comp_noct_spectrum,
+from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import (
+    noct_spectrum,
 )
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
     _main_loudness,
@@ -51,7 +51,7 @@ def loudness_zwst(signal, fs, field_type="free"):
 
     #
     # Compute third octave band spectrum
-    spec_third, _ = comp_noct_spectrum(signal, fs, fmin=24, fmax=12600)
+    spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600)
     spec_third = 20 * np.log10(spec_third / 2e-5)
     #
     # Compute main loudness

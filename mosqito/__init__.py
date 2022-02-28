@@ -1,5 +1,5 @@
-from mosqito.sound_level_meter.noct_spectrum.comp_noct_spectrum import (
-    comp_noct_spectrum,
+from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import (
+    noct_spectrum,
 )
 from mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma import loudness_ecma
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst

@@ -4,10 +4,10 @@
 import numpy as np
 
 # local import
-from mosqito.sound_level_meter.noct_spectrum.center_freq import center_freq
+from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
 
 
-def filter_bandwidth(fc, n=3, N=3):
+def _filter_bandwidth(fc, n=3, N=3):
     """Define nth octave filter bandwidth
 
     The filter bandwidth is designed according to the Order-N

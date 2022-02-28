@@ -1,12 +1,12 @@
 import numpy as np
 
-from mosqito.sound_level_meter.noct_spectrum.nominal_frequency import (
+from mosqito.sound_level_meter.noct_spectrum._nominal_frequency import (
     NOMINAL_OCTAVE_CENTER_FREQUENCIES,
     NOMINAL_THIRD_OCTAVE_CENTER_FREQUENCIES,
 )
 
 
-def center_freq(fmin, fmax, n=3, G=10, fr=1000):
+def _center_freq(fmin, fmax, n=3, G=10, fr=1000):
     """
     Compute nth octave filter frequencies
 
@@ -48,7 +48,8 @@ def center_freq(fmin, fmax, n=3, G=10, fr=1000):
             """ERROR: Only base 2 and base 10 are allowed for nth
             octave center frequency definition"""
         )
-    [kmin, kmax] = np.round(np.log10(np.array([fmin, fmax]) / fr) / np.log10(U), 0)
+    [kmin, kmax] = np.round(
+        np.log10(np.array([fmin, fmax]) / fr) / np.log10(U), 0)
 
     # Band numbers such that f_exact = fr for k=0
     k = np.arange(kmin, kmax + 1).astype(int)
@@ -79,5 +80,5 @@ def center_freq(fmin, fmax, n=3, G=10, fr=1000):
 
 
 if __name__ == "__main__":
-    f_exact, f_nom = center_freq(25, 50000, n=3, G=10, fr=1000)
+    f_exact, f_nom = _center_freq(25, 50000, n=3, G=10, fr=1000)
     pass

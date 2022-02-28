@@ -8,7 +8,7 @@ Created on Mon Dec 21 16:44:36 2020
 import numpy as np
 
 # Local import
-from mosqito.sound_level_meter.noct_spectrum.getFrequencies import getFrequencies
+from mosqito.sound_level_meter.noct_spectrum._getFrequencies import _getFrequencies
 
 
 def _spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):
@@ -38,7 +38,8 @@ def _spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):
     """
 
     # n-th octave bands filter
-    filter_freqs = getFrequencies(low_freq, high_freq, noct, G=10, fr=1000)["f"]
+    filter_freqs = _getFrequencies(
+        low_freq, high_freq, noct, G=10, fr=1000)["f"]
     filter_freqs[len(filter_freqs) - 1, 2] = high_freq
     filter_freqs[0, 0] = low_freq
 
@@ -79,6 +80,6 @@ def _spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):
 
     smooth_spec = np.zeros((spec.shape))
     for i in range(filter_freqs.shape[0]):
-        smooth_spec[low[i] : high[i]] = smoothed_spectrum[i]
+        smooth_spec[low[i]: high[i]] = smoothed_spectrum[i]
 
     return smooth_spec

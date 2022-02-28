@@ -2,8 +2,8 @@ import pytest
 import matplotlib.pyplot as plt
 import numpy as np
 
-from mosqito.sound_level_meter.noct_spectrum.comp_noct_spectrum import (
-    comp_noct_spectrum,
+from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import (
+    noct_spectrum,
 )
 
 
@@ -24,7 +24,7 @@ def test_noct_spectrum():
     sig += A_4000 * np.sin(2 * np.pi * 4050 * t)
     sig += 0.75 * np.sin(2 * np.pi * 250 * t)
 
-    spec_3, freq = comp_noct_spectrum(sig, fs, 24, 12600, n=3)
+    spec_3, freq = noct_spectrum(sig, fs, 24, 12600, n=3)
     np.testing.assert_allclose(
         _dB(A_1000 / np.sqrt(2)), _dB(spec_3[freq == 1000]), rtol=0.5
     )
@@ -32,7 +32,7 @@ def test_noct_spectrum():
         _dB(A_4000 / np.sqrt(2)) + 3, _dB(spec_3[freq == 4000]), rtol=0.5
     )
 
-    spec_1, freq = comp_noct_spectrum(sig, fs, 24, 12600, n=1)
+    spec_1, freq = noct_spectrum(sig, fs, 24, 12600, n=1)
     np.testing.assert_allclose(
         _dB(A_1000 / np.sqrt(2)), _dB(spec_1[freq == 1000]), rtol=0.5
     )

@@ -4,12 +4,12 @@
 import numpy as np
 
 # Local application imports
-from mosqito.sound_level_meter.noct_spectrum.filter_bandwidth import filter_bandwidth
-from mosqito.sound_level_meter.noct_spectrum.n_oct_filter import n_oct_filter
-from mosqito.sound_level_meter.noct_spectrum.center_freq import center_freq
+from mosqito.sound_level_meter.noct_spectrum._filter_bandwidth import _filter_bandwidth
+from mosqito.sound_level_meter.noct_spectrum._n_oct_filter import _n_oct_filter
+from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
 
 
-def comp_noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
+def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     """Compute nth-octave band spectrum
 
     Calculate the rms level of the signal "sig" sampled at freqency "fs"
@@ -44,14 +44,14 @@ def comp_noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     """
 
     # Get filters center frequencies
-    fc_vec, fpref = center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
+    fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
 
     # Compute the filters bandwidth
-    alpha_vec = filter_bandwidth(fc_vec, n=n)
+    alpha_vec = _filter_bandwidth(fc_vec, n=n)
 
     # Calculation of the rms level of the signal in each band
     spec = []
     for fc, alpha in zip(fc_vec, alpha_vec):
-        spec.append(n_oct_filter(sig, fs, fc, alpha))
+        spec.append(_n_oct_filter(sig, fs, fc, alpha))
 
     return np.array(spec), fpref

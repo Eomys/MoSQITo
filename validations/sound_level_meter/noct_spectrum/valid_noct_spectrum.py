@@ -2,8 +2,8 @@ import pyuff
 import matplotlib.pyplot as plt
 import numpy as np
 
-from mosqito.sound_level_meter.noct_spectrum.comp_noct_spectrum import (
-    comp_noct_spectrum,
+from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import (
+    noct_spectrum,
 )
 
 
@@ -23,8 +23,8 @@ def valid_nthoctave(is_gen_txt=False):
             delimiter=";",
         )
     # compute nth oct spectrum
-    oct3, freq3 = comp_noct_spectrum(sig, fs=52000, fmin=25, fmax=20000, n=3)
-    oct1, freq1 = comp_noct_spectrum(sig, fs=52000, fmin=25, fmax=20000, n=1)
+    oct3, freq3 = noct_spectrum(sig, fs=52000, fmin=25, fmax=20000, n=3)
+    oct1, freq1 = noct_spectrum(sig, fs=52000, fmin=25, fmax=20000, n=1)
 
     # Load DEWESOFT post-processing
     uff_file = pyuff.UFF(

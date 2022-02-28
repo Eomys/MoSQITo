@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def getFrequencies(fstart, fend, b, G=10, fr=1000):
+def _getFrequencies(fstart, fend, b, G=10, fr=1000):
     """
     Calculate octave filter specifications
     :param fstart: start frequency
