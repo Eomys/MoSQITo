@@ -2,10 +2,35 @@
 
 from scipy.signal import welch
 
-from SciDataTool import Data1D, DataFreq
+# Optional package import
+try:
+    import SciDataTool
+except ImportError:
+    SciDataTool = None
 
 
 def compute_welch(self, N=None, noverlap=None):
+    """
+        Method to compute an estimate of the power spectral density computing
+        a modified periodogram per segment and then averaging them.
+    
+        Parameters
+        ----------
+        N : int, optional
+            Length of each segment. The default is None.
+        noverlap : float, optional
+            Number of points to overlap between segments. The default is None.
+    
+        Returns
+        -------
+        None.
+
+    """
+    if SciDataTool is None:
+        raise RuntimeError(
+            "In order to create an audio object you need the 'SciDataTool' package."
+            )
+
 
     f, Pxx = welch(
         self.signal.values,
@@ -16,14 +41,14 @@ def compute_welch(self, N=None, noverlap=None):
     )
 
     # Define axis objects
-    frequency = Data1D(
+    frequency = SciDataTool.Data1D(
         name="freqs",
         unit="Hz",
         values=f,
     )
 
     # Define Data object
-    self.welch = DataFreq(
+    self.welch = SciDataTool.DataFreq(
         name="Audio signal",
         symbol="x",
         axes=[frequency],

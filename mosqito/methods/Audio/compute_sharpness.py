@@ -6,8 +6,11 @@ Created on Wed Feb 17 13:03:02 2021
 """
 import numpy as np
 
-# Import SciDataTool objects
-from SciDataTool import DataTime, Data1D
+# Optional package import
+try:
+    import SciDataTool
+except ImportError:
+    SciDataTool = None
 
 # Import MOSQITO functions
 from mosqito.functions.sharpness.sharpness_aures import comp_sharpness_aures
@@ -27,6 +30,11 @@ def compute_sharpness(self, method="din", skip=0.2):
         number of second to be cut at the beginning of the analysis
 
     """
+    if SciDataTool is None:
+        raise RuntimeError(
+            "In order to create an audio object you need the 'SciDataTool' package."
+            )
+
     # check the input parameters
     if (
         method != "din"
@@ -72,14 +80,14 @@ def compute_sharpness(self, method="din", skip=0.2):
             S = S[cut_index:]
 
             # Define time axis
-            time = Data1D(
+            time = SciDataTool.Data1D(
                 symbol="T",
                 name="time",
                 unit="s",
                 values=self.loudness_zwicker.get_axes()[0].values[cut_index:],
             )
 
-            self.sharpness["din"] = DataTime(
+            self.sharpness["din"] = SciDataTool.DataTime(
                 symbol="S_{DIN}", axes=[time], values=S, name="Sharpness", unit="Acum"
             )
 
@@ -111,14 +119,14 @@ def compute_sharpness(self, method="din", skip=0.2):
             S = S[cut_index:]
 
             # Define time axis
-            time = Data1D(
+            time = SciDataTool.Data1D(
                 symbol="T",
                 name="time",
                 unit="s",
                 values=self.loudness_zwicker.get_axes()[0].values[cut_index:],
             )
 
-            self.sharpness["aures"] = DataTime(
+            self.sharpness["aures"] = SciDataTool.DataTime(
                 symbol="S_{Aures}", axes=[time], values=S, name="Sharpness", unit="Acum"
             )
 
@@ -149,14 +157,14 @@ def compute_sharpness(self, method="din", skip=0.2):
             S = S[cut_index:]
 
             # Define time axis
-            time = Data1D(
+            time = SciDataTool.Data1D(
                 symbol="T",
                 name="time",
                 unit="s",
                 values=self.loudness_zwicker.get_axes()[0].values[cut_index:],
             )
 
-            self.sharpness["bismarck"] = DataTime(
+            self.sharpness["bismarck"] = SciDataTool.DataTime(
                 symbol="S_{Bismarck}",
                 axes=[time],
                 values=S,
@@ -191,13 +199,13 @@ def compute_sharpness(self, method="din", skip=0.2):
             S = S[cut_index:]
 
             # Define time axis
-            time = Data1D(
+            time = SciDataTool.Data1D(
                 symbol="T",
                 name="time",
                 unit="s",
                 values=self.loudness_zwicker.get_axes()[0].values[cut_index:],
             )
 
-            self.sharpness["fastl"] = DataTime(
+            self.sharpness["fastl"] = SciDataTool.DataTime(
                 symbol="S_{Fastl}", axes=[time], values=S, name="Sharpness", unit="Acum"
             )
