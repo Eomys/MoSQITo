@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Local application imports
-from mosqito.sq_metrics import roughness_danielweber
+from mosqito.sq_metrics import roughness_dw
 from tests.sq_metrics.roughness.signals_test_generation import signal_test
 
 
@@ -174,7 +174,7 @@ def validation_roughness(signal):
         stimulus = signal_test(
             signal["fc"][ind_fc], signal["fmod"], mdepth, fs, duration, level
         )
-        roughness, time = roughness_danielweber(stimulus, fs, overlap)
+        roughness, time = roughness_dw(stimulus, fs, overlap)
         # roughness_dict = {
         #     "name": "Roughness",
         #     "values": roughness,
@@ -238,7 +238,8 @@ def _check_compliance(R, signal):
         label="17% tolerance",
         linewidth=1,
     )
-    plt.plot(fc, tol_curve_max, color="red", linestyle="solid", label="", linewidth=1)
+    plt.plot(fc, tol_curve_max, color="red",
+             linestyle="solid", label="", linewidth=1)
     plt.legend()
 
     # Compliance plot
@@ -291,7 +292,7 @@ def _check_compliance(R, signal):
     plt.xlabel("Carrier frequency [Hertz]")
     plt.ylabel("Roughness, [Asper]")
     plt.savefig(
-        "./validations/sq_metrics/roughness_danielweber/output/"
+        "./validations/sq_metrics/roughness_dw/output/"
         + "validation_roughness_dw_fmod"
         + str(signal["fmod"])
         + "Hz"

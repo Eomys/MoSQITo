@@ -5,7 +5,7 @@
 
 Several models have been developed to compute the acoustic roughness. No standardized method was proposed until recently (with the ECMA 418-2). The present implementation is based on the algorithm described in Daniel and Weber, 1997.
 
-A step by step description of how to use MOSQITO to compute the roughness is given in [this tutorial](../tutorials/tuto_roughness_danielweber.ipynb).
+A step by step description of how to use MOSQITO to compute the roughness is given in [this tutorial](../tutorials/tuto_roughness_dw.ipynb).
 
 ### Validation of the implementation
 
@@ -20,10 +20,10 @@ The plot below compares different roughness implementations' results for amplitu
 
 Mosqito implementation give similar results as other implementations. Zwicker and Fastl recommand that any roughness computation should give results within a +/- 17% range around their reference values. Note that none of the 3 implementations respect this criteria. However, Daniel and Weber algorithm is considered as a reference. Any improvement of the roughness assessment is welcome to be implemented in Mosqito.
 
-![](../validations/sq_metrics/roughness_danielweber/output/roughness_implementations_comparison.png)
+![](../validations/sq_metrics/roughness_dw/output/roughness_implementations_comparison.png)
 
 
-*All the plots and scripts for more detailed validation can be found in [this folder](../validations/sq_metrics/roughness_danielweber/).* 
+*All the plots and scripts for more detailed validation can be found in [this folder](../validations/sq_metrics/roughness_dw/).* 
 
 
 ### References

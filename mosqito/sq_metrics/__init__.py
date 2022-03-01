@@ -10,8 +10,8 @@ from mosqito.sq_metrics.tonality.prominence_ratio_ecma.prominence_ratio_ecma imp
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tone_to_noise_ecma import (
     tone_to_noise_ecma,
 )
-from mosqito.sq_metrics.roughness.roughness_danielweber.roughness_danielweber import (
-    roughness_danielweber,
+from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw import (
+    roughness_dw,
 )
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din import sharpness_din
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon

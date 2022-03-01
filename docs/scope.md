@@ -9,7 +9,7 @@ metrics:
 | Loudness for<br>steady signals<br>(Zwicker method) | ISO 532B:1975<br>DIN 45631:1991<br>ISO 532-1:2017 §5 | [x](./loudness_zwst.md)               | x |  |  |
 | Loudness for non-stationary<br>(Zwicker method)    | DIN 45631/A1:2010<br>ISO 532-1:2017 §6               | [x](./loudness_zwtv.md)             | x |  |  |
 | Loudness for non-stationary<br>(ECMA method)       | ECMA 418-2:2019 section 5<br>Sottek, 2016            | [x](./loudness_ecma.md)                     | x |  |  |
-| Roughness                                          | Daniel and Weber, 1997                               | [x](./roughness_danielweber.md)   | x |  |  |
+| Roughness                                          | Daniel and Weber, 1997                               | [x](./roughness_dw.md)   | x |  |  |
 | Roughness                                          | ECMA-418-2:2020                                      |                                             |  |  | x |
 | Fluctuation Strength                               | To be defined                                        |                                             |  |  | x |
 | Sharpness                                          | DIN 45692:2009                                       | [x](./sharpness_din.md)                         | x |  |  |

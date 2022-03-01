@@ -12,17 +12,17 @@ import math
 
 # Local imports
 from mosqito.utils.LTQ import LTQ
-from mosqito.sq_metrics.roughness.roughness_danielweber._gzi_weighting import (
+from mosqito.sq_metrics.roughness.roughness_dw._gzi_weighting import (
     _gzi_weighting,
 )
-from mosqito.sq_metrics.roughness.roughness_danielweber._H_weighting import _H_weighting
-from mosqito.sq_metrics.roughness.roughness_danielweber._ear_filter_coeff import (
+from mosqito.sq_metrics.roughness.roughness_dw._H_weighting import _H_weighting
+from mosqito.sq_metrics.roughness.roughness_dw._ear_filter_coeff import (
     _ear_filter_coeff,
 )
 from mosqito.utils.conversion import freq2bark, db2amp, amp2db, bark2freq
 
 
-def roughness_danielweber(signal, fs, overlap):
+def roughness_dw(signal, fs, overlap):
     """Roughness calculation of a signal sampled at 48kHz.
 
     The code is based on the algorithm described in "Psychoacoustical roughness:
@@ -72,7 +72,7 @@ def roughness_danielweber(signal, fs, overlap):
     R = np.zeros((nb_frame))
     for i_frame in range(nb_frame):
         segment = signal[
-            i_frame * int(n * (1 - overlap)) : i_frame * int(n * (1 - overlap)) + n
+            i_frame * int(n * (1 - overlap)): i_frame * int(n * (1 - overlap)) + n
         ]
 
         # Calculate Blackman analysis window

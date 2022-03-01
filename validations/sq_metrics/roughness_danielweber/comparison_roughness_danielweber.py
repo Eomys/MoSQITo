@@ -11,12 +11,12 @@ import matplotlib.pyplot as plt
 
 # Local application imports
 from tests.sq_metrics.roughness.signals_test_generation import signal_test
-from validations.sq_metrics.roughness_danielweber.input.references import (
+from validations.sq_metrics.roughness_dw.input.references import (
     ref_zf,
     ref_dw,
     ref_ps,
 )
-from mosqito.sq_metrics import roughness_danielweber
+from mosqito.sq_metrics import roughness_dw
 
 
 def comparison_roughness():
@@ -51,7 +51,7 @@ def comparison_roughness():
             signal = signal_test(
                 carrier[ind_fc], fmod[ind_fmod], mdepth, fs, duration, dB
             )
-            rtemp, _ = roughness_danielweber(signal, fs, overlap)
+            rtemp, _ = roughness_dw(signal, fs, overlap)
             R[ind_fc, ind_fmod] = rtemp
 
     fig, (axs1, axs2, axs3) = plt.subplots(
@@ -64,8 +64,10 @@ def comparison_roughness():
     axs1.plot(
         fmod[0:12], r_dw[0, 0:12], marker="x", color="red", label="Daniel and Weber"
     )
-    axs1.plot(fmod[0:12], r_ps[0, 0:12], marker="o", color="#0069a1", label="Psysound")
-    axs1.plot(fmod[0:12], R[0, 0:12], marker="s", color="#69c3c5", label="mosqito")
+    axs1.plot(fmod[0:12], r_ps[0, 0:12], marker="o",
+              color="#0069a1", label="Psysound")
+    axs1.plot(fmod[0:12], R[0, 0:12], marker="s",
+              color="#69c3c5", label="mosqito")
     axs1.set(xlim=(0, 170), ylim=(0, 1.1))
     axs1.set_title("Carrier frequency of 250 Hz", fontsize=11)
     axs1.legend(loc="upper right", shadow=True)
@@ -91,7 +93,7 @@ def comparison_roughness():
     axs3.set_title("Carrier frequency of 4000 Hz", fontsize=11)
 
     fig.savefig(
-        "./validations/sq_metrics/roughness_danielweber/output/"
+        "./validations/sq_metrics/roughness_dw/output/"
         + "roughness_implementations_comparison"
         + ".png",
         format="png",
