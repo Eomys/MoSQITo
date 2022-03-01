@@ -18,7 +18,7 @@ online, confirming the interest of the engineering and scientific
 community, but they often use Matlab signal processing commercial
 toolbox.
 
-Besides the metrics, sound quality studies requires several tool like audio signal filtering or jury testing procedure fore instance.
+Besides the metrics, sound quality studies requires several tool like audio signal filtering or jury testing procedure for instance.
 
 ## Objectives
 
