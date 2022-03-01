@@ -4,7 +4,16 @@ Created on Mon Feb 15 18:06:47 2021
 
 @author: Mesure_07
 """
-import pytest
+
+# Optional package import
+try:
+    import pytest
+except ImportError:
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package."
+        )
+
+
 from mosqito.classes.Audio import Audio
 from mosqito import COLORS
 

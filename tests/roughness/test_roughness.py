@@ -5,8 +5,14 @@ Created on Mon Oct 19 13:41:37 2020
 @author: wantysal
 """
 
-# Standard imports
-import pytest
+# Optional package import
+try:
+    import pytest
+except ImportError:
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package."
+        )
+
 
 # Local application imports
 from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness

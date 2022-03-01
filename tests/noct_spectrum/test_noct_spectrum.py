@@ -1,5 +1,10 @@
-import pytest
-import matplotlib.pyplot as plt
+# Optional package import
+try:
+    import pytest
+except ImportError:
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package."
+        )
 import numpy as np
 
 from mosqito.functions.noct_spectrum.comp_noct_spectrum import comp_noct_spectrum

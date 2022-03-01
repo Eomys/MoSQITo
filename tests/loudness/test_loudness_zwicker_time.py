@@ -4,11 +4,14 @@
 @author martin_g for Eomys
 """
 
-# Third party imports
-import numpy as np
-import matplotlib.pyplot as plt
-import pytest
-from pandas import ExcelFile, read_excel
+# Optional package import
+try:
+    import pytest
+except ImportError:
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package."
+        )
+
 
 # Local application imports
 from mosqito.functions.loudness_zwicker.comp_loudness import comp_loudness
