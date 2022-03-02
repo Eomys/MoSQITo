@@ -6,12 +6,10 @@ Created on Wed Dec 30 15:12:18 2020
 """
 
 import numpy as np
-from numpy.fft import fft
 
 # from scipy.signal import welch, periodogram
 
 # Local functions imports
-from mosqito.utils.conversion import amp2db
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import (
     _critical_band,
     _lower_critical_band,
@@ -25,7 +23,7 @@ from mosqito.sq_metrics.tonality.tone_to_noise_ecma._find_highest_tone import (
 )
 
 
-def _pr_main_calc(signal, fs):
+def _pr_main_calc(spectrum, freq_axis):
     """
         Calculation of the tone-to noise ratio according to the method described
         in ECMA 74, annex D.
@@ -55,22 +53,10 @@ def _pr_main_calc(signal, fs):
 
     #### Spectrum creation #######################################################
 
-    n = len(signal)
-    window = np.hanning(n)
-    window = window / np.sum(window)
-
-    # Creation of the spectrum by FFT
-    spectrum = fft(signal * window) * 1.42
-
-    # Conversion into dB level
-    module = np.abs(spectrum)
-    spectrum_db = amp2db(module, ref=0.00002)
-
     # Frequency axis of interest
-    freq_axis = np.arange(0, int(n / 2), 1) * (fs / n)
     freq_index = np.where((freq_axis > 89.1) & (freq_axis < 11200))[0]
     freqs = freq_axis[freq_index]
-    spec_db = spectrum_db[freq_index]
+    spec_db = spectrum[freq_index]
 
     #### Screening to find the potential tonal components ########################
 

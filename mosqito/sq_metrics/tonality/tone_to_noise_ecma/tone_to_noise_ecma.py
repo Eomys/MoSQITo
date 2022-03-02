@@ -11,6 +11,7 @@ import numpy as np
 import math
 
 # Local functions imports
+from mosqito.sound_level_meter.spectrum import spectrum
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._tnr_main_calc import _tnr_main_calc
 
 
@@ -52,7 +53,9 @@ def tone_to_noise_ecma(is_stationary, signal, fs, prominence=True):
             limit[i] = 8
 
     if is_stationary == True:
-        tones_freqs, tnr, prom, t_tnr = _tnr_main_calc(signal, fs)
+        
+        spectrum_db, freq_axis = spectrum(signal, fs, db=True)
+        tones_freqs, tnr, prom, t_tnr = _tnr_main_calc(spectrum_db, freq_axis)
 
         tones_freqs = tones_freqs.astype(int)
 
@@ -90,12 +93,13 @@ def tone_to_noise_ecma(is_stationary, signal, fs, prominence=True):
         # Calculate TNR values along time
         for i_frame in range(nb_frame):
             segment = signal[int(i_frame * n) : int(i_frame * n + n)]
+            spectrum_db, freq_axis = spectrum(segment, fs, db=True)
             (
                 tones_freqs[i_frame],
                 tnr[i_frame],
                 prom[i_frame],
                 t_tnr[i_frame],
-            ) = _tnr_main_calc(segment, fs)
+            ) = _tnr_main_calc(spectrum_db, freq_axis)
 
         # Store the results in a time vs frequency array
         freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
