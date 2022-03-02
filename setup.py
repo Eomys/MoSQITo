@@ -16,7 +16,7 @@ with open("requirements.txt", "r") as file:
         requirements
     ).splitlines()  # remove endline in each element
 
-tests_require = ["pytest>=5.4.1", "pandas", "openpyxl", "SciDataTool"]
+tests_require = ["pytest>=5.4.1", "pandas", "openpyxl", "SciDataTool", "matplotlib"]
 uff_require = ["pyuff"]
 scidatatool_require = ["SciDataTool"]
 all_require = tests_require + uff_require

@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
 
 # Local application imports
 from mosqito.functions.shared.sine_wave_generator import (

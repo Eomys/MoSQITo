@@ -5,10 +5,15 @@ Created on Mon Dec 14 15:17:12 2020
 @author: wantysal
 """
 
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
 
 # Third party imports
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.functions.loudness_zwicker.comp_loudness import comp_loudness
@@ -73,12 +78,12 @@ def validation_loudness_zwicker_3oct():
     signal = {
         "data_file": "Test signal 1.txt",
         "N": 83.296,
-        "N_specif_file": "./validations/loudness_zwicker/data/ISO_532-1/test_signal_1.csv",
+        "N_specif_file": "./data/ISO_532-1/test_signal_1.csv",
     }
 
     N, N_specific = loudness_zwicker_stationary(test_signal_1)
     loudness = {"values": N, "specific values": N_specific}
-    _ = check_compliance(loudness, signal, "./validations/loudness_zwicker/output/")
+    _ = check_compliance(loudness, signal, "./output/")
 
     # Test signal as input for stationary loudness
     # (from ISO 532-1 annex B3)
@@ -87,24 +92,24 @@ def validation_loudness_zwicker_3oct():
 signal = np.zeros((4), dtype=dict)
 
 signal[0] = {
-    "data_file": "./validations/loudness_zwicker/data/ISO_532-1/Test signal 2 (250 Hz 80 dB).wav",
+    "data_file": "./data/ISO_532-1/Test signal 2 (250 Hz 80 dB).wav",
     "N": 14.655,
-    "N_specif_file": "./validations/loudness_zwicker/data/ISO_532-1/test_signal_2.csv",
+    "N_specif_file": "./data/ISO_532-1/test_signal_2.csv",
 }
 signal[1] = {
-    "data_file": "./validations/loudness_zwicker/data/ISO_532-1/Test signal 3 (1 kHz 60 dB).wav",
+    "data_file": "./data/ISO_532-1/Test signal 3 (1 kHz 60 dB).wav",
     "N": 4.019,
-    "N_specif_file": "./validations/loudness_zwicker/data/ISO_532-1/test_signal_3.csv",
+    "N_specif_file": "./data/ISO_532-1/test_signal_3.csv",
 }
 signal[2] = {
-    "data_file": "./validations/loudness_zwicker/data/ISO_532-1/Test signal 4 (4 kHz 40 dB).wav",
+    "data_file": "./data/ISO_532-1/Test signal 4 (4 kHz 40 dB).wav",
     "N": 1.549,
-    "N_specif_file": "./validations/loudness_zwicker/data/ISO_532-1/test_signal_4.csv",
+    "N_specif_file": "./data/ISO_532-1/test_signal_4.csv",
 }
 signal[3] = {
-    "data_file": "./validations/loudness_zwicker/data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
+    "data_file": "./data/ISO_532-1/Test signal 5 (pinknoise 60 dB).wav",
     "N": 10.498,
-    "N_specif_file": "./validations/loudness_zwicker/data/ISO_532-1/test_signal_5.csv",
+    "N_specif_file": "./data/ISO_532-1/test_signal_5.csv",
 }
 
 
@@ -132,7 +137,7 @@ def validation_loudness_zwicker_wav(signal):
     loudness = comp_loudness(True, sig, fs)
 
     # Check ISO 532-1 compliance
-    _ = check_compliance(loudness, signal, "./validations/loudness_zwicker/output/")
+    _ = check_compliance(loudness, signal, "./output/")
 
 
 def check_compliance(loudness, iso_ref, out_dir):

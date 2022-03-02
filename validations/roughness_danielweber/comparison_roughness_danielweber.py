@@ -5,9 +5,15 @@ Created on Tue Nov 24 16:43:45 2020
 @author: pc
 """
 
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
+
 # Standard imports
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.tests.roughness.signals_test_generation import signal_test
