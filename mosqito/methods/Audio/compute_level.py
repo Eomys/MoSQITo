@@ -2,7 +2,11 @@
 
 from numpy import log10, linspace, mean, sqrt
 
-from SciDataTool import Data1D, DataTime
+# Optional package import
+try:
+    import SciDataTool
+except ImportError:
+    SciDataTool = None
 
 
 def compute_level(self, nb_points=[], start=[], stop=[]):
@@ -23,6 +27,12 @@ def compute_level(self, nb_points=[], start=[], stop=[]):
         SPL in dB
 
     """
+    if SciDataTool is None:
+        raise RuntimeError(
+            "In order to create an audio object you need the 'SciDataTool' package."
+            )
+
+    
     # Check the inputs
     if nb_points != []:
         if type(nb_points) != int:
@@ -67,7 +77,7 @@ def compute_level(self, nb_points=[], start=[], stop=[]):
     # Case of a given number of points
     if nb_points != []:
 
-        time = Data1D(
+        time = SciDataTool.Data1D(
             name="time", unit="s", values=linspace(start, stop, num=nb_points)
         )
 
@@ -77,7 +87,7 @@ def compute_level(self, nb_points=[], start=[], stop=[]):
             peff = sqrt(mean(frame_i ** 2))
             level.append(10 * log10((peff ** 2 / (2e-05) ** 2)))
 
-        self.level = DataTime(
+        self.level = SciDataTool.DataTime(
             name="Sound Pressure Level",
             symbol="SPL",
             unit="dB",

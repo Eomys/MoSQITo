@@ -2,11 +2,13 @@
 """
 Created on Tue Feb 23 14:05:22 2021
 
-@author: Salomé
+@author: wantysal
 """
-# Import SciDataTool objects
-
-from SciDataTool import DataTime, Data1D
+# Optional package import
+try:
+    import SciDataTool
+except ImportError:
+    SciDataTool = None
 
 # Import MOSQITO function
 from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness
@@ -23,6 +25,11 @@ def compute_roughness(self, method="dw", overlap=0.5):
         overlapping coefficient for the time windows of 200ms, default is 0.5
     """
 
+    if SciDataTool is None:
+        raise RuntimeError(
+            "In order to create an audio object you need the 'SciDataTool' package."
+            )
+
     # check the input parameters
     if method != "dw":
         raise ValueError("ERROR: method must be 'dw'")
@@ -32,9 +39,9 @@ def compute_roughness(self, method="dw", overlap=0.5):
 
     R = comp_roughness(self.signal.values, self.fs, overlap)
 
-    time = Data1D(name="time", unit="s", values=R["time"])
+    time = SciDataTool.Data1D(name="time", unit="s", values=R["time"])
 
-    self.roughness["Daniel Weber"] = DataTime(
+    self.roughness["Daniel Weber"] = SciDataTool.DataTime(
         symbol="R_{dw}",
         axes=[time],
         values=R["values"],

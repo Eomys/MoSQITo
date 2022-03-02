@@ -9,18 +9,21 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 python_requires = ">= 3.5"
 
-# MoSQITo dependancies
+# MoSQITo dependencies
 with open("requirements.txt", "r") as file:
     requirements = file.readlines()
     install_requires = "".join(
         requirements
     ).splitlines()  # remove endline in each element
 
-tests_require = ["pytest>=5.4.1", "pandas", "openpyxl"]
+tests_require = ["pytest>=5.4.1", "pandas", "openpyxl", "SciDataTool"]
 uff_require = [
-    "pyuff",
+    "pyuff"
 ]
-all_require = tests_require + uff_require
+scidatatool_require = [
+    "SciDataTool"
+]
+all_require = tests_require + uff_require 
 
 setuptools.setup(
     name="mosqito",
@@ -51,5 +54,5 @@ setuptools.setup(
     python_requires=python_requires,
     install_requires=install_requires,
     tests_require=tests_require,
-    extras_require={"testing": tests_require, "uff": uff_require, "all": all_require},
+    extras_require={"testing": tests_require, "uff": uff_require, "SciDataTool": scidatatool_require, "all": all_require}
 )

@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from SciDataTool import DataLinspace, DataTime, DataFreq, Data1D
+# Optional package import
+try:
+    import SciDataTool
+except ImportError:
+    SciDataTool = None
 
 from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import (
     loudness_zwicker_stationary,
@@ -19,13 +23,17 @@ def compute_loudness(self, field_type="free"):
         'free' by default or 'diffuse'
 
     """
+    if SciDataTool is None:
+        raise RuntimeError(
+            "In order to create an audio object you need the 'SciDataTool' package."
+            )
 
     # Compute third octave band spetrum if necessary
     if self.third_spec == None:
         self.comp_3oct_spec()
 
     # define bark_axis
-    barks = DataLinspace(
+    barks = SciDataTool.DataLinspace(
         name="cr_band",
         unit="Bark",
         initial=0.1,
@@ -49,10 +57,10 @@ def compute_loudness(self, field_type="free"):
         )
         # Get time axis
         # Decimation from temporal resolution 0.5 ms to 2ms
-        time = Data1D(
+        time = SciDataTool.Data1D(
             name="time", unit="s", values=self.third_spec.get_axes()[1].values[::4]
         )
-        self.loudness_zwicker = DataTime(
+        self.loudness_zwicker = SciDataTool.DataTime(
             name="Loudness",
             symbol="N_{zw}",
             unit="sone",
@@ -61,7 +69,7 @@ def compute_loudness(self, field_type="free"):
         )
         axes = [barks, time]
 
-    self.loudness_zwicker_specific = DataFreq(
+    self.loudness_zwicker_specific = SciDataTool.DataFreq(
         name="Specific Loudness",
         symbol="N'_{zw}",
         unit="sone/Bark",

@@ -4,8 +4,11 @@ Created on Tue Feb 23 14:15:28 2021
 
 @author: Salomé
 """
-# Import SciDataTool objects
-from SciDataTool import Data1D, DataFreq
+# Optional package import
+try:
+    import SciDataTool
+except ImportError:
+    SciDataTool = None
 
 # import Mosqito functions
 from mosqito.functions.tonality_tnr_pr.comp_tnr import comp_tnr
@@ -24,6 +27,10 @@ def compute_tnr_pr(self, method, prominence=True):
     prominence : boolean
         give only the prominent tones
     """
+    if SciDataTool is None:
+        raise RuntimeError(
+            "In order to create an audio object you need the 'SciDataTool' package."
+            )
 
     if method == "tnr" or method == "all":
         T = comp_tnr(
@@ -33,11 +40,11 @@ def compute_tnr_pr(self, method, prominence=True):
             prominence=prominence,
         )
 
-        freqs = Data1D(symbol="F", name="freqs", unit="Hz", values=T["freqs"])
+        freqs = SciDataTool.Data1D(symbol="F", name="freqs", unit="Hz", values=T["freqs"])
 
         if self.is_stationary == True:
 
-            self.tonality["tnr"] = DataFreq(
+            self.tonality["tnr"] = SciDataTool.DataFreq(
                 symbol="TNR",
                 axes=[freqs],
                 values=T["values"],
@@ -49,9 +56,9 @@ def compute_tnr_pr(self, method, prominence=True):
 
         elif self.is_stationary == False:
 
-            time = Data1D(symbol="T", name="time", unit="s", values=T["time"])
+            time = SciDataTool.Data1D(symbol="T", name="time", unit="s", values=T["time"])
 
-            self.tonality["tnr"] = DataFreq(
+            self.tonality["tnr"] = SciDataTool.DataFreq(
                 symbol="TNR",
                 axes=[freqs, time],
                 values=T["values"],
@@ -69,11 +76,11 @@ def compute_tnr_pr(self, method, prominence=True):
             prominence=prominence,
         )
 
-        freqs = Data1D(symbol="F", name="freqs", unit="Hz", values=T["freqs"])
+        freqs = SciDataTool.Data1D(symbol="F", name="freqs", unit="Hz", values=T["freqs"])
 
         if self.is_stationary == True:
 
-            self.tonality["pr"] = DataFreq(
+            self.tonality["pr"] = SciDataTool.DataFreq(
                 symbol="PR",
                 axes=[freqs],
                 values=T["values"],
@@ -84,9 +91,9 @@ def compute_tnr_pr(self, method, prominence=True):
             self.tonality["tpr"] = T["global value"]
 
         elif self.is_stationary == False:
-            time = Data1D(symbol="T", name="time", unit="s", values=T["time"])
+            time = SciDataTool.Data1D(symbol="T", name="time", unit="s", values=T["time"])
 
-            self.tonality["pr"] = DataFreq(
+            self.tonality["pr"] = SciDataTool.DataFreq(
                 symbol="PR",
                 axes=[freqs, time],
                 values=T["values"],
