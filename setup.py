@@ -23,7 +23,7 @@ uff_require = [
 scidatatool_require = [
     "SciDataTool"
 ]
-all_require = tests_require + uff_require + scidatatool_require 
+all_require = tests_require + uff_require 
 
 setuptools.setup(
     name="mosqito",
