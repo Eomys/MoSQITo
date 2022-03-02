@@ -56,7 +56,10 @@ def sharpness_din(is_stationary, signal, fs, method="din", skip=0):
     ):
         raise ValueError("ERROR: method must be 'din', 'aures', 'bismarck', 'fastl'")
 
-    N, N_specific, _ = loudness_zwst(signal, fs)
+    if is_stationary == True:
+        N, N_specific, _ = loudness_zwst(signal, fs)
+    else:
+        N, N_specific, _ = loudness_zwtv(signal, fs)
 
     if method == "din":
         S = _comp_sharpness_din(N, N_specific, is_stationary)
