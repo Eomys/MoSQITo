@@ -20,7 +20,7 @@ from mosqito.sq_metrics.tonality.tone_to_noise_ecma._peak_level import (
 )
 
 
-def _tnr_main_calc(spectrum, freq_axis):
+def _tnr_main_calc(spectrum_db, freq_axis):
     """
         Calculation of the tone-to noise ratio according to the method described
         in ECMA 74, annex D.
@@ -51,128 +51,195 @@ def _tnr_main_calc(spectrum, freq_axis):
     #### Spectrum creation #######################################################
 
 
-    # Frequency axis of interest
-    freq_index = np.where((freq_axis > 89.1) & (freq_axis < 11200))[0]
-    freqs = freq_axis[freq_index]
-    spec_db = spectrum[freq_index]
+    if len(spectrum_db.shape) == 1:
+        n = 1
+        # Frequency axis of interest
+        freq_index = np.where((freq_axis > 89.1) & (freq_axis < 11200))[0]
+        freqs = freq_axis[freq_index]
+        spec_db = spectrum_db[freq_index]
+        
+    elif len(spectrum_db.shape) > 1:
+        n = spectrum_db.shape[0]
+        freqs = [[]for i in range(n)]
+        spec_db = [[]for i in range(n)]
+        for i in range(n):
+            freq_index_cols = np.where((freq_axis[0,:] > 89.1) & (freq_axis[0,:] < 11200))[0]
+            freqs[i] = np.append(freqs[i],freq_axis[i,freq_index_cols])
+            spec_db[i] = np.append(spec_db[i],spectrum_db[i,freq_index_cols])
+        freqs = np.asarray(freqs)
+        spec_db = np.asarray(spec_db)
 
     #### Screening to find the potential tonal components ########################
 
-    peak_index = _screening_for_tones(freqs, spec_db, "smoothed", 90, 11200)
-    nb_tones = len(peak_index)
+    peak_index = _screening_for_tones(freqs, spec_db, "smoothed", 90, 11200).astype(int)
+    
+    # Initialization of the results lists
+    if n == 1:
+        TNR = []
+        t_tnr = []
+        tones_freqs = []
+        prominence = []
+    else:   
+        TNR = [[]for i in range(n)]
+        t_tnr = [[]for i in range(n)]
+        tones_freqs = [[]for i in range(n)]
+        prominence = [[]for i in range(n)]
+    
+
 
     #### Evaluation of each candidate ############################################
 
-    # Initialization of the results lists
-    tnr = np.array(())
-    tones_freqs = np.array(())
-    prominence = []
+    for i in range(n):
+        
+        tnr = []
+        
+        if n == 1:
+            peaks = peak_index
+        elif n > 1:
+            peaks = peak_index[i,:]
+        
+        nb_tones = len(peaks)
 
-    # Each candidate is studied and then deleted from the list until all have been treated
-    while nb_tones > 0:
-        ind = peak_index[0]
-        if len(peak_index) > 1:
-            ind_p, ind_s, peak_index, nb_tones = _find_highest_tone(
-                freqs, spec_db, peak_index, nb_tones, ind
-            )
-        else:
-            ind_p = ind
-            ind_s = None
-
-        # multiple tones in a critical band
-        if ind_s != None:
-            fp = freqs[ind_p]
-            fs = freqs[ind_s]
-
-            # proximity criterion
-            delta_f = 21 * 10 ** ((1.2 * (np.abs(np.log10(fp / 212))) ** 1.8))
-            if np.abs(fs - fp) < delta_f:
-
-                # tone SPL
-                Lp = _peak_level(freqs, spec_db, ind_p)
-                Ls = _peak_level(freqs, spec_db, ind_s)
-
-                Lt = 10 * np.log10(((10 ** (Lp / 10) + 10 ** (Ls / 10))))
-
-                # total SPL in the critical band
-                f1, f2 = _critical_band(fp)
-                low_limit_idx = np.argmin(np.abs(freqs - f1))
-                high_limit_idx = np.argmin(np.abs(freqs - f2))
-
-                spec_sum = sum(10 ** (spec_db[low_limit_idx:high_limit_idx] / 10))
-                Ltot = 10 * np.log10(spec_sum)
-
-                # suppression of the second highest tone from the list of tones
-                sup = np.where(peak_index == ind_s)[0]
-                peak_index = np.delete(peak_index, sup)
-                nb_tones -= 1
-
-                delta_ft = 2 * (freq_axis[1] - freq_axis[0])
-
+        # Each candidate is studied and then deleted from the list until all have been treated
+        while nb_tones > 0:
+            ind = peaks[0]
+            if len(peaks) > 1:
+                ind_p, ind_s, peaks, nb_tones = _find_highest_tone(
+                    freqs[i,:], spec_db[i,:], peaks, nb_tones, ind
+                )
             else:
-                # the two highest tones are not close enough to be considered as one
+                ind_p = ind
+                ind_s = None
+    
+            # multiple tones in a critical band
+            if ind_s != None:
+                fp = freqs[i,ind_p]
+                fs = freqs[i,ind_s]
+    
+                # proximity criterion
+                delta_f = 21 * 10 ** ((1.2 * (np.abs(np.log10(fp / 212))) ** 1.8))
+                if np.abs(fs - fp) < delta_f:
+    
+                    # tone SPL
+                    Lp = _peak_level(freqs[i,:], spec_db[i,:], ind_p)
+                    Ls = _peak_level(freqs[i,:], spec_db[i,:], ind_s)
+    
+                    Lt = 10 * np.log10(((10 ** (Lp / 10) + 10 ** (Ls / 10))))
+    
+                    # total SPL in the critical band
+                    f1, f2 = _critical_band(fp)
+                    low_limit_idx = np.argmin(np.abs(freqs[i,:] - f1))
+                    high_limit_idx = np.argmin(np.abs(freqs[i,:] - f2))
+    
+                    spec_sum = sum(10 ** (spec_db[i,low_limit_idx:high_limit_idx] / 10))
+                    Ltot = 10 * np.log10(spec_sum)
+    
+                    # suppression of the second highest tone from the list of tones
+                    sup = np.where(peaks == ind_s)[0]
+                    peaks = np.delete(peaks, sup)
+                    nb_tones -= 1
+    
+                    delta_ft = 2 * (freq_axis[i,1] - freq_axis[i,0])
+    
+                else:
+                    # the two highest tones are not close enough to be considered as one
+                    # tone SPL
+                    Lt = spec_db[i,ind_p]
+    
+                    # total SPL in the critical band
+                    f1, f2 = _critical_band(freqs[i,ind_p])
+                    low_limit_idx = np.argmin(np.abs(freqs[i,:] - f1))
+                    high_limit_idx = np.argmin(np.abs(freqs[i,:] - f2))
+    
+                    spec_sum = sum(10 ** (spec_db[i,low_limit_idx:high_limit_idx] / 10))
+                    Ltot = 10 * np.log10(spec_sum)
+    
+                    delta_ft = freqs[i,1] - freqs[i,0]
+    
+            # single tone in a critical band
+            else:
                 # tone SPL
-                Lt = spec_db[ind_p]
-
+                Lt = _peak_level(freqs[i,:], spec_db[i,:], ind_p)
+    
                 # total SPL in the critical band
-                f1, f2 = _critical_band(freqs[ind_p])
-                low_limit_idx = np.argmin(np.abs(freqs - f1))
-                high_limit_idx = np.argmin(np.abs(freqs - f2))
-
-                spec_sum = sum(10 ** (spec_db[low_limit_idx:high_limit_idx] / 10))
+                f1, f2 = _critical_band(freqs[i,ind_p])
+                low_limit_idx = np.argmin(np.abs(freqs[i,:] - f1))
+                high_limit_idx = np.argmin(np.abs(freqs[i,:] - f2))
+    
+                spec_sum = sum(10 ** (spec_db[i,low_limit_idx:high_limit_idx] / 10))
                 Ltot = 10 * np.log10(spec_sum)
-
-                delta_ft = freqs[1] - freqs[0]
-
-        # single tone in a critical band
+    
+                delta_ft = freqs[i,1] - freqs[i,0]
+    
+            # SPL of the masking noise
+            delta_fc = f2 - f1
+            delta_ftot = freq_axis[i,high_limit_idx] - freq_axis[i,low_limit_idx]
+            Ln = 10 * np.log10(10 ** (Ltot / 10) - 10 ** (Lt / 10)) + 10 * np.log10(
+                delta_fc / (delta_ftot - delta_ft)
+            )
+    
+            # Tone-to-noise ratio
+            f = freqs[i,ind_p]
+            delta_t = Lt - Ln
+            if delta_t > 0:
+                if n > 1:
+                    tones_freqs[i] = np.append(tones_freqs[i], f)
+                    tnr = np.append(tnr, delta_t)
+                elif n == 1:
+                    tones_freqs = np.append(tones_freqs, f)
+                    tnr = np.append(tnr, delta_t)
+    
+                # Prominence criteria
+                if f >= 89.1 and f < 1000:
+                    if delta_t >= 8 + 8.33 * np.log10(1000 / f):
+                        if n > 1:
+                            prominence[i].append(True)
+                        
+                        elif n == 1:
+                            prominence.append(True)
+                    else:
+                        if n > 1:
+                            prominence[i].append(False)
+                        
+                        elif n == 1:
+                            prominence.append(False)
+                elif f >= 1000 and f <= 11200:
+                    if delta_t >= 8:
+                        if n > 1:
+                            prominence[i].append(True)
+                        
+                        elif n == 1:
+                            prominence.append(True)
+                    else:
+                        if n > 1:
+                            prominence[i].append(False)
+                        
+                        elif n == 1:
+                            prominence.append(False)
+    
+            # suppression from the list of tones
+            sup = np.where(peaks == ind_p)[0]
+            peaks = np.delete(peaks, sup)
+            nb_tones -= 1
+    
+        if sum(np.power(10, (tnr / 10))) != 0:
+            if n > 1:
+                t_tnr[i] = np.append (t_tnr[i], 10 * np.log10(sum(np.power(10, (tnr / 10)))))
+            elif n == 1:
+                t_tnr = np.append (t_tnr, 10 * np.log10(sum(np.power(10, (tnr / 10)))))
         else:
-            # tone SPL
-            Lt = _peak_level(freqs, spec_db, ind_p)
-
-            # total SPL in the critical band
-            f1, f2 = _critical_band(freqs[ind_p])
-            low_limit_idx = np.argmin(np.abs(freqs - f1))
-            high_limit_idx = np.argmin(np.abs(freqs - f2))
-
-            spec_sum = sum(10 ** (spec_db[low_limit_idx:high_limit_idx] / 10))
-            Ltot = 10 * np.log10(spec_sum)
-
-            delta_ft = freqs[1] - freqs[0]
-
-        # SPL of the masking noise
-        delta_fc = f2 - f1
-        delta_ftot = freq_axis[high_limit_idx] - freq_axis[low_limit_idx]
-        Ln = 10 * np.log10(10 ** (Ltot / 10) - 10 ** (Lt / 10)) + 10 * np.log10(
-            delta_fc / (delta_ftot - delta_ft)
-        )
-
-        # Tone-to-noise ratio
-        f = freqs[ind_p]
-        delta_t = Lt - Ln
-        if delta_t > 0:
-            tones_freqs = np.append(tones_freqs, f)
-            tnr = np.append(tnr, delta_t)
-
-            # Prominence criteria
-            if f >= 89.1 and f < 1000:
-                if delta_t >= 8 + 8.33 * np.log10(1000 / f):
-                    prominence.append(True)
-                else:
-                    prominence.append(False)
-            elif f >= 1000 and f <= 11200:
-                if delta_t >= 8:
-                    prominence.append(True)
-                else:
-                    prominence.append(False)
-
-        # suppression from the list of tones
-        sup = np.where(peak_index == ind_p)[0]
-        peak_index = np.delete(peak_index, sup)
-        nb_tones -= 1
-
-    if sum(np.power(10, (tnr / 10))) != 0:
-        t_tnr = 10 * np.log10(sum(np.power(10, (tnr / 10))))
-    else:
-        t_tnr = 0
-
-    return tones_freqs, tnr, prominence, t_tnr
+            if n > 1:
+                t_tnr[i] = np.append(t_tnr[i], 0)
+            elif n == 1:
+                t_tnr = np.append(t_tnr, 0)
+                
+        if n > 1:
+            TNR[i] = np.append(TNR[i], tnr)
+            
+        elif n == 1:
+            TNR = np.append(TNR, tnr)
+        
+    tones_freqs = np.asarray(tones_freqs)
+    tones_freqs = tones_freqs.astype(int)
+    
+    return tones_freqs, TNR , prominence, t_tnr
