@@ -13,18 +13,55 @@ from mosqito.utils.conversion import amp2db
 
 
 def spectrum(signal,fs,db=True):
+    """
+    
 
-    n = len(signal)
-    window = np.hanning(n)
-    window = window / np.sum(window)
+    Parameters
+    ----------
+    signal : np.array
+        time signal (n blocks x time)
+    fs : integer
+        sampling frequency
+    db : boolean, optional
+        indicates if the spectrum is in dB values. The default is True.
 
-    # Creation of the spectrum by FFT
-    spectrum = fft(signal * window) * 1.42
-    freq_axis = np.arange(0, int(n / 2), 1) * (fs / n)
+    Returns
+    -------
+    spectrum : np.array
+        spectrum (n blocks x frequency)
+    freq_axis : np.array
+        frequency axis corresponding to the spectrum
 
-    if db == True:
-        # Conversion into dB level
-        module = np.abs(spectrum)
-        spectrum = amp2db(module, ref=0.00002)
+    """
+
+    # single time signal
+    if len(signal.shape)==1:
+        n = len(signal)
+        window = np.hanning(n)
+        window = window / np.sum(window)
+    
+        # Creation of the spectrum by FFT
+        spectrum = fft(signal * window) * 1.42
+        freq_axis = np.arange(0, int(n / 2), 1) * (fs / n)
+    
+        if db == True:
+            # Conversion into dB level
+            module = np.abs(spectrum)
+            spectrum = amp2db(module, ref=0.00002)    
+
+    # n time signals
+    elif len(signal.shape)>1:
+        n = signal.shape[1]
+        window = np.hanning(n)
+        window = window / np.sum(window)
+
+        # Creation of the spectrum by FFT
+        spectrum = fft(signal * window, axis=1 ) * 1.42
+        freq_axis = np.tile(np.arange(0, int(n / 2), 1) * (fs / n), (signal.shape[0],1))
+
+        if db == True:
+            # Conversion into dB level
+            module = np.abs(spectrum)
+            spectrum = amp2db(module, ref=0.00002)
     
     return spectrum, freq_axis
