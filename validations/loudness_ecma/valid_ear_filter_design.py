@@ -74,3 +74,4 @@ plt.savefig(
     "./output/" + "validation_ear_filter_design.png",
     format="png",
 )
+plt.clf()
