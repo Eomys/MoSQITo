@@ -56,7 +56,7 @@ def spectrum(signal,fs,db=True):
         window = window / np.sum(window)
 
         # Creation of the spectrum by FFT
-        spectrum = fft(signal * window, axis=1 ) * 1.42
+        spectrum = fft(signal * window, axis=1 )[:,0:n//2] * 1.42
         freq_axis = np.tile(np.arange(0, int(n / 2), 1) * (fs / n), (signal.shape[0],1))
 
         if db == True:
