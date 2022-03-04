@@ -11,14 +11,14 @@ def valid_nthoctave(is_gen_txt=False):
 
     # Load signal
     uff_file = pyuff.UFF(
-        "./validations/sound_level_meter/noct_spectrum/input/electric_motor_vibration_signal.uff"
+        "./input/electric_motor_vibration_signal.uff"
     )
     dataset = uff_file.read_sets()
     sig = dataset["data"]
     # save as txt file
     if is_gen_txt:
         np.savetxt(
-            "./validations/sound_level_meter/noct_spectrum/input/electric_motor_vibration_signal.txt",
+            "input/electric_motor_vibration_signal.txt",
             sig,
             delimiter=";",
         )
@@ -28,7 +28,7 @@ def valid_nthoctave(is_gen_txt=False):
 
     # Load DEWESOFT post-processing
     uff_file = pyuff.UFF(
-        "./validations/sound_level_meter/noct_spectrum/input/electric_motor_vibration_noct_dewe.uff"
+        "./input/electric_motor_vibration_noct_dewe.uff"
     )
     datasets = uff_file.read_sets()
     oct3_dewe = datasets[0]["data"]
@@ -36,13 +36,13 @@ def valid_nthoctave(is_gen_txt=False):
 
     # Load OROS post-processing
     oct3_oros = np.loadtxt(
-        "./validations/sound_level_meter/noct_spectrum/input/electric_motor_vibration_3oct_oros.txt",
+        "./input/electric_motor_vibration_3oct_oros.txt",
         delimiter="\t",
         skiprows=2,
         usecols=1,
     )
     oct1_oros = np.loadtxt(
-        "./validations/sound_level_meter/noct_spectrum/input/electric_motor_vibration_1oct_oros.txt",
+        "./input/electric_motor_vibration_1oct_oros.txt",
         delimiter="\t",
         skiprows=2,
         usecols=1,
@@ -56,7 +56,7 @@ def valid_nthoctave(is_gen_txt=False):
     plt.xlabel("Frequency")
     plt.ylabel("Vibration acceleration [dB]")
     plt.savefig(
-        "./validations/sound_level_meter/noct_spectrum/output/"
+        "./output/"
         + "validation_3oct_spectrum.png",
         format="png",
     )
@@ -69,7 +69,7 @@ def valid_nthoctave(is_gen_txt=False):
     plt.xlabel("Frequency")
     plt.ylabel("Vibration acceleration [dB]")
     plt.savefig(
-        "./validations/sound_level_meter/noct_spectrum/output/"
+        "./output/"
         + "validation_1oct_spectrum.png",
         format="png",
     )

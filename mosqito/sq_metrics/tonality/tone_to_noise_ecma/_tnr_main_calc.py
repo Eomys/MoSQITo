@@ -191,17 +191,15 @@ def _tnr_main_calc(spectrum_db, freq_axis):
             if delta_t > 0:
                 if n > 1:
                     tones_freqs[i] = np.append(tones_freqs[i], f)
-                    tnr = np.append(tnr, delta_t)
                 elif n == 1:
                     tones_freqs = np.append(tones_freqs, f)
-                    tnr = np.append(tnr, delta_t)
+                tnr = np.append(tnr, delta_t)
     
                 # Prominence criteria
                 if f >= 89.1 and f < 1000:
                     if delta_t >= 8 + 8.33 * np.log10(1000 / f):
                         if n > 1:
-                            prominence[i].append(True)
-                        
+                            prominence[i].append(True)                        
                         elif n == 1:
                             prominence.append(True)
                     else:
@@ -249,5 +247,6 @@ def _tnr_main_calc(spectrum_db, freq_axis):
             TNR = np.append(TNR, tnr)
         
     tones_freqs = np.asarray(tones_freqs)
+    prominence = np.asarray(prominence)
     
     return tones_freqs, TNR , prominence, t_tnr

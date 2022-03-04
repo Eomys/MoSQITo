@@ -34,16 +34,16 @@ def tone_to_noise_ecma(is_stationary, signal, fs, freqs=None, prominence=True):
 
     Output
     ------
-    output = dict
-    {    "name" : "tone-to-noise ratio",
-         "time" : np.linspace(0, len(signal)/fs, num=nb_frame),
-         "freqs" : <frequency of the tones>
-         "values" : <TNR calculated value for each tone>
-         "prominence" : <True or False according to ECMA criteria>
-         "global value" : <sum of the specific TNR values>
-            }
-
-
+    tones_freqs : array of float
+        frequency of the detected tones
+    TNR : array of float
+        TNR values for each detected tone
+    promi : array of bool
+        prominence criterion for each detected tone
+    t_tnr : array of float
+        global TNR value, along time if is_stationary = False
+    time  : array of float, only if is_stationary = False
+        time axis
     """
     
     # if the input is a time signal, the spectrum computation is needed
@@ -73,7 +73,7 @@ def tone_to_noise_ecma(is_stationary, signal, fs, freqs=None, prominence=True):
     tones_freqs, tnr, prom, t_tnr = _tnr_main_calc(spectrum_db, freq_axis)
 
             
-    if type(tnr[0])== np.ndarray:
+    if (type(tnr[0])== np.ndarray) & (is_stationary == False):
         if freqs == None:
             # Retore the results in a time vs frequency array
             freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
@@ -99,4 +99,7 @@ def tone_to_noise_ecma(is_stationary, signal, fs, freqs=None, prominence=True):
         return tones_freqs, TNR, promi, t_tnr, time 
     
     else:
-        return tones_freqs, tnr, prom, t_tnr
+        if prominence == False:
+            return tones_freqs, tnr, prom, t_tnr
+        else:
+            return tones_freqs[prom], tnr[prom], prom[prom], t_tnr
