@@ -16,7 +16,7 @@ from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import (
 )
 
 
-def prominence_ratio_ecma(is_stationary, signal, fs, freqs=None, prominence=True):
+def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=None, prominence=True):
     """Computation of prominence ratio according to ECMA-74, annex D.10
         The T-PR value is calculated according to ECMA-TR/108
 
@@ -27,7 +27,7 @@ def prominence_ratio_ecma(is_stationary, signal, fs, freqs=None, prominence=True
     signal :numpy.array
         time signal values or frequency spectrum in dB
     fs : integer
-        sampling frequency
+        sampling frequency if signal given in time domain. Default is None
     freqs : np.array
         if signal is given in frequency domain, freqs is the correcponding frequency axis. Default is None
     prominence : boolean

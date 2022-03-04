@@ -15,7 +15,7 @@ from mosqito.sound_level_meter.spectrum import spectrum
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._tnr_main_calc import _tnr_main_calc
 
 
-def tone_to_noise_ecma(is_stationary, signal, fs, freqs=None, prominence=True):
+def tone_to_noise_ecma(is_stationary, signal, fs=None, freqs=None, prominence=True):
     """Computation of tone-to-noise ration according to ECMA-74, annex D.9
         The T-TNR value is calculated according to ECMA-TR/108
 
@@ -26,7 +26,7 @@ def tone_to_noise_ecma(is_stationary, signal, fs, freqs=None, prominence=True):
     signal :numpy.array
         time signal values or frequency spectrum in dB
     fs : integer
-        sampling frequency
+        sampling frequency if signal given in time domain. Default is None.
     freqs : np.array
         if signal is given in frequency domain, freqs is the correcponding frequency axis. Default is None
     prominence : boolean

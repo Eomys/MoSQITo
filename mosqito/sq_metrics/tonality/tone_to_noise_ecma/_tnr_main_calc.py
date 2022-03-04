@@ -31,21 +31,21 @@ def _tnr_main_calc(spectrum_db, freq_axis):
 
     Parameters
     ----------
-    signal : numpy.array
-        time history values
-    fs : integer
-        sampling frequency
+    spectrum_db : array
+        spectrum values in dB (n blocks x frequency)
+    freq_axis : array
+        frequency axis corresponding to the spectrum (n blocks x frequency)
 
     Output
     ------
-    tones_freqs : list of float
-        frequency of the tones
-    tnr : list of float
-        TNR value calculated for each tone
-    prominence : list of boolean
-        prominence criteria as described in ECMA 74
-    t_tnr : list of float
-        sum of the specific TNR
+    tones_freqs : array of float
+        frequency of the tones (n blocks x number of tones)
+    tnr : array of float
+        TNR value calculated for each tone (n blocks x number of tones)
+    prominence : array of boolean
+        prominence criteria as described in ECMA 74 (n blocks x number of tones)
+    t_tnr : array of float
+        sum of the specific TNR (n blocks x global value)
     """
 
     #### Spectrum creation #######################################################
