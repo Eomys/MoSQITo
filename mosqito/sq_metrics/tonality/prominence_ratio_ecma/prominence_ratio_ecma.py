@@ -16,7 +16,7 @@ from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import (
 )
 
 
-def prominence_ratio_ecma(is_stationary, signal, fs, prominence=True):
+def prominence_ratio_ecma(is_stationary, signal, fs, freqs=None, prominence=True):
     """Computation of prominence ratio according to ECMA-74, annex D.10
         The T-PR value is calculated according to ECMA-TR/108
 
@@ -25,110 +25,82 @@ def prominence_ratio_ecma(is_stationary, signal, fs, prominence=True):
     is_stationary : boolean
         True if the signal is stationary
     signal :numpy.array
-        time signal values
+        time signal values or frequency spectrum in dB
     fs : integer
         sampling frequency
+    freqs : np.array
+        if signal is given in frequency domain, freqs is the correcponding frequency axis. Default is None
     prominence : boolean
         if True, the algorithm only returns the prominent tones, if False it returns all tones detected
-    plot : str
-        'y' to plot the results, 'n' to only return the dict
 
     Output
     ------
-    output = dict
-    {    "name" : "tone-to-noise ratio",
-         "time" : np.linspace(0, len(signal)/fs, num=nb_frame),
-         "freqs" : <frequency of the tones>
-         "values" : <PR calculated value for each tone>
-         "prominence" : <True or False according to ECMA criteria>
-         "global value" : <sum of the specific TNR values>
-            }
-
-
+    tones_freqs : array of float
+        frequency of the detected tones
+    PR : array of float
+        PR values for each detected tone
+    promi : array of bool
+        prominence criterion for each detected tone
+    t_PR : array of float
+        global PR value, along time if is_stationary = False
+    time  : array of float, only if is_stationary = False
+        time axis
     """
+    
+    # if the input is a time signal, the spectrum computation is needed
+    if freqs == None:
+        if is_stationary == True:
+            # compute db spectrum
+            spectrum_db, freq_axis = spectrum(signal, fs, db=True)
+        if is_stationary == False:
+            # Signal cut in frames of 200 ms along the time axis
+            n = 0.5 * fs
+            nb_frame = math.floor(signal.size / n)
+            len_seg = len(signal)//nb_frame
+            time = np.linspace(0, len(signal) / fs, num=nb_frame)
+            time = np.around(time, 1)
 
-    # Prominence criteria
-    freqs = np.arange(90, 11200, 100)
-    limit = np.zeros((len(freqs)))
-    for i in range(len(freqs)):
-        if freqs[i] >= 89.1 and freqs[i] < 1000:
-            limit[i] = 9 + 10 * np.log10(1000 / freqs[i])
-        if freqs[i] >= 1000 and freqs[i] < 11200:
-            limit[i] = 9
+            signal = signal.reshape((nb_frame,len_seg))
+            spectrum_db, freq_axis = spectrum(signal, fs, db=True)
+    else:
+        if signal.shape != freqs.shape :
+            raise ValueError('Input spectrum and frequency axis must have the same shape')
+        else :
+            spectrum_db = signal
+            freq_axis = freqs
+            
+            
+    # compute tnr values
+    tones_freqs, pr, prom, t_pr = _pr_main_calc(spectrum_db, freq_axis)
+ 
+            
+    if (type(pr[0])== np.ndarray) & (is_stationary == False):
+        if freqs == None:
+            # Retore the results in a time vs frequency array
+            freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
+            PR = np.empty((len(freqs), nb_frame))
+            PR.fill(np.nan)
+            promi = np.empty((len(freqs), nb_frame), dtype=bool)
+            promi.fill(np.nan)
 
-    if is_stationary == True:
-        spectrum_db, freq_axis = spectrum(signal, fs, db=True)
-        tones_freqs, pr, prom, t_pr = _pr_main_calc(spectrum_db, freq_axis)
-        tones_freqs = tones_freqs.astype(int)
-
-        if prominence == True:
-            output = {
-                "name": "tone-to-noise ratio",
-                "freqs": tones_freqs[prom],
-                "values": pr[prom],
-                "prominence": True,
-                "global value": t_pr,
-            }
-
-        else:
-            output = {
-                "name": "tone-to-noise ratio",
-                "freqs": tones_freqs,
-                "values": pr,
-                "prominence": prom,
-                "global value": t_pr,
-            }
-
-    elif is_stationary == False:
-        # Signal cut in frames of 500 ms along the time axis
-        n = 0.5 * fs
-        nb_frame = math.floor(signal.size / n)
-        time = np.linspace(0, len(signal) / fs, num=nb_frame)
-        time = np.around(time, 1)
-
-        # Initialization of the result arrays
-        tones_freqs = np.zeros((nb_frame), dtype=list)
-        pr = np.zeros((nb_frame), dtype=list)
-        prom = np.zeros((nb_frame), dtype=list)
-        t_pr = np.zeros((nb_frame))
-
-        # Compute PR values along time
-        for i_frame in range(nb_frame):
-            segment = signal[int(i_frame * n) : int(i_frame * n + n)]
-            spectrum_db, freq_axis = spectrum(segment, fs, db=True)
-            (
-                tones_freqs[i_frame],
-                pr[i_frame],
-                prom[i_frame],
-                t_pr[i_frame],
-            ) = _pr_main_calc(spectrum_db, freq_axis)
-
-        # Store the results in a time vs frequency array
-        freq_axis = np.logspace(np.log10(90), np.log10(11200), num=1000)
-        results = np.zeros((len(freq_axis), nb_frame))
-        promi = np.zeros((len(freq_axis), nb_frame), dtype=bool)
-
-        if prominence == True:
             for t in range(nb_frame):
                 for f in range(len(tones_freqs[t])):
-                    if prom[t][f] == True:
-                        ind = np.argmin(np.abs(freq_axis - tones_freqs[t][f]))
-                        results[ind, t] = pr[t][f]
-                        promi[ind, t] = True
+                    ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
+                    if prominence == False:
+                        PR[ind, t] = pr[t][f]
+                        promi[ind, t] = prom[t][f]
+                    if prominence == True:
+                        if prom[t][f] == True:
+                            PR[ind, t] = pr[t][f]
+                            promi[ind, t] = prom[t][f]
+
+
+            t_pr = np.ravel(t_pr)
+
+        return tones_freqs, PR, promi, t_pr, time 
+    
+    else:
+        if prominence == False:
+            return tones_freqs, pr, prom, t_pr
         else:
-            for t in range(nb_frame):
-                for f in range(len(tones_freqs[t])):
-                    ind = np.argmin(np.abs(freq_axis - tones_freqs[t][f]))
-                    results[ind, t] = pr[t][f]
-                    promi[ind, t] = prom[t][f]
-
-        output = {
-            "name": "prominence ratio",
-            "time": time,
-            "freqs": freq_axis,
-            "values": results,
-            "prominence": promi,
-            "global value": t_pr,
-        }
-
-    return output
+            return tones_freqs[prom], pr[prom], prom[prom], t_pr
