@@ -59,11 +59,8 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
     
     n = spec_db.shape[0]
     if len(spec_db.shape)>1:
-        m = spec_db.shape[1] + 3
-        smooth_spec = np.hstack((smooth_spec,np.zeros((n,3))))
-        spec_db = np.hstack((spec_db,np.zeros((n,3))))
-        freqs = np.hstack((freqs,np.zeros((n,3))))
-        stop = np.arange(1,n+1) * (m+3)
+        m = spec_db.shape[1] 
+        stop = np.arange(1,n+1) * m
         
     else:
         m = spec_db.shape[0]
@@ -177,5 +174,6 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         index = np.delete(index, sup)
     
     tones = np.asarray(tones)
+
 
     return tones
