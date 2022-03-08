@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
+
 
 import scipy.signal as sp_signal
 from numpy import (
@@ -8,7 +15,7 @@ from numpy import (
     sqrt,
     mean,
 )
-import matplotlib.pyplot as plt
+
 
 from mosqito.functions.loudness_ecma.ear_filter_design import ear_filter_design
 from mosqito.functions.shared.sine_wave_generator import (
@@ -64,6 +71,7 @@ plt.ylabel("Level [dB]")
 plt.semilogx(freq, level, "o", label="Filtered sine signal")
 plt.legend()
 plt.savefig(
-    "./validations/loudness_ecma/output/" + "validation_ear_filter_design.png",
+    "./output/" + "validation_ear_filter_design.png",
     format="png",
 )
+plt.clf()

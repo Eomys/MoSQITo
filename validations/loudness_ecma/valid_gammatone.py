@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
+
 
 from scipy.signal import gammatone as scipy_gamma, freqz
 from numpy import log10, abs as np_abs
-import matplotlib.pyplot as plt
 
 from mosqito.functions.loudness_ecma.gammatone import (
     gammatone as mosqito_gamma,
@@ -24,7 +30,7 @@ plt.title(
     "Auditory filter for critical band 18 (centre freq = " + str(int(freq)) + " Hz)"
 )
 plt.savefig(
-    "./validations/loudness_ecma/output/" + "validation_auditory_filter.png",
+    "./output/" + "validation_auditory_filter.png",
     format="png",
 )
 plt.close()
@@ -45,6 +51,6 @@ plt.ylabel("Amplitude [dB]")
 plt.grid(which="both", axis="both")
 plt.legend()
 plt.savefig(
-    "./validations/loudness_ecma/output/" + "comparison_auditory_filter.png",
+    "./output/" + "comparison_auditory_filter.png",
     format="png",
 )

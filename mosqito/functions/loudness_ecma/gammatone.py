@@ -1,6 +1,13 @@
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
+
+
 from scipy.special import comb
 from scipy.signal import freqz
-import matplotlib.pyplot as plt
 from numpy import (
     abs as np_abs,
     arange,

@@ -1,5 +1,16 @@
-import pyuff
-import matplotlib.pyplot as plt
+try:
+    import pyuff
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'pyuff' package."
+        )
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
+
 import numpy as np
 
 from mosqito.functions.noct_spectrum.comp_noct_spectrum import comp_noct_spectrum
@@ -9,14 +20,14 @@ def valid_nthoctave(is_gen_txt=False):
 
     # Load signal
     uff_file = pyuff.UFF(
-        "./validations/noct_spectrum/input/electric_motor_vibration_signal.uff"
+        "./input/electric_motor_vibration_signal.uff"
     )
     dataset = uff_file.read_sets()
     sig = dataset["data"]
     # save as txt file
     if is_gen_txt:
         np.savetxt(
-            "./validations/noct_spectrum/input/electric_motor_vibration_signal.txt",
+            "./input/electric_motor_vibration_signal.txt",
             sig,
             delimiter=";",
         )
@@ -26,7 +37,7 @@ def valid_nthoctave(is_gen_txt=False):
 
     # Load DEWESOFT post-processing
     uff_file = pyuff.UFF(
-        "./validations/noct_spectrum/input/electric_motor_vibration_noct_dewe.uff"
+        "./input/electric_motor_vibration_noct_dewe.uff"
     )
     datasets = uff_file.read_sets()
     oct3_dewe = datasets[0]["data"]
@@ -34,13 +45,13 @@ def valid_nthoctave(is_gen_txt=False):
 
     # Load OROS post-processing
     oct3_oros = np.loadtxt(
-        "./validations/noct_spectrum/input/electric_motor_vibration_3oct_oros.txt",
+        "./input/electric_motor_vibration_3oct_oros.txt",
         delimiter="\t",
         skiprows=2,
         usecols=1,
     )
     oct1_oros = np.loadtxt(
-        "./validations/noct_spectrum/input/electric_motor_vibration_1oct_oros.txt",
+        "./input/electric_motor_vibration_1oct_oros.txt",
         delimiter="\t",
         skiprows=2,
         usecols=1,
@@ -54,7 +65,7 @@ def valid_nthoctave(is_gen_txt=False):
     plt.xlabel("Frequency")
     plt.ylabel("Vibration acceleration [dB]")
     plt.savefig(
-        "./validations/noct_spectrum/output/" + "validation_3oct_spectrum.png",
+        "./output/" + "validation_3oct_spectrum.png",
         format="png",
     )
     plt.clf()
@@ -66,7 +77,7 @@ def valid_nthoctave(is_gen_txt=False):
     plt.xlabel("Frequency")
     plt.ylabel("Vibration acceleration [dB]")
     plt.savefig(
-        "./validations/noct_spectrum/output/" + "validation_1oct_spectrum.png",
+        "./output/" + "validation_1oct_spectrum.png",
         format="png",
     )
     plt.clf()
