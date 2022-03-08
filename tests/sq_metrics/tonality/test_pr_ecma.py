@@ -5,7 +5,14 @@ Created on Mon Feb  8 10:41:09 2021
 @author: wantysal
 """
 
-import pytest
+# Optional package import
+try:
+    import pytest
+except ImportError:
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package."
+        )
+
 
 # Local application imports
 from mosqito.utils import load

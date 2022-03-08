@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Third party imports
-import pytest
+# Optional package import
+try:
+    import pytest
+except ImportError:
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package."
+        )
 import numpy as np
 
 # Local application imports

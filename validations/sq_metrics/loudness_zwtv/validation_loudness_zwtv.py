@@ -5,10 +5,15 @@ Created on Mon Dec 14 15:16:38 2020
 @author: wantysal
 """
 
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
 
 # Third party imports
 import numpy as np
-import matplotlib.pyplot as plt
 from pandas import ExcelFile, read_excel
 import warnings
 import time

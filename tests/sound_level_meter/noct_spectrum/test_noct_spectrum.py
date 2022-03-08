@@ -1,5 +1,10 @@
-import pytest
-import matplotlib.pyplot as plt
+# Optional package import
+try:
+    import pytest
+except ImportError:
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package."
+        )
 import numpy as np
 
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import (

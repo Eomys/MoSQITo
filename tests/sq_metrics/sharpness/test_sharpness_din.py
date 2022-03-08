@@ -5,9 +5,15 @@ Created on Wed Dec 16 09:20:41 2020
 @author: wantysal
 """
 
-# Standard imports
 import numpy as np
-import pytest
+# Optional package import
+try:
+    import pytest
+except ImportError:
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package."
+        )
+
 
 # Local application imports
 from mosqito.utils import load
