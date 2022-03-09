@@ -13,14 +13,18 @@ There are several ways to contribute to MOSQITO. You can:
 In any case, please let the community know about your [future] contribution ideally through a [GitHub issue](https://github.com/Eomys/MoSQITo/issues) or by sending an email at mosqito(at)framalistes.org that redirect to the maintainers. 
 
 ### Developer guideline
-
-- Open an issue to describe the feature you want to add
-- Make a fork of MOSQITO on your GitHub account
-- On the fork, we advice to keep the master untouched and make your nex development on a branch. This way, if needed, you will be able to start another parallel development in a third branch created from the master.
-- The computation of a metric using a certain method shall be explicit (loudness_zwicker() instead of loudness(method='zwicker')
+This section is under construction. However you can find below some useful tips to understand the MOSQITO's coding philosophy. 
+- Functions that are not supposed to be called by a simple user of the toolbox shall be prefixed with "_" (_calc_slopes.py for instance)
+- The call to the implementatin of a metric using a certain method shall be explicit (`loudness_zwicker()` instead of `loudness(method='zwicker')`)
+- In order to make the content of the toolbox meaningful, it is recomanded to follow a 1 function = 1 .py file philosophy.
 
 ### Checklist for the development of a new metric
 Each function in the function library shall come with:
 - a documentation presenting the sources used for the implementation and showing how the implementation is validated (in the [documentation folder](.)) 
 - a tutorial (in the [tutorial folder](../tutorials))
 - a unit test (in the [tests folder](../tests)) 
+- validation script(s) in the [validation folder](../validations)) 
+
+In order to be accessible via the `from mosqito import <function>` and `from mosqito.<module> import <function>` commands, import commands shall be added to the following `__init__.py` files:
+- [mosqito/__init__.py](../mosqito/__init__.py)
+- mosqito/\<module\>/__init__.py () (for example [mosqito/sq_metrics/__init__.py](../mosqito/sq_metrics/__init__.py) for the sound quality metrics module)
