@@ -16,7 +16,7 @@ from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import (
 )
 
 
-def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=None, prominence=True):
+def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=[], prominence=True):
     """Computation of prominence ratio according to ECMA-74, annex D.10
         The T-PR value is calculated according to ECMA-TR/108
 
@@ -29,7 +29,7 @@ def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=None, prominence
     fs : integer
         sampling frequency if signal given in time domain. Default is None
     freqs : np.array
-        if signal is given in frequency domain, freqs is the correcponding frequency axis. Default is None
+        if signal is given in frequency domain, freqs is the correcponding frequency axis. Default is []
     prominence : boolean
         if True, the algorithm only returns the prominent tones, if False it returns all tones detected
 
@@ -48,7 +48,7 @@ def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=None, prominence
     """
     
     # if the input is a time signal, the spectrum computation is needed
-    if freqs == None:
+    if len(freqs) == 0:
         if is_stationary == True:
             # compute db spectrum
             spectrum_db, freq_axis = spectrum(signal, fs, db=True)
@@ -75,7 +75,7 @@ def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=None, prominence
  
             
     if (type(pr[0])== np.ndarray) & (is_stationary == False):
-        if freqs == None:
+        if len(freqs) == 0:
             # Retore the results in a time vs frequency array
             freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
             PR = np.empty((len(freqs), nb_frame))
