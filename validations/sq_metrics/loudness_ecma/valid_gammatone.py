@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
+
 
 from scipy.signal import gammatone as scipy_gamma, freqz
 from numpy import log10, abs as np_abs
-import matplotlib.pyplot as plt
 
 from mosqito.sq_metrics.loudness.loudness_ecma._gammatone import (
     _gammatone as mosqito_gamma,

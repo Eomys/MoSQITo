@@ -4,10 +4,15 @@ Created on Tue Dec 15 16:36:37 2020
 
 @author: wantysal
 """
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
 
 # Third party imports
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.sq_metrics import sharpness_din

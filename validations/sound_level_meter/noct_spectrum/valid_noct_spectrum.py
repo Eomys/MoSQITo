@@ -1,5 +1,16 @@
-import pyuff
-import matplotlib.pyplot as plt
+try:
+    import pyuff
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'pyuff' package."
+    )
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+    )
+
 import numpy as np
 
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import (

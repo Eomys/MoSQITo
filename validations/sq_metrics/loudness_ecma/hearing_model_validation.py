@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
+# Optional package import
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
+
 
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.optimize import root_scalar
 
 # Project Imports
@@ -53,6 +58,10 @@ def hearing_model_validation():
     """Validation of the ECMA loudness implementation according
     to ECMA-418-2 annex A
     """
+    if plt is None:
+        raise RuntimeError(
+            "In order to make this validation plot you need the 'matplotlib' package."
+            )
 
     phons = [80, 60, 40, 20]
 
