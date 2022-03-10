@@ -134,18 +134,18 @@ def _main_loudness(spec_third, field_type):
     if spec_third.ndim == 1:
         # This is for the test only for test_loudness_zwicker_3oct because only one array of one col is given and this routine needs 2 or more
         spec_third_adapted = (
-            np.ones((spec_third.shape[0], 100)).T * spec_third).T
-    elif spec_third.shape[1] == 1:
-        # This line is only for testing test_loudness_zwicker_wav(), only in case one col in spec third is given.
-        spec_third_adapted = (
-            np.ones((spec_third.shape[0], 100)).T * spec_third[:, 0]
-        ).T
+            np.ones((spec_third.shape[0], 5)).T * spec_third).T
+    # elif spec_third.shape[1] == 1:
+    #     # This line is only for testing test_loudness_zwicker_wav(), only in case one col in spec third is given.
+    #     spec_third_adapted = (
+    #         np.ones((spec_third.shape[0], 100)).T * spec_third[:, 0]
+    #     ).T
     else:
-        # Fomn common wav files where more htan one col is given.
-        spec_third_adapted = spec_third
+        # Fomn common wav files where more than one col is given.
+        spec_third_adapted = spec_third.T
 
     spec_third_aux = spec_third_adapted[: dll.shape[1], :]
-    spec_third_aux[:, -1] = 0
+    # spec_third_aux[:, -1] = 0
 
     # Convert rap, dll in 3 dimensional array
     # 1. generate the array shape
@@ -243,8 +243,7 @@ def _main_loudness(spec_third, field_type):
     # within this critical band
     korry = 0.4 + 0.32 * nm[0] ** 0.2
     nm[0, korry <= 1] *= korry
-    nm[:, -1] = 0
-    if spec_third.ndim == 1 or spec_third.shape[1] == 1:
+    if spec_third.ndim == 1: # or spec_third.shape[1] == 1:
         # This is only for test_loudness_zwicker_3oct because only one array of one col is given and this routine needs 2 or more
         # This line is only also for testing test_loudness_zwicker_wav(), only in case one col in spec third is given.
         nm = nm[:, 1]
