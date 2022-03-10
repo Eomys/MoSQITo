@@ -5,8 +5,12 @@ Created on Mon Nov 30 15:25:12 2020
 @author: wantysal
 """
 
-# import SciDataTool objects
-from SciDataTool import DataTime, DataLinspace
+# Optional package import
+try:
+    import SciDataTool
+except ImportError:
+    SciDataTool = None
+
 
 # import methods
 from mosqito.functions.shared.load import load
@@ -44,6 +48,10 @@ class Audio:
             in case of a .mat file, name of the sampling frequency variable
 
         """
+        if SciDataTool is None:
+            raise RuntimeError(
+                "In order to create an audio object you need the 'SciDataTool' package."
+                )
 
         # Import audio signal
         values, fs = load(
@@ -54,7 +62,7 @@ class Audio:
         )
 
         # Create Data object for time axis
-        time_axis = DataLinspace(
+        time_axis = SciDataTool.DataLinspace(
             name="time",
             unit="s",
             initial=0,
@@ -66,7 +74,7 @@ class Audio:
         # Create audio signal Data object and populate the object
         self.fs = fs
         self.is_stationary = is_stationary
-        self.signal = DataTime(
+        self.signal = SciDataTool.DataTime(
             name="Audio signal",
             symbol="x",
             unit="Pa",

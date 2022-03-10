@@ -4,11 +4,15 @@ Created on Mon Oct 19 13:41:37 2020
 
 @author: wantysal
 """
-
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
 
 # Standard imports
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.functions.roughness_danielweber.comp_roughness import comp_roughness

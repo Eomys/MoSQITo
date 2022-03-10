@@ -4,10 +4,16 @@
 @author martin_g for Eomys
 """
 
-# Third party imports
+# Optional package import
+try:
+    import pytest
+except ImportError:
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package."
+        )
+
+
 import numpy as np
-import matplotlib.pyplot as plt
-import pytest
 
 # Local application imports
 from mosqito.functions.loudness_zwicker.loudness_zwicker_stationary import (

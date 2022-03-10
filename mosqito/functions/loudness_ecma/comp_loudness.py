@@ -3,7 +3,6 @@
 @author: Daniel Jiménez-Caminero Costa
 """
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Project Imports
 from mosqito.functions.loudness_ecma.rectified_band_pass_signals import (

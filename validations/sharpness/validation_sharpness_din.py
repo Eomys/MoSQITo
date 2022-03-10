@@ -4,10 +4,15 @@ Created on Tue Dec 15 16:36:37 2020
 
 @author: wantysal
 """
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
 
 # Third party imports
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.functions.sharpness.comp_sharpness import comp_sharpness
@@ -17,84 +22,84 @@ from mosqito.functions.shared.load import load
 broadband = np.zeros((20), dtype=dict)
 
 broadband[0] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_250.wav",
+    "data_file": r".\data\broadband_250.wav",
     "type": "Broad-band",
     "S": 2.70,
 }
 broadband[1] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_350.wav",
+    "data_file": r".\data\broadband_350.wav",
     "S": 2.74,
 }
 broadband[2] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_450.wav",
+    "data_file": r".\data\broadband_450.wav",
     "S": 2.78,
 }
 broadband[3] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_570.wav",
+    "data_file": r".\data\broadband_570.wav",
     "S": 2.85,
 }
 broadband[4] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_700.wav",
+    "data_file": r".\data\broadband_700.wav",
     "S": 2.91,
 }
 broadband[5] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_840.wav",
+    "data_file": r".\data\broadband_840.wav",
     "S": 2.96,
 }
 broadband[6] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_1000.wav",
+    "data_file": r".\data\broadband_1000.wav",
     "S": 3.05,
 }
 broadband[7] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_1170.wav",
+    "data_file": r".\data\broadband_1170.wav",
     "S": 3.12,
 }
 broadband[8] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_1370.wav",
+    "data_file": r".\data\broadband_1370.wav",
     "S": 3.20,
 }
 broadband[9] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_1600.wav",
+    "data_file": r".\data\broadband_1600.wav",
     "S": 3.30,
 }
 broadband[10] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_1850.wav",
+    "data_file": r".\data\broadband_1850.wav",
     "S": 3.42,
 }
 broadband[11] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_2150.wav",
+    "data_file": r".\data\broadband_2150.wav",
     "S": 3.53,
 }
 broadband[12] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_2500.wav",
+    "data_file": r".\data\broadband_2500.wav",
     "S": 3.69,
 }
 broadband[13] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_2900.wav",
+    "data_file": r".\data\broadband_2900.wav",
     "S": 3.89,
 }
 broadband[14] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_3400.wav",
+    "data_file": r".\data\broadband_3400.wav",
     "S": 4.12,
 }
 broadband[15] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_4000.wav",
+    "data_file": r".\data\broadband_4000.wav",
     "S": 4.49,
 }
 broadband[16] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_4800.wav",
+    "data_file": r".\data\broadband_4800.wav",
     "S": 5.04,
 }
 broadband[17] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_5800.wav",
+    "data_file": r".\data\broadband_5800.wav",
     "S": 5.69,
 }
 broadband[18] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_7000.wav",
+    "data_file": r".\data\broadband_7000.wav",
     "S": 6.47,
 }
 broadband[19] = {
-    "data_file": r".\mosqito\validations\sharpness\data\broadband_8500.wav",
+    "data_file": r".\data\broadband_8500.wav",
     "S": 7.46,
 }
 
@@ -103,88 +108,88 @@ broadband[19] = {
 narrowband = np.zeros((21), dtype=dict)
 
 narrowband[0] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_250.wav",
+    "data_file": r".\data\narrowband_250.wav",
     "type": "Narrow-band",
     "S": 0.38,
 }
 narrowband[1] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_350.wav",
+    "data_file": r".\data\narrowband_350.wav",
     "S": 0.49,
 }
 narrowband[2] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_450.wav",
+    "data_file": r".\data\narrowband_450.wav",
     "S": 0.6,
 }
 narrowband[3] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_570.wav",
+    "data_file": r".\data\narrowband_570.wav",
     "S": 0.71,
 }
 narrowband[4] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_700.wav",
+    "data_file": r".\data\narrowband_700.wav",
     "S": 0.82,
 }
 narrowband[5] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_840.wav",
+    "data_file": r".\data\narrowband_840.wav",
     "S": 0.93,
 }
 narrowband[6] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_1000.wav",
+    "data_file": r".\data\narrowband_1000.wav",
     "S": 1.00,
 }
 narrowband[7] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_1170.wav",
+    "data_file": r".\data\narrowband_1170.wav",
     "S": 1.13,
 }
 narrowband[8] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_1370.wav",
+    "data_file": r".\data\narrowband_1370.wav",
     "S": 1.26,
 }
 narrowband[9] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_1600.wav",
+    "data_file": r".\data\narrowband_1600.wav",
     "S": 1.35,
 }
 narrowband[10] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_1850.wav",
+    "data_file": r".\data\narrowband_1850.wav",
     "S": 1.49,
 }
 narrowband[11] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_2150.wav",
+    "data_file": r".\data\narrowband_2150.wav",
     "S": 1.64,
 }
 narrowband[12] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_2500.wav",
+    "data_file": r".\data\narrowband_2500.wav",
     "S": 1.78,
 }
 narrowband[13] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_2900.wav",
+    "data_file": r".\data\narrowband_2900.wav",
     "S": 2.06,
 }
 narrowband[14] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_3400.wav",
+    "data_file": r".\data\narrowband_3400.wav",
     "S": 2.40,
 }
 narrowband[15] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_4000.wav",
+    "data_file": r".\data\narrowband_4000.wav",
     "S": 2.82,
 }
 narrowband[16] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_4800.wav",
+    "data_file": r".\data\narrowband_4800.wav",
     "S": 3.48,
 }
 narrowband[17] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_5800.wav",
+    "data_file": r".\data\narrowband_5800.wav",
     "S": 4.43,
 }
 narrowband[18] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_7000.wav",
+    "data_file": r".\data\narrowband_7000.wav",
     "S": 5.52,
 }
 narrowband[19] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_8500.wav",
+    "data_file": r".\data\narrowband_8500.wav",
     "S": 6.81,
 }
 narrowband[20] = {
-    "data_file": r".\mosqito\validations\sharpness\data\narrowband_10500.wav",
+    "data_file": r".\data\narrowband_10500.wav",
     "S": 8.55,
 }
 
