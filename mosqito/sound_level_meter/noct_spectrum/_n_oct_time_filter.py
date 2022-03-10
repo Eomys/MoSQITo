@@ -5,7 +5,7 @@ import numpy as np
 from scipy.signal import decimate, butter, lfilter
 
 
-def _n_oct_filter(sig, fs, fc, alpha, N=3):
+def _n_oct_time_filter(sig, fs, fc, alpha, N=3):
     """Design of a nth octave filter set
 
     Designs a digital 1/3-octave filter with center frequency fc for
@@ -57,15 +57,22 @@ def _n_oct_filter(sig, fs, fc, alpha, N=3):
     # Normalized cutoff frequencies
     w1 = fc / (fs / 2) / alpha
     w2 = fc / (fs / 2) * alpha
-
+    
     # define filter coefficient
     b, a = butter(N, [w1, w2], "bandpass", analog=False)
 
     # filter signal
-    sig_filt = lfilter(b, a, sig)
-
-    # Compute overall rms level
-    level = np.sqrt(np.mean(sig_filt ** 2))
+    if len(sig.shape)>1:
+        level = []
+        for i in range(sig.shape[0]):
+            sig_filt = lfilter(b, a, sig[i,:])
+            # Compute overall rms level
+            level.append(np.sqrt(np.mean(sig_filt ** 2)))
+        level = np.array(level)
+    else:
+        sig_filt = lfilter(b, a, sig)
+        # Compute overall rms level
+        level = np.sqrt(np.mean(sig_filt ** 2))
 
     return level
 
