@@ -19,7 +19,7 @@ def noct_spectrum(sig, fs, fmin, fmax, freqs=[], n=3, G=10, fr=1000):
     Parameters
     ----------
     sig : numpy.ndarray
-        given signal either in time or frequency (complex) domain (dim [nb points, nb blocks])
+        given signal either in time or frequency (complex) domain (dim [nb blocks, nb points])
     fs : float
         Sampling frequency [Hz]
     fmin : float

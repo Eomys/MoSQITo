@@ -34,7 +34,7 @@ def loudness_zwst(signal, fs, freqs=[], field_type="free"):
     Parameters
     ----------
     signal : numpy.array
-        time signal values [Pa]
+        signal values either in time [Pa] or frequency [complex] domain
     fs : integer
         sampling frequency
     freqs : list, None by default
@@ -51,6 +51,8 @@ def loudness_zwst(signal, fs, freqs=[], field_type="free"):
         Calculated loudness [sones]
     N_specific : numpy.ndarray
         Specific loudness [sones/bark]
+    bark_axis : numpy.array
+        Frequency axis in bark
     """
 
 
