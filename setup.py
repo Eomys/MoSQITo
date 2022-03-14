@@ -35,7 +35,7 @@ setuptools.setup(
     ),
     packages=setuptools.find_packages(
         exclude=[
-            "documentation",
+            "docs",
             "tutorials",
             "validations",
             "tests",

@@ -18,12 +18,12 @@ online, confirming the interest of the engineering and scientific
 community, but they often use Matlab signal processing commercial
 toolbox.
 
-Besides the metrics, sound quality studies requires several tool like audio signal filtering or jury testing procedure fore instance.
+Besides the metrics, sound quality studies requires several tool like audio signal filtering or jury testing procedure for instance.
 
 ## Objectives
 
 The objective of MOSQITO is therefore to provide a unified and modular development framework of key sound quality tools (including key SQ metrics) with open-source object-oriented technologies, favoring reproducible science and efficient shared scripting among engineers, teachers and researchers
-community. The development roadmap of the project is presented in more details in the [scope section](./documentation/scope.md) of the documentation. 
+community. The development roadmap of the project is presented in more details in the [scope section](./docs/scope.md) of the documentation. 
 
 It is written in Python, one of the most popular free programming language in the scientific computing community. It is meant to be highly documented (use of Jupyter notebooks, tutorials) and validated with reference sound samples and scientific publications.
 
@@ -33,7 +33,7 @@ It is written in Python, one of the most popular free programming language in th
 
 ## Documentation
 
-Tutorials are available in the [tutorials](./tutorials/) folder. Documentation and validation of the MOSQITO functions are available in the [documentation](./documentation/) folder.
+Tutorials are available in the [tutorials](./tutorials/) folder. Documentation and validation of the MOSQITO functions are available in the [documentation](./docs/) folder.
 
 ## Getting MOSQITO
 MOSQITO is available on [pip](https://pypi.org/project/pip/). Simply type in a shell the following command:
