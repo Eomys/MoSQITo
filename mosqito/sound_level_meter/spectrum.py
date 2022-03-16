@@ -12,7 +12,7 @@ from numpy.fft import fft
 from mosqito.utils.conversion import amp2db
 
 
-def spectrum(signal,fs,db=True):
+def spectrum(signal,fs,window='hanning',db=True):
     """
     
 
@@ -37,12 +37,15 @@ def spectrum(signal,fs,db=True):
     # single time signal
     if len(signal.shape)==1:
         n = len(signal)
-        window = np.hanning(n)
+        if window == 'hanning':
+            window = np.hanning(n)
+        elif window == 'blackman':
+            window = np.blackman(n)
         window = window / np.sum(window)
     
         # Creation of the spectrum by FFT
         spectrum = fft(signal * window)[0:n//2] * 1.42
-        freq_axis = np.arange(0, int(n / 2), 1) * (fs / n)
+        freq_axis = np.arange(0, n//2, 1) * (fs / n)
     
         if db == True:
             # Conversion into dB level
@@ -52,11 +55,14 @@ def spectrum(signal,fs,db=True):
     # n time signals
     elif len(signal.shape)>1:
         n = signal.shape[1]
-        window = np.hanning(n)
+        if window == 'hanning':
+            window = np.hanning(n)
+        elif window == 'blackman':
+            window = np.blackman(n)
         window = window / np.sum(window)
 
         # Creation of the spectrum by FFT
-        spectrum = fft(signal * window, axis=1 )[:,0:n//2] * 1.42
+        spectrum = fft(signal * window)[:,0:n//2] * 1.42
         freq_axis = np.tile(np.arange(0, int(n / 2), 1) * (fs / n), (signal.shape[0],1))
 
         if db == True:
