@@ -45,7 +45,7 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
     # Frequency axis in Bark
     barks = freq2bark(freqs)
     # Highest frequency
-    nZ = np.arange(1, n//2 + 1, 1)
+    nZ = np.arange(1, n + 1, 1)
     
     # Calculate Zwicker a0 factor (transfer characteristic of the outer and inner ear)
     a0 = np.zeros((n))
@@ -53,7 +53,7 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
     spectrum = a0 * spectrum
 
     # Conversion of the spectrum into dB
-    module = abs(spectrum[0:n//2])
+    module = abs(spectrum)
     spec_dB = amp2db(module, ref=0.00002)
 
     # Find the audible components within the spectrum
