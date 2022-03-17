@@ -5,15 +5,14 @@ try:
 except ImportError:
     raise RuntimeError(
         "In order to perform this validation you need the 'matplotlib' package."
-        )
+    )
 
 # Local application imports
 from mosqito.utils.sine_wave_generator import (
     sine_wave_generator,
 )
-from mosqito.sq_metrics.loudness.loudness_ecma._segmentation_blocks import (
-    _segmentation_blocks,
-)
+from mosqito.utils import time_segmentation
+
 
 signal, _ = sine_wave_generator(
     fs=48000,
@@ -21,7 +20,7 @@ signal, _ = sine_wave_generator(
     spl_value=60,
     freq=40,
 )
-blocks = _segmentation_blocks(signal, 8192, 2048)
+blocks = time_segmentation(signal, 8192, 2048)
 
 plt.subplot(211)
 plt.plot(signal)

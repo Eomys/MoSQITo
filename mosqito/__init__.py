@@ -19,6 +19,7 @@ from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw import (
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din import sharpness_din
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon
 from mosqito.utils.load import load
+from mosqito.utils.time_segmentation import time_segmentation
 
 # Colors and linestyles
 COLORS = [

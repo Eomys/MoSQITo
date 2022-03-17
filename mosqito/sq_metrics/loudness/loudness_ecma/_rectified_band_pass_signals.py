@@ -10,9 +10,7 @@ from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq imp
     _auditory_filters_centre_freq,
 )
 from mosqito.sq_metrics.loudness.loudness_ecma._gammatone import _gammatone
-from mosqito.sq_metrics.loudness.loudness_ecma._segmentation_blocks import (
-    _segmentation_blocks,
-)
+from mosqito.utils import time_segmentation
 
 
 def _rectified_band_pass_signals(sig, sb=2048, sh=1024):
@@ -84,7 +82,7 @@ def _rectified_band_pass_signals(sig, sb=2048, sh=1024):
         # "band_number" in which we are processing the signal. "sh_array" is the step size, the time shift to the next
         # block.
 
-        block_array = _segmentation_blocks(
+        block_array = time_segmentation(
             band_pass_signal, sb[band_number], sh[band_number]
         )
 
