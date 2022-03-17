@@ -83,7 +83,7 @@ def _rectified_band_pass_signals(sig, sb=2048, sh=1024):
         # block.
 
         block_array = time_segmentation(
-            band_pass_signal, sb[band_number], sh[band_number]
+            band_pass_signal, sb[band_number], sh[band_number], is_ecma=True
         )
 
         # RECTIFICATION (5.1.5)
