@@ -6,7 +6,7 @@
 import numpy as np
 
 
-def time_segmentation(sig, sb, sh, is_ecma=False):
+def time_segmentation(sig, nperseg=2048, noverlap=None, is_ecma=False):
     """Function used for the segmentation of a time signal into
     smaller parts of audio (blocks).
 
@@ -16,26 +16,31 @@ def time_segmentation(sig, sb, sh, is_ecma=False):
     Parameters
     ----------
     sig: numpy.array
-        time signal, shape (N,)
-    sb: int
-        block size
-    sh: int
-        Hop size.
+        A 1-dimensional time signal array.
+    nperseg: int, optional
+        Length of each segment. Defaults to 2048.
+    noverlap: int, optional
+        Number of points to overlap between segments.
+        If None, noverlap = nperseg / 2. Defaults to None.
 
     Returns
     -------
-    block_array: List
-        Array list of blocks in which the signal has been segmented.
+    block_array: numpy.array
+        A 2-dimensional array of size (nperseg, nseg)
+        containing the segmented signal.
     """
+
+    if noverlap is None:
+        noverlap = int(nperseg / 2)
 
     if is_ecma:
         # pad with zeroes at the begining
-        sig = np.hstack((np.zeros(sb), sig))
+        sig = np.hstack((np.zeros(nperseg), sig))
 
     l = 0
     block_array = []
-    while l * sh <= len(sig):
-        block_array.append(sig[l * sh : sb + l * sh])
+    while l * noverlap <= len(sig) - nperseg:
+        block_array.append(sig[l * noverlap : nperseg + l * noverlap])
         l += 1
 
-    return block_array
+    return np.array(block_array).T
