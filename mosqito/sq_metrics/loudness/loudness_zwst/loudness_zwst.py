@@ -15,7 +15,7 @@ from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
 )
 
 
-def loudness_zwst(signal, fs, field_type="free"):
+def loudness_zwst(signal, fs, freqs=[], field_type="free"):
     """Zwicker-loudness calculation for stationary signals
 
     Calculates the acoustic loudness according to Zwicker method for
@@ -34,25 +34,31 @@ def loudness_zwst(signal, fs, field_type="free"):
     Parameters
     ----------
     signal : numpy.array
-        time signal values [Pa]
+        signal values either in time [Pa] or frequency [complex] domain
     fs : integer
         sampling frequency
+    freqs : list, None by default
+        if signal is a spectrum, freqs is the list of the corresponding frequencies 
+        [] if signal contains the time values
+        
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse")
 
     Outputs
     -------
-    N : float
+    N : float or numpy.array
         Calculated loudness [sones]
     N_specific : numpy.ndarray
         Specific loudness [sones/bark]
+    bark_axis : numpy.array
+        Frequency axis in bark
     """
 
-    #
+
     # Compute third octave band spectrum
-    spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600)
-    spec_third = 20 * np.log10(spec_third / 2e-5)
+    spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600, freqs=freqs)
+    spec_third = 20 * np.log10(spec_third/ 2e-5)
     #
     # Compute main loudness
     Nm = _main_loudness(spec_third, field_type)
@@ -60,7 +66,7 @@ def loudness_zwst(signal, fs, field_type="free"):
     # Computation of specific loudness pattern and integration of overall
     # loudness by attaching slopes towards higher frequencies
     N, N_specific = _calc_slopes(Nm)
-    #
+
     # Define Bark axis
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
 

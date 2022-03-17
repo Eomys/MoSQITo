@@ -134,14 +134,14 @@ def _main_loudness(spec_third, field_type):
     if spec_third.ndim == 1:
         # This is for the test only for test_loudness_zwicker_3oct because only one array of one col is given and this routine needs 2 or more
         spec_third_adapted = (
-            np.ones((spec_third.shape[0], 100)).T * spec_third).T
-    elif spec_third.shape[1] == 1:
-        # This line is only for testing test_loudness_zwicker_wav(), only in case one col in spec third is given.
-        spec_third_adapted = (
-            np.ones((spec_third.shape[0], 100)).T * spec_third[:, 0]
-        ).T
+            np.ones((spec_third.shape[0], 5)).T * spec_third).T
+    # elif spec_third.shape[1] == 1:
+    #     # This line is only for testing test_loudness_zwicker_wav(), only in case one col in spec third is given.
+    #     spec_third_adapted = (
+    #         np.ones((spec_third.shape[0], 100)).T * spec_third[:, 0]
+    #     ).T
     else:
-        # Fomn common wav files where more htan one col is given.
+        # Fomn common wav files where more than one col is given.
         spec_third_adapted = spec_third
 
     spec_third_aux = spec_third_adapted[: dll.shape[1], :]

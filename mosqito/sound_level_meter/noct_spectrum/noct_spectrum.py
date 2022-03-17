@@ -5,11 +5,12 @@ import numpy as np
 
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum._filter_bandwidth import _filter_bandwidth
-from mosqito.sound_level_meter.noct_spectrum._n_oct_filter import _n_oct_filter
+from mosqito.sound_level_meter.noct_spectrum._n_oct_time_filter import _n_oct_time_filter
+from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import _n_oct_freq_filter
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
 
 
-def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
+def noct_spectrum(sig, fs, fmin, fmax, freqs=[], n=3, G=10, fr=1000):
     """Compute nth-octave band spectrum
 
     Calculate the rms level of the signal "sig" sampled at freqency "fs"
@@ -18,13 +19,15 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     Parameters
     ----------
     sig : numpy.ndarray
-        time signal (dim [nb points, nb blocks])
+        given signal either in time or frequency (complex) domain (dim [nb blocks, nb points])
     fs : float
         Sampling frequency [Hz]
     fmin : float
         Min frequency band [Hz]
     fmax : float
         Max frequency band [Hz]
+    freqs : list
+        List of input frequency if signal is a spectrum. Default is [].
     n : int
         number of bands pr octave
     G : int
@@ -50,8 +53,18 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     alpha_vec = _filter_bandwidth(fc_vec, n=n)
 
     # Calculation of the rms level of the time signal in each band
-    spec = []
+    if len(sig.shape) > 1:
+        spec = np.array([[] for i in range(sig.shape[0])])
+    else :
+        spec = [[]]
     for fc, alpha in zip(fc_vec, alpha_vec):
-        spec.append(_n_oct_filter(sig, fs, fc, alpha))
+        if len(freqs) == 0:
+            spec = np.c_[spec, _n_oct_time_filter(sig, fs, fc, alpha)]
+        else:
+            spec = np.c_[spec, _n_oct_freq_filter(sig, fs, fc, alpha)]
+    
+    spec = np.array(spec)
+    if spec.shape[0] == 1:
+        spec = spec[0,:]
 
-    return np.array(spec), fpref
+    return spec, fpref
