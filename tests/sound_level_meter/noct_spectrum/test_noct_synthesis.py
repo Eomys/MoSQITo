@@ -9,7 +9,7 @@ except ImportError:
         )
 import numpy as np
 
-from scipy.fft import ifft, fftfreq
+from scipy.fft import fft, fftfreq
 
 from mosqito.sound_level_meter.noct_spectrum.noct_synthesis import (
     noct_synthesis,
@@ -34,7 +34,7 @@ def test_noct_synthesis():
     sig += 0.75 * np.sin(2 * np.pi * 250 * t)
     
        
-    spectrum = ifft(sig)
+    spectrum = fft(sig)
     freqs = fftfreq(len(spectrum))
 
     spec_3, freq = noct_synthesis(spectrum, freqs, fs, 24, 12600, n=3)

@@ -12,11 +12,12 @@ except ImportError:
         "In order to perform the tests you need the 'pytest' package."
         )
 
-
 import numpy as np
+from scipy.fft import fft
 
 # Local application imports
 from mosqito.utils import load
+from mosqito.sound_level_meter.spectrum import spectrum
 from mosqito.sq_metrics import loudness_zwst
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
     _main_loudness,
@@ -136,9 +137,53 @@ def test_loudness_zwicker_44100Hz():
     # Check ISO 532-1 compliance
     assert _check_compliance(loudness, signal, "./tests/output/")
 
+@pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
+def test_loudness_zwicker_spec():
+    """Test function for the script loudness_zwicker_stationary
+
+    Test function for the script loudness_zwicker_stationary with
+    complex spectrum file as input. The input file is provided by ISO 532-1 annex
+    B3, the compliance is assessed according to section 5.1 of the
+    standard. One .png compliance plot is generated.
+
+    Parameters
+    ----------
+    None
+
+    Outputs
+    -------
+    None
+    """
+    # Test signal as input for stationary loudness
+    # (from ISO 532-1 annex B3)
+    signal = {
+        "data_file": "tests/input/Test signal 3 (1 kHz 60 dB).wav",
+        "N": 4.019,
+        "N_specif_file": "tests/input/test_signal_3.csv",
+    }
+
+    # Load signal and compute third octave band spectrum
+    sig, fs = load(signal["data_file"])
+    # Compute corresponding spectrum
+    n = len(sig)
+    spec = fft(sig * np.blackman(n)/np.sum(np.blackman(n)))[0:n//2]
+    freqs = np.arange(0, n//2, 1) * (fs / n)
+    # Compute Loudness
+    N, N_specific, bark_axis = loudness_zwst(spec, fs, freqs=freqs)
+    loudness = {
+        "name": "Loudness",
+        "values": N,
+        "specific values": N_specific,
+        "freqs": bark_axis,
+    }
+
+    # Check ISO 532-1 compliance
+    assert _check_compliance(loudness, signal, "./tests/output/")
+
 
 # test de la fonction
 if __name__ == "__main__":
-    # test_loudness_zwicker_3oct()
+    test_loudness_zwicker_3oct()
     test_loudness_zwicker_wav()
-    # test_loudness_zwicker_44100Hz()
+    #test_loudness_zwicker_spec()
+    test_loudness_zwicker_44100Hz()
