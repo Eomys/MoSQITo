@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise RuntimeError(
+        "In order to perform this validation you need the 'matplotlib' package."
+        )
+
 
 import scipy.signal as sp_signal
 from numpy import (
@@ -8,7 +15,6 @@ from numpy import (
     sqrt,
     mean,
 )
-import matplotlib.pyplot as plt
 
 from mosqito.sq_metrics.loudness.loudness_ecma._ear_filter_design import (
     _ear_filter_design,
@@ -70,3 +76,4 @@ plt.savefig(
     + "validation_ear_filter_design.png",
     format="png",
 )
+plt.clf()

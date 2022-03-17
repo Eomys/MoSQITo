@@ -4,10 +4,6 @@
 """
 
 import numpy as np
-import math
-import scipy as sp
-import matplotlib.pyplot as plt
-from scipy.signal import welch
 
 
 def equal_loudness_contours(phones):

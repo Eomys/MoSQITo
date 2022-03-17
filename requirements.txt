@@ -1,5 +1,2 @@
 numpy
 scipy
-pytest
-matplotlib
-scidatatool
