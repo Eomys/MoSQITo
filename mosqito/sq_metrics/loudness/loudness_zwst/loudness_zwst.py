@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 # Third party imports
+from time import time
 import numpy as np
 
 # Local application imports
-from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import (
-    noct_spectrum,
-)
+from mosqito.sound_level_meter import noct_spectrum
+from mosqito.utils import time_segmentation
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
     _main_loudness,
 )
@@ -15,7 +15,7 @@ from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
 )
 
 
-def loudness_zwst(signal, fs, field_type="free"):
+def loudness_zwst(signal, fs, nperseg=None, noverlap=None, field_type="free"):
     """Zwicker-loudness calculation for stationary signals
 
     Calculates the acoustic loudness according to Zwicker method for
@@ -34,12 +34,18 @@ def loudness_zwst(signal, fs, field_type="free"):
     Parameters
     ----------
     signal : numpy.array
-        time signal values [Pa]
+        Time signal values [Pa].
     fs : integer
-        sampling frequency
+        Sampling frequency.
+    nperseg: int, optional
+        Length of each segment. If None, the loudness is computed
+        over the whole signal. Defaults to None.
+    noverlap: int, optional
+        Number of points to overlap between segments.
+        If None, noverlap = nperseg / 2. Defaults to None.
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
-        default or "diffuse")
+        default or "diffuse").
 
     Outputs
     -------
@@ -48,6 +54,11 @@ def loudness_zwst(signal, fs, field_type="free"):
     N_specific : numpy.ndarray
         Specific loudness [sones/bark]
     """
+
+    #
+    # Time signal segmentation
+    if nperseg is not None:
+        signal = time_segmentation(signal, nperseg, noverlap)
 
     #
     # Compute third octave band spectrum

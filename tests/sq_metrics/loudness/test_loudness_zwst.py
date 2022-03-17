@@ -8,9 +8,7 @@
 try:
     import pytest
 except ImportError:
-    raise RuntimeError(
-        "In order to perform the tests you need the 'pytest' package."
-        )
+    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
 
 
 import numpy as np
@@ -31,7 +29,7 @@ from tests.input.Test_signal_1 import test_signal_1
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
-def test_loudness_zwicker_3oct():
+def test_loudness_zwst_3oct():
     """Test function for the script loudness_zwst
 
     Test function for the script loudness_zwicker_stationary with
@@ -68,7 +66,7 @@ def test_loudness_zwicker_3oct():
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
-def test_loudness_zwicker_wav():
+def test_loudness_zwst_wav():
     """Test function for the script loudness_zwicker_stationary
 
     Test function for the script loudness_zwicker_stationary with
@@ -87,12 +85,12 @@ def test_loudness_zwicker_wav():
     # Test signal as input for stationary loudness
     # (from ISO 532-1 annex B3)
     signal = {
-        "data_file": "tests/input/Test signal 3 (1 kHz 60 dB).wav",
-        "N": 4.019,
-        "N_specif_file": "tests/input/test_signal_3.csv",
+        "data_file": "tests/input/Test signal 5 (pinknoise 60 dB).wav",
+        "N": 10.498,
+        "N_specif_file": "tests/input/test_signal_5.csv",
     }
 
-    # Load signal and compute third octave band spectrum
+    # Load signal
     sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
@@ -109,7 +107,7 @@ def test_loudness_zwicker_wav():
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
-def test_loudness_zwicker_44100Hz():
+def test_loudness_zwst_44100Hz():
     """Test function for the script loudness_zwicker_stationary
     with input .wav file sampled at 44.1 kHz
     """
@@ -137,8 +135,23 @@ def test_loudness_zwicker_44100Hz():
     assert _check_compliance(loudness, signal, "./tests/output/")
 
 
+@pytest.mark.loudness_zwst
+def test_loudness_zwst_blocks():
+    # Load signal
+    sig, fs = load(
+        "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2 ** 0.5
+    )
+
+    # Compute Loudness
+    N, N_specific, bark_axis = loudness_zwst(sig, fs, nperseg=8192 * 2, noverlap=4096)
+
+    # Check that all values are within the desired values +/- 5%
+    np.testing.assert_allclose(N, 10.498, rtol=0.05)
+
+
 # test de la fonction
 if __name__ == "__main__":
-    # test_loudness_zwicker_3oct()
-    test_loudness_zwicker_wav()
-    # test_loudness_zwicker_44100Hz()
+    # test_loudness_zwst_3oct()
+    # test_loudness_zwst_wav()
+    # test_loudness_zwst_44100Hz()
+    test_loudness_zwst_blocks()
