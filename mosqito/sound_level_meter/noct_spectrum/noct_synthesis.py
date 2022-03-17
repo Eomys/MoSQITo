@@ -1,26 +1,31 @@
 # -*- coding: utf-8 -*-
+"""
+Created on Thu Mar 17 11:02:18 2022
 
-# Standard library imports
+@author: wantysal
+"""
+
+# Standard library import
 import numpy as np
 
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum._filter_bandwidth import _filter_bandwidth
-from mosqito.sound_level_meter.noct_spectrum._n_oct_time_filter import _n_oct_time_filter
+from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import _n_oct_freq_filter
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
 
 
-def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
-    """Compute nth-octave band spectrum
+def noct_synthesis(spectrum, freqs, fs, fmin, fmax, n=3, G=10, fr=1000):
+    """Adapt input spectrum to nth-octave band spectrum
 
-    Calculate the rms level of the signal "sig" sampled at freqency "fs"
-    for each third octave band between "fc_min" and "fc_max".
+    Convert the input spectrum to third-octave band spectrum
+    between "fc_min" and "fc_max".
 
     Parameters
     ----------
-    sig : numpy.ndarray
-        time signal values (dim [nb blocks, nb points])
-    fs : float
-        Sampling frequency [Hz]
+    spectrum : numpy.ndarray
+        input complex spectrum (dim [nb blocks, nb points])
+    freqs : list
+        list of input frequency 
     fmin : float
         Min frequency band [Hz]
     fmax : float
@@ -50,13 +55,13 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     alpha_vec = _filter_bandwidth(fc_vec, n=n)
 
     # Calculation of the rms level of the time signal in each band
-    if len(sig.shape) > 1:
-        spec = np.array([[] for i in range(sig.shape[0])])
+    if len(spectrum.shape) > 1:
+        spec = np.array([[] for i in range(spectrum.shape[0])])
     else :
         spec = [[]]
     for fc, alpha in zip(fc_vec, alpha_vec):
-        spec = np.c_[spec, _n_oct_time_filter(sig, fs, fc, alpha)]
-   
+        spec = np.c_[spec, _n_oct_freq_filter(spectrum, fs, fc, alpha)]
+    
     spec = np.array(spec)
     if spec.shape[0] == 1:
         spec = spec[0,:]
