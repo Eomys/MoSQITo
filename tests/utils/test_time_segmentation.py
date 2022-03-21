@@ -12,17 +12,18 @@ from mosqito.utils import time_segmentation
 @pytest.mark.utils  # to skip or run only tests on utils module
 def test_time_segmentation():
 
+    fs = 48000
     signal, _ = sine_wave_generator(
-        fs=48000,
+        fs=fs,
         t=1,
         spl_value=60,
         freq=40,
     )
 
-    blocks = time_segmentation(signal, 8192, 2048, is_ecma=True)
+    blocks, _ = time_segmentation(signal, fs, 8192, 2048, is_ecma=True)
     np.testing.assert_array_equal(blocks.shape[1], 24)
 
-    blocks = time_segmentation(signal, 8192, 2048, is_ecma=False)
+    blocks, _ = time_segmentation(signal, fs, 8192, 2048, is_ecma=False)
     np.testing.assert_array_equal(blocks.shape[1], 20)
 
 

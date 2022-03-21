@@ -82,9 +82,10 @@ def _rectified_band_pass_signals(sig, sb=2048, sh=1024):
         # "band_number" in which we are processing the signal. "sh_array" is the step size, the time shift to the next
         # block.
 
-        block_array = time_segmentation(
-            band_pass_signal, sb[band_number], sh[band_number], is_ecma=True
-        ).T
+        block_array, _ = time_segmentation(
+            band_pass_signal, fs, sb[band_number], sh[band_number], is_ecma=True
+        )
+        block_array = block_array.T
 
         # RECTIFICATION (5.1.5)
 

@@ -18,7 +18,7 @@ signal, _ = sine_wave_generator(
     spl_value=60,
     freq=40,
 )
-blocks = time_segmentation(signal, 8192, 2048, is_ecma=True)
+blocks, _ = time_segmentation(signal, 48000, 8192, 2048, is_ecma=True)
 
 plt.subplot(211)
 plt.plot(signal)

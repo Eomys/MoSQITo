@@ -143,7 +143,9 @@ def test_loudness_zwst_blocks():
     )
 
     # Compute Loudness
-    N, N_specific, bark_axis = loudness_zwst(sig, fs, nperseg=8192 * 2, noverlap=4096)
+    N, N_specific, bark_axis, time_axis = loudness_zwst(
+        sig, fs, nperseg=8192 * 2, noverlap=4096
+    )
 
     # Check that all values are within the desired values +/- 5%
     np.testing.assert_allclose(N, 10.498, rtol=0.05)

@@ -50,15 +50,20 @@ def loudness_zwst(signal, fs, nperseg=None, noverlap=None, field_type="free"):
     Outputs
     -------
     N : float
-        Calculated loudness [sones]
+        The overall loudness [sones]
     N_specific : numpy.ndarray
-        Specific loudness [sones/bark]
+        The specific loudness [sones/bark]
+    bark_axis: numpy.array
+        The Bark axis
+    time_axis: numpy.array
+        The time axis, if nperseg is not None
+
     """
 
     #
     # Time signal segmentation
     if nperseg is not None:
-        signal = time_segmentation(signal, nperseg, noverlap)
+        signal, time_axis = time_segmentation(signal, fs, nperseg, noverlap)
 
     #
     # Compute third octave band spectrum
@@ -75,4 +80,7 @@ def loudness_zwst(signal, fs, nperseg=None, noverlap=None, field_type="free"):
     # Define Bark axis
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
 
-    return N, N_specific, bark_axis
+    if nperseg is not None:
+        return N, N_specific, bark_axis, time_axis
+    else:
+        return N, N_specific, bark_axis
