@@ -157,16 +157,16 @@ def test_loudness_zwicker_spec():
     # Test signal as input for stationary loudness
     # (from ISO 532-1 annex B3)
     signal = {
-        "data_file": "tests/input/Test signal 3 (1 kHz 60 dB).wav",
+        "data_file": "tests\input\Test signal 3 (1 kHz 60 dB).wav",
         "N": 4.019,
         "N_specif_file": "tests/input/test_signal_3.csv",
     }
 
     # Load signal and compute third octave band spectrum
-    sig, fs = load(signal["data_file"])
+    sig, fs = load(signal["data_file"], wav_calib=2*2**0.5)
     # Compute corresponding spectrum
     n = len(sig)
-    spec = fft(sig * np.blackman(n)/np.sum(np.blackman(n)))[0:n//2]
+    spec = fft(sig * np.hanning(n)/np.sum(np.hanning(n)))[0:n//2] * 2**0.5
     freqs = np.arange(0, n//2, 1) * (fs / n)
     # Compute Loudness
     N, N_specific, bark_axis = loudness_zwst(spec, fs, freqs=freqs)
@@ -185,5 +185,5 @@ def test_loudness_zwicker_spec():
 if __name__ == "__main__":
     test_loudness_zwicker_3oct()
     test_loudness_zwicker_wav()
-    #test_loudness_zwicker_spec()
+    test_loudness_zwicker_spec()
     test_loudness_zwicker_44100Hz()

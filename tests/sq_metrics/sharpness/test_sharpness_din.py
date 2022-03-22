@@ -6,6 +6,7 @@ Created on Wed Dec 16 09:20:41 2020
 """
 
 import numpy as np
+from scipy.fft import fft
 # Optional package import
 try:
     import pytest
@@ -49,6 +50,39 @@ def test_sharpness_din():
 
     assert check_compliance(sharpness, signal)
 
+@pytest.mark.sharpness_din  # to skip or run sharpness test
+def test_sharpness_din_spec():
+    """Test function for the sharpness calculation of an audio signal
+
+    Test function for the function "comp_roughness" with 'din' method.
+    The input signals come from DIN 45692_2009E. The compliance is assessed
+    according to chapter 6 of the standard.
+    One .png compliance plot is generated.
+
+    Parameters
+    ----------
+    None
+
+    Outputs
+    -------
+    None
+    """
+
+    # Input signal from DIN 45692_2009E
+    signal = {"data_file": "tests/input/1KHZ60DB.wav", "S": 1}
+
+    # Load signal
+    sig, fs = load(signal["data_file"], wav_calib=1)
+    
+    # Compute corresponding spectrum
+    n = len(sig)
+    spec = fft(sig * np.blackman(n)/np.sum(np.blackman(n)))[0:n//2]
+    freqs = np.arange(0, n//2, 1) * (fs / n)
+
+    # Compute sharpness
+    sharpness = sharpness_din(True, spec, fs, freqs=freqs, method="din")
+
+    assert check_compliance(sharpness, signal)
 
 def check_compliance(S, signal):
     """Check the comppiance of loudness calc. to ISO 532-1
@@ -85,3 +119,4 @@ def check_compliance(S, signal):
 # test de la fonction
 if __name__ == "__main__":
     test_sharpness_din()
+    test_sharpness_din_spec()
