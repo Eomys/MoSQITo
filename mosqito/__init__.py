@@ -17,6 +17,9 @@ from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw import (
     roughness_dw,
 )
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din import sharpness_din
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
+    sharpness_din_from_loudness,
+)
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon
 from mosqito.utils.isoclose import isoclose
 from mosqito.utils.load import load

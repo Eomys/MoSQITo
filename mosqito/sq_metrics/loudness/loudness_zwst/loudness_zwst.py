@@ -50,13 +50,13 @@ def loudness_zwst(signal, fs, nperseg=None, noverlap=None, field_type="free"):
     Outputs
     -------
     N : float
-        The overall loudness [sones]
+        The overall loudness array [sones], size (Ntime,)
     N_specific : numpy.ndarray
-        The specific loudness [sones/bark]
+        The specific loudness array [sones/bark], size (Nbark, Ntime)
     bark_axis: numpy.array
-        The Bark axis
+        The Bark axis array, size (Nbark,)
     time_axis: numpy.array
-        The time axis, if nperseg is not None
+        The time axis array, if nperseg is not None, size (Ntime,)
 
     """
 

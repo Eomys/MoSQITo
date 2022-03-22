@@ -6,13 +6,12 @@ Created on Wed Dec 16 09:20:41 2020
 """
 
 import numpy as np
+
 # Optional package import
 try:
     import pytest
 except ImportError:
-    raise RuntimeError(
-        "In order to perform the tests you need the 'pytest' package."
-        )
+    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
 
 
 # Local application imports
@@ -27,7 +26,6 @@ def test_sharpness_din():
     Test function for the function "comp_roughness" with 'din' method.
     The input signals come from DIN 45692_2009E. The compliance is assessed
     according to chapter 6 of the standard.
-    One .png compliance plot is generated.
 
     Parameters
     ----------
@@ -45,41 +43,42 @@ def test_sharpness_din():
     sig, fs = load(signal["data_file"], wav_calib=1)
 
     # Compute sharpness
-    sharpness = sharpness_din(True, sig, fs, method="din")
+    sharpness = sharpness_din(sig, fs, weighting="din")
 
-    assert check_compliance(sharpness, signal)
+    # Check that the value is within the desired values +/- 5%
+    # as per DIN 45692_2009E (chapter 6)
+    np.testing.assert_allclose(sharpness, 1, rtol=0.05)
 
 
-def check_compliance(S, signal):
-    """Check the comppiance of loudness calc. to ISO 532-1
+@pytest.mark.sharpness_din  # to skip or run sharpness test
+def test_sharpness_din_per_blocks():
+    """Test function for the sharpness calculation of an audio signal
 
-    The compliance is assessed according to chapter 6 of the
-    standard DIN 45692_2009E.
+    Test function for the function "comp_roughness" with 'din' method.
+    The input signals come from DIN 45692_2009E. The compliance is assessed
+    according to chapter 6 of the standard.
 
     Parameters
     ----------
-    S : float
-        computed sharpness value
-    signal : dict
-        {"data file" : <path to the standard file >
-         "S" : <sharpness reference value>
-         }
+    None
 
     Outputs
     -------
-    tst : bool
-        Compliance to the reference data
+    None
     """
 
-    # Load reference value
-    ref = signal["S"]
+    # Input signal from DIN 45692_2009E
+    signal = {"data_file": "tests/input/1KHZ60DB.wav", "S": 1}
 
-    # Test for DIN 45692_2009E comformance (chapter 6)
-    tst = (S >= np.amax([ref * 0.95, ref - 0.05], axis=0)).all() and (
-        S <= np.amin([ref * 1.05, ref + 0.05], axis=0)
-    ).all()
+    # Load signal
+    sig, fs = load(signal["data_file"], wav_calib=1)
 
-    return tst
+    # Compute sharpness
+    sharpness = sharpness_din(sig, fs, weighting="din")
+
+    # Check that the value is within the desired values +/- 5%
+    # as per DIN 45692_2009E (chapter 6)
+    np.testing.assert_allclose(sharpness, 1, rtol=0.05)
 
 
 # test de la fonction
