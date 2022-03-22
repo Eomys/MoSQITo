@@ -42,8 +42,7 @@ def loudness_zwst(signal, fs, freqs=[], field_type="free"):
         sampling frequency
     freqs : list, None by default
         if signal is a spectrum, freqs is the list of the corresponding frequencies 
-        [] if signal contains the time values
-        
+        [] if signal contains the time values. Default is [].       
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse")
@@ -65,6 +64,7 @@ def loudness_zwst(signal, fs, freqs=[], field_type="free"):
     else:
         spec_third, _ = noct_synthesis(signal, freqs, fs, fmin=24, fmax=12600)
         
+    
     # Compute dB values
     spec_third = 20 * np.log10(spec_third/ 2e-5)
     
