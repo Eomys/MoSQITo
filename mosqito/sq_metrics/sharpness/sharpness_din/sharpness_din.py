@@ -9,6 +9,7 @@ Created on Mon Nov 16 10:00:50 2020
 import numpy as np
 
 # Local imports
+from mosqito.utils import time_segmentation
 from mosqito.sq_metrics import loudness_zwst
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
     sharpness_din_from_loudness,
@@ -25,7 +26,14 @@ from mosqito.sq_metrics.sharpness.sharpness_din._sharpness_fastl import (
 
 
 def sharpness_din(
-    signal, fs, method="zwst", weighting="din", field_type="free", skip=0
+    signal,
+    fs,
+    method="zwst",
+    weighting="din",
+    nperseg=None,
+    noverlap=None,
+    field_type="free",
+    skip=0,
 ):
     """Acoustic sharpness calculation according to different methods:
         Aures, Von Bismarck, DIN 45692, Fastl
@@ -41,6 +49,12 @@ def sharpness_din(
     weighting : string
         To specify the weighting function used for the
         sharpness computation.'din' by default,'aures', 'bismarck','fastl'
+    nperseg: int, optional
+        Length of each segment. If None, the loudness is computed
+        over the whole signal. Defaults to None.
+    noverlap: int, optional
+        Number of points to overlap between segments.
+        If None, noverlap = nperseg / 2. Defaults to None.
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
@@ -65,29 +79,30 @@ def sharpness_din(
         raise ValueError("ERROR: weighting must be 'din', 'aures', 'bismarck', 'fastl'")
 
     if method == "zwst":
-        N, N_specific, _ = loudness_zwst(signal, fs, field_type=field_type)
+        N, N_specific, bark_axis, time_axis = loudness_zwst(
+            signal, fs, nperseg=nperseg, noverlap=noverlap, field_type=field_type
+        )
     elif method == "zwtv":
+        # TBD
         pass
     else:
         raise ValueError("ERROR: method must be either 'zwst' or 'zwtv'")
 
-    if weighting == "din":
-        # S = _comp_sharpness_din(N, N_specific, is_stationary)
-        S = sharpness_din_from_loudness(N, N_specific, weighting="din", skip=0)
+    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting, skip=0)
 
-    elif weighting == "aures":
-        S = _comp_sharpness_aures(N, N_specific, is_stationary)
+    # elif weighting == "aures":
+    #     S = _comp_sharpness_aures(N, N_specific, is_stationary)
 
-    elif weighting == "bismarck":
-        S = _comp_sharpness_bismarck(N, N_specific, is_stationary)
+    # elif weighting == "bismarck":
+    #     S = _comp_sharpness_bismarck(N, N_specific, is_stationary)
 
-    elif weighting == "fastl":
-        S = _comp_sharpness_fastl(N, N_specific, is_stationary)
+    # elif weighting == "fastl":
+    #     S = _comp_sharpness_fastl(N, N_specific, is_stationary)
 
-    if is_stationary == False:
-        # Cut transient effect
-        time = np.linspace(0, len(signal) / fs, len(S))
-        cut_index = np.argmin(np.abs(time - skip))
-        S = S[cut_index:]
+    # if is_stationary == False:
+    #     # Cut transient effect
+    #     time = np.linspace(0, len(signal) / fs, len(S))
+    #     cut_index = np.argmin(np.abs(time - skip))
+    #     S = S[cut_index:]
 
     return S

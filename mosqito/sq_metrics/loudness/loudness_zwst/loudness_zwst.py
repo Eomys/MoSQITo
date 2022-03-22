@@ -56,7 +56,7 @@ def loudness_zwst(signal, fs, nperseg=None, noverlap=None, field_type="free"):
     bark_axis: numpy.array
         The Bark axis array, size (Nbark,)
     time_axis: numpy.array
-        The time axis array, if nperseg is not None, size (Ntime,)
+        The time axis array, size (Ntime,) or None
 
     """
 
@@ -80,7 +80,7 @@ def loudness_zwst(signal, fs, nperseg=None, noverlap=None, field_type="free"):
     # Define Bark axis
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
 
-    if nperseg is not None:
-        return N, N_specific, bark_axis, time_axis
-    else:
-        return N, N_specific, bark_axis
+    if nperseg is None:
+        time_axis = None
+
+    return N, N_specific, bark_axis, time_axis

@@ -26,12 +26,6 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din", skip=0):
 
     """
 
-    # Formating of stationnary signal data
-    if not isinstance(N, np.ndarray):
-        N = np.array([N])
-    if N_specific.ndim <= 1:
-        N_specific = N_specific[:, np.newaxis]
-
     # Bark axis
     z = np.linspace(0.1, 24, int(24 / 0.1))
 
@@ -39,9 +33,25 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din", skip=0):
     gDIN = np.ones(z.shape)
     gDIN[z > 15.8] = 0.15 * np.exp(0.42 * (z[z > 15.8] - 15.8)) + 0.85
 
+    # Formating of stationnary signal data
+    if not isinstance(N, np.ndarray):
+        N = np.array([N])
+    if N_specific.ndim <= 1:
+        N_specific = N_specific[:, np.newaxis]
+    else:
+        gDIN = gDIN[:, np.newaxis]
+        z = z[:, np.newaxis]
+
     S = np.zeros(N.shape)
     ind = np.where(N >= 0.1)[0]
-    S[ind] = 0.11 * sum(np.squeeze(N_specific[:, ind]) * gDIN * z * 0.1) / N[ind]
+    S[ind] = (
+        0.11
+        * np.sum(
+            np.squeeze(N_specific[:, ind]) * gDIN * z * 0.1,
+            axis=0,
+        )
+        / N[ind]
+    )
 
     if S.size == 1:
         S = float(S)

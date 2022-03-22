@@ -94,7 +94,7 @@ def test_loudness_zwst_wav():
     sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
-    N, N_specific, bark_axis = loudness_zwst(sig, fs)
+    N, N_specific, bark_axis, _ = loudness_zwst(sig, fs)
     loudness = {
         "name": "Loudness",
         "values": N,
@@ -123,7 +123,7 @@ def test_loudness_zwst_44100Hz():
     sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
-    N, N_specific, bark_axis = loudness_zwst(sig, fs)
+    N, N_specific, bark_axis, _ = loudness_zwst(sig, fs)
     loudness = {
         "name": "Loudness",
         "values": N,
