@@ -17,11 +17,7 @@ from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import (
 )
 
 
-def loudness_zwtv(
-    signal,
-    fs,
-    field_type,
-):
+def loudness_zwtv(signal, fs, freqs=[], field_type='free'):
     """Calculate Zwicker-loudness for time-varying signals
     Calculate the acoustic loudness according to Zwicker method for
     time-varying signals.
@@ -51,6 +47,10 @@ def loudness_zwtv(
     bark_axis : numpy.ndarray
         Corresponding bark axis
     """
+    
+    if len(freqs) > 0 :
+        raise ValueError("With spectrum as input, use loudness_zwst for stationary calculation")
+        
 
     # Compute third octave band spectrum vs. time
     spec_third, time_axis, _ = _third_octave_levels(signal, fs)

@@ -10,6 +10,7 @@ import numpy as np
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwst
+from mosqito.sq_metrics import loudness_zwtv
 from mosqito.sq_metrics.sharpness.sharpness_din._sharpness_aures import (
     _comp_sharpness_aures,
 )
@@ -24,7 +25,7 @@ from mosqito.sq_metrics.sharpness.sharpness_din._sharpness_fastl import (
 )
 
 
-def sharpness_din(is_stationary, signal, fs, method="din", skip=0):
+def sharpness_din(is_stationary, signal, fs, freqs=[], method="din", skip=0):
     """Acoustic sharpness calculation according to different methods:
         Aures, Von Bismarck, DIN 45692, Fastl
 
@@ -57,9 +58,12 @@ def sharpness_din(is_stationary, signal, fs, method="din", skip=0):
         raise ValueError("ERROR: method must be 'din', 'aures', 'bismarck', 'fastl'")
 
     if is_stationary == True:
-        N, N_specific, _ = loudness_zwst(signal, fs)
+        N, N_specific, _ = loudness_zwst(signal, fs, freqs=freqs)
     else:
-        N, N_specific, _ = loudness_zwtv(signal, fs)
+        if (len(freqs) > 0) and is_stationary == False:
+            raise ValueError("With a 1D spectrum as input, use stationary calculation, with a 2D spectrum use stationary per block calculation or reconstruct a time signal")
+        else:
+            N, N_specific, _ = loudness_zwtv(signal, fs, freqs=freqs)
 
     if method == "din":
         S = _comp_sharpness_din(N, N_specific, is_stationary)
