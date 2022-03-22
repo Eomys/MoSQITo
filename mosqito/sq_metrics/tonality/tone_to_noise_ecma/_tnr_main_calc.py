@@ -228,25 +228,23 @@ def _tnr_main_calc(spectrum_db, freq_axis):
             nb_tones -= 1
     
 
-
-        if sum(np.power(10, (tnr / 10))) != 0:
-            if n > 1:
-                t_tnr[i] = np.append (t_tnr[i], 10 * np.log10(sum(np.power(10, (tnr / 10)))))
-            elif n == 1:
-                t_tnr = np.append (t_tnr, 10 * np.log10(sum(np.power(10, (tnr / 10)))))
-        else:
-            if n > 1:
-                t_tnr[i] = np.append(t_tnr[i], 0)
-            elif n == 1:
-                t_tnr = np.append(t_tnr, 0)
-                
         if n > 1:
-            TNR[i] = np.append(TNR[i], tnr)
-            
+            if sum(np.power(10, (tnr[prominence[i]] / 10))) != 0:
+                t_tnr[i] = 10 * np.log10(sum(np.power(10, (tnr[prominence[i]] / 10))))
+            else:
+                t_tnr[i] =  0
+            TNR[i] = np.append(TNR[i], tnr)               
+                    
+                    
         elif n == 1:
+            if sum(np.power(10, (tnr[prominence] / 10))) != 0:
+                t_tnr = np.append(t_tnr,10 * np.log10(sum(np.power(10, (tnr[prominence] / 10)))))
+            else:
+                t_tnr =  0
             TNR = np.append(TNR, tnr)
         
     tones_freqs = np.asarray(tones_freqs)
     prominence = np.asarray(prominence)
+
     
     return tones_freqs, TNR , prominence, t_tnr

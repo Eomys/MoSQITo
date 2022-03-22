@@ -53,14 +53,17 @@ def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=[], prominence=T
             # compute db spectrum
             spectrum_db, freq_axis = spectrum(signal, fs, db=True)
         if is_stationary == False:
-            # Signal cut in frames of 200 ms along the time axis
-            n = 0.5 * fs
-            nb_frame = math.floor(signal.size / n)
-            len_seg = len(signal)//nb_frame
-            time = np.linspace(0, len(signal) / fs, num=nb_frame)
-            time = np.around(time, 1)
-
-            signal = signal.reshape((nb_frame,len_seg))
+            if len(signal.shape)==1:
+                # Signal cut in frames of 200 ms along the time axis
+                n = 0.5 * fs
+                nb_frame = math.floor(signal.size / n)
+                len_seg = len(signal)//nb_frame
+                time = np.linspace(0, len(signal) / fs, num=nb_frame)
+                time = np.around(time, 1)
+                signal = signal.reshape((nb_frame,len_seg))
+            else:
+                nb_frame = signal.shape[0]
+                time = np.linspace(0, signal.shape[1]/fs, num=nb_frame)
             spectrum_db, freq_axis = spectrum(signal, fs, db=True)
     else:
         if signal.shape != freqs.shape :
@@ -81,8 +84,8 @@ def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=[], prominence=T
             PR = np.empty((len(freqs), nb_frame))
             PR.fill(np.nan)
             promi = np.empty((len(freqs), nb_frame), dtype=bool)
-            promi.fill(np.nan)
-
+            promi.fill(False)
+            
             for t in range(nb_frame):
                 for f in range(len(tones_freqs[t])):
                     ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
@@ -93,7 +96,6 @@ def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=[], prominence=T
                         if prom[t][f] == True:
                             PR[ind, t] = pr[t][f]
                             promi[ind, t] = prom[t][f]
-
 
             t_pr = np.ravel(t_pr)
 

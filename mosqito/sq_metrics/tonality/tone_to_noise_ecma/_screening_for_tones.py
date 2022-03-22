@@ -60,7 +60,7 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
     n = spec_db.shape[0]
     if len(spec_db.shape)>1:
         m = spec_db.shape[1] 
-        stop = np.arange(1,n+1) * m
+        stop = np.arange(1,n+1) * m -1
         
     else:
         m = spec_db.shape[0]

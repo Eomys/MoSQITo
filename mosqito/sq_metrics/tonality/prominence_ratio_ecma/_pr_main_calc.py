@@ -210,23 +210,21 @@ def _pr_main_calc(spectrum_db, freq_axis):
             peaks = np.delete(peaks, sup)
             nb_tones -= len(sup)
 
-        if sum(np.power(10, (pr / 10))) != 0:
-                if n > 1:
-                    t_pr[i] = 10 * np.log10(sum(np.power(10, (pr / 10))))
-                elif n == 1:
-                    t_pr = 10 * np.log10(sum(np.power(10, (pr / 10))))
-        else:
-            if n > 1:
-                t_pr[i] = np.append(t_pr[i], 0)
-            elif n == 1:
-                t_pr = np.append(t_pr, 0)
-                
-                
         if n > 1:
-            PR[i] = np.append(PR[i], pr)
-            
+            if sum(np.power(10, (pr[prominence[i]] / 10))) != 0:
+                t_pr[i] = 10 * np.log10(sum(np.power(10, (pr[prominence[i]] / 10))))
+            else:
+                t_pr[i] =  0
+            PR[i] = np.append(PR[i], pr)               
+                    
+                    
         elif n == 1:
+            if sum(np.power(10, (pr[prominence] / 10))) != 0:
+                t_pr = np.append(t_pr,10 * np.log10(sum(np.power(10, (pr[prominence] / 10)))))
+            else:
+                t_pr =  0
             PR = np.append(PR, pr)
+
     
     tones_freqs = np.asarray(tones_freqs)
     prominence = np.asarray(prominence)
