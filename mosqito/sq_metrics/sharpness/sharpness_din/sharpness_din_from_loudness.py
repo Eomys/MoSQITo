@@ -26,28 +26,33 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din", skip=0):
 
     """
 
-    # Bark axis
-    z = np.linspace(0.1, 24, int(24 / 0.1))
-
-    # weighting function
-    gDIN = np.ones(z.shape)
-    gDIN[z > 15.8] = 0.15 * np.exp(0.42 * (z[z > 15.8] - 15.8)) + 0.85
-
-    # Formating of stationnary signal data
+    # 1D-array => 2D-array
     if not isinstance(N, np.ndarray):
         N = np.array([N])
+    elif N.ndim <= 1:
+        N = N[np.newaxis, :]
     if N_specific.ndim <= 1:
         N_specific = N_specific[:, np.newaxis]
-    else:
-        gDIN = gDIN[:, np.newaxis]
-        z = z[:, np.newaxis]
+
+    # Bark axis
+    z = np.linspace(0.1, 24, int(24 / 0.1))[:, np.newaxis]
+
+    # weighting function
+    if weighting == "din":
+        g = np.ones(z.shape)
+        g[z > 15.8] = 0.15 * np.exp(0.42 * (z[z > 15.8] - 15.8)) + 0.85
+    elif weighting == "aures":
+        g = 0.078 * (np.exp(0.171 * z) / z) * (N / np.log(N * 0.05 + 1))
+    elif weighting == "bismarck":
+        g = np.ones(z.shape)
+        g[z > 15] = 0.2 * np.exp(0.308 * (z[z > 15] - 15)) + 0.8
 
     S = np.zeros(N.shape)
     ind = np.where(N >= 0.1)[0]
     S[ind] = (
         0.11
         * np.sum(
-            np.squeeze(N_specific[:, ind]) * gDIN * z * 0.1,
+            N_specific[:, ind] * g * z * 0.1,
             axis=0,
         )
         / N[ind]
