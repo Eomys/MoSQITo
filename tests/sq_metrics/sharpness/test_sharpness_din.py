@@ -17,6 +17,7 @@ except ImportError:
 # Local application imports
 from mosqito.utils import load
 from mosqito.sq_metrics import sharpness_din
+from mosqito.sq_metrics import sharpness_din_perseg
 
 
 @pytest.mark.sharpness_din  # to skip or run sharpness test
@@ -42,6 +43,7 @@ def test_sharpness_din():
     # Compute sharpness
     sharpness = sharpness_din(sig, fs, weighting="aures")
     sharpness = sharpness_din(sig, fs, weighting="bismarck")
+    sharpness = sharpness_din(sig, fs, weighting="fastl")
     sharpness = sharpness_din(sig, fs, weighting="din")
 
     # Check that the value is within the desired values +/- 5%
@@ -50,7 +52,7 @@ def test_sharpness_din():
 
 
 @pytest.mark.sharpness_din  # to skip or run sharpness test
-def test_sharpness_din_per_blocks():
+def test_sharpness_din_perseg():
     """Test function for the sharpness calculation of an audio signal
 
     Test function for the function "comp_roughness" with 'din' method.
@@ -70,9 +72,10 @@ def test_sharpness_din_per_blocks():
     sig, fs = load("tests/input/broadband_570.wav", wav_calib=1)
 
     # Compute sharpness
-    sharpness = sharpness_din(sig, fs, nperseg=2 ** 14, weighting="aures")
-    sharpness = sharpness_din(sig, fs, nperseg=2 ** 14, weighting="bismarck")
-    sharpness = sharpness_din(sig, fs, nperseg=2 ** 14, weighting="din")
+    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="aures")
+    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="bismarck")
+    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="fastl")
+    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="din")
 
     # Check that the value is within the desired values +/- 5%
     # as per DIN 45692_2009E (chapter 6)
@@ -82,4 +85,4 @@ def test_sharpness_din_per_blocks():
 # test de la fonction
 if __name__ == "__main__":
     test_sharpness_din()
-    test_sharpness_din_per_blocks()
+    test_sharpness_din_perseg()

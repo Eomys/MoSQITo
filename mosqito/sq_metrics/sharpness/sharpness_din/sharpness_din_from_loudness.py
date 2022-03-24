@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from mosqito.sq_metrics.sharpness.sharpness_din._weighting_fastl import x, y
+
 
 def sharpness_din_from_loudness(N, N_specific, weighting="din", skip=0):
     """Acoustic sharpness calculation according to different methods:
@@ -46,6 +48,10 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din", skip=0):
     elif weighting == "bismarck":
         g = np.ones(z.shape)
         g[z > 15] = 0.2 * np.exp(0.308 * (z[z > 15] - 15)) + 0.8
+    elif weighting == "fastl":
+        g = np.interp(z, x, y)
+    else:
+        raise ValueError("ERROR: weighting must be 'din', 'aures', 'bismarck' or 'fastl'")
 
     S = np.zeros(N.shape)
     ind = np.where(N >= 0.1)[0]

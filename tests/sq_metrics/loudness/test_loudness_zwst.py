@@ -16,6 +16,7 @@ import numpy as np
 # Local application imports
 from mosqito.utils import load
 from mosqito.sq_metrics import loudness_zwst
+from mosqito.sq_metrics import loudness_zwst_perseg
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
     _main_loudness,
 )
@@ -94,7 +95,7 @@ def test_loudness_zwst_wav():
     sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
-    N, N_specific, bark_axis, _ = loudness_zwst(sig, fs)
+    N, N_specific, bark_axis = loudness_zwst(sig, fs)
     loudness = {
         "name": "Loudness",
         "values": N,
@@ -123,7 +124,7 @@ def test_loudness_zwst_44100Hz():
     sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
 
     # Compute Loudness
-    N, N_specific, bark_axis, _ = loudness_zwst(sig, fs)
+    N, N_specific, bark_axis = loudness_zwst(sig, fs)
     loudness = {
         "name": "Loudness",
         "values": N,
@@ -136,14 +137,14 @@ def test_loudness_zwst_44100Hz():
 
 
 @pytest.mark.loudness_zwst
-def test_loudness_zwst_blocks():
+def test_loudness_zwst_perseg():
     # Load signal
     sig, fs = load(
         "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2 ** 0.5
     )
 
     # Compute Loudness
-    N, N_specific, bark_axis, time_axis = loudness_zwst(
+    N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
         sig, fs, nperseg=8192 * 2, noverlap=4096
     )
 
@@ -156,4 +157,4 @@ if __name__ == "__main__":
     # test_loudness_zwst_3oct()
     # test_loudness_zwst_wav()
     # test_loudness_zwst_44100Hz()
-    test_loudness_zwst_blocks()
+    test_loudness_zwst_perseg()
