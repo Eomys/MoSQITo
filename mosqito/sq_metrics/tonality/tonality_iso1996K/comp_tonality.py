@@ -7,8 +7,7 @@
 import math
 
 # Local imports
-from mosqito.functions.noct_spectrum.comp_noct_spectrum import comp_noct_spectrum
-from mosqito.functions.shared.load import load
+from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 
 
 def comp_tonality(sig, fs):
@@ -37,7 +36,7 @@ def comp_tonality(sig, fs):
 
     # -- we obtain the data of the Lp in Pa in thirds of octave of the signal of which
     # -- we want to know the prominent tones
-    third_spec = comp_noct_spectrum(sig=sig, fs=fs, fmin=fmin, fmax=fmax)
+    third_spec = noct_spectrum(sig=sig, fs=fs, fmin=fmin, fmax=fmax)
 
     #-- Returns a tuple with two arrays, one with the Lp_Pa of each third octave band 
     #-- and the other with the center frequencies, fc, of each band.
@@ -117,81 +116,3 @@ def comp_tonality(sig, fs):
 
     # -- Return of the function.
     return prominent_tones
-
-
-# -- Main call to the function for its execution.
-if __name__ == "__main__":
-
-    # -- CORRECTO --
-    """----PRUEBA--TONO--100-Hz----"""
-    sig, fs = load("tests\input\TONE100HZ.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA--TONO--200-Hz----"""
-    sig, fs = load("tests\input\TONE200HZ.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA--TONO--1-KHz----"""
-    sig, fs = load("tests/input/TONE1000HZ.WAV", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA--TONO--2-KHz----"""
-    sig, fs = load("tests\input\TONE2000HZ.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA--TONO--4-KHz----"""
-    sig, fs = load("tests\input\TONE4000HZ.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA--TONO--5-KHz----"""
-    sig, fs = load("tests\input\TONE5000HZ.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA----"""
-    sig, fs = load("tests\input\MULTITONE_ALARM.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA----"""
-    sig, fs = load("tests\input\MULTITONE_SIREN.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    # -- CORRECTO --
-    """----PRUEBA----"""
-    sig, fs = load("tests\input\WHITE_NOISE.wav", calib=1)
-    tones = comp_tonality(sig, fs)
-    print("----RESULT-----")
-    print(tones)
-    print("---------------")
-
-    pass
