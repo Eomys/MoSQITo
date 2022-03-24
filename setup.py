@@ -1,7 +1,7 @@
 import setuptools
 
 # /!\ update before a release
-MoSQITo_VERSION = "0.3.7"
+MoSQITo_VERSION = "1.0.0"
 
 # MoSQITo description
 with open("README.md", "r", encoding="utf-8") as fh:
@@ -35,7 +35,7 @@ setuptools.setup(
     ),
     packages=setuptools.find_packages(
         exclude=[
-            "documentation",
+            "docs",
             "tutorials",
             "validations",
             "tests",
