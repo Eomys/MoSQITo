@@ -10,7 +10,7 @@ except ImportError:
 import numpy as np
 
 
-def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, xaxis=None):
+def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, xaxis=None):
     """
     Check if two arrays are equal up to desired tolerance.
 
@@ -29,6 +29,8 @@ def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, xaxis=None):
         Absolute tolerance.
     is_plot : bool, optional
         To generate a "compliance" plot
+    tol_label: str
+        Label for the tolerance curves
     xaxis : array_like, optional
         x axis for the "compliance" plot
 
@@ -59,7 +61,7 @@ def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, xaxis=None):
             range_neg,
             color="tab:red",
             linestyle="solid",
-            # label="5% tolerance",
+            label=tol_label,
             linewidth=1,
         )
         plt.plot(
@@ -70,9 +72,9 @@ def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, xaxis=None):
             # label="",
             linewidth=1,
         )
-        # plt.legend()
 
         # Plot actual value
         plt.plot(xaxis, actual)
+        plt.legend()
 
     return is_isoclose
