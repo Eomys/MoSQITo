@@ -190,7 +190,7 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
 
     R = 0.25 * sum(R_spec)
       
-    return R
+    return R, R_spec, zb
 
 
 

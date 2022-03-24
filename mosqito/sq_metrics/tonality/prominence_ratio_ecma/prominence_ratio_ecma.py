@@ -7,16 +7,16 @@ Created on Wed Dec 30 14:25:04 2020
 
 # Standard library import
 import numpy as np
-import math
 
 # Local imports
+from mosqito.utils.time_segmentation import time_segmentation
 from mosqito.sound_level_meter.spectrum import spectrum
 from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import (
     _pr_main_calc,
 )
 
 
-def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=[], prominence=True):
+def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=[], prominence=True, overlap=0):
     """Computation of prominence ratio according to ECMA-74, annex D.10
         The T-PR value is calculated according to ECMA-TR/108
 
@@ -53,18 +53,23 @@ def prominence_ratio_ecma(is_stationary, signal, fs=None, freqs=[], prominence=T
             # compute db spectrum
             spectrum_db, freq_axis = spectrum(signal, fs, db=True)
         if is_stationary == False:
-            if len(signal.shape)==1:
-                # Signal cut in frames of 200 ms along the time axis
-                n = 0.5 * fs
-                nb_frame = math.floor(signal.size / n)
-                len_seg = len(signal)//nb_frame
-                time = np.linspace(0, len(signal) / fs, num=nb_frame)
-                time = np.around(time, 1)
-                signal = signal.reshape((nb_frame,len_seg))
+            if len(signal.shape) == 1:
+                # Signal cut in frames of 500 ms along the time axis
+                
+                # Number of points within each frame according to the time resolution of 500ms
+                n = int(0.5 * fs)
+                # Overlappinf segment length
+                noverlap = int(overlap *n)               
+                # reshaping of the signal according to the overlap and time proportions
+                sig, time = time_segmentation(signal, fs, nperseg=n, noverlap=noverlap, is_ecma=False)
+                sig = sig.T
+                nb_frame = sig.shape[0]
+                spectrum_db, freq_axis = spectrum(sig, fs, db=True)
             else:
                 nb_frame = signal.shape[0]
                 time = np.linspace(0, signal.shape[1]/fs, num=nb_frame)
-            spectrum_db, freq_axis = spectrum(signal, fs, db=True)
+                
+                spectrum_db, freq_axis = spectrum(sig, fs, db=True)
     else:
         if signal.shape != freqs.shape :
             raise ValueError('Input spectrum and frequency axis must have the same shape')
