@@ -75,7 +75,9 @@ def test_sharpness_din_perseg():
     sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="aures")
     sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="bismarck")
     sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="fastl")
-    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="din")
+    sharpness, time_axis = sharpness_din_perseg(
+        sig, fs, nperseg=2 ** 14, weighting="din"
+    )
 
     # Check that the value is within the desired values +/- 5%
     # as per DIN 45692_2009E (chapter 6)

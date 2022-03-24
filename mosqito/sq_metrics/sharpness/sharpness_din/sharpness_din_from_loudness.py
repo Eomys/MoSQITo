@@ -51,7 +51,9 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din", skip=0):
     elif weighting == "fastl":
         g = np.interp(z, x, y)
     else:
-        raise ValueError("ERROR: weighting must be 'din', 'aures', 'bismarck' or 'fastl'")
+        raise ValueError(
+            "ERROR: weighting must be 'din', 'aures', 'bismarck' or 'fastl'"
+        )
 
     S = np.zeros(N.shape)
     ind = np.where(N >= 0.1)[0]
@@ -66,4 +68,6 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din", skip=0):
 
     if S.size == 1:
         S = float(S)
+    else:
+        S = np.squeeze(S)
     return S
