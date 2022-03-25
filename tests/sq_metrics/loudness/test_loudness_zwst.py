@@ -9,6 +9,12 @@ try:
     import pytest
 except ImportError:
     raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
+try:
+    from SciDataTool import DataLinspace, DataTime
+except ImportError:
+    raise RuntimeError(
+        "In order to handle Data objects you need the 'SciDataTool' package."
+    )
 
 import numpy as np
 from scipy.fft import fft
@@ -28,6 +34,20 @@ from validations.sq_metrics.loudness_zwst.validation_loudness_zwst import (
     _check_compliance,
 )
 from tests.input.Test_signal_1 import test_signal_1
+
+
+@pytest.fixture
+def test_signal():
+    sig, fs = load(
+        "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2 ** 0.5
+    )
+    sig_dict = {
+        "signal": sig,
+        "fs": fs,
+        "N_iso": 10.498,
+        "N_specif_file": "tests/input/test_signal_5.csv",
+    }
+    return sig_dict
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
@@ -137,6 +157,45 @@ def test_loudness_zwst_44100Hz():
     assert _check_compliance(loudness, signal, "./tests/output/")
 
 
+@pytest.mark.loudness_zwst
+def test_loudness_zwst_perseg(test_signal):
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+
+    # Compute Loudness
+    N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
+        sig, fs, nperseg=8192 * 2, noverlap=4096
+    )
+
+    # Check that all values are within the desired values +/- 5%
+    np.testing.assert_allclose(N, 10.498, rtol=0.05)
+
+
+@pytest.mark.loudness_zwst
+def test_loudness_zwst_sdt(test_signal):
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+    time = DataLinspace(
+        name="time",
+        unit="s",
+        initial=0,
+        final=(len(sig) - 1) / fs,
+        number=len(sig),
+        include_endpoint=True,
+    )
+    sig_data = DataTime(
+        name="Test signal 5 (pinknoise 60 dB)",
+        symbol="p",
+        unit="Pa",
+        axes=[time],
+        values=sig,
+    )
+    N, N_specific, bark_axis = loudness_zwst(sig_data, fs)
+
+    # Check that all values are within the desired values +/- 5%
+    np.testing.assert_allclose(N, test_signal["N_iso"], rtol=0.05)
+
+
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
 def test_loudness_zwst_spec():
     """Test function for the script loudness_zwicker_stationary
@@ -181,26 +240,22 @@ def test_loudness_zwst_spec():
     assert _check_compliance(loudness, signal, "./tests/output/")
 
 
-@pytest.mark.loudness_zwst
-def test_loudness_zwst_perseg():
-    # Load signal
+# test
+if __name__ == "__main__":
+    # Reproduce the code from the fixture
     sig, fs = load(
         "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2 ** 0.5
     )
+    test_signal = {
+        "signal": sig,
+        "fs": fs,
+        "N_iso": 10.498,
+        "N_specif_file": "tests/input/test_signal_5.csv",
+    }
 
-    # Compute Loudness
-    N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
-        sig, fs, nperseg=8192 * 2, noverlap=4096
-    )
-
-    # Check that all values are within the desired values +/- 5%
-    np.testing.assert_allclose(N, 10.498, rtol=0.05)
-
-
-# test de la fonction
-if __name__ == "__main__":
     test_loudness_zwst_3oct()
     test_loudness_zwst_wav()
     test_loudness_zwst_spec()
     test_loudness_zwst_44100Hz()
-    test_loudness_zwst_perseg()
+    test_loudness_zwst_perseg(test_signal)
+    test_loudness_zwst_sdt(test_signal)
