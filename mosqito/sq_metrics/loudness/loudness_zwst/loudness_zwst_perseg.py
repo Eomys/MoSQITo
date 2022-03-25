@@ -5,20 +5,15 @@ from time import time
 import numpy as np
 
 # Local application imports
-from mosqito.sound_level_meter import noct_spectrum
-from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
-    _main_loudness,
-)
-from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
-    _calc_slopes,
-)
+from mosqito.utils import time_segmentation
+from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst
 
 
-def loudness_zwst(signal, fs, field_type="free"):
+def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="free"):
     """Zwicker-loudness calculation for stationary signals
 
     Calculates the acoustic loudness according to Zwicker method for
-    stationary signals.
+    stationary signals per signal segment.
     Normatice reference:
         ISO 532:1975 (method B)
         DIN 45631:1991
@@ -36,6 +31,11 @@ def loudness_zwst(signal, fs, field_type="free"):
         Time signal values [Pa].
     fs : integer
         Sampling frequency.
+    nperseg: int, optional
+        Length of each segment. Defaults to 4096.
+    noverlap: int, optional
+        Number of points to overlap between segments.
+        If None, noverlap = nperseg / 2. Defaults to None.
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
@@ -48,21 +48,15 @@ def loudness_zwst(signal, fs, field_type="free"):
         The specific loudness array [sones/bark], size (Nbark, Ntime)
     bark_axis: numpy.array
         The Bark axis array, size (Nbark,)
+    time_axis: numpy.array
+        The time axis array, size (Ntime,) or None
+
     """
 
-    #
-    # Compute third octave band spectrum
-    spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600)
-    spec_third = 20 * np.log10(spec_third / 2e-5)
-    #
-    # Compute main loudness
-    Nm = _main_loudness(spec_third, field_type)
-    #
-    # Computation of specific loudness pattern and integration of overall
-    # loudness by attaching slopes towards higher frequencies
-    N, N_specific = _calc_slopes(Nm)
-    #
-    # Define Bark axis
-    bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
+    # Time signal segmentation
+    signal, time_axis = time_segmentation(signal, fs, nperseg, noverlap)
 
-    return N, N_specific, bark_axis
+    # Compute loudness
+    N, N_specific, bark_axis = loudness_zwst(signal, fs, field_type="free")
+
+    return N, N_specific, bark_axis, time_axis

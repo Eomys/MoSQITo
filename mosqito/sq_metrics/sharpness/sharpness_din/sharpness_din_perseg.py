@@ -4,17 +4,18 @@
 import numpy as np
 
 # Local imports
-from mosqito.sq_metrics import loudness_zwst
+from mosqito.sq_metrics import loudness_zwst_perseg
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
     sharpness_din_from_loudness,
 )
 
 
-def sharpness_din(
+def sharpness_din_perseg(
     signal,
     fs,
-    method="zwst",
     weighting="din",
+    nperseg=4096,
+    noverlap=None,
     field_type="free",
     skip=0,
 ):
@@ -27,11 +28,14 @@ def sharpness_din(
         time history values
     fs: integer
         sampling frequency
-    method : string
-        To specify the Loudness computation method
     weighting : string
         To specify the weighting function used for the
         sharpness computation.'din' by default,'aures', 'bismarck','fastl'
+    nperseg: int, optional
+        Length of each segment. Defaults to 4096.
+    noverlap: int, optional
+        Number of points to overlap between segments.
+        If None, noverlap = nperseg / 2. Defaults to None.
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
@@ -48,15 +52,11 @@ def sharpness_din(
     """
 
     # Compute loudness
-    if method == "zwst":
-        N, N_specific, _ = loudness_zwst(signal, fs, field_type=field_type)
-    elif method == "zwtv":
-        # TBD
-        pass
-    else:
-        raise ValueError("ERROR: method must be either 'zwst' or 'zwtv'")
+    N, N_specific, _, time_axis = loudness_zwst_perseg(
+        signal, fs, nperseg=nperseg, noverlap=noverlap, field_type=field_type
+    )
 
     # Compute sharpness from loudness
     S = sharpness_din_from_loudness(N, N_specific, weighting=weighting, skip=0)
 
-    return S
+    return S, time_axis

@@ -9,7 +9,7 @@ try:
 except ImportError:
     raise RuntimeError(
         "In order to perform this validation you need the 'matplotlib' package."
-        )
+    )
 
 # Third party imports
 import numpy as np
@@ -219,7 +219,7 @@ def validation_sharpness_din(noise):
         sig, fs = load(noise[i]["data_file"], wav_calib=1)
 
         # Compute sharpness
-        S = sharpness_din(True, sig, fs, method="din")
+        S = sharpness_din(sig, fs, weighting="din")
         sharpness[i] = S
 
         # Load reference value
