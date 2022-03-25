@@ -5,7 +5,9 @@ import numpy as np
 
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum._filter_bandwidth import _filter_bandwidth
-from mosqito.sound_level_meter.noct_spectrum._n_oct_time_filter import _n_oct_time_filter
+from mosqito.sound_level_meter.noct_spectrum._n_oct_time_filter import (
+    _n_oct_time_filter,
+)
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
 
 
@@ -18,7 +20,7 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     Parameters
     ----------
     sig : numpy.ndarray
-        time signal values (dim [nb blocks, nb points])
+        A time signal array with size (nperseg, nseg).
     fs : float
         Sampling frequency [Hz]
     fmin : float
@@ -26,7 +28,7 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     fmax : float
         Max frequency band [Hz]
     n : int
-        number of bands pr octave
+        Number of bands pr octave
     G : int
         System for specifying the exact geometric mean frequencies.
         Can be base 2 or base 10
@@ -38,10 +40,14 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     Outputs
     -------
     spec : numpy.ndarray
-        Third octave band spectrum of signal sig [dB re.2e-5 Pa]
+        The third octave band spectrum of signal sig with size (nfreq, nseg)
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies
     """
+
+    # 1-dimensional array to 2-dimensional array with size (nperseg, 1)
+    if sig.ndim == 1:
+        sig = sig[:, np.newaxis]
 
     # Get filters center frequencies
     fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
@@ -49,16 +55,9 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     # Compute the filters bandwidth
     alpha_vec = _filter_bandwidth(fc_vec, n=n)
 
-    # Calculation of the rms level of the time signal in each band
-    if len(sig.shape) > 1:
-        spec = np.array([[] for i in range(sig.shape[0])])
-    else :
-        spec = [[]]
+    # Calculation of the rms level of the signal in each band
+    spec = []
     for fc, alpha in zip(fc_vec, alpha_vec):
-        spec = np.c_[spec, _n_oct_time_filter(sig, fs, fc, alpha)]
-   
-    spec = np.array(spec)
-    if spec.shape[0] == 1:
-        spec = spec[0,:]
+        spec.append(_n_oct_time_filter(sig, fs, fc, alpha))
 
-    return spec, fpref
+    return np.array(spec), fpref

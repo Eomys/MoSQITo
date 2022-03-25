@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # Third party imports
+from time import time
 import numpy as np
 
 # Local application imports
-from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import (
-    noct_spectrum,
-)
+from mosqito.sound_level_meter import noct_spectrum
 from mosqito.sound_level_meter.noct_spectrum.noct_synthesis import (
     noct_synthesis,
 )
@@ -39,37 +38,37 @@ def loudness_zwst(signal, fs, freqs=[], field_type="free"):
     signal : numpy.array
         signal values either in time [Pa] or frequency [complex] domain
     fs : integer
-        sampling frequency
+        Sampling frequency.
     freqs : list, None by default
-        if signal is a spectrum, freqs is the list of the corresponding frequencies 
-        [] if signal contains the time values. Default is [].       
+        if signal is a spectrum, freqs is the list of the corresponding frequencies
+        [] if signal contains the time values. Default is [].
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
-        default or "diffuse")
+        default or "diffuse").
 
     Outputs
     -------
     N : float or numpy.array
-        Calculated loudness [sones]
+        The overall loudness array [sones], size (Ntime,)
     N_specific : numpy.ndarray
-        Specific loudness [sones/bark]
+        The specific loudness array [sones/bark], size (Nbark, Ntime)
+    bark_axis: numpy.array
+        The Bark axis array, size (Nbark,)
     bark_axis : numpy.array
         Frequency axis in bark
     """
 
-
     # Compute third octave band spectrum
-    if len(freqs)==0:
+    if len(freqs) == 0:
         spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600)
     else:
         spec_third, _ = noct_synthesis(signal, freqs, fs, fmin=24, fmax=12600)
-        
-    
+
     # Compute dB values
-    spec_third = 20 * np.log10(spec_third/ 2e-5)
-    
+    spec_third = 20 * np.log10(spec_third / 2e-5)
+
     # Compute main loudness
-    Nm = _main_loudness(spec_third.T, field_type)
+    Nm = _main_loudness(spec_third, field_type)
     #
     # Computation of specific loudness pattern and integration of overall
     # loudness by attaching slopes towards higher frequencies

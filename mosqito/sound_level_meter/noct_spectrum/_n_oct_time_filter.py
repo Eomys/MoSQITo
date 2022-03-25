@@ -51,28 +51,21 @@ def _n_oct_time_filter(sig, fs, fc, alpha, N=3):
         q = 2
         while fc < fs / q / 200:
             q += 1
-        sig = decimate(sig, q)
+        sig = decimate(sig, q, axis=0)
         fs = fs / q
 
     # Normalized cutoff frequencies
     w1 = fc / (fs / 2) / alpha
     w2 = fc / (fs / 2) * alpha
-    
+
     # define filter coefficient
     b, a = butter(N, [w1, w2], "bandpass", analog=False)
 
     # filter signal
-    if len(sig.shape)>1:
-        level = []
-        for i in range(sig.shape[0]):
-            sig_filt = lfilter(b, a, sig[i,:])
-            # Compute overall rms level
-            level.append(np.sqrt(np.mean(sig_filt ** 2)))
-        level = np.array(level)
-    else:
-        sig_filt = lfilter(b, a, sig)
-        # Compute overall rms level
-        level = np.sqrt(np.mean(sig_filt ** 2))
+    sig_filt = lfilter(b, a, sig, axis=0)
+
+    # Compute overall rms level
+    level = np.sqrt(np.mean(sig_filt ** 2, axis=0))
 
     return level
 
