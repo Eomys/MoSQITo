@@ -16,8 +16,14 @@ from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
     _calc_slopes,
 )
 
+# Optional package import
+try:
+    from SciDataTool import DataTime
+except ImportError:
+    DataTime = None
 
-def loudness_zwst(signal, fs, freqs=[], field_type="free"):
+
+def loudness_zwst(signal, fs=None, freqs=[], field_type="free"):
     """Zwicker-loudness calculation for stationary signals
 
     Calculates the acoustic loudness according to Zwicker method for
@@ -37,8 +43,9 @@ def loudness_zwst(signal, fs, freqs=[], field_type="free"):
     ----------
     signal : numpy.array
         signal values either in time [Pa] or frequency [complex] domain
-    fs : integer
-        Sampling frequency.
+    fs : float, optional
+        Sampling frequency, can be omitted if the input is a DataTime
+        object. Default to None
     freqs : list, None by default
         if signal is a spectrum, freqs is the list of the corresponding frequencies
         [] if signal contains the time values. Default is [].
@@ -57,6 +64,12 @@ def loudness_zwst(signal, fs, freqs=[], field_type="free"):
     bark_axis : numpy.array
         Frequency axis in bark
     """
+
+    # Manage input type
+    if DataTime is not None and isinstance(signal, DataTime):
+        time = signal.get_along("time")["time"]
+        fs = 1 / (time[1] - time[0])
+        signal = signal.get_along("time")[signal.symbol]
 
     # Compute third octave band spectrum
     if len(freqs) == 0:
