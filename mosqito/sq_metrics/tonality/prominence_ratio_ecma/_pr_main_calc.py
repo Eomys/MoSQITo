@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Dec 30 15:12:18 2020
-
-@author: wantysal
-"""
 
 import numpy as np
 
@@ -15,12 +10,8 @@ from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import (
     _lower_critical_band,
     _upper_critical_band,
 )
-from mosqito.sq_metrics.tonality.tone_to_noise_ecma._screening_for_tones import (
-    _screening_for_tones,
-)
-from mosqito.sq_metrics.tonality.tone_to_noise_ecma._find_highest_tone import (
-    _find_highest_tone,
-)
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._screening_for_tones import _screening_for_tones
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._find_highest_tone import _find_highest_tone
 
 
 def _pr_main_calc(spectrum_db, freq_axis):
