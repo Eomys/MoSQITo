@@ -50,8 +50,6 @@ def _n_oct_freq_filter(spectrum, fs, fc, alpha, n=3):
     b, a = butter(n, [w1, w2], "bandpass", analog=False)
     
     
-    
-    
     # filter signal
     if len(spectrum.shape)>1:
         level = []
@@ -68,7 +66,7 @@ def _n_oct_freq_filter(spectrum, fs, fc, alpha, n=3):
         spec_filt = spectrum * h
         # Compute overall rms level
         level = np.sqrt(np.sum(np.abs(spec_filt) ** 2)) 
-    
+        
     return level
 
 

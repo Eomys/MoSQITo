@@ -69,8 +69,8 @@ def _center_freq(fmin, fmax, n=3, G=10, fr=1000):
         freq = NOMINAL_THIRD_OCTAVE_CENTER_FREQUENCIES
     if n == 1 or n == 3:
         i_ref = np.where(freq == fr)[0][0]
-        ind = np.where(k >= -i_ref) and np.where(k < len(freq) - i_ref)
-        f_nom[ind] = freq[k[ind] + i_ref]
+        ind = np.where((k >= -i_ref) & (k < (len(freq) - i_ref)))
+        f_nom = freq[k[ind] + i_ref]
 
     # TODO
     # Manage other values of n
