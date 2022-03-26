@@ -18,7 +18,7 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     Parameters
     ----------
     sig : numpy.ndarray
-        time signal (dim [nb points, nb blocks])
+        A time signal array with size (nperseg, nseg).
     fs : float
         Sampling frequency [Hz]
     fmin : float
@@ -26,7 +26,7 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     fmax : float
         Max frequency band [Hz]
     n : int
-        number of bands pr octave
+        Number of bands pr octave
     G : int
         System for specifying the exact geometric mean frequencies.
         Can be base 2 or base 10
@@ -38,10 +38,18 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     Outputs
     -------
     spec : numpy.ndarray
+<<<<<<< HEAD
         Third octave band spectrum of signal sig (units: Pascals [Pa]).
+=======
+        The third octave band spectrum of signal sig with size (nfreq, nseg)
+>>>>>>> ad054c17c80ccea5874344f38a135c8fe1315a12
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies
     """
+
+    # 1-dimensional array to 2-dimensional array with size (nperseg, 1)
+    if sig.ndim == 1:
+        sig = sig[:, np.newaxis]
 
     # Get filters center frequencies
     fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
