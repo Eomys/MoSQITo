@@ -6,6 +6,8 @@
 # Standard library imports
 import math
 
+from pip import main
+
 # Local imports
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 
@@ -51,7 +53,7 @@ def comp_tonality(sig, fs):
     Lp = []
     P_ref = 2e-05
     for i in range(0, len(Lp_Pa)):
-        P = Lp_Pa[i]
+        P = Lp_Pa[i][0]
         level = 20*math.log10(P/P_ref)
         Lp.append(level)
 
@@ -116,3 +118,4 @@ def comp_tonality(sig, fs):
 
     # -- Return of the function.
     return prominent_tones
+    

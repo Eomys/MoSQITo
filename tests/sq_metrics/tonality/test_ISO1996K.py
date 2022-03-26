@@ -22,7 +22,7 @@ def test_ISO1996K():
     """
 
     """-----TONE--100-Hz----"""
-    sig, fs = load(True, "tests\input\TONE100HZ.wav")
+    sig, fs = load("tests\input\TONE100HZ.wav")
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -31,7 +31,7 @@ def test_ISO1996K():
 
 
     """-----TONE--200-Hz----"""
-    sig, fs = load(True, "tests\input\TONE200HZ.wav")
+    sig, fs = load("tests\input\TONE200HZ.wav")
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -40,7 +40,7 @@ def test_ISO1996K():
 
 
     """-----TONE--1-KHz----"""
-    sig, fs = load(True, "tests/input/1KHZ60DB.WAV")
+    sig, fs = load("tests/input/TONE1000HZ.WAV")
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -49,7 +49,7 @@ def test_ISO1996K():
 
 
     """-----TONE--2-KHz----"""
-    sig, fs = load(True, "tests\input\TONE2000HZ.wav")
+    sig, fs = load("tests\input\TONE2000HZ.wav")
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -58,7 +58,7 @@ def test_ISO1996K():
 
 
     """-----TONE--4-KHz----"""
-    sig, fs = load(True, "tests\input\TONE4000HZ.wav")
+    sig, fs = load("tests\input\TONE4000HZ.wav")
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -67,7 +67,7 @@ def test_ISO1996K():
 
 
     """-----TONE--5-kHz----"""
-    sig, fs = load(True, "tests\input\TONE5000HZ.wav")
+    sig, fs = load("tests\input\TONE5000HZ.wav")
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -76,7 +76,7 @@ def test_ISO1996K():
 
 
     """-----MULTITONE-ALARM----"""
-    sig, fs = load(True, "tests\input\MULTITONE_ALARM.wav")
+    sig, fs = load("tests\input\MULTITONE_ALARM.wav")
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -85,7 +85,7 @@ def test_ISO1996K():
 
 
     """-----MUTITONE-SIREN----"""
-    sig, fs = load(True, "tests\input\MULTITONE_SIREN.wav")
+    sig, fs = load("tests\input\MULTITONE_SIREN.wav")
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
@@ -94,7 +94,7 @@ def test_ISO1996K():
 
 
     """-----ATONAL-SIGNAL----"""
-    sig, fs = load(True, "tests\input\WHITE_NOISE.wav")
+    sig, fs = load("tests\input\WHITE_NOISE.wav")
     tones = comp_tonality(sig, fs)
     print("----RESULT-----")
     print(tones)
