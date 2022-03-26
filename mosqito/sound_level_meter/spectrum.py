@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Mar  2 16:57:37 2022
-
-@author: wantysal
-"""
 
 import numpy as np
 from numpy.fft import fft
@@ -12,62 +7,51 @@ from numpy.fft import fft
 from mosqito.utils.conversion import amp2db
 
 
-def spectrum(signal,fs,window='hanning',db=True):
+def spectrum(signal,fs, nfft='default',window='hanning',db=True):
     """
-    
+    Compute one-sided spectrum from a time signal in Pa.
 
     Parameters
     ----------
     signal : np.array
-        time signal (n blocks x time)
+        A time signal [nperseg x nseg].
     fs : integer
-        sampling frequency
+        Sampling frequency.
     db : boolean, optional
-        indicates if the spectrum is in dB values. The default is True.
+        Indicates if the spectrum is in dB values. Default is True.
 
     Returns
     -------
     spectrum : np.array
-        spectrum (n blocks x frequency)
+        Spectrum [freq_axis x nseg].
     freq_axis : np.array
-        frequency axis corresponding to the spectrum
+        Frequency axis.
 
     """
-
-    # single time signal
-    if len(signal.shape)==1:
-        n = len(signal)
-        if window == 'hanning':
-            window = np.hanning(n)
-        elif window == 'blackman':
-            window = np.blackman(n)
-        window = window / np.sum(window)
     
-        # Creation of the spectrum by FFT
-        spectrum = fft(signal * window)[0:n//2] * 1.42
-        freq_axis = np.arange(0, n//2, 1) * (fs / n)
+    # Number of points for the fft
+    if nfft == 'default':
+        if len(signal.shape) == 1:
+            nfft = len(signal)
+        else :
+            nfft = signal.shape[1]
+
+    # Window definition
+    if window == 'hanning':
+        window = np.hanning(nfft)
+    elif window == 'blackman':
+        window = np.blackman(nfft)
+        
+    # Amplitude correction
+    window = window / np.sum(window)
     
-        if db == True:
-            # Conversion into dB level
-            module = np.abs(spectrum)
-            spectrum = amp2db(module, ref=0.00002)    
+    # Creation of the spectrum by FFT
+    spectrum = fft(signal * window, axis=0)[0:nfft//2] * 1.42
+    freq_axis = np.arange(0, nfft//2, 1) * (fs / nfft)
 
-    # n time signals
-    elif len(signal.shape)>1:
-        n = signal.shape[1]
-        if window == 'hanning':
-            window = np.hanning(n)
-        elif window == 'blackman':
-            window = np.blackman(n)
-        window = window / np.sum(window)
-
-        # Creation of the spectrum by FFT
-        spectrum = fft(signal * window)[:,0:n//2] * 1.42
-        freq_axis = np.tile(np.arange(0, int(n / 2), 1) * (fs / n), (signal.shape[0],1))
-
-        if db == True:
-            # Conversion into dB level
-            module = np.abs(spectrum)
-            spectrum = amp2db(module, ref=0.00002)
+    if db == True:
+        # Conversion into dB level
+        module = np.abs(spectrum)
+        spectrum = amp2db(module, ref=0.00002)
     
     return spectrum, freq_axis
