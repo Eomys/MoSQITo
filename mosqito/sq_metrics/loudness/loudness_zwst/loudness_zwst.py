@@ -1,31 +1,16 @@
 # -*- coding: utf-8 -*-
 
 # Third party imports
-from time import time
 import numpy as np
 
 # Local application imports
 from mosqito.sound_level_meter import noct_spectrum
-from mosqito.sound_level_meter.noct_spectrum.noct_synthesis import (
-    noct_synthesis,
-)
-from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
-    _main_loudness,
-)
-from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
-    _calc_slopes,
-)
-
-# Optional package import
-try:
-    from SciDataTool import DataTime, DataLinspace, DataFreq
-except ImportError:
-    DataTime = None
-    DataLinspace = None
-    DataFreq = None
+from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (_main_loudness)
+from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (_calc_slopes)
+from mosqito.utils.conversion import db2amp
 
 
-def loudness_zwst(signal, fs=None, freqs=[], field_type="free", is_sdt_output=False):
+def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
     """Zwicker-loudness calculation for stationary signals
 
     Calculates the acoustic loudness according to Zwicker method for
@@ -44,13 +29,10 @@ def loudness_zwst(signal, fs=None, freqs=[], field_type="free", is_sdt_output=Fa
     Parameters
     ----------
     signal : numpy.array or DataTime object
-        signal values either in time [Pa] or frequency [complex] domain
+        Signal time values [Pa] 
     fs : float, optional
         Sampling frequency, can be omitted if the input is a DataTime
         object. Default to None
-    freqs : list, None by default
-        if signal is a spectrum, freqs is the list of the corresponding frequencies
-        [] if signal contains the time values. Default is [].
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
@@ -66,8 +48,6 @@ def loudness_zwst(signal, fs=None, freqs=[], field_type="free", is_sdt_output=Fa
         The specific loudness array [sones/bark], size (Nbark, Ntime)
     bark_axis: numpy.array
         The Bark axis array, size (Nbark,)
-    bark_axis : numpy.array
-        Frequency axis in bark
     """
 
     # Manage SciDataTool input type
@@ -77,17 +57,15 @@ def loudness_zwst(signal, fs=None, freqs=[], field_type="free", is_sdt_output=Fa
         signal = signal.get_along("time")[signal.symbol]
 
     # Compute third octave band spectrum
-    if len(freqs) == 0:
-        spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600)
-    else:
-        spec_third, _ = noct_synthesis(signal, freqs, fs, fmin=24, fmax=12600)
+
+    spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600)
 
     # Compute dB values
-    spec_third = 20 * np.log10(spec_third / 2e-5)
+    spec_third = db2amp(spec_third, ref=2e-5)
 
     # Compute main loudness
     Nm = _main_loudness(spec_third, field_type)
-    #
+    
     # Computation of specific loudness pattern and integration of overall
     # loudness by attaching slopes towards higher frequencies
     N, N_specific = _calc_slopes(Nm)
