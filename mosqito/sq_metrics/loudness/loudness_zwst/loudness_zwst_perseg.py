@@ -8,6 +8,12 @@ import numpy as np
 from mosqito.utils import time_segmentation
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst
 
+# Optional package import
+try:
+    from SciDataTool import DataTime
+except ImportError:
+    DataTime = None
+
 
 def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="free"):
     """Zwicker-loudness calculation for stationary signals
@@ -52,6 +58,12 @@ def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="fr
         The time axis array, size (Ntime,) or None
 
     """
+
+    # Manage input type
+    if DataTime is not None and isinstance(signal, DataTime):
+        time = signal.get_along("time")["time"]
+        fs = 1 / (time[1] - time[0])
+        signal = signal.get_along("time")[signal.symbol]
 
     # Time signal segmentation
     signal, time_axis = time_segmentation(signal, fs, nperseg, noverlap)
