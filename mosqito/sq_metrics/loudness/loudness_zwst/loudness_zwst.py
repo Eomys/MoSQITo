@@ -43,7 +43,7 @@ def loudness_zwst(signal, fs=None, freqs=[], field_type="free", is_sdt_output=Fa
 
     Parameters
     ----------
-    signal : numpy.array
+    signal : numpy.array or DataTime object
         signal values either in time [Pa] or frequency [complex] domain
     fs : float, optional
         Sampling frequency, can be omitted if the input is a DataTime
@@ -62,7 +62,7 @@ def loudness_zwst(signal, fs=None, freqs=[], field_type="free", is_sdt_output=Fa
     -------
     N : float or numpy.array
         The overall loudness array [sones], size (Ntime,)
-    N_specific : numpy.ndarray
+    N_specific : numpy.ndarray or DataFreq object
         The specific loudness array [sones/bark], size (Nbark, Ntime)
     bark_axis: numpy.array
         The Bark axis array, size (Nbark,)

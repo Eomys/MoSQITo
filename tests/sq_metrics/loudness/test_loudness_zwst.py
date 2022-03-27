@@ -176,7 +176,8 @@ def test_loudness_zwst_sdt(test_signal):
         axes=[time],
         values=sig,
     )
-    N, N_specific, bark_axis = loudness_zwst(sig_data, fs, is_sdt_output=False)
+    N, N_specific, bark_axis = loudness_zwst(sig_data, fs, is_sdt_output=True)
+    N_specific = N_specific.get_along('bark')[N_specific.symbol]
 
     # Assert compliance
     is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5/100, atol=0.1)
@@ -263,10 +264,10 @@ if __name__ == "__main__":
         "N_specif_iso": N_specif_iso,
     }
 
-    test_loudness_zwst_3oct()
-    test_loudness_zwst_wav(test_signal)
-    test_loudness_zwst_44100Hz()
-    test_loudness_zwst_perseg(test_signal)
+    # test_loudness_zwst_3oct()
+    # test_loudness_zwst_wav(test_signal)
+    # test_loudness_zwst_44100Hz()
+    # test_loudness_zwst_perseg(test_signal)
     test_loudness_zwst_sdt(test_signal)
     test_loudness_zwst_perseg_sdt(test_signal)
     # test_loudness_zwst_spec(test_signal)
