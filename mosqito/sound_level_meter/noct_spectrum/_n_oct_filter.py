@@ -51,7 +51,7 @@ def _n_oct_filter(sig, fs, fc, alpha, N=3):
         q = 2
         while fc < fs / q / 200:
             q += 1
-        sig = decimate(sig, q)
+        sig = decimate(sig, q, axis=0)
         fs = fs / q
 
     # Normalized cutoff frequencies
@@ -62,10 +62,10 @@ def _n_oct_filter(sig, fs, fc, alpha, N=3):
     b, a = butter(N, [w1, w2], "bandpass", analog=False)
 
     # filter signal
-    sig_filt = lfilter(b, a, sig)
+    sig_filt = lfilter(b, a, sig, axis=0)
 
     # Compute overall rms level
-    level = np.sqrt(np.mean(sig_filt ** 2))
+    level = np.sqrt(np.mean(sig_filt ** 2, axis=0))
 
     return level
 
