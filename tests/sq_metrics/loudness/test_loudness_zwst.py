@@ -176,8 +176,8 @@ def test_loudness_zwst_sdt(test_signal):
         axes=[time],
         values=sig,
     )
-    N, N_specific, bark_axis = loudness_zwst(sig_data, fs, is_sdt_output=True)
-    N_specific = N_specific.get_along('bark')[N_specific.symbol]
+    N, N_specific, _ = loudness_zwst(sig_data, fs, is_sdt_output=True)
+    N_specific = N_specific.get_along('Critical band scale')[N_specific.symbol]
 
     # Assert compliance
     is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5/100, atol=0.1)
@@ -207,8 +207,9 @@ def test_loudness_zwst_perseg_sdt(test_signal):
     )
     # Compute Loudness
     N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
-        sig, fs, nperseg=8192 * 2, noverlap=4096
+        sig, fs, nperseg=8192 * 2, noverlap=4096, is_sdt_output=True
     )
+    N = N.get_along('time')[N.symbol]
 
     # Check that all values are within the desired values +/- 5%
     np.testing.assert_allclose(N, 10.498, rtol=0.05)
@@ -268,6 +269,6 @@ if __name__ == "__main__":
     # test_loudness_zwst_wav(test_signal)
     # test_loudness_zwst_44100Hz()
     # test_loudness_zwst_perseg(test_signal)
-    test_loudness_zwst_sdt(test_signal)
+    # test_loudness_zwst_sdt(test_signal)
     test_loudness_zwst_perseg_sdt(test_signal)
     # test_loudness_zwst_spec(test_signal)

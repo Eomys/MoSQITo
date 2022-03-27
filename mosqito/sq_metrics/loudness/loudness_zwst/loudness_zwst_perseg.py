@@ -10,12 +10,14 @@ from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zws
 
 # Optional package import
 try:
-    from SciDataTool import DataTime
+    from SciDataTool import DataTime, DataLinspace, DataFreq
 except ImportError:
     DataTime = None
+    DataLinspace = None
+    DataFreq = None
 
 
-def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="free"):
+def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="free", is_sdt_output=False):
     """Zwicker-loudness calculation for stationary signals
 
     Calculates the acoustic loudness according to Zwicker method for
@@ -45,6 +47,9 @@ def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="fr
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
+    is_sdt_output : Bool, optional
+        If True, the outputs are returned as SciDataTool objects.
+        Default to False
 
     Outputs
     -------
@@ -69,6 +74,45 @@ def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="fr
     signal, time_axis = time_segmentation(signal, fs, nperseg, noverlap)
 
     # Compute loudness
-    N, N_specific, bark_axis = loudness_zwst(signal, fs, field_type="free")
+    N, N_specific, bark_axis = loudness_zwst(
+        signal, fs, field_type="free")
+
+    # Manage SciDataTool output type
+    if is_sdt_output:
+        if DataLinspace is None:
+            raise RuntimeError(
+                "In order to handle Data objects you need the 'SciDataTool' package."
+            )
+        else:
+            bark_data = DataLinspace(
+                name="Critical band scale",
+                unit="Bark",
+                initial=0,
+                final=24,
+                number=int(24 / 0.1),
+                include_endpoint=True,
+            )
+            time = DataLinspace(
+                name="time",
+                unit="s",
+                initial=0,
+                final=time_axis[-1],
+                number=len(time_axis),
+                include_endpoint=True,
+            )
+            N_specific = DataFreq(
+                name="Specific Loudness",
+                symbol="N'_{zwst}",
+                axes=[bark_data, time],
+                values=N_specific,
+                unit="sone/Bark",
+            )
+            N = DataTime(
+                name="Loudness",
+                symbol="N_{zwst}",
+                axes=[time],
+                values=N,
+                unit="sone",
+            )
 
     return N, N_specific, bark_axis, time_axis
