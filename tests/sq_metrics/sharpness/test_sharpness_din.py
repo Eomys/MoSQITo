@@ -12,7 +12,8 @@ from scipy.fft import fft
 try:
     import pytest
 except ImportError:
-    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package.")
 
 
 # Local application imports
@@ -21,8 +22,20 @@ from mosqito.sq_metrics import sharpness_din
 from mosqito.sq_metrics import sharpness_din_perseg
 
 
+@pytest.fixture
+def test_signal():
+    # Input signal from DIN 45692_2009E
+    sig, fs = load("tests/input/broadband_570.wav", wav_calib=1)
+    sig_dict = {
+        "signal": sig,
+        "fs": fs,
+        "S_din": 2.85,
+    }
+    return sig_dict
+
+
 @pytest.mark.sharpness_din  # to skip or run sharpness test
-def test_sharpness_din():
+def test_sharpness_din(test_signal):
     """Test function for the sharpness calculation of an audio signal
     Test function for the function "comp_roughness" with 'din' method.
     The input signals come from DIN 45692_2009E. The compliance is assessed
@@ -35,22 +48,50 @@ def test_sharpness_din():
     None
     """
 
-    # Input signal from DIN 45692_2009E
-    sig, fs = load("tests/input/broadband_570.wav", wav_calib=1)
+    # Input signal
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
 
     # Compute sharpness
-    sharpness = sharpness_din(sig, fs, weighting="aures")
-    sharpness = sharpness_din(sig, fs, weighting="bismarck")
-    sharpness = sharpness_din(sig, fs, weighting="fastl")
     sharpness = sharpness_din(sig, fs, weighting="din")
 
     # Check that the value is within the desired values +/- 5%
     # as per DIN 45692_2009E (chapter 6)
-    np.testing.assert_allclose(sharpness, 2.85, rtol=0.05)
+    np.testing.assert_allclose(sharpness, test_signal["S_din"], rtol=0.05)
+
+
+@pytest.mark.sharpness_din
+def test_sharpness_din_aures(test_signal):
+    # Input signal
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+
+    # Compute sharpness
+    sharpness = sharpness_din(sig, fs, weighting="aures")
+
+
+@pytest.mark.sharpness_din
+def test_sharpness_din_bismarck(test_signal):
+    # Input signal
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+
+    # Compute sharpness
+    sharpness = sharpness_din(sig, fs, weighting="bismarck")
+
+
+@pytest.mark.sharpness_din
+def test_sharpness_din_fastl(test_signal):
+    # Input signal
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+
+    # Compute sharpness
+    sharpness = sharpness_din(sig, fs, weighting="fastl")
 
 
 @pytest.mark.sharpness_din  # to skip or run sharpness test
-def test_sharpness_din_perseg():
+def test_sharpness_din_perseg(test_signal):
     """Test function for the sharpness calculation of an audio signal
     Test function for the function "comp_roughness" with 'din' method.
     The input signals come from DIN 45692_2009E. The compliance is assessed
@@ -63,24 +104,61 @@ def test_sharpness_din_perseg():
     None
     """
 
-    # Input signal from DIN 45692_2009E
-    sig, fs = load("tests/input/broadband_570.wav", wav_calib=1)
+    # Input signal
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
 
     # Compute sharpness
-    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="aures")
-    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="bismarck")
-    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2 ** 14, weighting="fastl")
+    sharpness, _ = sharpness_din_perseg(
+        sig, fs, nperseg=2 ** 14, weighting="aures")
+    sharpness, _ = sharpness_din_perseg(
+        sig, fs, nperseg=2 ** 14, weighting="bismarck")
+    sharpness, _ = sharpness_din_perseg(
+        sig, fs, nperseg=2 ** 14, weighting="fastl")
     sharpness, time_axis = sharpness_din_perseg(
         sig, fs, nperseg=2 ** 14, weighting="din"
     )
 
     # Check that the value is within the desired values +/- 5%
     # as per DIN 45692_2009E (chapter 6)
-    np.testing.assert_allclose(sharpness, 2.85, rtol=0.05)
+    np.testing.assert_allclose(sharpness, test_signal["S_din"], rtol=0.05)
 
 
-@pytest.mark.sharpness_din  # to skip or run sharpness test
-def test_sharpness_din_spec():
+@pytest.mark.sharpness_din
+def test_sharpness_din_perseg_aures(test_signal):
+    # Input signal
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+
+    # Compute sharpness
+    sharpness, _ = sharpness_din_perseg(
+        sig, fs, nperseg=2 ** 14, weighting="aures")
+
+
+@ pytest.mark.sharpness_din
+def test_sharpness_din_perseg_bismarck(test_signal):
+    # Input signal
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+
+    # Compute sharpness
+    sharpness, _ = sharpness_din_perseg(
+        sig, fs, nperseg=2 ** 14, weighting="bismarck")
+
+
+@ pytest.mark.sharpness_din
+def test_sharpness_din_perseg_fastl(test_signal):
+    # Input signal
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+
+    # Compute sharpness
+    sharpness, _ = sharpness_din_perseg(
+        sig, fs, nperseg=2 ** 14, weighting="fastl")
+
+
+@ pytest.mark.sharpness_din  # to skip or run sharpness test
+def test_sharpness_din_spec(test_signal):
     """Test function for the sharpness calculation of an audio signal
 
     Test function for the function "comp_roughness" with 'din' method.
@@ -98,14 +176,16 @@ def test_sharpness_din_spec():
     """
 
     # Input signal from DIN 45692_2009E
-    signal = {"data_file": "tests/input/broadband_570.wav", "S": 1}
+    signal = {"data_file": "tests/input/broadband_570.wav",
+              "S": test_signal["S_din"]}
 
-    # Load signal
-    sig, fs = load(signal["data_file"], wav_calib=1)
+    # Input signal
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
 
     # Compute corresponding spectrum
     n = len(sig)
-    spec = fft(sig * np.blackman(n) / np.sum(np.blackman(n)))[0 : n // 2]
+    spec = fft(sig * np.blackman(n) / np.sum(np.blackman(n)))[0: n // 2]
     freqs = np.arange(0, n // 2, 1) * (fs / n)
 
     # Compute sharpness
@@ -148,6 +228,14 @@ def check_compliance(S, signal):
 
 # test de la fonction
 if __name__ == "__main__":
-    test_sharpness_din()
-    test_sharpness_din_spec()
-    test_sharpness_din_perseg()
+    # Reproduce the code from the fixture
+    # Input signal from DIN 45692_2009E
+    sig, fs = load("tests/input/broadband_570.wav", wav_calib=1)
+    test_signal = {
+        "signal": sig,
+        "fs": fs,
+        "S_din": 2.85,
+    }
+    test_sharpness_din(test_signal)
+    test_sharpness_din_spec(test_signal)
+    test_sharpness_din_perseg(test_signal)
