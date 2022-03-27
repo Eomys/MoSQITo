@@ -25,7 +25,7 @@ def comp_tonality(sig, fs):
     Outputs
     -------
     prominent_tones: dictionary
-        dictionary with {fc:Lp} pairs where prominent tones are detected.
+        dictionary with {fc:Lp_dB} pairs where prominent tones are detected.
     """
 
 
@@ -48,12 +48,12 @@ def comp_tonality(sig, fs):
     Lp_Pa = third_spec[0].tolist()
 
     #-- Create a list with the Lp conversion in dB.
-    Lp = []
+    Lp_dB = []
     P_ref = 2e-05
     for i in range(0, len(Lp_Pa)):
         P = Lp_Pa[i][0]
         level = 20*math.log10(P/P_ref)
-        Lp.append(level)
+        Lp_dB.append(level)
 
     # -- List where the indexes corresponding to the positions where there is
     # -- a prominent tone will be stored.
@@ -72,12 +72,12 @@ def comp_tonality(sig, fs):
         # -- Variables to compare
         if x == 0:
             Lp_prev = 0
-            Lp_central = abs(Lp[x])
-            Lp_post = abs(Lp[x + 1])
+            Lp_central = abs(Lp_dB[x])
+            Lp_post = abs(Lp_dB[x + 1])
         else:
-            Lp_prev = abs(Lp[x - 1])
-            Lp_central = abs(Lp[x])
-            Lp_post = abs(Lp[x + 1])
+            Lp_prev = abs(Lp_dB[x - 1])
+            Lp_central = abs(Lp_dB[x])
+            Lp_post = abs(Lp_dB[x + 1])
 
         # -- calculate the difference
         Lp_diff_prev = Lp_central - Lp_prev
@@ -105,13 +105,13 @@ def comp_tonality(sig, fs):
                 index_tone_list.append(x)
 
     # -- Dictionary in which the data corresponding to the prominent tones
-    # -- will be stored, i.e. {fc : Lp_mean}
+    # -- will be stored, i.e. {fc : Lp_dB}
     prominent_tones = {}
 
     for i in range(0, len(index_tone_list)):
         index = index_tone_list[i]
         key = fc[index]
-        value = Lp[index]
+        value = Lp_dB[index]
         prominent_tones[key] = value
 
     # -- Return of the function.
