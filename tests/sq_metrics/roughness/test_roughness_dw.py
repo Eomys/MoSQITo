@@ -11,7 +11,7 @@ try:
 except ImportError:
     raise RuntimeError(
         "In order to perform the tests you need the 'pytest' package."
-        )
+    )
 
 import numpy as np
 from scipy.fft import fft
@@ -45,7 +45,7 @@ def test_roughness_dw():
     stimulus = signal_test(fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=60)
 
     # Roughness calculation
-    roughness, time = roughness_dw(stimulus, fs=44100, overlap=0)
+    roughness, time, _, _ = roughness_dw(stimulus, fs=44100, overlap=0.5)
     R = {
         "name": "Roughness",
         "values": roughness,
@@ -56,7 +56,8 @@ def test_roughness_dw():
     tst = check_compliance(R)
 
     assert tst
-    
+
+
 @pytest.mark.roughness_dw  # to skip or run only Daniel and Weber roughness tests
 def test_roughness_dw_spec():
     """Test function for the roughness calculation of a audio signal
@@ -79,7 +80,7 @@ def test_roughness_dw_spec():
 
     # Stimulus generation
     stimulus = signal_test(fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=60)
-    
+
     # conversion into frequency domain
     n = len(stimulus)
     window = np.blackman(n)
@@ -89,11 +90,11 @@ def test_roughness_dw_spec():
     spec = fft(stimulus * window)[0:n//2] * 1.42
     # Highest frequency
     nMax = round(n / 2)
-    # Frequency axis in Hertz 
+    # Frequency axis in Hertz
     freqs = np.arange(1, nMax + 1, 1) * (44100 / n)
 
     # Roughness calculation
-    roughness = roughness_dw(spec, fs=44100, freqs=freqs, overlap=0)
+    roughness = roughness_dw(spec, fs=44100, freqs=freqs, overlap=0.5)
     R = {
         "name": "Roughness",
         "values": roughness,
@@ -103,7 +104,6 @@ def test_roughness_dw_spec():
     tst = check_compliance(R)
 
     assert tst
-
 
 
 def check_compliance(R):

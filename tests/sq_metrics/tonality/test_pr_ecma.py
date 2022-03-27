@@ -13,7 +13,7 @@ try:
 except ImportError:
     raise RuntimeError(
         "In order to perform the tests you need the 'pytest' package."
-        )
+    )
 
 
 # Local application imports
@@ -58,11 +58,12 @@ def test_pr_ecma():
     for i in range(len(signal)):
         # Load signal
         audio, fs = load(signal[i]["data_file"])
-        
+
         # Compute tone-to-noise ratio
         pr = prominence_ratio_ecma(
-            signal[i]["is_stationary"], audio, fs, prominence=True
+            signal[i]["is_stationary"], audio, fs, prominence=True, overlap=0.5
         )
+
 
 @pytest.mark.pr  # to skip or run PR test
 def test_pr_ecma_spec():
@@ -102,7 +103,7 @@ def test_pr_ecma_spec():
         # Load signal
         audio, fs = load(signal[i]["data_file"])
         # convert to frequency domain
-        spec, freqs = spectrum(audio,fs,window='hanning',db=True)
+        spec, freqs = spectrum(audio, fs, window='hanning', db=True)
 
         # Compute tone-to-noise ratio
         pr = prominence_ratio_ecma(
