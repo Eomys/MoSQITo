@@ -6,8 +6,6 @@
 # Standard library imports
 import math
 
-from pip import main
-
 # Local imports
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 
