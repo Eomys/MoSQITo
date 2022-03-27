@@ -18,12 +18,14 @@ from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
 
 # Optional package import
 try:
-    from SciDataTool import DataTime
+    from SciDataTool import DataTime, DataLinspace, DataFreq
 except ImportError:
     DataTime = None
+    DataLinspace = None
+    DataFreq = None
 
 
-def loudness_zwst(signal, fs=None, freqs=[], field_type="free"):
+def loudness_zwst(signal, fs=None, freqs=[], field_type="free", is_sdt_output=False):
     """Zwicker-loudness calculation for stationary signals
 
     Calculates the acoustic loudness according to Zwicker method for
@@ -52,6 +54,9 @@ def loudness_zwst(signal, fs=None, freqs=[], field_type="free"):
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
+    is_sdt_output : Bool, optional
+        If True, the outputs are returned as SciDataTool objects.
+        Default to False
 
     Outputs
     -------
@@ -65,7 +70,7 @@ def loudness_zwst(signal, fs=None, freqs=[], field_type="free"):
         Frequency axis in bark
     """
 
-    # Manage input type
+    # Manage SciDataTool input type
     if DataTime is not None and isinstance(signal, DataTime):
         time = signal.get_along("time")["time"]
         fs = 1 / (time[1] - time[0])
@@ -89,5 +94,28 @@ def loudness_zwst(signal, fs=None, freqs=[], field_type="free"):
 
     # Define Bark axis
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
+
+    # Manage SciDataTool output type
+    if is_sdt_output:
+        if DataLinspace is None:
+            raise RuntimeError(
+                "In order to handle Data objects you need the 'SciDataTool' package."
+            )
+        else:
+            bark_data = DataLinspace(
+                name="bark",
+                unit="Bark",
+                initial=0,
+                final=24,
+                number=int(24 / 0.1),
+                include_endpoint=True,
+            )
+            N_specific = DataFreq(
+                name="Specific Loudness",
+                symbol="N'_{zwst}",
+                axes=[bark_data],
+                values=N_specific,
+                unit="sone/Bark",
+            )
 
     return N, N_specific, bark_axis
