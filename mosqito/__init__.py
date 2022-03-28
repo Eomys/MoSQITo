@@ -23,6 +23,7 @@ from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq import roughnes
 
 
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din import sharpness_din
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq import sharpness_din_freq
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg import sharpness_din_perseg
 
