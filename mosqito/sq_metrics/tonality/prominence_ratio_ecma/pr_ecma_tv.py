@@ -11,6 +11,7 @@ from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import _pr_
 
 def pr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
     """Computation of prominence ratio according to ECMA-74, annex D.10
+    for a time varying signal.
         The T-PR value is calculated according to ECMA-TR/108
 
     Parameters
@@ -27,17 +28,17 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
 
     Output
     ------
-    tones_freqs : array of float
-        Frequency list of the detected tones.
-    PR : array of float
+    t_pr : array of float
+        Global PR value along time.
+    pr : array of float
         PR values for each detected tone.
     promi : array of bool
         Prominence criterion for each detected tone.
-    t_PR : array of float
-        Global PR value along time.
+    tones_freqs : array of float
+        Frequency list of the detected tones.
     time  : array of float
-        Time axis.
-    """
+        Time axis.   
+     """
     
     if len(signal.shape) == 1:
       

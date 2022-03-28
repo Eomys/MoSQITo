@@ -21,9 +21,9 @@ def _tnr_main_calc(spectrum_db, freq_axis):
     Parameters
     ----------
     spectrum_db : array
-        spectrum values in dB (n blocks x frequency)
+        spectrum values in dB [nperseg x nseg].
     freq_axis : array
-        frequency axis corresponding to the spectrum (n blocks x frequency)
+        frequency axis corresponding to the spectrum [nperseg x nseg].
 
     Output
     ------
