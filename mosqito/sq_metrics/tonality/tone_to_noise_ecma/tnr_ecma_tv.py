@@ -40,47 +40,48 @@ def tnr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
     """
     
     if len(signal.shape) == 1:
-   
-        # Number of points within each segment according to the time resolution of 500ms
+      
+        # Number of points within each frame according to the time resolution of 500ms
         nperseg = int(0.5 * fs)
-        # Overlapping segment length
-        noverlap = int(overlap *nperseg)               
-        # reshaping of the signal according to the overlap and time proportions
+        # Overlappinf segment length
+        noverlap = int(overlap * nperseg)               
+        # Time segmentation of the signal
         sig, time = time_segmentation(signal, fs, nperseg=nperseg, noverlap=noverlap, is_ecma=False)
-        sig = sig.T
-        nseg = sig.shape[0]
-    
-    else:
-        nseg = signal.shape[0]
-        time = np.linspace(0, signal.shape[1]/fs, num=nseg)
-
-    
-    # Spectrum computation
-    spectrum_db, freq_axis = spectrum(sig, fs, db=True)
+        # Number of segments
+        nseg = sig.shape[1]        
+        # Spectrum computation
+        spectrum_db, freq_axis = spectrum(sig, fs, db=True)
         
-    # Compute tnr values
+    else:
+        nseg = signal.shape[1]
+        time = np.linspace(0, nseg/fs, num=nseg)
+        
+        # Compute spectrum
+        spectrum_db, freq_axis = spectrum(sig, fs, db=True)
+            
+            
+    # compute tnr values
     tones_freqs, tnr, prom, t_tnr = _tnr_main_calc(spectrum_db, freq_axis)
-
+ 
             
     # Retore the results in a time vs frequency array
     freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
-    TNR = np.empty((len(freqs), nseg))
-    TNR.fill(np.nan)
+    tnr = np.empty((len(freqs), nseg))
+    tnr.fill(np.nan)
     promi = np.empty((len(freqs), nseg), dtype=bool)
-    promi.fill(np.nan)
-
+    promi.fill(False)
+    
     for t in range(nseg):
         for f in range(len(tones_freqs[t])):
             ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
             if prominence == False:
-                TNR[ind, t] = tnr[t][f]
+                tnr[ind, t] = tnr[t][f]
                 promi[ind, t] = prom[t][f]
             if prominence == True:
                 if prom[t][f] == True:
-                    TNR[ind, t] = tnr[t][f]
+                    tnr[ind, t] = tnr[t][f]
                     promi[ind, t] = prom[t][f]
 
-        t_tnr = np.ravel(t_tnr)
+    t_tnr = np.ravel(t_tnr)
 
-    return tones_freqs, TNR, promi, t_tnr, time 
-    
+    return t_tnr, tnr, promi, freqs, time     

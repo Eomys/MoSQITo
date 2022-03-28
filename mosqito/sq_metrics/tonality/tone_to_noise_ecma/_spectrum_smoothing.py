@@ -18,7 +18,7 @@ def _spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):
     Parameters
     ----------
     freqs : numpy.array
-        frequency axis (n block x frequency axis)
+        frequency axis (frequency axis)
     spec : numpy.array
         spectrum in dB (n block x spectrum)
     noct : integer

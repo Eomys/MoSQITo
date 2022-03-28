@@ -26,42 +26,58 @@ def _pr_main_calc(spectrum_db, freq_axis):
     Parameters
     ----------
     spectrum_db : array
-        spectrum values in dB (n blocks x frequency)
+        Spectrum values in dB [nperseg x nseg]
     freq_axis : array
-        frequency axis corresponding to the spectrum (n blocks x frequency)
+        frequency axis corresponding to the spectrum [nperseg x nseg]
 
     Output
     ------
     tones_freqs : array of float
-        frequency of the tones (n blocks x number of tones)
+        Frequency list of the tones [number of tones x nseg]
     pr : array of float
-        TNR value calculated for each tone (n blocks x number of tones)
+        TNR value calculated for each tone [number of tones x nseg]
     prominence : array of boolean
-        prominence criteria as described in ECMA 74 (n blocks x number of tones)
+        Prominence criteria as described in ECMA 74 [number of tones x nseg]
     t_pr : array of float
-        sum of the specific TNR (n blocks x global value)
+        Sum of the specific TNR
     """
     
     #### Spectrum creation #######################################################
 
 
     if len(spectrum_db.shape) == 1:
-        n = 1
+        nseg = 1
         # Frequency axis of interest
         freq_index = np.where((freq_axis > 89.1) & (freq_axis < 11200))[0]
         freqs = freq_axis[freq_index]
         spec_db = spectrum_db[freq_index]
         
-    elif len(spectrum_db.shape) > 1:
-        n = spectrum_db.shape[0]
-        freqs = [[]for i in range(n)]
-        spec_db = [[]for i in range(n)]
-        for i in range(n):
-            freq_index_cols = np.where((freq_axis[0,:] > 89.1) & (freq_axis[0,:] < 11200))[0]
-            freqs[i] = np.append(freqs[i],freq_axis[i,freq_index_cols])
-            spec_db[i] = np.append(spec_db[i],spectrum_db[i,freq_index_cols])
+    elif (len(spectrum_db.shape) > 1) & (len(freq_axis.shape) > 1):
+        nseg = spectrum_db.shape[1]
+        freqs = [[]for i in range(nseg)]
+        spec_db = [[]for i in range(nseg)]
+        for i in range(nseg):
+            # Frequency axis of interest
+            freq_index_rows = np.where((freq_axis[:,nseg] > 89.1) & (freq_axis[:,nseg] < 11200))[0]
+            freqs[i] = np.append(freqs[i],freq_axis[freq_index_rows,i])
+            spec_db[i] = np.append(spec_db[i],spectrum_db[freq_index_rows,i])
         freqs = np.asarray(freqs)
         spec_db = np.asarray(spec_db)
+        
+    elif (len(spectrum_db.shape) > 1) & (len(freq_axis.shape) == 1):
+        # Frequency axis of interest
+        freq_index = np.where((freq_axis > 89.1) & (freq_axis < 11200))[0]
+        # Initialization
+        nfreqs = len(freq_index)    
+        nseg = spectrum_db.shape[1]
+        freqs = np.zeros((nfreqs,nseg))
+        spec_db = np.zeros((nfreqs,nseg))
+        for i in range(nseg):
+            freqs[:,i] = freq_axis[freq_index]
+            spec_db[:,i] = spectrum_db[freq_index,i]
+
+    freqs = freqs.T
+    spec_db = spec_db.T
 
     #### Screening to find the potential tonal components ########################
 
@@ -70,29 +86,29 @@ def _pr_main_calc(spectrum_db, freq_axis):
     #### Evaluation of each candidate ############################################
 
     # Initialization of the results lists
-    if n == 1:
+    if nseg == 1:
         PR = []
         t_pr = []
         tones_freqs = []
         prominence = []
     else:   
-        PR = [[]for i in range(n)]
-        t_pr = [[]for i in range(n)]
-        tones_freqs = [[]for i in range(n)]
-        prominence = [[]for i in range(n)]
+        PR = [[]for i in range(nseg)]
+        t_pr = [[]for i in range(nseg)]
+        tones_freqs = [[]for i in range(nseg)]
+        prominence = [[]for i in range(nseg)]
 
 
 
-    for i in range(n):
+    for i in range(nseg):
         
         pr = np.array([])
         
-        if n == 1:
+        if nseg == 1:
             peaks = peak_index.astype(int)
             spec = spec_db
             fr = freqs
 
-        elif n > 1:
+        elif nseg > 1:
             peaks = peak_index[i].astype(int)
             spec = spec_db[i,:]
             fr = freqs[i,:]
@@ -157,9 +173,9 @@ def _pr_main_calc(spectrum_db, freq_axis):
                 )
     
             if delta > 0:
-                if n > 1:
+                if nseg > 1:
                     tones_freqs[i] = np.append(tones_freqs[i], ft)
-                elif n == 1:
+                elif nseg == 1:
                     tones_freqs = np.append(tones_freqs, ft)
                 pr = np.append(pr, delta)
 
@@ -167,30 +183,30 @@ def _pr_main_calc(spectrum_db, freq_axis):
                 # Prominent discrete tone criteria
                 if ft >= 89.1 and ft <= 1000:
                     if delta >= 9 + 10 * np.log10(1000 / ft):
-                        if n > 1:
+                        if nseg > 1:
                             prominence[i].append(True)
                        
-                        elif n == 1:
+                        elif nseg == 1:
                             prominence.append(True)
                     else:
-                        if n > 1:
+                        if nseg > 1:
                             prominence[i].append(False)
                         
-                        elif n == 1:
+                        elif nseg == 1:
                             prominence.append(False)
                             
                 elif ft > 1000:
                     if delta >= 9:
-                        if n > 1:
+                        if nseg > 1:
                             prominence[i].append(True)
                         
-                        elif n == 1:
+                        elif nseg == 1:
                             prominence.append(True)
                     else:
-                        if n > 1:
+                        if nseg > 1:
                             prominence[i].append(False)
                         
-                        elif n == 1:
+                        elif nseg == 1:
                             prominence.append(False)
     
             # suppression from the list of tones of all the candidates belonging to the
@@ -201,7 +217,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
             peaks = np.delete(peaks, sup)
             nb_tones -= len(sup)
 
-        if n > 1:
+        if nseg > 1:
             if sum(np.power(10, (pr[prominence[i]] / 10))) != 0:
                 t_pr[i] = 10 * np.log10(sum(np.power(10, (pr[prominence[i]] / 10))))
             else:
@@ -209,7 +225,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
             PR[i] = np.append(PR[i], pr)               
                     
                     
-        elif n == 1:
+        elif nseg == 1:
             if sum(np.power(10, (pr[prominence] / 10))) != 0:
                 t_pr = np.append(t_pr,10 * np.log10(sum(np.power(10, (pr[prominence] / 10)))))
             else:

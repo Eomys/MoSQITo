@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import numpy as np
+
 # Local imports
 from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import _pr_main_calc
-from mosqito.utils.conversion import db2amp
+from mosqito.utils.conversion import amp2db
 
 
 def pr_ecma_freq(spectrum, freqs, prominence=True):
@@ -12,7 +14,7 @@ def pr_ecma_freq(spectrum, freqs, prominence=True):
     Parameters
     ----------
     spectrum :numpy.array
-        A complex frequency spectrum in dB.
+        A complex frequency spectrum.
     freqs : np.array
         Frequency axis. 
     prominence : boolean
@@ -35,8 +37,11 @@ def pr_ecma_freq(spectrum, freqs, prominence=True):
     if spectrum.shape != freqs.shape :
         raise ValueError('Input spectrum and frequency axis must have the same shape')
 
+    if np.iscomplexobj(np.array(spectrum)) == False:
+        raise ValueError('Input spectrum must be complex !')
+
     # Compute spectrum dB values
-    spectrum_db = db2amp(spectrum, ref=2e-5)
+    spectrum_db = amp2db(np.abs(spectrum), ref=2e-5)
                   
     # Compute PR values
     tones_freqs, pr, prom, t_pr = _pr_main_calc(spectrum_db, freqs)

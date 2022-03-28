@@ -47,14 +47,14 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
         noverlap = int(overlap * nperseg)               
         # Time segmentation of the signal
         sig, time = time_segmentation(signal, fs, nperseg=nperseg, noverlap=noverlap, is_ecma=False)
-        sig = sig.T
         # Number of segments
-        nseg = sig.shape[0]        
+        nseg = sig.shape[1]        
         # Spectrum computation
         spectrum_db, freq_axis = spectrum(sig, fs, db=True)
+        
     else:
-        nseg = signal.shape[0]
-        time = np.linspace(0, signal.shape[1]/fs, num=nseg)
+        nseg = signal.shape[1]
+        time = np.linspace(0, nseg/fs, num=nseg)
         
         # Compute spectrum
         spectrum_db, freq_axis = spectrum(sig, fs, db=True)
@@ -66,8 +66,8 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
             
     # Retore the results in a time vs frequency array
     freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
-    PR = np.empty((len(freqs), nseg))
-    PR.fill(np.nan)
+    pr = np.empty((len(freqs), nseg))
+    pr.fill(np.nan)
     promi = np.empty((len(freqs), nseg), dtype=bool)
     promi.fill(False)
     
@@ -75,14 +75,14 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
         for f in range(len(tones_freqs[t])):
             ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
             if prominence == False:
-                PR[ind, t] = pr[t][f]
+                pr[ind, t] = pr[t][f]
                 promi[ind, t] = prom[t][f]
             if prominence == True:
                 if prom[t][f] == True:
-                    PR[ind, t] = pr[t][f]
+                    pr[ind, t] = pr[t][f]
                     promi[ind, t] = prom[t][f]
 
     t_pr = np.ravel(t_pr)
 
-    return tones_freqs, PR, promi, t_pr, time 
+    return t_pr, pr, promi, freqs, time 
     
