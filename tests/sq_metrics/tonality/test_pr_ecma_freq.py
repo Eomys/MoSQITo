@@ -42,7 +42,7 @@ def test_pr_ecma_freq():
     # Load signal
     audio, fs = load(signal["data_file"])
     # convert to frequency domain
-    spec, freqs = spectrum(audio, fs, window='hanning', db=True)
+    spec, freqs = spectrum(audio, fs, window='hanning', db=False)
 
     # Compute tone-to-noise ratio
     pr = pr_ecma_freq(spec, freqs=freqs, prominence=True)
