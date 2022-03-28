@@ -136,6 +136,20 @@ def test_loudness_zwst_44100Hz():
 
 
 @pytest.mark.loudness_zwst
+def test_loudness_zwst_perseg(test_signal):
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+
+    # Compute Loudness
+    N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
+        sig, fs, nperseg=8192 * 2, noverlap=4096
+    )
+
+    # Check that all values are within the desired values +/- 5%
+    np.testing.assert_allclose(N, 10.498, rtol=0.05)
+
+
+@pytest.mark.loudness_zwst
 def test_loudness_zwst_sdt(test_signal):
     sig = test_signal["signal"]
     fs = test_signal["fs"]
@@ -163,6 +177,35 @@ def test_loudness_zwst_sdt(test_signal):
         N_specific, test_signal["N_specif_iso"], rtol=5 / 100, atol=0.1
     )
     assert is_isoclose_N and is_isoclose_N_specific
+
+
+@pytest.mark.loudness_zwst
+def test_loudness_zwst_perseg_sdt(test_signal):
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+    time = DataLinspace(
+        name="time",
+        unit="s",
+        initial=0,
+        final=(len(sig) - 1) / fs,
+        number=len(sig),
+        include_endpoint=True,
+    )
+    sig_data = DataTime(
+        name="Test signal 5 (pinknoise 60 dB)",
+        symbol="p",
+        unit="Pa",
+        axes=[time],
+        values=sig,
+    )
+    # Compute Loudness
+    N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
+        sig, fs, nperseg=8192 * 2, noverlap=4096, is_sdt_output=True
+    )
+    N = N.get_along("time")[N.symbol]
+
+    # Check that all values are within the desired values +/- 5%
+    np.testing.assert_allclose(N, 10.498, rtol=0.05)
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
@@ -217,7 +260,7 @@ if __name__ == "__main__":
     test_loudness_zwst_3oct()
     test_loudness_zwst_wav(test_signal)
     test_loudness_zwst_44100Hz()
-    # test_loudness_zwst_perseg(test_signal)
+    test_loudness_zwst_perseg(test_signal)
     test_loudness_zwst_sdt(test_signal)
-    # test_loudness_zwst_perseg_sdt(test_signal)
+    test_loudness_zwst_perseg_sdt(test_signal)
     # test_loudness_zwst_spec(test_signal)
