@@ -13,9 +13,9 @@ def tnr_ecma_freq(spectrum, freqs,  prominence=True):
     Parameters
     ----------
     spectrum :numpy.array
-        A complex frequency spectrum in dB.
+        A complex frequency spectrum in dB [nperseg x nseg].
     freqs : np.array
-        Frequency axis. 
+        Frequency axis [nperseg x nseg] or [nperseg]. 
     prominence : boolean
         If True, the algorithm only returns the prominent tones, if False it returns all tones detected.
         Default is True.
@@ -33,8 +33,8 @@ def tnr_ecma_freq(spectrum, freqs,  prominence=True):
     """
              
 
-    if spectrum.shape != freqs.shape :
-        raise ValueError('Input spectrum and frequency axis must have the same shape')
+    if len(spectrum) != len(freqs) :
+        raise ValueError('Input spectrum and frequency axis must have the same size')
     
     if np.iscomplexobj(np.array(spectrum)) == False:
         raise ValueError('Input spectrum must be complex !')

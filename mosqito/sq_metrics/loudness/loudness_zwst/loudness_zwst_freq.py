@@ -53,8 +53,10 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     """
     if spectrum.shape != freqs.shape :
         raise ValueError('Input spectrum and frequency axis must have the same shape')
-
     
+    if np.iscomplexobj(np.array(spectrum)) == False:
+        raise ValueError('Input spectrum must be complex !')
+
     # Compute third octave band spectrum
     spec_third, _ = noct_synthesis(spectrum, freqs, fmin=24, fmax=12600)
         
@@ -62,7 +64,7 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     spec_third = amp2db(spec_third, ref=2e-5)
     
     # Compute main loudness
-    Nm = _main_loudness(spec_third.T, field_type)
+    Nm = _main_loudness(spec_third, field_type)
     #
     # Computation of specific loudness pattern and integration of overall
     # loudness by attaching slopes towards higher frequencies

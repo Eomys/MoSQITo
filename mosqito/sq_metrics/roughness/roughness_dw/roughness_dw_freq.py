@@ -39,6 +39,9 @@ def roughness_dw_freq(spectrum, freqs):
     # Check input size coherence
     if spectrum.shape != freqs.shape :
         raise ValueError('Input spectrum and frequency axis must have the same shape')
+        
+    if np.iscomplexobj(np.array(spectrum)) == False:
+        raise ValueError('Input spectrum must be complex !')
 
 
     if len(spectrum.shape)>1:
