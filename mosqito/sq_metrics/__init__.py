@@ -32,5 +32,8 @@ from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness impo
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg import (
     sharpness_din_perseg,
 )
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq import (
+    sharpness_din_freq,
+)
 
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon
