@@ -4,17 +4,18 @@
 try:
     import pytest
 except ImportError:
-    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
+    raise RuntimeError(
+        "In order to perform the tests you need the 'pytest' package.")
 try:
     from SciDataTool import DataLinspace, DataTime
 except ImportError:
     raise RuntimeError(
         "In order to handle Data objects you need the 'SciDataTool' package."
     )
-    
+
 
 import numpy as np
-from scipy.fft import fft
+from numpy.fft import fft, fftfreq
 
 # Local application imports
 from mosqito.utils import load
@@ -30,7 +31,8 @@ def test_signal():
     sig, fs = load(
         "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2 ** 0.5
     )
-    N_specif_iso = np.genfromtxt("tests/input/test_signal_5.csv", skip_header=1)
+    N_specif_iso = np.genfromtxt(
+        "tests/input/test_signal_5.csv", skip_header=1)
     sig_dict = {
         "signal": sig,
         "fs": fs,
@@ -61,7 +63,8 @@ def test_loudness_zwst_3oct():
 
     # Target values
     N_iso = 83.296
-    N_specif_iso = np.genfromtxt("tests/input/test_signal_1.csv", skip_header=1)
+    N_specif_iso = np.genfromtxt(
+        "tests/input/test_signal_1.csv", skip_header=1)
 
     # Compute loudness
     Nm = _main_loudness(test_signal_1, field_type="free")
@@ -69,7 +72,8 @@ def test_loudness_zwst_3oct():
 
     # Assert compliance
     is_isoclose_N = isoclose(N_iso, N, rtol=5 / 100, atol=0.1)
-    is_isoclose_N_specific = isoclose(N_specific, N_specif_iso, rtol=5 / 100, atol=0.1)
+    is_isoclose_N_specific = isoclose(
+        N_specific, N_specif_iso, rtol=5 / 100, atol=0.1)
     assert is_isoclose_N and is_isoclose_N_specific
 
 
@@ -119,14 +123,16 @@ def test_loudness_zwst_44100Hz():
 
     # Target values
     N_iso = 4.019
-    N_specif_iso = np.genfromtxt("tests/input/test_signal_3.csv", skip_header=1)
+    N_specif_iso = np.genfromtxt(
+        "tests/input/test_signal_3.csv", skip_header=1)
 
     # Compute Loudness
     N, N_specific, bark_axis = loudness_zwst(sig, fs)
 
     # Assert compliance
     is_isoclose_N = isoclose(N, N_iso, rtol=5 / 100, atol=0.1)
-    is_isoclose_N_specific = isoclose(N_specific, N_specif_iso, rtol=5 / 100, atol=0.1)
+    is_isoclose_N_specific = isoclose(
+        N_specific, N_specif_iso, rtol=5 / 100, atol=0.1)
     assert is_isoclose_N and is_isoclose_N_specific
 
 
@@ -182,8 +188,8 @@ def test_loudness_zwst_freq(test_signal):
     fs = test_signal["fs"]
     # Compute corresponding spectrum
     n = len(sig)
-    spec = fft(sig * np.hanning(n) / np.sum(np.hanning(n)))[0 : n // 2] * 2 ** 0.5
-    freqs = np.arange(0, n // 2, 1) * (fs / n)
+    spec = np.abs(2 / np.sqrt(2) / n * fft(sig)[0:n//2])
+    freqs = fftfreq(n, 1/fs)[0:n//2]
     # Compute Loudness
     N, N_specific, bark_axis = loudness_zwst_freq(spec, freqs)
 
@@ -201,7 +207,8 @@ if __name__ == "__main__":
     sig, fs = load(
         "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2 ** 0.5
     )
-    N_specif_iso = np.genfromtxt("tests/input/test_signal_5.csv", skip_header=1)
+    N_specif_iso = np.genfromtxt(
+        "tests/input/test_signal_5.csv", skip_header=1)
     test_signal = {
         "signal": sig,
         "fs": fs,
@@ -209,10 +216,10 @@ if __name__ == "__main__":
         "N_specif_iso": N_specif_iso,
     }
 
-    test_loudness_zwst_3oct()
-    test_loudness_zwst_wav(test_signal)
-    test_loudness_zwst_44100Hz()
+    # test_loudness_zwst_3oct()
+    # test_loudness_zwst_wav(test_signal)
+    # test_loudness_zwst_44100Hz()
     # test_loudness_zwst_perseg(test_signal)
-    test_loudness_zwst_sdt(test_signal)
+    # test_loudness_zwst_sdt(test_signal)
     # test_loudness_zwst_perseg_sdt(test_signal)
-    # test_loudness_zwst_freq(test_signal)
+    test_loudness_zwst_freq(test_signal)

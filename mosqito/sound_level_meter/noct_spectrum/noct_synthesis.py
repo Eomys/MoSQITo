@@ -23,7 +23,8 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     Parameters
     ----------
     spectrum : numpy.ndarray
-        input complex spectrum (dim [nseg, nperseg])
+        amplitude rms of the one-sided spectrum of the signal
+        (dim [nseg, nperseg])
     freqs : list
         list of input frequency 
     fmin : float
@@ -47,36 +48,36 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies
     """
-    
 
     # Get filters center frequencies
     fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
-    
+
     nband = len(fpref)
 
     if len(spectrum.shape) > 1:
         nseg = spectrum.shape[0]
-        spec = np.zeros((nseg,nband))
-    else :
+        spec = np.zeros((nseg, nband))
+    else:
         nseg = 1
         spec = np.zeros((nband))
 
     # Frequency resolution
-    df = freqs[1:] - freqs[:-1] 
-    df = np.concatenate((df,[df[-1]]))
-    
+    # df = freqs[1:] - freqs[:-1]
+    # df = np.concatenate((df, [df[-1]]))
+
     # Get upper and lower frequencies
-    fu = fpref * 2**(1/(2*n))
-    fl = fpref / 2**(1/(2*n))
-    
+    fu = fc_vec * 2**(1/(2*n))
+    fl = fc_vec / 2**(1/(2*n))
+
     for s in range(nseg):
         for i in range(nband):
             # index of the frequencies within the band
-            idx = np.where((freqs>=fl[i])&(freqs<fu[i]))
-            
+            idx = np.where((freqs >= fl[i]) & (freqs < fu[i]))
+
             if len(spectrum.shape) > 1:
-                spec[s,i] = np.sqrt(np.sum(np.power(np.abs(spectrum[i,idx]),2))*len(idx))
-            else :
-                spec[i] = np.sqrt(np.sum(np.power(np.abs(spectrum[idx]),2))*len(idx))
+                spec[s, i] = np.sqrt(
+                    np.sum(np.power(np.abs(spectrum[i, idx]), 2)))
+            else:
+                spec[i] = np.sqrt(np.sum(spectrum[idx]**2))
 
     return spec, fpref
