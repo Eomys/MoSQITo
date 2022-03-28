@@ -5,9 +5,17 @@ import numpy as np
 
 # Local application imports
 from mosqito.sound_level_meter import noct_spectrum
-from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (_main_loudness)
-from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (_calc_slopes)
-from mosqito.utils.conversion import db2amp
+from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
+from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
+from mosqito.utils.conversion import amp2db
+
+# Optional package import
+try:
+    from SciDataTool import DataTime, DataLinspace, DataFreq
+except ImportError:
+    DataTime = None
+    DataLinspace = None
+    DataFreq = None
 
 
 def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
@@ -29,7 +37,7 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
     Parameters
     ----------
     signal : numpy.array or DataTime object
-        Signal time values [Pa] 
+        Signal time values [Pa]
     fs : float, optional
         Sampling frequency, can be omitted if the input is a DataTime
         object. Default to None
@@ -57,15 +65,14 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
         signal = signal.get_along("time")[signal.symbol]
 
     # Compute third octave band spectrum
-
     spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600)
 
     # Compute dB values
-    spec_third = db2amp(spec_third, ref=2e-5)
+    spec_third = amp2db(spec_third, ref=2e-5)
 
     # Compute main loudness
     Nm = _main_loudness(spec_third, field_type)
-    
+
     # Computation of specific loudness pattern and integration of overall
     # loudness by attaching slopes towards higher frequencies
     N, N_specific = _calc_slopes(Nm)

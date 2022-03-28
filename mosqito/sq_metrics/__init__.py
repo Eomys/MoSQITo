@@ -7,11 +7,23 @@ from mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv import loudness_zwt
 from mosqito.sq_metrics.loudness.utils.equal_loudness_contours import (
     equal_loudness_contours,
 )
-from mosqito.sq_metrics.tonality.prominence_ratio_ecma.prominence_ratio_ecma import (
-    prominence_ratio_ecma,
+from mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq import (
+    pr_ecma_freq,
 )
-from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tone_to_noise_ecma import (
-    tone_to_noise_ecma,
+from mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st import (
+    pr_ecma_st,
+)
+from mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv import (
+    pr_ecma_tv,
+)
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq import (
+    tnr_ecma_freq,
+)
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st import (
+    tnr_ecma_st,
+)
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_tv import (
+    tnr_ecma_tv,
 )
 from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw import (
     roughness_dw,

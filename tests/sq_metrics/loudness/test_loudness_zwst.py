@@ -8,14 +8,7 @@
 try:
     import pytest
 except ImportError:
-    raise RuntimeError(
-        "In order to perform the tests you need the 'pytest' package.")
-try:
-    from SciDataTool import DataLinspace, DataTime
-except ImportError:
-    raise RuntimeError(
-        "In order to handle Data objects you need the 'SciDataTool' package."
-    )
+    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
 try:
     from SciDataTool import DataLinspace, DataTime
 except ImportError:
@@ -34,8 +27,22 @@ from mosqito.sq_metrics import loudness_zwst
 from mosqito.sq_metrics import loudness_zwst_perseg
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
-from validations.sq_metrics.loudness_zwst.validation_loudness_zwst import _check_compliance
 from tests.input.Test_signal_1 import test_signal_1
+
+
+@pytest.fixture
+def test_signal():
+    sig, fs = load(
+        "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2 ** 0.5
+    )
+    N_specif_iso = np.genfromtxt("tests/input/test_signal_5.csv", skip_header=1)
+    sig_dict = {
+        "signal": sig,
+        "fs": fs,
+        "N_iso": 10.498,
+        "N_specif_iso": N_specif_iso,
+    }
+    return sig_dict
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
@@ -59,17 +66,15 @@ def test_loudness_zwst_3oct():
 
     # Target values
     N_iso = 83.296
-    N_specif_iso = np.genfromtxt(
-        "tests/input/test_signal_1.csv", skip_header=1)
+    N_specif_iso = np.genfromtxt("tests/input/test_signal_1.csv", skip_header=1)
 
     # Compute loudness
     Nm = _main_loudness(test_signal_1, field_type="free")
     N, N_specific = _calc_slopes(Nm)
 
     # Assert compliance
-    is_isoclose_N = isoclose(N_iso, N, rtol=5/100, atol=0.1)
-    is_isoclose_N_specific = isoclose(
-        N_specific, N_specif_iso, rtol=5/100, atol=0.1)
+    is_isoclose_N = isoclose(N_iso, N, rtol=5 / 100, atol=0.1)
+    is_isoclose_N_specific = isoclose(N_specific, N_specif_iso, rtol=5 / 100, atol=0.1)
     assert is_isoclose_N and is_isoclose_N_specific
 
 
@@ -99,9 +104,10 @@ def test_loudness_zwst_wav(test_signal):
     N, N_specific, bark_axis = loudness_zwst(sig, fs)
 
     # Assert compliance
-    is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5/100, atol=0.1)
+    is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5 / 100, atol=0.1)
     is_isoclose_N_specific = isoclose(
-        N_specific, test_signal["N_specif_iso"], rtol=5/100, atol=0.1)
+        N_specific, test_signal["N_specif_iso"], rtol=5 / 100, atol=0.1
+    )
     assert is_isoclose_N and is_isoclose_N_specific
 
 
@@ -113,20 +119,49 @@ def test_loudness_zwst_44100Hz():
     # Test signal as input for stationary loudness
     # (from ISO 532-1 annex B3) resampled
     sig, fs = load(
-        "tests/input/Test signal 3 (1 kHz 60 dB)_44100Hz.wav", wav_calib=2 * 2 ** 0.5)
+        "tests/input/Test signal 3 (1 kHz 60 dB)_44100Hz.wav", wav_calib=2 * 2 ** 0.5
+    )
 
     # Target values
     N_iso = 4.019
-    N_specif_iso = np.genfromtxt(
-        "tests/input/test_signal_3.csv", skip_header=1)
+    N_specif_iso = np.genfromtxt("tests/input/test_signal_3.csv", skip_header=1)
 
     # Compute Loudness
     N, N_specific, bark_axis = loudness_zwst(sig, fs)
 
     # Assert compliance
-    is_isoclose_N = isoclose(N, N_iso, rtol=5/100, atol=0.1)
+    is_isoclose_N = isoclose(N, N_iso, rtol=5 / 100, atol=0.1)
+    is_isoclose_N_specific = isoclose(N_specific, N_specif_iso, rtol=5 / 100, atol=0.1)
+    assert is_isoclose_N and is_isoclose_N_specific
+
+
+@pytest.mark.loudness_zwst
+def test_loudness_zwst_sdt(test_signal):
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+    time = DataLinspace(
+        name="time",
+        unit="s",
+        initial=0,
+        final=(len(sig) - 1) / fs,
+        number=len(sig),
+        include_endpoint=True,
+    )
+    sig_data = DataTime(
+        name="Test signal 5 (pinknoise 60 dB)",
+        symbol="p",
+        unit="Pa",
+        axes=[time],
+        values=sig,
+    )
+    N, N_specific, _ = loudness_zwst(sig_data, fs, is_sdt_output=True)
+    N_specific = N_specific.get_along("Critical band scale")[N_specific.symbol]
+
+    # Assert compliance
+    is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5 / 100, atol=0.1)
     is_isoclose_N_specific = isoclose(
-        N_specific, N_specif_iso, rtol=5/100, atol=0.1)
+        N_specific, test_signal["N_specif_iso"], rtol=5 / 100, atol=0.1
+    )
     assert is_isoclose_N and is_isoclose_N_specific
 
 
@@ -152,16 +187,16 @@ def test_loudness_zwst_spec(test_signal):
     fs = test_signal["fs"]
     # Compute corresponding spectrum
     n = len(sig)
-    spec = fft(sig * np.hanning(n) / np.sum(np.hanning(n))
-               )[0: n // 2] * 2 ** 0.5
+    spec = fft(sig * np.hanning(n) / np.sum(np.hanning(n)))[0 : n // 2] * 2 ** 0.5
     freqs = np.arange(0, n // 2, 1) * (fs / n)
     # Compute Loudness
     N, N_specific, bark_axis = loudness_zwst(spec, fs, freqs=freqs)
 
     # Assert compliance
-    is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5/100, atol=0.1)
+    is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5 / 100, atol=0.1)
     is_isoclose_N_specific = isoclose(
-        N_specific, test_signal["N_specif_iso"], rtol=5/100, atol=0.1)
+        N_specific, test_signal["N_specif_iso"], rtol=5 / 100, atol=0.1
+    )
     assert is_isoclose_N and is_isoclose_N_specific
 
 
@@ -171,4 +206,18 @@ if __name__ == "__main__":
     sig, fs = load(
         "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2 ** 0.5
     )
+    N_specif_iso = np.genfromtxt("tests/input/test_signal_5.csv", skip_header=1)
+    test_signal = {
+        "signal": sig,
+        "fs": fs,
+        "N_iso": 10.498,
+        "N_specif_iso": N_specif_iso,
+    }
 
+    test_loudness_zwst_3oct()
+    test_loudness_zwst_wav(test_signal)
+    test_loudness_zwst_44100Hz()
+    # test_loudness_zwst_perseg(test_signal)
+    test_loudness_zwst_sdt(test_signal)
+    # test_loudness_zwst_perseg_sdt(test_signal)
+    # test_loudness_zwst_spec(test_signal)
