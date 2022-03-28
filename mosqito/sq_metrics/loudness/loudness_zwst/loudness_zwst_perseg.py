@@ -87,7 +87,7 @@ def loudness_zwst_perseg(
             )
         else:
             bark_data = DataLinspace(
-                name="Critical band scale",
+                name="Critical band rate",
                 unit="Bark",
                 initial=0,
                 final=24,

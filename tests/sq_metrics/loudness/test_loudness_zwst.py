@@ -169,7 +169,7 @@ def test_loudness_zwst_sdt(test_signal):
         values=sig,
     )
     N, N_specific, _ = loudness_zwst(sig_data, fs, is_sdt_output=True)
-    N_specific = N_specific.get_along("Critical band scale")[N_specific.symbol]
+    N_specific = N_specific.get_along("Critical band rate")[N_specific.symbol]
 
     # Assert compliance
     is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5 / 100, atol=0.1)

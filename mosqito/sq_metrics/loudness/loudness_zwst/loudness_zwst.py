@@ -88,7 +88,7 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
             )
         else:
             bark_data = DataLinspace(
-                name="Critical band scale",
+                name="Critical band rate",
                 unit="Bark",
                 initial=0,
                 final=24,
