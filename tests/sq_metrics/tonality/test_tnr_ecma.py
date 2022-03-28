@@ -11,15 +11,13 @@ from mosqito.sound_level_meter.spectrum import spectrum
 try:
     import pytest
 except ImportError:
-    raise RuntimeError(
-        "In order to perform the tests you need the 'pytest' package."
-    )
+    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
 
 
 # Local application imports
 from mosqito.utils import load
 from mosqito.sq_metrics import (
-    tone_to_noise_ecma,
+    tnr_ecma_st,
 )
 
 
@@ -62,8 +60,9 @@ def test_tnr_ecma():
         # Load signal
         audio, fs = load(signal[i]["data_file"])
         # Compute tone-to-noise ratio
-        tnr = tone_to_noise_ecma(
-            signal[i]["is_stationary"], audio, fs, prominence=True, overlap=0.5)
+        tnr = tnr_ecma_st(
+            signal[i]["is_stationary"], audio, fs, prominence=True, overlap=0.5
+        )
 
 
 @pytest.mark.tnr  # to skip or run TNR test
@@ -104,10 +103,10 @@ def test_tnr_ecma_spec():
         # Load signal
         audio, fs = load(signal[i]["data_file"])
         # convert to frequency domain
-        spec, freqs = spectrum(audio, fs, window='hanning', db=True)
+        spec, freqs = spectrum(audio, fs, window="hanning", db=True)
 
         # Compute tone-to-noise ratio
-        tnr = tone_to_noise_ecma(
+        tnr = tnr_ecma_st(
             signal[i]["is_stationary"], spec, freqs=freqs, prominence=True
         )
 

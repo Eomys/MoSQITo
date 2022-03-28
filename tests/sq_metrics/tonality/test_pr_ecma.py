@@ -11,14 +11,12 @@ from mosqito.sound_level_meter.spectrum import spectrum
 try:
     import pytest
 except ImportError:
-    raise RuntimeError(
-        "In order to perform the tests you need the 'pytest' package."
-    )
+    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
 
 
 # Local application imports
 from mosqito.utils import load
-from mosqito.sq_metrics import prominence_ratio_ecma
+from mosqito.sq_metrics import pr_ecma_st
 
 
 @pytest.mark.pr  # to skip or run PR test
@@ -60,7 +58,7 @@ def test_pr_ecma():
         audio, fs = load(signal[i]["data_file"])
 
         # Compute tone-to-noise ratio
-        pr = prominence_ratio_ecma(
+        pr = pr_ecma_st(
             signal[i]["is_stationary"], audio, fs, prominence=True, overlap=0.5
         )
 
@@ -103,12 +101,10 @@ def test_pr_ecma_spec():
         # Load signal
         audio, fs = load(signal[i]["data_file"])
         # convert to frequency domain
-        spec, freqs = spectrum(audio, fs, window='hanning', db=True)
+        spec, freqs = spectrum(audio, fs, window="hanning", db=True)
 
         # Compute tone-to-noise ratio
-        pr = prominence_ratio_ecma(
-            signal[i]["is_stationary"], spec, freqs=freqs, prominence=True
-        )
+        pr = pr_ecma_st(signal[i]["is_stationary"], spec, freqs=freqs, prominence=True)
 
 
 if __name__ == "__main__":
