@@ -26,7 +26,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
     Parameters
     ----------
     spectrum_db : array
-        spectrum values in dB [nperseg x nseg]
+        Spectrum values in dB [nperseg x nseg]
     freq_axis : array
         frequency axis corresponding to the spectrum [nperseg x nseg]
 
