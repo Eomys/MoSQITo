@@ -14,7 +14,7 @@ from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import _n_oct_fr
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
 
 
-def noct_synthesis(spectrum, freqs, fs, fmin, fmax, n=3, G=10, fr=1000):
+def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     """Adapt input spectrum to nth-octave band spectrum
 
     Convert the input spectrum to third-octave band spectrum
@@ -23,7 +23,7 @@ def noct_synthesis(spectrum, freqs, fs, fmin, fmax, n=3, G=10, fr=1000):
     Parameters
     ----------
     spectrum : numpy.ndarray
-        input complex spectrum (dim [nb blocks, nb points])
+        input complex spectrum (dim [nseg, nperseg])
     freqs : list
         list of input frequency 
     fmin : float
@@ -47,23 +47,33 @@ def noct_synthesis(spectrum, freqs, fs, fmin, fmax, n=3, G=10, fr=1000):
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies
     """
+    
 
     # Get filters center frequencies
     fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
-
-    # Compute the filters bandwidth
-    alpha_vec = _filter_bandwidth(fc_vec, n=n)
-
-    # Calculation of the rms level of the time signal in each band
-    if len(spectrum.shape) > 1:
-        spec = np.array([[] for i in range(spectrum.shape[0])])
-    else :
-        spec = [[]]
-    for fc, alpha in zip(fc_vec, alpha_vec):
-        spec = np.c_[spec, _n_oct_freq_filter(spectrum, fs, fc, alpha)]
     
-    spec = np.array(spec)
-    if spec.shape[0] == 1:
-        spec = spec[0,:]
+    nband = len(fpref)
+
+    if len(spectrum.shape) > 1:
+        nseg = spectrum.shape[0]
+        spec = np.zeros((nseg,nband))
+    else :
+        nseg = 1
+        spec = np.zeros((nband))
+
+
+    # Get upper and lower frequencies
+    fu = fpref * 2**(1/(2*n))
+    fl = fpref / 2**(1/(2*n))
+    
+    for s in range(nseg):
+        for i in range(nband):
+            # index of the frequencies within the band
+            idx = np.where((freqs>=fl[i])&(freqs<fu[i]))
+            
+            if len(spectrum.shape) > 1:
+                spec[s,i] = np.sum(np.power(np.abs(spectrum[i,idx]),2))
+            else :
+                spec[i] = np.sum(np.power(np.abs(spectrum[idx]),2))
 
     return spec, fpref

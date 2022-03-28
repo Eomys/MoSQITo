@@ -42,7 +42,6 @@ def roughness_dw(signal, fs, overlap=0.5):
 
     """
 
-   
     # Number of points within each frame according to the time resolution of 200ms
     nperseg = int(0.2 * fs)
     # Overlappinf segment length
@@ -51,23 +50,24 @@ def roughness_dw(signal, fs, overlap=0.5):
     sig, time = time_segmentation(signal, fs, nperseg=nperseg, noverlap=noverlap, is_ecma=False)
     nseg = sig.shape[1]
   
-    spectrum_db, _ = spectrum(sig, nfft=nperseg, window='blackman')    
+    spec, _ = spectrum(sig, fs, nfft='default', window='blackman',db=False)    
     
     # Frequency axis in Hertz
-    freq_axis = np.arange(1, nperseg + 1, 1) * (fs / nperseg)
+    freq_axis = np.arange(1, nperseg//2 + 1, 1) * (fs / nperseg)
            
     # Initialization of the weighting functions H and g
-    hWeight = _H_weighting(nperseg, fs)
+    hWeight = _H_weighting(nperseg//2, fs)
     # Aures modulation depth weighting function
     gzi = _gzi_weighting(np.arange(1, 48, 1) / 2)
 
     R = np.zeros((nseg))
     R_spec = np.zeros((47, nseg))
-    if len(spectrum.shape)>1:   
+    if len(spec.shape)>1:   
         for i in range(nseg):
-            R[i], R_spec[:,i], bark_axis  = _roughness_dw_main_calc(spectrum_db[:,i], freq_axis, fs, gzi, hWeight)
+            R[i], R_spec[:,i], bark_axis  = _roughness_dw_main_calc(spec[:,i], freq_axis, fs, gzi, hWeight)
     else:
-        R, R_spec, bark_axis = _roughness_dw_main_calc(spectrum_db, freq_axis, fs, gzi, hWeight)
+        R, R_spec, bark_axis = _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight)
 
+    print(np.mean(R,axis=0))
 
     return R, R_spec, bark_axis, time

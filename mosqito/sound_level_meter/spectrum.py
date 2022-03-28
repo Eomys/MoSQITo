@@ -28,13 +28,15 @@ def spectrum(signal,fs, nfft='default',window='hanning',db=True):
         Frequency axis.
 
     """
+    if len(signal.shape)>1:
+        nseg = signal.shape[1]
     
     # Number of points for the fft
     if nfft == 'default':
         if len(signal.shape) == 1:
             nfft = len(signal)
         else :
-            nfft = signal.shape[1]
+            nfft = signal.shape[0]
 
     # Window definition
     if window == 'hanning':
@@ -44,6 +46,8 @@ def spectrum(signal,fs, nfft='default',window='hanning',db=True):
         
     # Amplitude correction
     window = window / np.sum(window)
+    
+    window = np.tile(window,(nseg,1)).T
     
     # Creation of the spectrum by FFT
     spectrum = fft(signal * window, axis=0)[0:nfft//2] * 1.42
