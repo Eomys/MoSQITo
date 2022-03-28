@@ -18,8 +18,7 @@ except ImportError:
 
 # Local application imports
 from mosqito.utils import load
-from mosqito.sq_metrics import sharpness_din
-from mosqito.sq_metrics import sharpness_din_perseg
+from mosqito.sq_metrics import sharpness_din, sharpness_din_freq, sharpness_din_perseg
 
 
 @pytest.fixture
@@ -158,7 +157,7 @@ def test_sharpness_din_perseg_fastl(test_signal):
 
 
 @ pytest.mark.sharpness_din  # to skip or run sharpness test
-def test_sharpness_din_spec(test_signal):
+def test_sharpness_din_freq(test_signal):
     """Test function for the sharpness calculation of an audio signal
 
     Test function for the function "comp_roughness" with 'din' method.
@@ -189,7 +188,7 @@ def test_sharpness_din_spec(test_signal):
     freqs = np.arange(0, n // 2, 1) * (fs / n)
 
     # Compute sharpness
-    sharpness = sharpness_din(spec, fs, freqs=freqs, weighting="din")
+    sharpness = sharpness_din_freq(spec, freqs, weighting="din")
 
     assert check_compliance(sharpness, signal)
 
@@ -237,5 +236,5 @@ if __name__ == "__main__":
         "S_din": 2.85,
     }
     test_sharpness_din(test_signal)
-    test_sharpness_din_spec(test_signal)
+    test_sharpness_din_freq(test_signal)
     test_sharpness_din_perseg(test_signal)

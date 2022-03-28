@@ -17,7 +17,7 @@ import numpy as np
 from scipy.fft import fft
 
 # Local application imports
-from mosqito.sq_metrics import roughness_dw
+from mosqito.sq_metrics import roughness_dw, roughness_dw_freq
 from tests.sq_metrics.roughness.signals_test_generation import signal_test
 
 
@@ -42,10 +42,10 @@ def test_roughness_dw():
     """
 
     # Stimulus generation
-    stimulus = signal_test(fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=60)
+    stimulus = signal_test(fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=70)
 
     # Roughness calculation
-    roughness, time, _, _ = roughness_dw(stimulus, fs=44100, overlap=0.5)
+    roughness, time, _, _ = roughness_dw(stimulus, fs=44100, overlap=0)
     R = {
         "name": "Roughness",
         "values": roughness,
@@ -59,7 +59,7 @@ def test_roughness_dw():
 
 
 @pytest.mark.roughness_dw  # to skip or run only Daniel and Weber roughness tests
-def test_roughness_dw_spec():
+def test_roughness_dw_freq():
     """Test function for the roughness calculation of a audio signal
 
     Test function for the script "comp_roughness" method with spectrum array
@@ -94,7 +94,7 @@ def test_roughness_dw_spec():
     freqs = np.arange(1, nMax + 1, 1) * (44100 / n)
 
     # Roughness calculation
-    roughness = roughness_dw(spec, fs=44100, freqs=freqs, overlap=0.5)
+    roughness, _, _ = roughness_dw_freq(spec, freqs)
     R = {
         "name": "Roughness",
         "values": roughness,
@@ -136,4 +136,4 @@ def check_compliance(R):
 # test de la fonction
 if __name__ == "__main__":
     test_roughness_dw()
-    test_roughness_dw_spec()
+    test_roughness_dw_freq()

@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@date Created on Mon Mar 23 2020
-@author martin_g for Eomys
-"""
 
 # Optional package import
 try:
@@ -15,6 +11,7 @@ except ImportError:
     raise RuntimeError(
         "In order to handle Data objects you need the 'SciDataTool' package."
     )
+    
 
 import numpy as np
 from scipy.fft import fft
@@ -22,9 +19,7 @@ from scipy.fft import fft
 # Local application imports
 from mosqito.utils import load
 from mosqito.utils import isoclose
-from mosqito.sound_level_meter.spectrum import spectrum
-from mosqito.sq_metrics import loudness_zwst
-from mosqito.sq_metrics import loudness_zwst_perseg
+from mosqito.sq_metrics import loudness_zwst, loudness_zwst_freq
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
 from tests.input.Test_signal_1 import test_signal_1
@@ -166,7 +161,7 @@ def test_loudness_zwst_sdt(test_signal):
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
-def test_loudness_zwst_spec(test_signal):
+def test_loudness_zwst_freq(test_signal):
     """Test function for the script loudness_zwicker_stationary
 
     Test function for the script loudness_zwicker_stationary with
@@ -190,7 +185,7 @@ def test_loudness_zwst_spec(test_signal):
     spec = fft(sig * np.hanning(n) / np.sum(np.hanning(n)))[0 : n // 2] * 2 ** 0.5
     freqs = np.arange(0, n // 2, 1) * (fs / n)
     # Compute Loudness
-    N, N_specific, bark_axis = loudness_zwst(spec, fs, freqs=freqs)
+    N, N_specific, bark_axis = loudness_zwst_freq(spec, freqs)
 
     # Assert compliance
     is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5 / 100, atol=0.1)
@@ -220,4 +215,4 @@ if __name__ == "__main__":
     # test_loudness_zwst_perseg(test_signal)
     test_loudness_zwst_sdt(test_signal)
     # test_loudness_zwst_perseg_sdt(test_signal)
-    # test_loudness_zwst_spec(test_signal)
+    # test_loudness_zwst_freq(test_signal)
