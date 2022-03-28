@@ -51,14 +51,14 @@ def sharpness_din(
 
     # Compute loudness
     if method == "zwst":
-        N, N_specific, _ = loudness_zwst(signal, fs, freqs=freqs, field_type=field_type)
+        N, N_specific, _ = loudness_zwst(signal, fs, field_type=field_type)
     elif method == "zwtv":
         if len(freqs) > 0:
             raise ValueError(
                 "With a 1D spectrum as input, use stationary calculation, with a 2D spectrum use stationary per block calculation or reconstruct a time signal"
             )
         else:
-            N, N_specific, _ = loudness_zwtv(signal, fs, freqs=freqs)
+            N, N_specific, _ = loudness_zwtv(signal, fs)
     else:
         raise ValueError("ERROR: method must be either 'zwst' or 'zwtv'")
 
