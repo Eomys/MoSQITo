@@ -7,7 +7,7 @@ from numpy.fft import fft
 from mosqito.utils.conversion import amp2db
 
 
-def spectrum(signal,fs, nfft='default',window='hanning',db=True):
+def spectrum(signal,fs, nfft='default', window='hanning',db=True):
     """
     Compute one-sided spectrum from a time signal in Pa.
 
@@ -30,6 +30,8 @@ def spectrum(signal,fs, nfft='default',window='hanning',db=True):
     """
     if len(signal.shape)>1:
         nseg = signal.shape[1]
+    else:
+        nseg = 1
     
     # Number of points for the fft
     if nfft == 'default':
@@ -47,7 +49,8 @@ def spectrum(signal,fs, nfft='default',window='hanning',db=True):
     # Amplitude correction
     window = window / np.sum(window)
     
-    window = np.tile(window,(nseg,1)).T
+    if len(signal.shape)>1:
+        window = np.tile(window,(nseg,1)).T
     
     # Creation of the spectrum by FFT
     spectrum = fft(signal * window, axis=0)[0:nfft//2] * 1.42

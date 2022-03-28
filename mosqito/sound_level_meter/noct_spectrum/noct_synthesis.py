@@ -61,7 +61,10 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
         nseg = 1
         spec = np.zeros((nband))
 
-
+    # Frequency resolution
+    df = freqs[1:] - freqs[:-1] 
+    df = np.concatenate((df,[df[-1]]))
+    
     # Get upper and lower frequencies
     fu = fpref * 2**(1/(2*n))
     fl = fpref / 2**(1/(2*n))
@@ -72,8 +75,8 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
             idx = np.where((freqs>=fl[i])&(freqs<fu[i]))
             
             if len(spectrum.shape) > 1:
-                spec[s,i] = np.sum(np.power(np.abs(spectrum[i,idx]),2))
+                spec[s,i] = np.sqrt(np.sum(np.power(np.abs(spectrum[i,idx]),2))*len(idx))
             else :
-                spec[i] = np.sum(np.power(np.abs(spectrum[idx]),2))
+                spec[i] = np.sqrt(np.sum(np.power(np.abs(spectrum[idx]),2))*len(idx))
 
     return spec, fpref

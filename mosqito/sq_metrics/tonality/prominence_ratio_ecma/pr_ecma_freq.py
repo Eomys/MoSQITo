@@ -9,33 +9,34 @@ from mosqito.utils.conversion import amp2db
 
 def pr_ecma_freq(spectrum, freqs, prominence=True):
     """Computation of prominence ratio according to ECMA-74, annex D.10
+    for a complex spectrum.
         The T-PR value is calculated according to ECMA-TR/108
 
     Parameters
     ----------
     spectrum :numpy.array
-        A complex frequency spectrum.
+        A complex frequency spectrum [nperseg x nseg].
     freqs : np.array
-        Frequency axis. 
+        Frequency axis [nperseg x nseg] or [nperseg]. 
     prominence : boolean
         If True, the algorithm only returns the prominent tones, if False it returns all tones detected.
         Default is True.
 
     Output
     ------
-    tones_freqs : array of float
-        Frequency list of the detected tones.
-    PR : array of float
+    t_pr : array of float
+        Global PR value.
+    pr : array of float
         PR values for each detected tone.
     promi : array of bool
-        Prominence criterion for each detected tone.
-    t_PR : array of float
-        Global PR value.
+        Prominence criterion for each detected tone.    
+    tones_freqs : array of float
+        Frequency list of the detected tones.
     """
     
 
-    if spectrum.shape != freqs.shape :
-        raise ValueError('Input spectrum and frequency axis must have the same shape')
+    if len(spectrum) != len(freqs) :
+        raise ValueError('Input spectrum and frequency axis must have the same size')
 
     if np.iscomplexobj(np.array(spectrum)) == False:
         raise ValueError('Input spectrum must be complex !')
@@ -47,6 +48,6 @@ def pr_ecma_freq(spectrum, freqs, prominence=True):
     tones_freqs, pr, prom, t_pr = _pr_main_calc(spectrum_db, freqs)
  
     if prominence == False:
-        return tones_freqs, pr, prom, t_pr
+        return t_pr, pr, prom, tones_freqs  
     else:
-        return tones_freqs[prom], pr[prom], prom[prom], t_pr
+        return t_pr, pr[prom], prom[prom], tones_freqs[prom]

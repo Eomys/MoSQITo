@@ -11,6 +11,7 @@ from mosqito.sq_metrics.tonality.tone_to_noise_ecma._tnr_main_calc import _tnr_m
 
 def tnr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
     """Computation of tone-to-noise ration according to ECMA-74, annex D.9
+    for a time varying signal.
         The T-TNR value is calculated according to ECMA-TR/108
 
     Parameters
@@ -27,14 +28,14 @@ def tnr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
 
     Output
     ------
-    tones_freqs : array of float
-        frequency of the detected tones
-    TNR : array of float
+    t_tnr : array of float
+        global TNR value, along time if is_stationary = False
+    tnr : array of float
         TNR values for each detected tone
     promi : array of bool
         prominence criterion for each detected tone
-    t_tnr : array of float
-        global TNR value, along time if is_stationary = False
+    tones_freqs : array of float
+        frequency of the detected tones
     time  : array of float, only if is_stationary = False
         time axis
     """
