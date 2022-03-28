@@ -17,7 +17,9 @@ except ImportError:
     DataFreq = None
 
 
-def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="free", is_sdt_output=False):
+def loudness_zwst_perseg(
+    signal, fs=None, nperseg=4096, noverlap=None, field_type="free", is_sdt_output=False
+):
     """Zwicker-loudness calculation for stationary signals
 
     Calculates the acoustic loudness according to Zwicker method for
@@ -37,8 +39,9 @@ def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="fr
     ----------
     signal : numpy.array
         Time signal values [Pa].
-    fs : integer
-        Sampling frequency.
+    fs : float, optional
+        Sampling frequency, can be omitted if the input is a DataTime
+        object. Default to None
     nperseg: int, optional
         Length of each segment. Defaults to 4096.
     noverlap: int, optional
@@ -74,8 +77,7 @@ def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="fr
     signal, time_axis = time_segmentation(signal, fs, nperseg, noverlap)
 
     # Compute loudness
-    N, N_specific, bark_axis = loudness_zwst(
-        signal, fs, field_type="free")
+    N, N_specific, bark_axis = loudness_zwst(signal, fs, field_type="free")
 
     # Manage SciDataTool output type
     if is_sdt_output:
