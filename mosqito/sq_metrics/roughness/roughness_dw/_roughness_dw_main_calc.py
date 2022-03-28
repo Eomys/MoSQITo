@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Mar  9 10:20:49 2022
-
-@author: wantysal
-"""
 
 # Standard imports
 import numpy as np
@@ -24,22 +19,25 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
     Parameters
     ----------
     spectrum : array
-        complex spectrum
+        A complex spectrum.
     freqs : array
-        frequency axis
+        Frequency axis in [Hz].
     fs : integer
-        sampling frequency
+        Sampling frequency.
     gzi : array
-        gzi weighting function
+        gzi weighting function.
     hWeight : array
-        H weighting function
+        H weighting function.
 
     Returns
     -------
     R : float
-        roughness for the given spectrum
+        Roughness computed for the given spectrum.
 
     """
+    
+    if len(spectrum) != len(freqs):
+        raise ValueError("Spectrum and frequency axis should have the same number of points !")
     
     n = len(spectrum)
     # Frequency axis in Bark
@@ -53,8 +51,8 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
     spectrum = a0 * spectrum
 
     # Conversion of the spectrum into dB
-    module = abs(spectrum)
-    spec_dB = amp2db(module, ref=0.00002)
+    module = np.abs(spectrum)
+    spec_dB = amp2db(module, ref=2e-5)
 
     # Find the audible components within the spectrum
     threshold = LTQ(barks, reference="roughness")
@@ -190,7 +188,7 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
 
     R = 0.25 * sum(R_spec)
       
-    return R, R_spec, zb
+    return R, R_spec, zb      
 
 
 
