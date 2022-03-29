@@ -5,7 +5,7 @@ import numpy as np
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwtv
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv_from_loudness import sharpness_din_tv_from_loudness
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
 
 
 def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
@@ -36,12 +36,16 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
 
     """
 
+    if skip == 0:
+        print("[Warning] when computing sharpness from time-varying loudness, a transient effect appears on the first points. To cut it, use 'skip='")
+
     # Compute loudness
     N, N_specific, _, time_axis = loudness_zwtv(signal, fs)
 
     # Compute sharpness from loudness
-    S = sharpness_din_tv_from_loudness(N, N_specific,time_axis, weighting=weighting, skip=0)
-    
+    S = sharpness_din_from_loudness(
+        N, N_specific, weighting=weighting, skip=0)
+
     # Cut transient effect
     cut_index = np.argmin(np.abs(time_axis - skip))
 

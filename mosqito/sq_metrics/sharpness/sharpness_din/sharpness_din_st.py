@@ -2,7 +2,7 @@
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwst
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st_from_loudness import sharpness_din_st_from_loudness
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
 
 
 def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
@@ -33,6 +33,6 @@ def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
     N, N_specific, _ = loudness_zwst(signal, fs, field_type=field_type)
 
     # Compute sharpness from loudness
-    S = sharpness_din_st_from_loudness(N, N_specific, weighting=weighting)
+    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting)
 
     return S

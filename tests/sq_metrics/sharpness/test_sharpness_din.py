@@ -52,6 +52,7 @@ def test_sharpness_din_st(test_signal):
     # as per DIN 45692_2009E (chapter 6)
     np.testing.assert_allclose(sharpness, test_signal["S_din"], rtol=0.05)
 
+
 @pytest.mark.sharpness_din  # to skip or run sharpness test
 def test_sharpness_din_tv():
     """Test function for the sharpness calculation of an time-varying audio signal.
@@ -65,10 +66,12 @@ def test_sharpness_din_tv():
     """
 
     # Input signal
-    sig, fs = load("tests/input/white_noise_442_1768_Hz_varying.wav", wav_calib=0.01)
+    sig, fs = load(
+        "tests/input/white_noise_442_1768_Hz_varying.wav", wav_calib=0.01)
 
     # Compute sharpness
     sharpness, time = sharpness_din_tv(sig, fs, weighting="din", skip=0.2)
+
 
 @pytest.mark.sharpness_din
 def test_sharpness_din_aures(test_signal):

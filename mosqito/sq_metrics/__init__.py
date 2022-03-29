@@ -27,8 +27,7 @@ from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq import (
 
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st import sharpness_din_st
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv import sharpness_din_tv
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st_from_loudness import sharpness_din_st_from_loudness
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv_from_loudness import sharpness_din_tv_from_loudness
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg import sharpness_din_perseg
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq import sharpness_din_freq
 
