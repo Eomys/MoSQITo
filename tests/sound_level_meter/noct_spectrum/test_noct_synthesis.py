@@ -19,13 +19,12 @@ from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 from mosqito.utils.load import load
 
 
-
 def _dB(amp):
     return 20 * np.log10(amp / 2e-5)
 
 
 @pytest.mark.noct_synthesis  # to skip or run only loudness noct_synthesis tests
-def test_noct_comparison_spectrum_synthesis():
+def test_noct_synthesis():
     sig, fs = load(
         "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2*2**0.5)
 
@@ -66,4 +65,4 @@ def test_noct_comparison_spectrum_synthesis():
 # test de la fonction
 if __name__ == "__main__":
     # test_noct_synthesis()
-    test_noct_comparison_spectrum_synthesis()
+    test_noct_synthesis()
