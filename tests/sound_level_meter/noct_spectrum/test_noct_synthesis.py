@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 
-# Optional package import
+# Optional packages import
 try:
     import pytest
 except ImportError:
     raise RuntimeError(
         "In order to perform the tests you need the 'pytest' package."
     )
+# import matplotlib.pyplot as plt
+
+# External library imports
 import numpy as np
 from numpy.fft import fft, fftfreq
-from scipy.signal import welch as sp_welch
 
+# Local import
 from mosqito.sound_level_meter.noct_spectrum.noct_synthesis import noct_synthesis
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 from mosqito.utils.load import load
 
-# import matplotlib.pyplot as plt
 
 
 def _dB(amp):
