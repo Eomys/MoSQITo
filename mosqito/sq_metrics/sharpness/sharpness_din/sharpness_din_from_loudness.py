@@ -57,14 +57,8 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din", skip=0):
 
     S = np.zeros(N.shape)
     ind = np.where(N >= 0.1)[0]
-    S[ind] = (
-        0.11
-        * np.sum(
-            N_specific[:, ind] * g * z * 0.1,
-            axis=0,
-        )
-        / N[ind]
-    )
+    S[:,ind] =  0.11* np.sum( N_specific[:, ind] * g * z * 0.1, axis=0)/ N[:,ind]
+    
 
     if S.size == 1:
         S = float(S)
