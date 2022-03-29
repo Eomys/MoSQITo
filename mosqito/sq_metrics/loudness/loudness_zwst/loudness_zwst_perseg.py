@@ -33,7 +33,7 @@ def loudness_zwst_perseg(
 
     Parameters
     ----------
-    signal : numpy.array
+    signal : numpy.array or DataTime object
         Time signal values [Pa].
     fs : float, optional
         Sampling frequency, can be omitted if the input is a DataTime
@@ -52,9 +52,9 @@ def loudness_zwst_perseg(
 
     Outputs
     -------
-    N : float
+    N : numpy.array or DataTime object
         The overall loudness array [sones], size (Ntime,).
-    N_specific : numpy.ndarray
+    N_specific : numpy.ndarray or DataFreq object
         The specific loudness array [sones/bark], size (Nbark, Ntime).
     bark_axis: numpy.array
         The Bark axis array, size (Nbark,).

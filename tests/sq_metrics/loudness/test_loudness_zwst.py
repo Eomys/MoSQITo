@@ -200,7 +200,7 @@ def test_loudness_zwst_perseg_sdt(test_signal):
     )
     # Compute Loudness
     N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
-        sig, fs, nperseg=8192 * 2, noverlap=4096, is_sdt_output=True
+        sig_data, fs, nperseg=8192 * 2, noverlap=4096, is_sdt_output=True
     )
     N = N.get_along('time')[N.symbol]
 
