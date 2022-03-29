@@ -73,7 +73,7 @@ def loudness_zwst_perseg(
     signal, time_axis = time_segmentation(signal, fs, nperseg, noverlap)
 
     # Compute loudness
-    N, N_specific, bark_axis = loudness_zwst(signal, fs, field_type="free")
+    N, N_specific, bark_axis = loudness_zwst(signal, fs, field_type=field_type)
 
     # Manage SciDataTool output type
     if is_sdt_output:

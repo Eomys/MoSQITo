@@ -58,7 +58,7 @@ def roughness_dw(signal, fs, overlap=0.5, is_sdt_output=False):
 
     # Number of points within each frame according to the time resolution of 200ms
     nperseg = int(0.2 * fs)
-    # Overlappinf segment length
+    # Overlapping segment length
     noverlap = int(overlap * nperseg)
     # reshaping of the signal according to the overlap and time proportions
     sig, time = time_segmentation(
