@@ -10,7 +10,7 @@ from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zws
 
 # Optional package import
 try:
-    from SciDataTool import DataTime, DataLinspace, DataFreq
+    from SciDataTool import DataTime, DataLinspace, DataFreq, Norm_func
 except ImportError:
     DataTime = None
     DataLinspace = None
@@ -93,6 +93,9 @@ def loudness_zwst_perseg(
                 final=24,
                 number=int(24 / 0.1),
                 include_endpoint=True,
+                normalizations={
+                    "Hz": Norm_func(function=lambda x: 1960 * (x + 0.53) / (26.28 - x))
+                },
             )
             time = DataLinspace(
                 name="time",
