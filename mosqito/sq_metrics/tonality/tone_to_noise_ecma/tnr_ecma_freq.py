@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 
+# External import
 import numpy as np
-
 # Local functions imports
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._tnr_main_calc import _tnr_main_calc
 from mosqito.utils.conversion import amp2db
 
 def tnr_ecma_freq(spectrum, freqs,  prominence=True):
     """Computation of tone-to-noise ration according to ECMA-74, annex D.9
-    for a complex spectrum.
+    for an amplitude or complex spectrum.
         The T-TNR value is calculated according to ECMA-TR/108
 
     Parameters
     ----------
     spectrum :numpy.array
-        A complex frequency spectrum in dB [nperseg x nseg].
+        Amplitude or complex frequency spectrum [nperseg x nseg].
     freqs : np.array
         Frequency axis [nperseg x nseg] or [nperseg]. 
     prominence : boolean
@@ -37,9 +37,6 @@ def tnr_ecma_freq(spectrum, freqs,  prominence=True):
     if len(spectrum) != len(freqs) :
         raise ValueError('Input spectrum and frequency axis must have the same size')
     
-    if np.iscomplexobj(np.array(spectrum)) == False:
-        raise ValueError('Input spectrum must be complex !')
-
     # Compute spectrum dB values
     spectrum_db = amp2db(np.abs(spectrum), ref=2e-5)
             

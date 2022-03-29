@@ -58,7 +58,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
         spec_db = [[]for i in range(nseg)]
         for i in range(nseg):
             # Frequency axis of interest
-            freq_index_rows = np.where((freq_axis[:,nseg] > 89.1) & (freq_axis[:,nseg] < 11200))[0]
+            freq_index_rows = np.where((freq_axis[:,i] > 89.1) & (freq_axis[:,i] < 11200))[0]
             freqs[i] = np.append(freqs[i],freq_axis[freq_index_rows,i])
             spec_db[i] = np.append(spec_db[i],spectrum_db[freq_index_rows,i])
         freqs = np.asarray(freqs)
@@ -70,14 +70,11 @@ def _pr_main_calc(spectrum_db, freq_axis):
         # Initialization
         nfreqs = len(freq_index)    
         nseg = spectrum_db.shape[1]
-        freqs = np.zeros((nfreqs,nseg))
-        spec_db = np.zeros((nfreqs,nseg))
+        freqs = np.zeros((nseg,nfreqs))
+        spec_db = np.zeros((nseg,nfreqs))
         for i in range(nseg):
-            freqs[:,i] = freq_axis[freq_index]
-            spec_db[:,i] = spectrum_db[freq_index,i]
-
-    freqs = freqs.T
-    spec_db = spec_db.T
+            freqs[i,:] = freq_axis[freq_index]
+            spec_db[i,:] = spectrum_db[freq_index,i]
 
     #### Screening to find the potential tonal components ########################
 
@@ -101,7 +98,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
     for i in range(nseg):
         
-        pr = np.array([], dtype=object)
+        pr = []
         
         if nseg == 1:
             peaks = peak_index.astype(int)
