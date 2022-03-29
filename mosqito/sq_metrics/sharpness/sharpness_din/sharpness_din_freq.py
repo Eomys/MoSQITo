@@ -13,8 +13,7 @@ def sharpness_din_freq(
     freqs,
     method="zwst",
     weighting="din",
-    field_type="free",
-    skip=0,
+    field_type="free"
 ):
     """Acoustic sharpness calculation according to different methods:
         Aures, Von Bismarck, DIN 45692, Fastl
@@ -33,8 +32,6 @@ def sharpness_din_freq(
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
-    skip : float
-        number of second to be cut at the beginning of the analysis
 
     Outputs
     ------

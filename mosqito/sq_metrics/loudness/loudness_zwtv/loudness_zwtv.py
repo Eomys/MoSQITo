@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@date Created on Thu Mar 26 2020
-@author martin_g for Eomys
-"""
 
 # Standard library imports
 import numpy as np
@@ -12,9 +8,7 @@ from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudn
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
 from mosqito.sq_metrics.loudness.loudness_zwtv._nonlinear_decay import _nl_loudness
 from mosqito.sq_metrics.loudness.loudness_zwtv._temporal_weighting import _temporal_weighting
-from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import (
-    _third_octave_levels,
-)
+from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import _third_octave_levels
 
 
 def loudness_zwtv(signal, fs, field_type='free'):
@@ -40,13 +34,13 @@ def loudness_zwtv(signal, fs, field_type='free'):
     Outputs
     -------
     N : float
-        Calculated loudness [sones]
+        Calculated loudness [sones], size (Ntime,).
     N_specific : numpy.ndarray
-        Specific loudness [sones/bark]
+        Specific loudness [sones/bark], size (Nbark, Ntime).
     bark_axis : numpy.ndarray
-        Corresponding bark axis
+        Corresponding bark axis, size (Nbark,).
     time_axis : numpy.ndarray
-        Time axis.
+        Time axis, size (Ntime,).
 
     """        
 

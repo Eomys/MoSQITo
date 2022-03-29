@@ -21,49 +21,58 @@ def roughness_dw_freq(spectrum, freqs):
     Parameters
     ----------
     spectrum :numpy.array
-        A complex frequency spectrum.
+        A complex frequency spectrum [nperseg x nseg].
     freqs : np.array
-        Frequency axis.
+        Frequency axis [nperseg] if identical for all the blocks, [nperseg x nseg] if not.
 
     Outputs
     -------
     R : numpy.array
-        Roughness in [asper].
+        Roughness in [asper], dim [nseg].
     R_spec : numpy.array
-        Specific roughness over bark axis.
+        Specific roughness over bark axis, dim [47 bark x nseg].
     bark_axis : numpy.array
-        Frequency axis in [bark].
+        Frequency axis in [bark], dim [nseg].
 
     """
 
     # Check input size coherence
-    if spectrum.shape != freqs.shape :
-        raise ValueError('Input spectrum and frequency axis must have the same shape')
+    if len(spectrum) != len(freqs) :
+        raise ValueError('Input spectrum and frequency axis must have the same size !')
         
     if np.iscomplexobj(np.array(spectrum)) == False:
         raise ValueError('Input spectrum must be complex !')
 
+    # 1D spectrum
+    if len(spectrum.shape) == 1:
+        nperseg = len(spectrum)
+        nseg = 1
+        fs = int(nperseg * np.mean(freqs[1:] - freqs[:-1]))
 
-    if len(spectrum.shape)>1:
-        n = spectrum.shape[1]
-        nb_frame = spectrum.shape[0]
-        fs = int(n * np.mean(freqs[0,1:] - freqs[0,:-1]))
-
-    else:
-        n = len(spectrum)
-        nb_frame = 1
-        fs = int(n * np.mean(freqs[1:] - freqs[:-1]))
+    # 2D spectrum
+    elif len(spectrum.shape) > 1:
+        nperseg = spectrum.shape[0]
+        nseg = spectrum.shape[1]
+        # one frequency axis per block
+        if len(freqs.shape) > 1:
+            fs = int(nperseg * np.mean(freqs[0,1:] - freqs[0,:-1]))
+        # one frequency axis for all the blocks
+        elif len(freqs.shape) == 1: 
+            fs = int(nperseg * np.mean(freqs[1:] - freqs[:-1]))
+            freqs = np.tile(freqs, (nseg,1)).T
             
     # Initialization of the weighting functions H and g
-    hWeight = _H_weighting(n, fs)
+    hWeight = _H_weighting(nperseg, fs)
     # Aures modulation depth weighting function
     gzi = _gzi_weighting(np.arange(1, 48, 1) / 2)
 
-    R = np.zeros((nb_frame))
-    R_spec = np.zeros((nb_frame, 47))
+    R = np.zeros((nseg))
+    R_spec = np.zeros((47, nseg))
+    
+    
     if len(spectrum.shape)>1:   
-        for i_frame in range(nb_frame):
-            R[i_frame], R_spec[i_frame,:], bark_axis  = _roughness_dw_main_calc(spectrum[i_frame,:], freqs, fs, gzi, hWeight)
+        for i in range(nseg):
+            R[i], R_spec[:,i], bark_axis  = _roughness_dw_main_calc(spectrum[:,i], freqs[:,i], fs, gzi, hWeight)
     else:
         R, R_spec, bark_axis = _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight)
 

@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Third party imports
-from time import time
-import numpy as np
-
 # Local application imports
 from mosqito.utils import time_segmentation
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst
@@ -57,13 +53,13 @@ def loudness_zwst_perseg(
     Outputs
     -------
     N : float
-        The overall loudness array [sones], size (Ntime,)
+        The overall loudness array [sones], size (Ntime,).
     N_specific : numpy.ndarray
-        The specific loudness array [sones/bark], size (Nbark, Ntime)
+        The specific loudness array [sones/bark], size (Nbark, Ntime).
     bark_axis: numpy.array
-        The Bark axis array, size (Nbark,)
+        The Bark axis array, size (Nbark,).
     time_axis: numpy.array
-        The time axis array, size (Ntime,) or None
+        The time axis array, size (Ntime,) or None.
 
     """
 
