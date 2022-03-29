@@ -4,15 +4,9 @@
 import numpy as np
 
 # Local application imports
-from mosqito.sound_level_meter.noct_spectrum.noct_synthesis import (
-    noct_synthesis,
-)
-from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
-    _main_loudness,
-)
-from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
-    _calc_slopes,
-)
+from mosqito.sound_level_meter.noct_spectrum.noct_synthesis import noct_synthesis
+from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
+from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
 from mosqito.utils.conversion import amp2db
 
 
@@ -52,11 +46,10 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
         Frequency axis in bark
     """
     if spectrum.shape != freqs.shape:
-        raise ValueError(
-            'Input spectrum and frequency axis must have the same shape')
+        raise ValueError('Input spectrum and frequency axis must have the same shape')
 
-    # if np.iscomplexobj(np.array(spectrum)) == False:
-    #     raise ValueError('Input spectrum must be complex !')
+    if (np.iscomplexobj(np.array(spectrum)) == False) & (spectrum.any()<0):
+         raise ValueError('Input spectrum must be complex or absolute values !')
 
     # Compute third octave band spectrum
     spec_third, _ = noct_synthesis(spectrum, freqs, fmin=24, fmax=12600)
