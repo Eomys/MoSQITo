@@ -78,6 +78,6 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
                 spec[s, i] = np.sqrt(
                     np.sum(np.power(np.abs(spectrum[i, idx]), 2)))
             else:
-                spec[i] = np.sqrt(np.sum(spectrum[idx]**2))
+                spec[i] = np.sqrt(np.sum(np.abs(spectrum[idx])**2))
 
     return spec, fpref
