@@ -235,6 +235,13 @@ def test_loudness_zwst_freq(test_signal):
     # Compute Loudness
     N, N_specific, bark_axis = loudness_zwst_freq(spec, freqs)
 
+    # 2D inputs
+    spec = np.tile(spec, (4,1)).T
+    N1, N1_specific, bark_axis = loudness_zwst_freq(spec, freqs)
+    
+    freqs = np.tile(freqs, (4,1)).T    
+    N2, N2_specific, bark_axis = loudness_zwst_freq(spec, freqs)
+
     # Assert compliance
     is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5 / 100, atol=0.1)
     is_isoclose_N_specific = isoclose(
