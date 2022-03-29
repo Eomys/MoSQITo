@@ -9,7 +9,12 @@ try:
 except ImportError:
     raise RuntimeError(
         "In order to perform the tests you need the 'pytest' package.")
-
+try:
+    from SciDataTool import DataLinspace, DataTime
+except ImportError:
+    raise RuntimeError(
+        "In order to handle Data objects you need the 'SciDataTool' package."
+    )
 
 # Local application imports
 from mosqito.utils import load
@@ -137,6 +142,38 @@ def test_sharpness_din_perseg(test_signal):
     np.testing.assert_allclose(sharpness, test_signal["S_din"], rtol=0.05)
 
 
+@pytest.mark.sharpness_din  # to skip or run sharpness test
+def test_sharpness_din_perseg_sdt(test_signal):
+
+    # Input signal
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+    time = DataLinspace(
+        name="time",
+        unit="s",
+        initial=0,
+        final=(len(sig) - 1) / fs,
+        number=len(sig),
+        include_endpoint=True,
+    )
+    sig_data = DataTime(
+        name="Test signal 5 (pinknoise 60 dB)",
+        symbol="p",
+        unit="Pa",
+        axes=[time],
+        values=sig,
+    )
+    # Compute sharpness
+    sharpness, time_axis = sharpness_din_perseg(
+        sig_data, fs, nperseg=2 ** 14, weighting="din", is_sdt_output=True
+    )
+    sharpness = sharpness.get_along('time')[sharpness.symbol]
+
+    # Check that the value is within the desired values +/- 5%
+    # as per DIN 45692_2009E (chapter 6)
+    np.testing.assert_allclose(sharpness, test_signal["S_din"], rtol=0.05)
+
+
 @pytest.mark.sharpness_din
 def test_sharpness_din_perseg_aures(test_signal):
     # Input signal
@@ -248,7 +285,8 @@ if __name__ == "__main__":
         "fs": fs,
         "S_din": 2.85,
     }
-    test_sharpness_din_st(test_signal)
-    test_sharpness_din_tv()
-    test_sharpness_din_freq(test_signal)
-    test_sharpness_din_perseg(test_signal)
+    # test_sharpness_din_st(test_signal)
+    # test_sharpness_din_tv()
+    # test_sharpness_din_freq(test_signal)
+    # test_sharpness_din_perseg(test_signal)
+    test_sharpness_din_perseg_sdt(test_signal)
