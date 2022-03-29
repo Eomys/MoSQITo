@@ -8,6 +8,8 @@ except ImportError:
         "In order to perform the tests you need the 'pytest' package."
     )
 
+# External import
+import numpy as np
 
 # Local application imports
 from mosqito.utils import load
@@ -40,12 +42,22 @@ def test_tnr_ecma_freq():
     
 
     # Load signal
-    audio, fs = load(signal["data_file"])
+    audio, fs = load(signal["data_file"], wav_calib=0.01)
     # convert to frequency domain
     spec, freqs = spectrum(audio, fs, window='hanning', db=False)
 
+    # 1D input
     # Compute tone-to-noise ratio
-    tnr = tnr_ecma_freq(spec, freqs=freqs, prominence=True )
+    t_tnr, tnr, promi, freq = tnr_ecma_freq(spec, freqs=freqs, prominence=False )
+
+    # 2D spectrum, 1D freq axis
+    spec = np.tile(spec, (4,1)).T
+    
+    t_tnr, tnr, promi, freq = tnr_ecma_freq(spec, freqs=freqs, prominence=False )
+
+    # 2D spectrum, 2D freq axis
+    freqs = np.tile(freqs,(4,1)).T
+    t_tnr, tnr, promi, freq = tnr_ecma_freq(spec, freqs=freqs, prominence=False )
 
 
 if __name__ == "__main__":
