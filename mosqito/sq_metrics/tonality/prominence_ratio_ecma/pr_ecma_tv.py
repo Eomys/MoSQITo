@@ -62,7 +62,7 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
             
             
     # compute tnr values
-    tones_freqs, pr, prom, t_pr = _pr_main_calc(spectrum_db, freq_axis)
+    tones_freqs, pr_, prom, t_pr = _pr_main_calc(spectrum_db, freq_axis)
  
             
     # Retore the results in a time vs frequency array
@@ -76,11 +76,11 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
         for f in range(len(tones_freqs[t])):
             ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
             if prominence == False:
-                pr[ind, t] = pr[t][f]
+                pr[ind, t] = pr_[t][f]
                 promi[ind, t] = prom[t][f]
             if prominence == True:
                 if prom[t][f] == True:
-                    pr[ind, t] = pr[t][f]
+                    pr[ind, t] = pr_[t][f]
                     promi[ind, t] = prom[t][f]
 
     t_pr = np.ravel(t_pr)

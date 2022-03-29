@@ -9,7 +9,7 @@ from mosqito.sound_level_meter.spectrum import spectrum
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._tnr_main_calc import _tnr_main_calc
 
 
-def tnr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
+def tnr_ecma_tv(signal, fs, prominence=False, overlap=0):
     """Computation of tone-to-noise ration according to ECMA-74, annex D.9
     for a time varying signal.
         The T-TNR value is calculated according to ECMA-TR/108
@@ -49,20 +49,20 @@ def tnr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
         # Time segmentation of the signal
         sig, time = time_segmentation(signal, fs, nperseg=nperseg, noverlap=noverlap, is_ecma=False)
         # Number of segments
-        nseg = sig.shape[1]        
+        nseg = sig.shape[1] 
         # Spectrum computation
         spectrum_db, freq_axis = spectrum(sig, fs, db=True)
-        
+      
     else:
         nseg = signal.shape[1]
-        time = np.linspace(0, nseg/fs, num=nseg)
+        time = np.linspace(0, signal.shape[0]/fs, num=nseg)
         
         # Compute spectrum
         spectrum_db, freq_axis = spectrum(sig, fs, db=True)
             
             
     # compute tnr values
-    tones_freqs, tnr, prom, t_tnr = _tnr_main_calc(spectrum_db, freq_axis)
+    tones_freqs, tnr_, prom, t_tnr = _tnr_main_calc(spectrum_db, freq_axis)
  
             
     # Retore the results in a time vs frequency array
@@ -76,11 +76,11 @@ def tnr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
         for f in range(len(tones_freqs[t])):
             ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
             if prominence == False:
-                tnr[ind, t] = tnr[t][f]
+                tnr[ind, t] = tnr_[t][f]
                 promi[ind, t] = prom[t][f]
             if prominence == True:
                 if prom[t][f] == True:
-                    tnr[ind, t] = tnr[t][f]
+                    tnr[ind, t] = tnr_[t][f]
                     promi[ind, t] = prom[t][f]
 
     t_tnr = np.ravel(t_tnr)

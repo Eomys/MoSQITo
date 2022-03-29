@@ -78,7 +78,6 @@ def _tnr_main_calc(spectrum_db, freq_axis):
 
     peak_index = _screening_for_tones(freqs, spec_db, "smoothed", 90, 11200)
 
-    
     # Initialization of the results lists
     if nseg == 1:
         TNR = []
