@@ -101,7 +101,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
     for i in range(nseg):
         
-        pr = np.array([])
+        pr = np.array([], dtype=object)
         
         if nseg == 1:
             peaks = peak_index.astype(int)

@@ -97,7 +97,7 @@ def _tnr_main_calc(spectrum_db, freq_axis):
 
     for i in range(nseg):
         
-        tnr = np.array([])
+        tnr = np.array([], dtype=object)
         
         if nseg == 1:
             peaks = peak_index.astype(int)
