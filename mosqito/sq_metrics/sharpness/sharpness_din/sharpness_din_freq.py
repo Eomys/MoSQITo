@@ -3,20 +3,12 @@
 import numpy as np
 # Local imports
 from mosqito.sq_metrics import loudness_zwst_freq
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
-    sharpness_din_from_loudness,
-)
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st_from_loudness import sharpness_din_st_from_loudness
 
 
-def sharpness_din_freq(
-    spectrum,
-    freqs,
-    method="zwst",
-    weighting="din",
-    field_type="free"
-):
-    """Acoustic sharpness calculation according to different methods:
-        Aures, Von Bismarck, DIN 45692, Fastl
+def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
+    """Acoustic sharpness calculation according to different methods
+      (Aures, Von Bismarck, DIN 45692, Fastl) from a complex spectrum.
 
     Parameters:
     ----------
@@ -48,17 +40,12 @@ def sharpness_din_freq(
         raise ValueError('Input spectrum must be complex !')
 
     # Compute loudness
-    if method == "zwst":
-        N, N_specific, _ = loudness_zwst_freq(spectrum,freqs, field_type=field_type)
-    elif method == "zwtv":
-        if len(spectrum.shape) > 1:
-            raise ValueError(
-                "With a 2D spectrum use stationary per block calculation or reconstruct a time signal"
-            )
-    else:
-        raise ValueError("ERROR: method must be either 'zwst' or 'zwtv'")
+    N, N_specific, _ = loudness_zwst_freq(spectrum,freqs, field_type=field_type)
+
+    if len(spectrum.shape) > 1:
+        raise ValueError("With a 2D spectrum use 'sharpness_din_perseg' calculation.")
 
     # Compute sharpness from loudness
-    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting, skip=0)
+    S = sharpness_din_st_from_loudness(N, N_specific, weighting=weighting)
 
     return S
