@@ -39,11 +39,11 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     Outputs
     -------
     N : float or numpy.array
-        Calculated loudness [sones]
+        Calculated loudness [sones], size (Ntime,).
     N_specific : numpy.ndarray
-        Specific loudness [sones/bark]
+        Specific loudness [sones/bark], size (Nbark, Ntime).
     bark_axis : numpy.array
-        Frequency axis in bark
+        Frequency axis in bark, size (Nbark,).
     """
     if spectrum.shape != freqs.shape:
         raise ValueError('Input spectrum and frequency axis must have the same shape')

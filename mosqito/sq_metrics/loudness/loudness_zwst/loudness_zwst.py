@@ -51,11 +51,11 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
     Outputs
     -------
     N : float or numpy.array
-        The overall loudness array [sones], size (Ntime,)
+        The overall loudness array [sones], size (Ntime,).
     N_specific : numpy.ndarray or DataFreq object
-        The specific loudness array [sones/bark], size (Nbark, Ntime)
+        The specific loudness array [sones/bark], size (Nbark, Ntime).
     bark_axis: numpy.array
-        The Bark axis array, size (Nbark,)
+        The Bark axis array, size (Nbark,).
     """
 
     # Manage SciDataTool input type
