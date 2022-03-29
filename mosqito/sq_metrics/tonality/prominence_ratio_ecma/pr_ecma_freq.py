@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+# External import
 import numpy as np
 
 # Local imports
@@ -9,13 +10,13 @@ from mosqito.utils.conversion import amp2db
 
 def pr_ecma_freq(spectrum, freqs, prominence=True):
     """Computation of prominence ratio according to ECMA-74, annex D.10
-    for a complex spectrum.
+    for an amplitude or complex frequency spectrum.
         The T-PR value is calculated according to ECMA-TR/108
 
     Parameters
     ----------
     spectrum :numpy.array
-        A complex frequency spectrum [nperseg x nseg].
+        An amplitude or complex frequency spectrum [nperseg x nseg].
     freqs : np.array
         Frequency axis [nperseg x nseg] or [nperseg]. 
     prominence : boolean
@@ -37,9 +38,6 @@ def pr_ecma_freq(spectrum, freqs, prominence=True):
 
     if len(spectrum) != len(freqs) :
         raise ValueError('Input spectrum and frequency axis must have the same size')
-
-    if np.iscomplexobj(np.array(spectrum)) == False:
-        raise ValueError('Input spectrum must be complex !')
 
     # Compute spectrum dB values
     spectrum_db = amp2db(np.abs(spectrum), ref=2e-5)

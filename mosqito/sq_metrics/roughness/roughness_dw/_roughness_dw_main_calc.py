@@ -19,7 +19,7 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
     Parameters
     ----------
     spectrum : array
-        A complex spectrum.
+        An amplitude or complex spectrum.
     freqs : array
         Frequency axis in [Hz].
     fs : integer

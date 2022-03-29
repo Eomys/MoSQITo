@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import numpy as np
+
 # Local imports
 from mosqito.sq_metrics import loudness_zwst_freq
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st_from_loudness import sharpness_din_st_from_loudness
@@ -13,7 +13,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     Parameters:
     ----------
     signal: numpy.array
-        A complex spectrum.
+        A RMS spectrum.
     freqs: integer
         Frequency axis.
     method : string
@@ -36,9 +36,6 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     if spectrum.shape != freqs.shape :
         raise ValueError('Input spectrum and frequency axis must have the same shape')
     
-    if np.iscomplexobj(np.array(spectrum)) == False:
-        raise ValueError('Input spectrum must be complex !')
-
     # Compute loudness
     N, N_specific, _ = loudness_zwst_freq(spectrum,freqs, field_type=field_type)
 

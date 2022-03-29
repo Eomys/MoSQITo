@@ -29,7 +29,7 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     Parameters
     ----------
     spectrum : numpy.array
-        A complex spectrum, size (Nfreq, Ntime)
+        A RMS frequency spectrum, size (Nfreq, Ntime)
     freqs : list
         List of the corresponding frequencies, size (Nfreq,) or (Nfreq, Ntime)
     field_type : str
@@ -47,9 +47,6 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     """
     if len(spectrum) != len(freqs):
         raise ValueError('Input spectrum and frequency axis must have the same shape')
-
-    if (np.iscomplexobj(np.array(spectrum)) == False) & (spectrum.any()<0):
-         raise ValueError('Input spectrum must be complex or absolute values !')
 
     # Compute third octave band spectrum
     spec_third, _ = noct_synthesis(spectrum, freqs, fmin=24, fmax=12600)

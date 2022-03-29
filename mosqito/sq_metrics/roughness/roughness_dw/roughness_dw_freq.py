@@ -21,7 +21,7 @@ def roughness_dw_freq(spectrum, freqs):
     Parameters
     ----------
     spectrum :numpy.array
-        A complex frequency spectrum [nperseg x nseg].
+        An amplitude or complex frequency spectrum [nperseg x nseg].
     freqs : np.array
         Frequency axis [nperseg] if identical for all the blocks, [nperseg x nseg] if not.
 
@@ -40,8 +40,8 @@ def roughness_dw_freq(spectrum, freqs):
     if len(spectrum) != len(freqs) :
         raise ValueError('Input spectrum and frequency axis must have the same size !')
         
-    if np.iscomplexobj(np.array(spectrum)) == False:
-        raise ValueError('Input spectrum must be complex !')
+    if spectrum.any()<0:
+        raise ValueError('Input must be an amplitude spectrum (use np.abs() on complex spectrum).')
 
     # 1D spectrum
     if len(spectrum.shape) == 1:

@@ -61,14 +61,14 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     # df = np.concatenate((df, [df[-1]]))
 
     # Get upper and lower frequencies
-    fu = fc_vec * 2**(1/(2*n))
-    fl = fc_vec / 2**(1/(2*n))
+    fu = fpref * 2**(1/(2*n))
+    fl = fpref / 2**(1/(2*n))
 
     for s in range(nseg):
         for i in range(nband):
             if len(spectrum.shape) > 1:
                 # index of the frequencies within the band
-                idx = np.where((freqs[s] >= fl[i]) & (freqs[s] < fu[i]))
+                idx = np.where((freqs[:,s] >= fl[i]) & (freqs[:,s] < fu[i]))
                 spec[i,s] = np.sqrt(np.sum(np.power(np.abs(spectrum[i, idx]), 2)))
             else:
                 # index of the frequencies within the band
