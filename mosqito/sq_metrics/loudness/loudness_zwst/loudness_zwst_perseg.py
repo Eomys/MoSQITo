@@ -93,7 +93,7 @@ def loudness_zwst_perseg(
             time = DataLinspace(
                 name="time",
                 unit="s",
-                initial=0,
+                initial=time_axis[0],
                 final=time_axis[-1],
                 number=len(time_axis),
                 include_endpoint=True,
