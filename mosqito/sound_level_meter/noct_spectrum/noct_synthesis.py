@@ -70,7 +70,7 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
                 # index of the frequencies within the band
                 idx = np.where((freqs[:, s] >= fl[i]) & (freqs[:, s] < fu[i]))
                 spec[i, s] = np.sqrt(
-                    np.sum(np.power(np.abs(spectrum[i, idx]), 2)))
+                    np.sum(np.power(np.abs(spectrum[idx,s]), 2)))
             else:
                 # index of the frequencies within the band
                 idx = np.where((freqs >= fl[i]) & (freqs < fu[i]))
