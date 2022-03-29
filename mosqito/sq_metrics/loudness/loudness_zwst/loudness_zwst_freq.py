@@ -29,9 +29,9 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     Parameters
     ----------
     spectrum : numpy.array
-        A complex spectrum
+        A complex spectrum, size (Nfreq, Ntime)
     freqs : list
-        List of the corresponding frequencies 
+        List of the corresponding frequencies, size (Nfreq,) or (Nfreq, Ntime)
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse")
@@ -45,7 +45,7 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     bark_axis : numpy.array
         Frequency axis in bark, size (Nbark,).
     """
-    if spectrum.shape != freqs.shape:
+    if len(spectrum) != len(freqs):
         raise ValueError('Input spectrum and frequency axis must have the same shape')
 
     if (np.iscomplexobj(np.array(spectrum)) == False) & (spectrum.any()<0):

@@ -1,33 +1,20 @@
 # -*- coding: utf-8 -*-
 
-# Standard library import
-import numpy as np
-
 # Local imports
 from mosqito.sq_metrics import loudness_zwst_perseg
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
-    sharpness_din_from_loudness,
-)
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st_from_loudness import sharpness_din_st_from_loudness
 
 
-def sharpness_din_perseg(
-    signal,
-    fs,
-    weighting="din",
-    nperseg=4096,
-    noverlap=None,
-    field_type="free",
-    skip=0,
-):
-    """Acoustic sharpness calculation according to different methods:
-        Aures, Von Bismarck, DIN 45692, Fastl
+def sharpness_din_perseg(signal, fs, weighting="din", nperseg=4096, noverlap=None, field_type="free"):
+    """Acoustic sharpness calculation according to different methods
+        (Aures, Von Bismarck, DIN 45692, Fastl) from a stationary signal.
 
     Parameters:
     ----------
     signal: numpy.array
-        time history values
+        A time signal in [Pa].
     fs: integer
-        sampling frequency
+        Sampling frequency.
     weighting : string
         To specify the weighting function used for the
         sharpness computation.'din' by default,'aures', 'bismarck','fastl'
@@ -39,15 +26,11 @@ def sharpness_din_perseg(
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
-    skip : float
-        number of second to be cut at the beginning of the analysis
 
     Outputs
     ------
     S : float
-        sharpness value
-    time_axis: numpy.array
-        The time axis array, size (Ntime,) or None
+        Sharpness value, size(nseg).
 
     """
 
@@ -57,6 +40,6 @@ def sharpness_din_perseg(
     )
 
     # Compute sharpness from loudness
-    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting, skip=0)
+    S = sharpness_din_st_from_loudness(N, N_specific, weighting=weighting)
 
     return S, time_axis

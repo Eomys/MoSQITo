@@ -1,16 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 17 11:02:18 2022
-
-@author: wantysal
-"""
 
 # Standard library import
 import numpy as np
 
 # Local application imports
-from mosqito.sound_level_meter.noct_spectrum._filter_bandwidth import _filter_bandwidth
-from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import _n_oct_freq_filter
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
 
 
@@ -23,30 +16,29 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     Parameters
     ----------
     spectrum : numpy.ndarray
-        amplitude rms of the one-sided spectrum of the signal
-        (dim [nseg, nperseg])
+        amplitude rms of the one-sided spectrum of the signal, size (nperseg, nseg).
     freqs : list
-        list of input frequency 
+        List of input frequency , size (nperseg) or (nperseg, nseg).
     fmin : float
-        Min frequency band [Hz]
+        Min frequency band [Hz].
     fmax : float
-        Max frequency band [Hz]
+        Max frequency band [Hz].
     n : int
-        number of bands pr octave
+        Number of bands pr octave.
     G : int
         System for specifying the exact geometric mean frequencies.
-        Can be base 2 or base 10
+        Can be base 2 or base 10.
     fr : int
         Reference frequency. Shall be set to 1 kHz for audible frequency
         range, to 1 Hz for infrasonic range (f < 20 Hz) and to 1 MHz for
-        ultrasonic range (f > 31.5 kHz)
+        ultrasonic range (f > 31.5 kHz).
 
     Outputs
     -------
     spec : numpy.ndarray
-        Third octave band spectrum of signal sig [dB re.2e-5 Pa]
+        Third octave band spectrum of signal sig [dB re.2e-5 Pa], size (nbands, nseg).
     fpref : numpy.ndarray
-        Corresponding preferred third octave band center frequencies
+        Corresponding preferred third octave band center frequencies, size (nbands).
     """
 
     # Get filters center frequencies
@@ -55,8 +47,11 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     nband = len(fpref)
 
     if len(spectrum.shape) > 1:
-        nseg = spectrum.shape[0]
-        spec = np.zeros((nseg, nband))
+        nseg = spectrum.shape[1]
+        spec = np.zeros((nband, nseg))
+        if len(freqs.shape) == 1:
+            freqs = np.tile(freqs,(nseg,1)).T
+
     else:
         nseg = 1
         spec = np.zeros((nband))
@@ -71,13 +66,13 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
 
     for s in range(nseg):
         for i in range(nband):
-            # index of the frequencies within the band
-            idx = np.where((freqs >= fl[i]) & (freqs < fu[i]))
-
             if len(spectrum.shape) > 1:
-                spec[s, i] = np.sqrt(
-                    np.sum(np.power(np.abs(spectrum[i, idx]), 2)))
+                # index of the frequencies within the band
+                idx = np.where((freqs[s] >= fl[i]) & (freqs[s] < fu[i]))
+                spec[i,s] = np.sqrt(np.sum(np.power(np.abs(spectrum[i, idx]), 2)))
             else:
+                # index of the frequencies within the band
+                idx = np.where((freqs >= fl[i]) & (freqs < fu[i]))
                 spec[i] = np.sqrt(np.sum(np.abs(spectrum[idx])**2))
 
     return spec, fpref
