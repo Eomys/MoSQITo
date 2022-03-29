@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Oct 19 13:41:37 2020
-
-@author: wantysal
-"""
 
 # Optional package import
 try:

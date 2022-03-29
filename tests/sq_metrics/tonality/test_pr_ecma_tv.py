@@ -40,7 +40,7 @@ def test_pr_ecma_tv():
     audio, fs = load(signal["data_file"])
 
     # Compute tone-to-noise ratio
-    pr = pr_ecma_tv( audio, fs, prominence=True)
+    t_pr, pr, prom, freq, time = pr_ecma_tv( audio, fs, prominence=True)
 
 
 

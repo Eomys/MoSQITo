@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Dec 16 09:20:41 2020
-
-@author: wantysal
-"""
 
 import numpy as np
-from scipy.fft import fft
+from scipy.fft import fft, fftfreq
 
 # Optional package import
 try:
@@ -181,11 +176,10 @@ def test_sharpness_din_freq(test_signal):
     # Input signal
     sig = test_signal["signal"]
     fs = test_signal["fs"]
-
     # Compute corresponding spectrum
     n = len(sig)
-    spec = fft(sig * np.blackman(n) / np.sum(np.blackman(n)))[0: n // 2]
-    freqs = np.arange(0, n // 2, 1) * (fs / n)
+    spec = 2 / np.sqrt(2) / n * fft(sig)[0:n//2]
+    freqs = fftfreq(n, 1/fs)[0:n//2]
 
     # Compute sharpness
     sharpness = sharpness_din_freq(spec, freqs, weighting="din")
