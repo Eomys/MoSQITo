@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Standard library import
-import numpy as np
-
 # Local imports
 from mosqito.sq_metrics import loudness_zwst
 from mosqito.sq_metrics import loudness_zwtv
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
-    sharpness_din_from_loudness,
-)
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
 
 
 def sharpness_din(
@@ -58,7 +53,7 @@ def sharpness_din(
                 "With a 1D spectrum as input, use stationary calculation, with a 2D spectrum use stationary per block calculation or reconstruct a time signal"
             )
         else:
-            N, N_specific, _ = loudness_zwtv(signal, fs)
+            N, N_specific, _, _ = loudness_zwtv(signal, fs)
     else:
         raise ValueError("ERROR: method must be either 'zwst' or 'zwtv'")
 
