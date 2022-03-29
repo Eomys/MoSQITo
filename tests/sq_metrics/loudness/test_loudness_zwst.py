@@ -18,9 +18,8 @@ import numpy as np
 from numpy.fft import fft, fftfreq
 
 # Local application imports
-from mosqito.utils import load
-from mosqito.utils import isoclose
-from mosqito.sq_metrics import loudness_zwst, loudness_zwst_freq
+from mosqito.utils import load, isoclose
+from mosqito.sq_metrics import loudness_zwst, loudness_zwst_freq, loudness_zwst_perseg
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
 from tests.input.Test_signal_1 import test_signal_1
@@ -137,6 +136,20 @@ def test_loudness_zwst_44100Hz():
 
 
 @pytest.mark.loudness_zwst
+def test_loudness_zwst_perseg(test_signal):
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+
+    # Compute Loudness
+    N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
+        sig, fs, nperseg=8192 * 2, noverlap=4096
+    )
+
+    # Check that all values are within the desired values +/- 5%
+    np.testing.assert_allclose(N, 10.498, rtol=0.05)
+
+
+@pytest.mark.loudness_zwst
 def test_loudness_zwst_sdt(test_signal):
     sig = test_signal["signal"]
     fs = test_signal["fs"]
@@ -156,7 +169,7 @@ def test_loudness_zwst_sdt(test_signal):
         values=sig,
     )
     N, N_specific, _ = loudness_zwst(sig_data, fs, is_sdt_output=True)
-    N_specific = N_specific.get_along("Critical band scale")[N_specific.symbol]
+    N_specific = N_specific.get_along("Critical band rate")[N_specific.symbol]
 
     # Assert compliance
     is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5 / 100, atol=0.1)
@@ -164,6 +177,35 @@ def test_loudness_zwst_sdt(test_signal):
         N_specific, test_signal["N_specif_iso"], rtol=5 / 100, atol=0.1
     )
     assert is_isoclose_N and is_isoclose_N_specific
+
+
+@pytest.mark.loudness_zwst
+def test_loudness_zwst_perseg_sdt(test_signal):
+    sig = test_signal["signal"]
+    fs = test_signal["fs"]
+    time = DataLinspace(
+        name="time",
+        unit="s",
+        initial=0,
+        final=(len(sig) - 1) / fs,
+        number=len(sig),
+        include_endpoint=True,
+    )
+    sig_data = DataTime(
+        name="Test signal 5 (pinknoise 60 dB)",
+        symbol="p",
+        unit="Pa",
+        axes=[time],
+        values=sig,
+    )
+    # Compute Loudness
+    N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
+        sig, fs, nperseg=8192 * 2, noverlap=4096, is_sdt_output=True
+    )
+    N = N.get_along('time')[N.symbol]
+
+    # Check that all values are within the desired values +/- 5%
+    np.testing.assert_allclose(N, 10.498, rtol=0.05)
 
 
 @pytest.mark.loudness_zwst  # to skip or run only loudness zwicker stationary tests
@@ -216,10 +258,10 @@ if __name__ == "__main__":
         "N_specif_iso": N_specif_iso,
     }
 
-    # test_loudness_zwst_3oct()
-    # test_loudness_zwst_wav(test_signal)
-    # test_loudness_zwst_44100Hz()
-    # test_loudness_zwst_perseg(test_signal)
-    # test_loudness_zwst_sdt(test_signal)
-    # test_loudness_zwst_perseg_sdt(test_signal)
+    test_loudness_zwst_3oct()
+    test_loudness_zwst_wav(test_signal)
+    test_loudness_zwst_44100Hz()
+    test_loudness_zwst_perseg(test_signal)
+    test_loudness_zwst_sdt(test_signal)
+    test_loudness_zwst_perseg_sdt(test_signal)
     test_loudness_zwst_freq(test_signal)
