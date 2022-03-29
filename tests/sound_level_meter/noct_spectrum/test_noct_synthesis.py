@@ -64,5 +64,4 @@ def test_noct_synthesis():
 
 # test de la fonction
 if __name__ == "__main__":
-    # test_noct_synthesis()
     test_noct_synthesis()
