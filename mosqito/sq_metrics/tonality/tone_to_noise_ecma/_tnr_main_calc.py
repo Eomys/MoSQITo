@@ -49,14 +49,16 @@ def _tnr_main_calc(spectrum_db, freq_axis):
         
     elif (len(spectrum_db.shape) > 1) & (len(freq_axis.shape) > 1):
         nseg = spectrum_db.shape[1]
-        freqs = np.array([[]for i in range(nseg)],dtype=object)
-        spec_db = np.array([[]for i in range(nseg)],dtype=object)
+        freqs = [[]for i in range(nseg)]
+        spec_db = [[]for i in range(nseg)]
         for i in range(nseg):
             # Frequency axis of interest
             freq_index_rows = np.where((freq_axis[:,i] > 89.1) & (freq_axis[:,i] < 11200))[0]
             freqs[i] = np.append(freqs[i],freq_axis[freq_index_rows,i])
             spec_db[i] = np.append(spec_db[i],spectrum_db[freq_index_rows,i])
-        
+        freqs = np.asarray(freqs)
+        spec_db = np.asarray(spec_db)
+    
     elif (len(spectrum_db.shape) > 1) & (len(freq_axis.shape) == 1):
         # Frequency axis of interest
         freq_index = np.where((freq_axis > 89.1) & (freq_axis < 11200))[0]
