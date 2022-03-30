@@ -7,9 +7,10 @@ import math
 
 # Local imports
 from mosqito.utils.LTQ import LTQ
-from mosqito.sq_metrics.roughness.roughness_dw._ear_filter_coeff import _ear_filter_coeff
+from mosqito.sq_metrics.roughness.roughness_dw._ear_filter_coeff import (
+    _ear_filter_coeff,
+)
 from mosqito.utils.conversion import freq2bark, db2amp, amp2db, bark2freq
-
 
 
 def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
@@ -35,16 +36,18 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
         Roughness computed for the given spectrum.
 
     """
-    
+
     if len(spectrum) != len(freqs):
-        raise ValueError("Spectrum and frequency axis should have the same number of points !")
-    
+        raise ValueError(
+            "Spectrum and frequency axis should have the same number of points !"
+        )
+
     n = len(spectrum)
     # Frequency axis in Bark
     barks = freq2bark(freqs)
     # Highest frequency
     nZ = np.arange(1, n + 1, 1)
-    
+
     # Calculate Zwicker a0 factor (transfer characteristic of the outer and inner ear)
     a0 = np.zeros((n))
     a0[nZ - 1] = db2amp(_ear_filter_coeff(barks), ref=1)
@@ -70,9 +73,7 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
     # upper slope [dB/Bark]
     for k in np.arange(0, n_aud, 1):
         s2[k] = min(
-            -24
-            - (230 / freqs[audible_index[k]])
-            + (0.2 * spec_dB[audible_index[k]]),
+            -24 - (230 / freqs[audible_index[k]]) + (0.2 * spec_dB[audible_index[k]]),
             0,
         )
 
@@ -187,8 +188,5 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
     # of 70 Hz and a modulation depth of 1
 
     R = 0.25 * sum(R_spec)
-      
-    return R, R_spec, zb      
 
-
-
+    return R, R_spec, zi

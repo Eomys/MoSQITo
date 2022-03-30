@@ -2,7 +2,9 @@
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwst_perseg
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
+    sharpness_din_from_loudness,
+)
 
 # Optional package import
 try:
@@ -13,7 +15,15 @@ except ImportError:
     DataFreq = None
 
 
-def sharpness_din_perseg(signal, fs, weighting="din", nperseg=4096, noverlap=None, field_type="free", is_sdt_output=False):
+def sharpness_din_perseg(
+    signal,
+    fs=None,
+    weighting="din",
+    nperseg=4096,
+    noverlap=None,
+    field_type="free",
+    is_sdt_output=False,
+):
     """Acoustic sharpness calculation according to different methods
         (Aures, Von Bismarck, DIN 45692, Fastl) from a stationary signal.
 
@@ -21,8 +31,9 @@ def sharpness_din_perseg(signal, fs, weighting="din", nperseg=4096, noverlap=Non
     ----------
     signal: numpy.array or DataTime object
         A time signal in [Pa].
-    fs: integer
-        Sampling frequency.
+    fs : float, optional
+        Sampling frequency, can be omitted if the input is a DataTime
+        object. Default to None
     weighting : string
         To specify the weighting function used for the
         sharpness computation.'din' by default,'aures', 'bismarck','fastl'

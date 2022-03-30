@@ -6,7 +6,9 @@ import numpy as np
 # Local imports
 from mosqito.utils.time_segmentation import time_segmentation
 from mosqito.sound_level_meter.spectrum import spectrum
-from mosqito.sq_metrics.roughness.roughness_dw._roughness_dw_main_calc import _roughness_dw_main_calc
+from mosqito.sq_metrics.roughness.roughness_dw._roughness_dw_main_calc import (
+    _roughness_dw_main_calc,
+)
 from mosqito.sq_metrics.roughness.roughness_dw._gzi_weighting import _gzi_weighting
 from mosqito.sq_metrics.roughness.roughness_dw._H_weighting import _H_weighting
 
@@ -19,7 +21,7 @@ except ImportError:
     DataFreq = None
 
 
-def roughness_dw(signal, fs, overlap=0.5, is_sdt_output=False):
+def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     """Roughness calculation of a signal sampled at 48kHz.
 
     The code is based on the algorithm described in "Psychoacoustical roughness:
@@ -32,8 +34,9 @@ def roughness_dw(signal, fs, overlap=0.5, is_sdt_output=False):
     ----------
     signal :numpy.array  or DataTime object
         A time signal in Pa
-    fs : integer
-        Sampling frequency 
+    fs : float, optional
+        Sampling frequency, can be omitted if the input is a DataTime
+        object. Default to None
     overlap : float
         Overlapping coefficient for the time windows of 200ms
 
@@ -62,16 +65,17 @@ def roughness_dw(signal, fs, overlap=0.5, is_sdt_output=False):
     noverlap = int(overlap * nperseg)
     # reshaping of the signal according to the overlap and time proportions
     sig, time = time_segmentation(
-        signal, fs, nperseg=nperseg, noverlap=noverlap, is_ecma=False)
+        signal, fs, nperseg=nperseg, noverlap=noverlap, is_ecma=False
+    )
     nseg = sig.shape[1]
 
-    spec, _ = spectrum(sig, fs, nfft='default', window='blackman', db=False)
+    spec, _ = spectrum(sig, fs, nfft="default", window="blackman", db=False)
 
     # Frequency axis in Hertz
-    freq_axis = np.arange(1, nperseg//2 + 1, 1) * (fs / nperseg)
+    freq_axis = np.arange(1, nperseg // 2 + 1, 1) * (fs / nperseg)
 
     # Initialization of the weighting functions H and g
-    hWeight = _H_weighting(nperseg//2, fs)
+    hWeight = _H_weighting(nperseg // 2, fs)
     # Aures modulation depth weighting function
     gzi = _gzi_weighting(np.arange(1, 48, 1) / 2)
 
@@ -80,10 +84,12 @@ def roughness_dw(signal, fs, overlap=0.5, is_sdt_output=False):
     if len(spec.shape) > 1:
         for i in range(nseg):
             R[i], R_spec[:, i], bark_axis = _roughness_dw_main_calc(
-                spec[:, i], freq_axis, fs, gzi, hWeight)
+                spec[:, i], freq_axis, fs, gzi, hWeight
+            )
     else:
         R, R_spec, bark_axis = _roughness_dw_main_calc(
-            spec, freq_axis, fs, gzi, hWeight)
+            spec, freq_axis, fs, gzi, hWeight
+        )
 
     # print(np.mean(R,axis=0))
 
