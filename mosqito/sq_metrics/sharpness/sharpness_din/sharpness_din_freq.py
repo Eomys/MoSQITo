@@ -33,7 +33,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
         The time axis array, size (Ntime,) or None
 
     """
-    if spectrum.shape != freqs.shape:
+    if len(spectrum) != len(freqs):
         raise ValueError(
             'Input spectrum and frequency axis must have the same shape')
 
