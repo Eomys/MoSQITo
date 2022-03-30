@@ -37,7 +37,8 @@ def tnr_ecma_st(signal, fs, prominence=True):
         
     # Compute tnr values
     tones_freqs, tnr, prom, t_tnr = _tnr_main_calc(spectrum_db, freq_axis)
-
+    prom = prom.astype(bool)
+    
     if prominence == False:
         return t_tnr, tnr, prom, tones_freqs
     else:

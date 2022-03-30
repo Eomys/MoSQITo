@@ -49,15 +49,13 @@ def _tnr_main_calc(spectrum_db, freq_axis):
         
     elif (len(spectrum_db.shape) > 1) & (len(freq_axis.shape) > 1):
         nseg = spectrum_db.shape[1]
-        freqs = [[]for i in range(nseg)]
-        spec_db = [[]for i in range(nseg)]
+        freqs = np.array([[]for i in range(nseg)],dtype=object)
+        spec_db = np.array([[]for i in range(nseg)],dtype=object)
         for i in range(nseg):
             # Frequency axis of interest
             freq_index_rows = np.where((freq_axis[:,i] > 89.1) & (freq_axis[:,i] < 11200))[0]
             freqs[i] = np.append(freqs[i],freq_axis[freq_index_rows,i])
             spec_db[i] = np.append(spec_db[i],spectrum_db[freq_index_rows,i])
-        freqs = np.asarray(freqs)
-        spec_db = np.asarray(spec_db)
         
     elif (len(spectrum_db.shape) > 1) & (len(freq_axis.shape) == 1):
         # Frequency axis of interest
@@ -93,15 +91,15 @@ def _tnr_main_calc(spectrum_db, freq_axis):
 
     for i in range(nseg):
         
-        tnr = []
+        tnr = np.array([], dtype=object)
         
         if nseg == 1:
-            peaks = peak_index.astype(int)
+            peaks = peak_index
             spec = spec_db
             fr = freqs
             frs = freq_axis
         elif nseg > 1:
-            peaks = peak_index[i].astype(int)
+            peaks = peak_index[i]
             spec = spec_db[i,:]
             fr = freqs[i,:]
             if len(freq_axis.shape)>1:
@@ -113,10 +111,10 @@ def _tnr_main_calc(spectrum_db, freq_axis):
 
         # Each candidate is studied and then deleted from the list until all have been treated
         while nb_tones > 0:
-            ind = peaks[0]
+            ind = int(peaks[0])
             if len(peaks) > 1:
                 ind_p, ind_s, peaks, nb_tones = _find_highest_tone(
-                    fr, spec, peaks, nb_tones, ind
+                    fr, spec, peaks.astype(int), nb_tones, ind
                 )
             else:
                 ind_p = ind
@@ -247,8 +245,8 @@ def _tnr_main_calc(spectrum_db, freq_axis):
                 t_tnr =  0
             TNR = np.append(TNR, tnr)
         
-    tones_freqs = np.asarray(tones_freqs)
-    prominence = np.asarray(prominence)
+    tones_freqs = np.asarray(tones_freqs, dtype=object)
+    prominence = np.asarray(prominence, dtype=object)
 
     
     return tones_freqs, TNR , prominence, t_tnr

@@ -96,15 +96,15 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
     for i in range(nseg):
 
-        pr = []
+        pr = np.array([], dtype=object)
 
         if nseg == 1:
-            peaks = peak_index.astype(int)
+            peaks = peak_index
             spec = spec_db
             fr = freqs
 
         elif nseg > 1:
-            peaks = peak_index[i].astype(int)
+            peaks = peak_index[i]
             spec = spec_db[i, :]
             fr = freqs[i, :]
 
@@ -112,12 +112,12 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
         # Each candidate is studied and then deleted from the list until all have been treated
         while nb_tones > 0:
-            ind = peaks[0]
+            ind = int(peaks[0])
 
             # Find the highest tone in the critical band
             if len(peaks) > 1:
                 ind, _, peaks, nb_tones = _find_highest_tone(
-                    fr, spec, peaks, nb_tones, ind
+                    fr, spec, peaks.astype(int), nb_tones, ind
                 )
 
             ft = fr[ind]
@@ -227,7 +227,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
                 t_pr = 0
             PR = np.append(PR, pr)
 
-    tones_freqs = np.asarray(tones_freqs)
-    prominence = np.asarray(prominence)
+    tones_freqs = np.asarray(tones_freqs, dtype=object)
+    prominence = np.asarray(prominence, dtype=object)
 
     return tones_freqs, PR, prominence, t_pr

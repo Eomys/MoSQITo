@@ -37,7 +37,8 @@ def pr_ecma_st(signal, fs, prominence=True):
                   
     # Compute PR values
     tones_freqs, pr, prom, t_pr = _pr_main_calc(spectrum_db, freq_axis)
-          
+    prom = prom.astype(bool)
+    
     if prominence == False:
         return t_pr, pr, prom, tones_freqs
     else:

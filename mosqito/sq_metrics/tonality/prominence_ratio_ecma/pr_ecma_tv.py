@@ -9,7 +9,7 @@ from mosqito.sound_level_meter.spectrum import spectrum
 from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import _pr_main_calc
 
 
-def pr_ecma_tv(signal, fs, prominence=True, overlap=0.5):
+def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
     """Computation of prominence ratio according to ECMA-74, annex D.10
     for a time varying signal.
         The T-PR value is calculated according to ECMA-TR/108

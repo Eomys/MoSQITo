@@ -173,7 +173,7 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         sup = np.where(index <= high_limit)[0]
         index = np.delete(index, sup)
     
-    tones = np.asarray(tones)
+    tones = np.asarray(tones, dtype=object)
 
 
     return tones

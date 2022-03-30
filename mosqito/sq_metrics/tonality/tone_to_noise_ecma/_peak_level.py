@@ -51,6 +51,9 @@ def _peak_level(freqs, spec, peak_index):
                 L = 10 * np.log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
                 
                 temp += 1
+                if temp == len(spec):
+                    temp -= 1
+                    Ltemp = -1
             else:
                 Ltemp = -1
 
@@ -68,6 +71,9 @@ def _peak_level(freqs, spec, peak_index):
                 L = 10 * np.log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
     
                 temp -= 1
+                if temp <0:
+                    temp += 1
+                    Ltemp = -1
             else:
                 Ltemp = -1
 

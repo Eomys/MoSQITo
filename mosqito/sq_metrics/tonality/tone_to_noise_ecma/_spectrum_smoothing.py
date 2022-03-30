@@ -67,7 +67,7 @@ def _spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):
         # If the frequency bin is empty, it is deleted from the list
         if len(bin_index) == 0:
             smoothed_spectrum = np.delete(smoothed_spectrum, i, axis=1)
-            filter_freqs = np.delete(filter_freqs, i, axis=1)
+            filter_freqs = np.delete(filter_freqs, i, axis=0)
             nb_bands -= 1
 
         else:

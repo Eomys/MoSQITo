@@ -33,7 +33,6 @@ def tnr_ecma_freq(spectrum, freqs,  prominence=True):
         Frequency list of the detected tones.
     """
              
-
     if len(spectrum) != len(freqs) :
         raise ValueError('Input spectrum and frequency axis must have the same size')
     
