@@ -11,8 +11,8 @@ def _LTH(freqs):
     """Definition of the lower threshold of hearing according to
     ECMA-74 annex D.7.1"""
 
-    LTH = np.zeros((len(freqs)))
-    for i in range(len(freqs)):
+    LTH = np.zeros((freqs.shape))
+    for i in range(freqs.shape[0]):
         f = freqs[i]
 
         if f >= 20 and f < 305:

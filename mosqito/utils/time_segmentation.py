@@ -35,6 +35,9 @@ def time_segmentation(sig, fs, nperseg=2048, noverlap=None, is_ecma=False):
 
     if noverlap is None:
         noverlap = int(nperseg / 2)
+        
+    if noverlap == 0:
+        noverlap = nperseg
 
     if is_ecma:
         # pad with zeros at the begining

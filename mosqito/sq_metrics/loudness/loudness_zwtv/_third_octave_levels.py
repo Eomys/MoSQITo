@@ -266,6 +266,7 @@ def _third_octave_levels(sig, fs):
 
     third_octave_level = np.zeros((n_level_band, n_time))
     for i_bands in range(n_level_band):
+        
         # Initialisation
         tiny_value = 10 ** -12
         i_ref = 4 * 10 ** -10
