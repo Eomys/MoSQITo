@@ -176,8 +176,7 @@ def _main_loudness(spec_third, field_type):
 
     logic_gi = gi > 0
     lcb = np.zeros([3, dll_result.shape[1]])
-    lcb = 10 * np.log10(gi[logic_gi])
-    lcb = lcb.reshape(3, dll_result.shape[1])
+    lcb[logic_gi] = 10 * np.log10(gi[logic_gi])
 
     # Calculation of main loudness
     s = 0.25
