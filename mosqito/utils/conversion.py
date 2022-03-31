@@ -40,6 +40,8 @@ def amp2db(amp, ref=1):
     if ref == 0:
         raise ValueError("Reference must be different from 0")
     elif ref != 0:
+        ind = amp == 0
+        amp[ind] = 2e-12  # To warning "divide by zero encountered in log10"
         db = 20 * np.log10(amp / ref)
 
     return db
