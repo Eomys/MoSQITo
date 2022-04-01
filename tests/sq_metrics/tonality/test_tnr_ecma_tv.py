@@ -3,10 +3,9 @@
 try:
     import pytest
 except ImportError:
-    raise RuntimeError(
-        "In order to perform the tests you need the 'pytest' package."
-    )
+    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
 
+import numpy as np
 
 # Local application imports
 from mosqito.utils import load
@@ -38,6 +37,9 @@ def test_tnr_ecma_tv():
 
     # Compute tone-to-noise ratio
     t_tnr, tnr, prom, freq, time = tnr_ecma_tv(audio, fs, prominence=True)
+    np.testing.assert_almost_equal(max(t_tnr), 34.995108238375025)
+    assert np.count_nonzero(prom == True) == 6
+
 
 if __name__ == "__main__":
     test_tnr_ecma_tv()
