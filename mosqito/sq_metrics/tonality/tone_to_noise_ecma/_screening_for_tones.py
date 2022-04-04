@@ -32,9 +32,9 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
     Parameters
     ----------
     freqs : numpy.array
-        frequency axis
+        frequency axis (n blocks x frequency axis)
     spec_db : numpy.array
-        spectrum in dB
+        spectrum in dB (n block x spectrum)
     method : string
         the method chosen to find the tones 'Sottek'
     low_freq : float
@@ -55,7 +55,23 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
 
     # Creation of the smoothed spectrum
     smooth_spec = _spectrum_smoothing(freqs, spec_db, 24, low_freq, high_freq, freqs)
-
+    
+    
+    n = spec_db.shape[0]
+    if len(spec_db.shape)>1:
+        m = spec_db.shape[1] 
+        stop = np.arange(1,n+1) * m -1
+        
+    else:
+        m = spec_db.shape[0]
+        n = 1
+        stop = [m]
+    
+    
+    smooth_spec = smooth_spec.ravel()
+    spec_db = spec_db.ravel()
+    freqs = freqs.ravel()
+ 
     if method == "smoothed":
 
         # Criteria 1 : the level of the spectral line is higher than the level of
@@ -100,11 +116,20 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
     # Check of the tones width : a candidate is discarded if its width is greater
     # than half the critical bandwidth
 
-    tones = np.empty((0), dtype=int)
+    if n == 1:
+        tones = []
+    else:   
+        tones = [[]for i in range(n)]
+        
     # Each candidate is evaluated
     while len(index) > 0:
         # Index of the candidate
         peak_index = index[0]
+        
+        for i in range(n):
+            if (peak_index<stop[i]) & (peak_index>(stop[i]-m)):
+                block = i
+                
 
         # Lower and higher limits of the tone width
         low_limit = peak_index
@@ -114,7 +139,7 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         temp = peak_index + 1
 
         # As long as the level decreases or remains above the smoothed spectrum,
-        while (spec_db[temp] > smooth_spec[temp] + 6) and (temp + 1 < len(spec_db)):
+        while (spec_db[temp] > smooth_spec[temp] + 6) and (temp + 1 < (block+1)*m):
             # if a highest spectral line is found, it becomes the candidate
             if spec_db[temp] > spec_db[peak_index]:
                 peak_index = temp
@@ -124,7 +149,7 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         # Screen the left points of the peak
         temp = peak_index - 1
         # As long as the level decreases,
-        while (spec_db[temp] > smooth_spec[temp] + 6) and (temp + 1 < len(spec_db)):
+        while (spec_db[temp] > smooth_spec[temp] + 6) and (temp + 1 < (block+1)*m):
             # if a highest spectral line is found, it becomes the candidate
             if spec_db[temp] > spec_db[peak_index]:
                 peak_index = temp
@@ -139,10 +164,16 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         t_width = freqs[high_limit] - freqs[low_limit]
 
         if t_width < cb_width:
-            tones = np.append(tones, peak_index)
+            if n>1:
+                tones[block] = np.append(tones[block], peak_index - block*m)
+            else:
+                tones = np.append(tones, peak_index )
 
         # All the candidates already screened are deleted from the list
         sup = np.where(index <= high_limit)[0]
         index = np.delete(index, sup)
+    
+    tones = np.asarray(tones, dtype=object)
+
 
     return tones
