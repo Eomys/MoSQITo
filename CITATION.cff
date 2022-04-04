@@ -4,9 +4,9 @@ authors:
   - family-names: Green Forge Coop
     given-names:
 title: MOSQITO
-version: 1.0.1
-doi: 10.5281/zenodo.6372075
-date-released: 2022-03-25
+version: 1.0.4
+doi: 10.5281/zenodo.6398872
+date-released: 2022-04-01
 keywords:
   - audio
   - python

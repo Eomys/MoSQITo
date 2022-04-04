@@ -5,7 +5,7 @@ import numpy as np
 from scipy.signal import decimate, butter, lfilter
 
 
-def _n_oct_filter(sig, fs, fc, alpha, N=3):
+def _n_oct_time_filter(sig, fs, fc, alpha, N=3):
     """Design of a nth octave filter set
 
     Designs a digital 1/3-octave filter with center frequency fc for

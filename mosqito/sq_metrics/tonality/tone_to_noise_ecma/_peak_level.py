@@ -39,30 +39,42 @@ def _peak_level(freqs, spec, peak_index):
 
     # Screen the right points of the peak
     temp = peak_index + 1
-    Ltemp = Li
-    # As long as the level decreases,
-    while Ltemp - np.abs(spec[temp]) > 0:
-        # if the level of the point is close enough of the peak point,
-        if Li - spec[temp] < 10:
-            Ltemp = spec[temp]
-            # its level is summed up with the peak's one
-            L = 10 * np.log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
-        else:
-            Ltemp = -1
+    
+    if temp != len(spec):
+        Ltemp = Li
+        # As long as the level decreases,
+        while Ltemp - np.abs(spec[temp]) > 0:
+            # if the level of the point is close enough of the peak point,
+            if Li - spec[temp] < 10:
+                Ltemp = spec[temp]
+                # its level is summed up with the peak's one
+                L = 10 * np.log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
+                
+                temp += 1
+                if temp == len(spec):
+                    temp -= 1
+                    Ltemp = -1
+            else:
+                Ltemp = -1
 
     # Screen the left points of the peak
     temp = peak_index - 1
-    Ltemp = Li
-    # As long as the level decreases,
-    while Ltemp - np.abs(spec[temp]) > 0:
-        # if the level of the point is close enough of the peak point,
-        if Li - spec[temp] < 10:
-            Ltemp = spec[temp]
-            # its level is summed up with the peak's one
-            L = 10 * np.log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
-
-            temp -= 1
-        else:
-            Ltemp = -1
+    
+    if temp != -1:
+        Ltemp = Li
+        # As long as the level decreases,
+        while Ltemp - np.abs(spec[temp]) > 0:
+            # if the level of the point is close enough of the peak point,
+            if Li - spec[temp] < 10:
+                Ltemp = spec[temp]
+                # its level is summed up with the peak's one
+                L = 10 * np.log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
+    
+                temp -= 1
+                if temp <0:
+                    temp += 1
+                    Ltemp = -1
+            else:
+                Ltemp = -1
 
     return L

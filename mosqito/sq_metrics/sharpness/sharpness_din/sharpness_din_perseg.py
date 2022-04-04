@@ -1,33 +1,39 @@
 # -*- coding: utf-8 -*-
 
-# Standard library import
-import numpy as np
-
 # Local imports
 from mosqito.sq_metrics import loudness_zwst_perseg
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
     sharpness_din_from_loudness,
 )
 
+# Optional package import
+try:
+    from SciDataTool import DataTime, DataLinspace, DataFreq, Norm_func
+except ImportError:
+    DataTime = None
+    DataLinspace = None
+    DataFreq = None
+
 
 def sharpness_din_perseg(
     signal,
-    fs,
+    fs=None,
     weighting="din",
     nperseg=4096,
     noverlap=None,
     field_type="free",
-    skip=0,
+    is_sdt_output=False,
 ):
-    """Acoustic sharpness calculation according to different methods:
-        Aures, Von Bismarck, DIN 45692, Fastl
+    """Acoustic sharpness calculation according to different methods
+        (Aures, Von Bismarck, DIN 45692, Fastl) from a stationary signal.
 
     Parameters:
     ----------
-    signal: numpy.array
-        time history values
-    fs: integer
-        sampling frequency
+    signal: numpy.array or DataTime object
+        A time signal in [Pa].
+    fs : float, optional
+        Sampling frequency, can be omitted if the input is a DataTime
+        object. Default to None
     weighting : string
         To specify the weighting function used for the
         sharpness computation.'din' by default,'aures', 'bismarck','fastl'
@@ -39,17 +45,22 @@ def sharpness_din_perseg(
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
-    skip : float
-        number of second to be cut at the beginning of the analysis
+    is_sdt_output : Bool, optional
+        If True, the outputs are returned as SciDataTool objects.
+        Default to False
 
     Outputs
     ------
-    S : float
-        sharpness value
-    time_axis: numpy.array
-        The time axis array, size (Ntime,) or None
+    S : ndarray or DataTime object
+        Sharpness value, size(nseg).
 
     """
+
+    # Manage input type
+    if DataTime is not None and isinstance(signal, DataTime):
+        time = signal.get_along("time")["time"]
+        fs = 1 / (time[1] - time[0])
+        signal = signal.get_along("time")[signal.symbol]
 
     # Compute loudness
     N, N_specific, _, time_axis = loudness_zwst_perseg(
@@ -57,6 +68,29 @@ def sharpness_din_perseg(
     )
 
     # Compute sharpness from loudness
-    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting, skip=0)
+    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting)
+
+    # Manage SciDataTool output type
+    if is_sdt_output:
+        if DataLinspace is None:
+            raise RuntimeError(
+                "In order to handle Data objects you need the 'SciDataTool' package."
+            )
+        else:
+            time = DataLinspace(
+                name="time",
+                unit="s",
+                initial=time_axis[0],
+                final=time_axis[-1],
+                number=len(time_axis),
+                include_endpoint=True,
+            )
+            S = DataTime(
+                name="Sharpness",
+                symbol="S_{DIN}",
+                axes=[time],
+                values=S,
+                unit="acum",
+            )
 
     return S, time_axis

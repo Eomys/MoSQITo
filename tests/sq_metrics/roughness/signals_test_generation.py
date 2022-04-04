@@ -44,7 +44,7 @@ def signal_test(fc, fmod, mdepth, fs, d, dB):
     ampl = 0.00002 * np.power(10, dB / 20) / rms
     signal = signal * ampl
 
-    return signal
+    return signal, time
 
 
 def wav_test(fc, fmod, mdepth, fs, d, dB, folder):
@@ -75,5 +75,6 @@ def wav_test(fc, fmod, mdepth, fs, d, dB, folder):
     values = values / (2 * 2 ** 0.5)
     values = values.astype(np.int16)
     write(
-        folder + "/Test_signal_fc" + str(fc) + "_fmod" + str(fmod) + ".wav", fs, values
+        folder + "/Test_signal_fc" +
+        str(fc) + "_fmod" + str(fmod) + ".wav", fs, values
     )
