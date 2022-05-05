@@ -75,7 +75,7 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     freq_axis = np.arange(1, nperseg // 2 + 1, 1) * (fs / nperseg)
 
     # Initialization of the weighting functions H and g
-    hWeight = _H_weighting(nperseg // 2, fs)
+    hWeight = _H_weighting(nperseg, fs)
     # Aures modulation depth weighting function
     gzi = _gzi_weighting(np.arange(1, 48, 1) / 2)
 

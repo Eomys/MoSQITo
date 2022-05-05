@@ -11,17 +11,17 @@ from mosqito.sq_metrics.roughness.roughness_dw._ear_filter_coeff import (
     _ear_filter_coeff,
 )
 from mosqito.utils.conversion import freq2bark, db2amp, amp2db, bark2freq
+import matplotlib.pyplot as plt
 
-
-def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
+def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     """
     Daniel and Weber roughness main calculation
 
     Parameters
     ----------
-    spectrum : array
+    spec : array
         An amplitude or complex spectrum.
-    freqs : array
+    freq_axis : array
         Frequency axis in [Hz].
     fs : integer
         Sampling frequency.
@@ -36,29 +36,31 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
         Roughness computed for the given spectrum.
 
     """
-
-    if len(spectrum) != len(freqs):
+    if len(spec) != len(freq_axis):
         raise ValueError(
-            "Spectrum and frequency axis should have the same number of points !"
+            "spectrum and frequency axis should have the same number of points !"
         )
 
-    n = len(spectrum)
+    # convert spectrum to 2-sided
+    spec = np.concatenate((spec, spec[len(spec)::-1]))
+
+    n = len(spec)
     # Frequency axis in Bark
-    barks = freq2bark(freqs)
+    bark_axis = freq2bark(freq_axis)
     # Highest frequency
-    nZ = np.arange(1, n + 1, 1)
+    nZ = np.arange(1, n//2 + 1, 1)
 
     # Calculate Zwicker a0 factor (transfer characteristic of the outer and inner ear)
     a0 = np.zeros((n))
-    a0[nZ - 1] = db2amp(_ear_filter_coeff(barks), ref=1)
-    spectrum = a0 * spectrum
+    a0[nZ - 1] = db2amp(_ear_filter_coeff(bark_axis), ref=1)
+    spec = a0 * spec
 
-    # Conversion of the spectrum into dB
-    module = np.abs(spectrum)
+    # Conversion of the spec into dB
+    module = np.abs(spec[0:n//2])
     spec_dB = amp2db(module, ref=2e-5)
-
-    # Find the audible components within the spectrum
-    threshold = LTQ(barks, reference="roughness")
+    
+    # Find the audible components within the spec
+    threshold = LTQ(bark_axis, reference="roughness")
     audible_index = np.where(spec_dB > threshold)[0]
     # Number of audible frequencies
     n_aud = len(audible_index)
@@ -73,7 +75,7 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
     # upper slope [dB/Bark]
     for k in np.arange(0, n_aud, 1):
         s2[k] = min(
-            -24 - (230 / freqs[audible_index[k]]) + (0.2 * spec_dB[audible_index[k]]),
+            -24 - (230 / freq_axis[audible_index[k]]) + (0.2 * spec_dB[audible_index[k]]),
             0,
         )
 
@@ -85,20 +87,20 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
     zb = bark2freq(zi) * n / fs
     # Minimum excitation level
     minExcitDB = np.interp(zb, nZ, threshold)
-
+    
     ch_low = np.zeros((n_aud))
     ch_high = np.zeros((n_aud))
     for i in np.arange(0, n_aud):
         # Lower limit of the channel corresponding to each component
-        ch_low[i] = math.floor(2 * barks[audible_index[i]]) - 1
+        ch_low[i] = math.floor(2 * bark_axis[audible_index[i]]) - 1
         # Higher limit
-        ch_high[i] = math.ceil(2 * barks[audible_index[i]]) - 1
+        ch_high[i] = math.ceil(2 * bark_axis[audible_index[i]]) - 1
 
     # Creation of the excitation pattern
     slopes = np.zeros((n_aud, n_channel))
     for k in np.arange(0, n_aud):
         levDB = spec_dB[audible_index[k]]
-        b = barks[audible_index[k]]
+        b = bark_axis[audible_index[k]]
         for j in np.arange(0, int(ch_low[k] + 1)):
             sl = (s1 * (b - ((j + 1) * 0.5))) + levDB
             if sl > minExcitDB[j]:
@@ -129,24 +131,22 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
             else:
                 ampl = slopes[j, i - 1] / module[ind]
 
-            # reconstruction of the spectrum
-            exc[ind] = ampl * spectrum[ind]
+            # reconstruction of the spec
+            exc[ind] = ampl * spec[ind]
 
         # The temporal specific excitation functions are obtained by IFFT
         temporal_excitation = np.abs(n * np.real(ifft(exc)))
-
         # ------------------------------- stage 2 --------------------------------------
         # ---------------------modulation depth calculation-----------------------------
 
         # The fluctuations of the envelope are contained in the low frequency part
-        # of the spectrum of specific excitations in absolute value
+        # of the spec of specific excitations in absolute value
         h0 = np.mean(temporal_excitation)
         envelope_spec = fft(temporal_excitation - h0)
 
-        # This spectrum is weighted to model the low-frequency  bandpass
+        # This spec is weighted to model the low-frequency  bandpass
         # characteristic of the roughness on modulation frequency
         envelope_spec = envelope_spec * hWeight[i, :]
-
         # The time functions of the bandpass filtered envelopes hBPi(t)
         # are calculated via inverse Fourier transform :
         hBP[i, :] = 2 * np.real(ifft(envelope_spec))
@@ -160,7 +160,6 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
                 mod_depth[i] = 1
         else:
             mod_depth[i] = 0
-
     # ------------------------------- stage 3 --------------------------------------
     # ----------------roughness calculation with cross correlation------------------
 
@@ -190,3 +189,6 @@ def _roughness_dw_main_calc(spectrum, freqs, fs, gzi, hWeight):
     R = 0.25 * sum(R_spec)
 
     return R, R_spec, zi
+
+
+
