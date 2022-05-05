@@ -67,7 +67,10 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     sig, time = time_segmentation(
         signal, fs, nperseg=nperseg, noverlap=noverlap, is_ecma=False
     )
-    nseg = sig.shape[1]
+    if len(sig.shape) == 1:
+        nseg = 1
+    else:
+        nseg = sig.shape[1]
 
     spec, _ = spectrum(sig, fs, nfft="default", window="blackman", db=False)
 
