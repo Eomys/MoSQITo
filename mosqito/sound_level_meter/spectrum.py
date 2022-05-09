@@ -7,7 +7,7 @@ from numpy.fft import fft
 from mosqito.utils.conversion import amp2db
 
 
-def spectrum(signal,fs, nfft='default', window='hanning',db=True):
+def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=True):
     """
     Compute one-sided spectrum from a time signal in Pa.
 
@@ -53,8 +53,12 @@ def spectrum(signal,fs, nfft='default', window='hanning',db=True):
         window = np.tile(window,(nseg,1)).T
     
     # Creation of the spectrum by FFT
-    spectrum = fft(signal * window, axis=0)[0:nfft//2] * 1.42
-    freq_axis = np.arange(0, nfft//2, 1) * (fs / nfft)
+    if one_sided == True:
+        spectrum = fft(signal * window, n=nfft, axis=0)[0:nfft//2] * 1.42
+        freq_axis = np.arange(1, nfft//2+1, 1) * (fs / nfft)
+    else:
+        spectrum = fft(signal * window, n=nfft, axis=0) * 1.42
+        freq_axis = np.concatenate((np.arange(1, nfft//2+1, 1) * (fs / nfft), np.arange(nfft//2+1, 1, -1) * (fs / nfft)))
 
     if db == True:
         # Conversion into dB level

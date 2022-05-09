@@ -44,7 +44,7 @@ def test_roughness_dw():
 
     # Stimulus generation
     stimulus, _ = signal_test(
-        fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=70)
+        fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=60)
 
     # Roughness calculation
     roughness, time, _, _ = roughness_dw(stimulus, fs=44100, overlap=0)
@@ -82,7 +82,7 @@ def test_roughness_dw_sdt():
 
     # Stimulus generation
     stimulus, time = signal_test(
-        fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=70)
+        fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=60)
     time = DataLinspace(
         name="time",
         unit="s",
@@ -141,11 +141,9 @@ def test_roughness_dw_freq():
 
     # conversion into frequency domain
     n = len(stimulus)
-    window = np.blackman(n)
-    window = window / sum(window)
 
     # Creation of the spectrum by FFT using the Blackman window
-    spec = fft(stimulus * window)[0:n//2] * 1.42
+    spec = fft(stimulus )[0:n//2] * 1.42
     # Highest frequency
     nMax = round(n / 2)
     # Frequency axis in Hertz
@@ -157,6 +155,7 @@ def test_roughness_dw_freq():
         "name": "Roughness",
         "values": roughness,
     }
+    print(R)
 
     # Check compliance
     tst = check_compliance(R)
