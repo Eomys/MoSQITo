@@ -71,4 +71,4 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     for fc, alpha in zip(fc_vec, alpha_vec):
         spec.append(_n_oct_freq_filter(spectrum, fs, fc, alpha))
 
-    return spec, fpref
+    return np.array(spec), fpref
