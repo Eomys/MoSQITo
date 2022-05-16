@@ -5,6 +5,8 @@ import numpy as np
 
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
+from mosqito.sound_level_meter.noct_spectrum._filter_bandwidth import _filter_bandwidth
+from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import _n_oct_freq_filter
 
 
 def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
@@ -44,7 +46,7 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     # Get filters center frequencies
     fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
 
-    nband = len(fpref)
+    nband = len(fc_vec)
 
     if len(spectrum.shape) > 1:
         nseg = spectrum.shape[1]
@@ -56,24 +58,17 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
         nseg = 1
         spec = np.zeros((nband))
 
-    # Frequency resolution
-    # df = freqs[1:] - freqs[:-1]
-    # df = np.concatenate((df, [df[-1]]))
+    fs = np.mean(freqs[1:] - freqs[:-1]) * 2 * len(spectrum)
 
-    # Get upper and lower frequencies
-    fu = fc_vec * 2**(1/(2*n))
-    fl = fc_vec / 2**(1/(2*n))
+    # Get filters center frequencies
+    fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
 
-    for s in range(nseg):
-        for i in range(nband):
-            if len(spectrum.shape) > 1:
-                # index of the frequencies within the band
-                idx = np.where((freqs[:, s] >= fl[i]) & (freqs[:, s] < fu[i]))
-                spec[i, s] = np.sqrt(
-                    np.sum(np.power(np.abs(spectrum[idx,s]), 2)))
-            else:
-                # index of the frequencies within the band
-                idx = np.where((freqs >= fl[i]) & (freqs < fu[i]))
-                spec[i] = np.sqrt(np.sum(np.abs(spectrum[idx])**2))
+    # Compute the filters bandwidth
+    alpha_vec = _filter_bandwidth(fc_vec, n=n)
+
+    # Calculation of the rms level of the signal in each band
+    spec = []
+    for fc, alpha in zip(fc_vec, alpha_vec):
+        spec.append(_n_oct_freq_filter(spectrum, fs, fc, alpha))
 
     return spec, fpref
