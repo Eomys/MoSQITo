@@ -53,11 +53,12 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
 
     # Compute the filters bandwidth
-    alpha_vec = _filter_bandwidth(fc_vec, n=n)
+    alpha_vec, _, _ = _filter_bandwidth(fc_vec, n=n)
 
     # Calculation of the rms level of the signal in each band
     spec = []
     for fc, alpha in zip(fc_vec, alpha_vec):
+        print(fc, alpha)
         spec.append(_n_oct_time_filter(sig, fs, fc, alpha))
 
     return np.array(spec), fpref
