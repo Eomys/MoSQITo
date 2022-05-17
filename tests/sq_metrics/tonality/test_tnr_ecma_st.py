@@ -41,7 +41,7 @@ def test_tnr_ecma_st():
     # Load signal
     audio, fs = load(signal["data_file"])
     # Compute tone-to-noise ratio
-    tnr = tnr_ecma_st(audio, fs, prominence=True)
+    t_tnr, tnr, prom, tones_freqs = tnr_ecma_st(audio, fs, prominence=True)
         
 if __name__ == "__main__":
     test_tnr_ecma_st()
