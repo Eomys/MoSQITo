@@ -11,10 +11,8 @@ from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import _n_oct_fr
 
 def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     """Adapt input spectrum to nth-octave band spectrum
-
     Convert the input spectrum to third-octave band spectrum
     between "fc_min" and "fc_max".
-
     Parameters
     ----------
     spectrum : numpy.ndarray
@@ -34,7 +32,6 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
         Reference frequency. Shall be set to 1 kHz for audible frequency
         range, to 1 Hz for infrasonic range (f < 20 Hz) and to 1 MHz for
         ultrasonic range (f > 31.5 kHz).
-
     Outputs
     -------
     spec : numpy.ndarray
@@ -42,33 +39,47 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies, size (nbands).
     """
-
-    # Get filters center frequencies
-    fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
-
-    nband = len(fc_vec)
-
-    if len(spectrum.shape) > 1:
-        nseg = spectrum.shape[1]
-        spec = np.zeros((nband, nseg))
-        if len(freqs.shape) == 1:
-            freqs = np.tile(freqs, (nseg, 1)).T
-
-    else:
-        nseg = 1
-        spec = np.zeros((nband))
-
+    
+    # Deduce sampling frequency
     fs = np.mean(freqs[1:] - freqs[:-1]) * 2 * len(spectrum)
 
     # Get filters center frequencies
     fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
-
+    
     # Compute the filters bandwidth
-    alpha_vec = _filter_bandwidth(fc_vec, n=n)
+    alpha_vec, f_low, f_high = _filter_bandwidth(fc_vec, n=n)
+    
+    # Delete ends frequencies to prevent aliasing
+    idx = np.asarray(np.where(f_high > fs / 2))
+    if any(idx[0]):
+        fc_vec = np.delete(fc_vec, idx)
+        f_low = np.delete(f_low, idx)
+        f_high = np.delete(f_high, idx)
+
+    # Number of nth bands
+    nband = len(fc_vec)
+    
+    # Results array initialization
+    if len(spectrum.shape) > 1:
+        nseg = spectrum.shape[1]
+        spec = np.zeros((nband, nseg))
+        # If only one axis is given, it is used for all the spectra
+        if len(freqs.shape) == 1:
+            freqs = np.tile(freqs, (nseg, 1)).T
+    else:
+        nseg = 1
+        spec = np.zeros((nband))
+
+    # Downsampling according to the band frequency
+    guard = 0.10
+    factor_vec = (np.floor((fs / (2+guard)) / f_high)).astype('int')
+    for idx in range(len(factor_vec)):
+        # Factor between 1<factor<50
+        factor_vec[idx] = max(min(factor_vec[idx], 50), 1)
 
     # Calculation of the rms level of the signal in each band
     spec = []
-    for fc, alpha in zip(fc_vec, alpha_vec):
-        spec.append(_n_oct_freq_filter(spectrum, fs, fc, alpha))
+    for fc, alpha, factor in zip(fc_vec, alpha_vec, factor_vec):
+        spec.append(_n_oct_freq_filter(spectrum, fs, factor, fc, alpha))
 
     return np.array(spec), fpref
