@@ -8,9 +8,7 @@ Created on Wed Dec 16 20:23:01 2020
 import numpy as np
 
 # Mosqito functions import
-from mosqito.sq_metrics.tonality.tone_to_noise_ecma._spectrum_smoothing import (
-    _spectrum_smoothing,
-)
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._spectrum_smoothing import _spectrum_smoothing
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._LTH import _LTH
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import _critical_band
 
@@ -54,7 +52,7 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
     # Detection of the tonal candidates according to their level
 
     # Creation of the smoothed spectrum
-    smooth_spec = _spectrum_smoothing(freqs, spec_db, 24, low_freq, high_freq, freqs)
+    smooth_spec = _spectrum_smoothing(freqs, spec_db.T, 24, low_freq, high_freq, freqs).T
     
     
     n = spec_db.shape[0]
@@ -149,7 +147,7 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
         # Screen the left points of the peak
         temp = peak_index - 1
         # As long as the level decreases,
-        while (spec_db[temp] > smooth_spec[temp] + 6) and (temp + 1 < (block+1)*m):
+        while (spec_db[temp] > smooth_spec[temp] + 6) and (temp +1 > (block)*m):
             # if a highest spectral line is found, it becomes the candidate
             if spec_db[temp] > spec_db[peak_index]:
                 peak_index = temp
