@@ -27,7 +27,7 @@ def _dB(amp):
 def test_noct_synthesis_technical():
     
     ############################## TECHNICAL SIGNAL ##########################
-    sig, fs = load("tests\input\Test signal 5 (pinknoise 60 dB).wav", wav_calib=2*2**0.5)
+    sig, fs = load("tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2*2**0.5)
 
     spec_3t, freq_3t = noct_spectrum(sig, fs, fmin=24, fmax=12600, n=3)
     spec_1t, freq_1t = noct_spectrum(sig, fs, fmin=24, fmax=12600, n=1)
