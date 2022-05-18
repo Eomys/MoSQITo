@@ -45,17 +45,17 @@ def test_noct_synthesis_technical():
     spec_3f, freq_3f = noct_synthesis(np.abs(spectrum), freqs, fmin=24, fmax=12600, n=3)
     spec_1f, freq_1f = noct_synthesis(np.abs(spectrum), freqs, fmin=24, fmax=12600, n=1)
 
-    # plt.figure()
-    # plt.semilogx(freq_3t, _dB(spec_3t), label='noct spectrum')
-    # plt.semilogx(freq_3f, _dB(spec_3f), label='noct synth')
-    # plt.legend()
+    plt.figure()
+    plt.semilogx(freq_3t, _dB(spec_3t), label='noct spectrum')
+    plt.semilogx(freq_3f, _dB(spec_3f), label='noct synth')
+    plt.legend()
 
-    # plt.figure()
-    # plt.semilogx(freq_1t, _dB(spec_1t), label='noct spectrum')
-    # plt.semilogx(freq_1f, _dB(spec_1f), label='noct synth')
-    # plt.legend()
+    plt.figure()
+    plt.semilogx(freq_1t, _dB(spec_1t), label='noct spectrum')
+    plt.semilogx(freq_1f, _dB(spec_1f), label='noct synth')
+    plt.legend()
 
-    # plt.show()
+    plt.show()
 
     np.testing.assert_allclose(_dB(spec_3t[:, 0]), _dB(spec_3f), atol=0.3)
     np.testing.assert_allclose(_dB(spec_1t[:, 0]), _dB(spec_1f), atol=0.3)
