@@ -8,7 +8,7 @@ except ImportError:
         "In order to perform the tests you need the 'pytest' package."
     )
 
-
+import numpy as np
 # Local application imports
 from mosqito.utils import load
 from mosqito.sq_metrics import pr_ecma_st
@@ -30,17 +30,20 @@ def test_pr_ecma_st():
     None
     """
     # Test signal as input for prominence ratio calculation
-    # signals generated using audacity : white noise + tones at 200 and 2000 Hz
+    # signals generated using audacity : white noise + tones at 442 and 1768 Hz
 
     signal = {
             "data_file": "tests/input/white_noise_442_1768_Hz_stationary.wav"
         }
 
     # Load signal
-    audio, fs = load(signal["data_file"])
+    audio, fs = load(signal["data_file"], wav_calib=0.01)
 
     # Compute tone-to-noise ratio
-    t_pr, pr, prom, tones_freqs = pr_ecma_st(audio, fs, prominence=True)
+    t_pr, pr, prom, freq = pr_ecma_st(audio, fs, prominence=True)
+    np.testing.assert_almost_equal(t_pr, 32.20980078537321)
+    np.testing.assert_almost_equal(freq.astype(np.int32), [442, 1768])
+    assert np.count_nonzero(prom == True) == 2
 
 
 if __name__ == "__main__":
