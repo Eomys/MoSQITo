@@ -70,16 +70,9 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
         nseg = 1
         spec = np.zeros((nband))
 
-    # Downsampling according to the band frequency
-    guard = 0.10
-    factor_vec = (np.floor((fs / (2+guard)) / f_high)).astype('int')
-    for idx in range(len(factor_vec)):
-        # Factor between 1<factor<50
-        factor_vec[idx] = max(min(factor_vec[idx], 50), 1)
-
     # Calculation of the rms level of the signal in each band
     spec = []
-    for fc, alpha, factor in zip(fc_vec, alpha_vec, factor_vec):
-        spec.append(_n_oct_freq_filter(spectrum, fs, factor, fc, alpha))
+    for fc, alpha in zip(fc_vec, alpha_vec):
+        spec.append(_n_oct_freq_filter(spectrum, fs, fc, alpha))
 
     return np.array(spec), fpref
