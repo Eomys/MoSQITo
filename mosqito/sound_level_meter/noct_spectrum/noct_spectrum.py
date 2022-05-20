@@ -58,7 +58,6 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     # Calculation of the rms level of the signal in each band
     spec = []
     for fc, alpha in zip(fc_vec, alpha_vec):
-        print(fc, alpha)
         spec.append(_n_oct_time_filter(sig, fs, fc, alpha))
 
     return np.array(spec), fpref
