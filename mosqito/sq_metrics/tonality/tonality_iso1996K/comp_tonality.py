@@ -32,7 +32,7 @@ def comp_tonality(sig, fs):
     #-- As the tonality is studied for the audible frequency range, 
     #-- we set the minimum and maximum frequencies at 25 Hz and 20 kHz.
     fmin = 25
-    fmax = 20000
+    fmax = 10000
 
     # -- we obtain the data of the Lp in Pa in thirds of octave of the signal of which
     # -- we want to know the prominent tones
@@ -98,7 +98,7 @@ def comp_tonality(sig, fs):
             if Lp_diff_prev >= diff_medium_freqs and Lp_diff_post >= diff_medium_freqs:
                 # -- there is a tone in x, we store its value.
                 index_tone_list.append(x)
-        elif x > fc.index(400.0) and x < fc.index(12500.0):
+        elif x > fc.index(400.0) and x < fc.index(10000.0):
             # -- "HIGH FREQUENCY --> 5 dB difference".
             if Lp_diff_prev >= diff_high_freqs and Lp_diff_post >= diff_high_freqs:
                 # -- there is a tone in x, we store its value.
