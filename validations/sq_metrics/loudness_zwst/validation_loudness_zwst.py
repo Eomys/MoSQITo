@@ -20,13 +20,9 @@ import numpy as np
 from mosqito.sq_metrics import loudness_zwst
 from mosqito.utils import isoclose
 from mosqito.utils import load
-from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import (
-    _main_loudness,
-)
-from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import (
-    _calc_slopes,
-)
-from validations.sq_metrics.loudness_zwst.input.ISO_532_1.test_signal_1 import test_signal_1
+from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
+from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
+from input.ISO_532_1.test_signal_1 import test_signal_1
 
 
 def validation_loudness_zwst_3oct():
@@ -50,7 +46,7 @@ def validation_loudness_zwst_3oct():
     # (from ISO 532-1 annex B2) : test_signal_1
 
     # Load ISO reference outputs
-    file_path = "./validations/sq_metrics/loudness_zwst/input/ISO_532_1/test_signal_1.csv"
+    file_path = "input/ISO_532_1/test_signal_1.csv"
     N_iso = 83.296
     N_specif_iso = np.genfromtxt(
         file_path, skip_header=1
@@ -96,24 +92,24 @@ def validation_loudness_zwst():
 
     signals = [
         {
-            "data_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532_1/Test signal 2 (250 Hz 80 dB).wav",
+            "data_file": "input/ISO_532_1/Test signal 2 (250 Hz 80 dB).wav",
             "N": 14.655,
-            "N_specif_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532_1/test_signal_2.csv",
+            "N_specif_file": "input/ISO_532_1/test_signal_2.csv",
         },
         {
-            "data_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532_1/Test signal 3 (1 kHz 60 dB).wav",
+            "data_file": "input/ISO_532_1/Test signal 3 (1 kHz 60 dB).wav",
             "N": 4.019,
-            "N_specif_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532_1/test_signal_3.csv",
+            "N_specif_file": "input/ISO_532_1/test_signal_3.csv",
         },
         {
-            "data_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532_1/Test signal 4 (4 kHz 40 dB).wav",
+            "data_file": "input/ISO_532_1/Test signal 4 (4 kHz 40 dB).wav",
             "N": 1.549,
-            "N_specif_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532_1/test_signal_4.csv",
+            "N_specif_file": "input/ISO_532_1/test_signal_4.csv",
         },
         {
-            "data_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532_1/Test signal 5 (pinknoise 60 dB).wav",
+            "data_file": "input/ISO_532_1/Test signal 5 (pinknoise 60 dB).wav",
             "N": 10.498,
-            "N_specif_file": "./validations/sq_metrics/loudness_zwst/input/ISO_532_1/test_signal_5.csv",
+            "N_specif_file": "input/ISO_532_1/test_signal_5.csv",
         },
     ]
 
@@ -166,7 +162,7 @@ def _format_plot(is_isoclose_N, is_isoclose_N_specific, N, N_iso, filename):
         transform=plt.gca().transAxes,
         bbox=props,
     )
-    out_dir = "./validations/sq_metrics/loudness_zwst/output/"
+    out_dir = "output/"
     plt.savefig(
         out_dir + 'validation_loudness_zwst_' +
         "_".join(filename.split(" ")) + ".png",

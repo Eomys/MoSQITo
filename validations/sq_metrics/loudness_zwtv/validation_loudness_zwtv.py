@@ -28,141 +28,141 @@ from mosqito.utils import load
 signal = np.zeros((20), dtype=dict)
 
 signal[0] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Test signal 6 (tone 250 Hz 30 dB - 80 dB).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.4/Test signal 6 (tone 250 Hz 30 dB - 80 dB).wav",
+    "xls": "input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
     "tab": "Test signal 6",
     "N_specif_bark": 2.5,
     "field": "free",
 }
 signal[1] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.4/Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",
+    "xls": "input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
     "tab": "Test signal 7",
     "N_specif_bark": 8.5,
     "field": "free",
 }
 signal[2] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Test signal 8 (tone 4 kHz 30 dB - 80 dB).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.4/Test signal 8 (tone 4 kHz 30 dB - 80 dB).wav",
+    "xls": "input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
     "tab": "Test signal 8",
     "N_specif_bark": 17.5,
     "field": "free",
 }
 signal[3] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Test signal 9 (pink noise 0 dB - 50 dB).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.4/Test signal 9 (pink noise 0 dB - 50 dB).wav",
+    "xls": "input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
     "tab": "Test signal 9",
     "N_specif_bark": 17.5,
     "field": "free",
 }
 signal[4] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Test signal 10 (tone pulse 1 kHz 10 ms 70 dB).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.4/Test signal 10 (tone pulse 1 kHz 10 ms 70 dB).wav",
+    "xls": "input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
     "tab": "Test signal 10",
     "N_specif_bark": 8.5,
     "field": "free",
 }
 signal[5] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Test signal 11 (tone pulse 1 kHz 50 ms 70 dB).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.4/Test signal 11 (tone pulse 1 kHz 50 ms 70 dB).wav",
+    "xls": "input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
     "tab": "Test signal 11",
     "N_specif_bark": 8.5,
     "field": "free",
 }
 signal[6] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Test signal 12 (tone pulse 1 kHz 500 ms 70 dB).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.4/Test signal 12 (tone pulse 1 kHz 500 ms 70 dB).wav",
+    "xls": "input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
     "tab": "Test signal 12",
     "N_specif_bark": 8.5,
     "field": "free",
 }
 signal[7] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Test signal 13 (combined tone pulses 1 kHz).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.4/Test signal 13 (combined tone pulses 1 kHz).wav",
+    "xls": "input/ISO_532-1/Annex B.4/Results and tests for synthetic signals (time varying loudness).xlsx",
     "tab": "Test signal 13",
     "N_specif_bark": 8.5,
     "field": "free",
 }
 signal[8] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 14 (propeller-driven airplane).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 14 (propeller-driven airplane).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 14",
     "N_specif_bark": -1,
     "field": "free",
 }
 signal[9] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 15 (vehicle interior 40 kmh).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 15 (vehicle interior 40 kmh).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 15",
     "N_specif_bark": -1,
     "field": "diffuse",
 }
 signal[10] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 16 (hairdryer).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 16 (hairdryer).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 16",
     "N_specif_bark": -1,
     "field": "free",
 }
 signal[11] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 17 (machine gun).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 17 (machine gun).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 17",
     "N_specif_bark": -1,
     "field": "free",
 }
 signal[12] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 18 (hammer).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 18 (hammer).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 18",
     "N_specif_bark": -1,
     "field": "free",
 }
 signal[13] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 19 (door creak).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 19 (door creak).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 19",
     "N_specif_bark": -1,
     "field": "free",
 }
 signal[14] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 20 (shaking coins).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 20 (shaking coins).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 20",
     "N_specif_bark": -1,
     "field": "free",
 }
 signal[15] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 21 (jackhammer).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 21 (jackhammer).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 21",
     "N_specif_bark": -1,
     "field": "free",
 }
 signal[16] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 22 (ratchet wheel (large)).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 22 (ratchet wheel (large)).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 22",
     "N_specif_bark": -1,
     "field": "free",
 }
 signal[17] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 23 (typewriter).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 23 (typewriter).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 23",
     "N_specif_bark": -1,
     "field": "free",
 }
 signal[18] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 24 (woodpecker).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 24 (woodpecker).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 24",
     "N_specif_bark": -1,
     "field": "free",
 }
 signal[19] = {
-    "data_file": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Test signal 25 (full can rattle).wav",
-    "xls": "./validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
+    "data_file": "input/ISO_532-1/Annex B.5/Test signal 25 (full can rattle).wav",
+    "xls": "input/ISO_532-1/Annex B.5/Results and tests for technical signals (time varying loudness).xlsx",
     "tab": "Test signal 25",
     "N_specif_bark": -1,
     "field": "free",
@@ -213,7 +213,7 @@ def validation_loudness_zwtv(signal):
 
     # Check ISO 532-1 compliance
     _check_compliance(
-        loudness, signal, "./validations/sq_metrics/loudness_zwtv/output/"
+        loudness, signal, "output/"
     )
 
 
