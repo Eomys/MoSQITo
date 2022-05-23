@@ -205,9 +205,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
             # suppression from the list of tones of all the candidates belonging to the
             # same critical band
-            sup = np.where((peaks >= low_limit_idx) & (peaks <= high_limit_idx))[
-                0
-            ]
+            sup = np.where((peaks >= low_limit_idx) & (peaks <= high_limit_idx))[0]
             peaks = np.delete(peaks, sup)
             nb_tones -= len(sup)
 

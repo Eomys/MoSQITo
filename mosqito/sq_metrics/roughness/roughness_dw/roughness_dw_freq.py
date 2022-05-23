@@ -64,7 +64,7 @@ def roughness_dw_freq(spectrum, freqs):
             freqs = np.tile(freqs, (nseg, 1)).T
 
     # Initialization of the weighting functions H and g
-    hWeight = _H_weighting(nperseg, fs)
+    hWeight = _H_weighting(2*nperseg, fs)
     # Aures modulation depth weighting function
     gzi = _gzi_weighting(np.arange(1, 48, 1) / 2)
 
