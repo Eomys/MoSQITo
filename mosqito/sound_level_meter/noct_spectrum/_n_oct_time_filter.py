@@ -2,7 +2,7 @@
 
 # Standard library imports
 import numpy as np
-from scipy.signal import decimate, butter, lfilter
+from scipy.signal import decimate, butter, sosfilt
 
 
 def _n_oct_time_filter(sig, fs, fc, alpha, N=3):
@@ -29,7 +29,7 @@ def _n_oct_time_filter(sig, fs, fc, alpha, N=3):
     alpha : float
         Ratio of the upper and lower band-edge frequencies to the mid-band
         frequency
-    N : int, optional
+    n : int, optional
         Filter order. Default to 3
 
     Outputs
@@ -59,10 +59,10 @@ def _n_oct_time_filter(sig, fs, fc, alpha, N=3):
     w2 = fc / (fs / 2) * alpha
 
     # define filter coefficient
-    b, a = butter(N, [w1, w2], "bandpass", analog=False)
+    sos = butter(int(N), (w1, w2), "bandpass", analog=False, output='sos')
 
     # filter signal
-    sig_filt = lfilter(b, a, sig, axis=0)
+    sig_filt = sosfilt(sos, sig, axis=0)
 
     # Compute overall rms level
     level = np.sqrt(np.mean(sig_filt ** 2, axis=0))

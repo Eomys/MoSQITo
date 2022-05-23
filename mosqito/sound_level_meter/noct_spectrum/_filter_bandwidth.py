@@ -30,6 +30,11 @@ def _filter_bandwidth(fc, n=3, N=3):
     alpha : numpy.ndarray
         Ratio of the upper and lower band-edge frequencies to the mid-band
         frequency
+    f1 : float
+        Lower frequency of the band in Hz
+    f2 : float
+        Upper frequency of the band in Hz
+
     """
 
     """
@@ -54,7 +59,7 @@ def _filter_bandwidth(fc, n=3, N=3):
     # Ratio of the upper and lower band-edge frequencies to the mid-band frequency
     alpha = (1 + np.sqrt(1 + 4 * qd ** 2)) / 2 / qd
 
-    return alpha
+    return alpha, f1, f2
 
 
 if __name__ == "__main__":
