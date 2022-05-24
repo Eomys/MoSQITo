@@ -49,7 +49,7 @@ def roughness_dw_freq(spectrum, freqs):
     if len(spectrum.shape) == 1:
         nperseg = len(spectrum)
         nseg = 1
-        fs = int(nperseg * np.mean(freqs[1:] - freqs[:-1]))
+        fs = int(2 * nperseg * np.mean(freqs[1:] - freqs[:-1]))
 
     # 2D spectrum
     elif len(spectrum.shape) > 1:
@@ -57,10 +57,10 @@ def roughness_dw_freq(spectrum, freqs):
         nseg = spectrum.shape[1]
         # one frequency axis per block
         if len(freqs.shape) > 1:
-            fs = int(nperseg * np.mean(freqs[0, 1:] - freqs[0, :-1]))
+            fs = int(2 * nperseg * np.mean(freqs[0, 1:] - freqs[0, :-1]))
         # one frequency axis for all the blocks
         elif len(freqs.shape) == 1:
-            fs = int(nperseg * np.mean(freqs[1:] - freqs[:-1]))
+            fs = int(2 * nperseg * np.mean(freqs[1:] - freqs[:-1]))
             freqs = np.tile(freqs, (nseg, 1)).T
 
     # Initialization of the weighting functions H and g
