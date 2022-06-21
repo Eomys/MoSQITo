@@ -96,7 +96,7 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
                 include_endpoint=True,
             )
             N_specific = DataFreq(
-                name="Specific Loudness",
+                name="Specific loudness (Zwicker method for stationnary signal)",
                 symbol="N'_{zwst}",
                 axes=[bark_data],
                 values=N_specific,
