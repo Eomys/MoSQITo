@@ -86,7 +86,7 @@ def sharpness_din_perseg(
                 include_endpoint=True,
             )
             S = DataTime(
-                name="Sharpness",
+                name="Sharpness (DIN 45692)",
                 symbol="S_{DIN}",
                 axes=[time],
                 values=S,
