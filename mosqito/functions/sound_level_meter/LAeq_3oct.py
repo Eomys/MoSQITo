@@ -10,9 +10,9 @@ import numpy as np
 
 # Local imports
 from Leq_3oct import Leq_3oct
-from mosqito.functions.shared.A_weighting import A_weighting
-from mosqito.functions.shared.load import load
-from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
+from mosqito.utils.conversion import spectrum2dBA
+from load import load
+from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import _third_octave_levels
 
 def LAeq_3oct (spectrum_signal_samples,freq):
     """Calculate the LAeq of the frequency bands you choose, returns the calculated LAeq values for each band.
@@ -35,7 +35,7 @@ def LAeq_3oct (spectrum_signal_samples,freq):
     # Take the columns of the array one by one and perform the function to transform the values in dB to dBA.
     for i in range(spectrum_signal_samples.shape[1]):
         # Save dBA values lists in the list "signal_sample_A".
-        signal_sample_A.append(A_weighting(spectrum_signal_samples.T[i],freq))
+        signal_sample_A.append(spectrum2dBA(spectrum_signal_samples.T[i],freq))
    # Create an array in which each sample in dBA is a line of the array.
     spectrum_signal_samples_A_T = np.array(signal_sample_A)
     # You have to do the transpose of the array to be able to put each sample in a column
@@ -50,8 +50,8 @@ if __name__ == "__main__":
     
     sig, fs = load(True,r"Programas_y_repositorios\MoSQITo\tests\input\1KHZ60DB.WAV", calib=1)
 
-    spectrum_signal_samples = calc_third_octave_levels(sig,fs)[0]
-    freq = np.array(calc_third_octave_levels(sig,fs)[1])
+    spectrum_signal_samples = _third_octave_levels(sig,fs)[0]
+    freq = np.array(_third_octave_levels(sig,fs)[1])
     print(spectrum_signal_samples)
     print(freq)
 
