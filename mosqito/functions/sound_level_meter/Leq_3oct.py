@@ -10,8 +10,8 @@ import numpy as np
 import math
 
 # Local imports
-from  mosqito.utils.load import load
-from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
+#from  mosqito.utils.load import load
+#from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 
 def Leq_3oct(spectrum_signal_samples, freq):
     """Calculate the Leq of the frequency bands you choose, returns the calculated Leq values for each band.
@@ -45,7 +45,7 @@ def Leq_3oct(spectrum_signal_samples, freq):
     return Leq_3oct
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     
     sig, fs = load(r"tests\input\1KHZ60DB.WAV", True)
 

@@ -10,8 +10,8 @@ import numpy as np
 import math
 
 # Local imports
-from mosqito.functions.shared.load import load
-from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
+#from  mosqito.utils.load import load
+#from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 
 def LN(db_samples_signal):
     """Calculate the percentile you want to study from a series of levels (dB) collected over time (samples)  
@@ -37,12 +37,12 @@ def LN(db_samples_signal):
     return percentiles
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     
     sig, fs = load(True, r"Programas_y_repositorios\MoSQITo\tests\input\1KHZ60DB.WAV", calib=1)
 
-    spectrum_signal_samples = calc_third_octave_levels(sig,fs)[0]
-    freq = np.array(calc_third_octave_levels(sig,fs)[1])
+    spectrum_signal_samples = noct_spectrum(sig,fs)[0]
+    freq = np.array(noct_spectrum(sig,fs)[1])
 
     # Creating a list of zeros of the size of the frequency bands (to keep the Leq values).
     sig_dB = np.zeros(spectrum_signal_samples.shape[1])

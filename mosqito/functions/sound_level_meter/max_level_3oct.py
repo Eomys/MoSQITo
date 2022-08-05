@@ -9,8 +9,8 @@ Created on Thu Jan 27 00:49:39 2022
 import numpy as np
 
 # Local imports
-from mosqito.functions.shared.load import load
-from mosqito.functions.oct3filter.calc_third_octave_levels import calc_third_octave_levels
+#from  mosqito.utils.load import load
+#from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 
 def max_level_3oct(spectrum_signal_samples, freq):
     """Return the maximum value of the frequency bands you choose. Each one is calculated with the levels (dB)
@@ -43,12 +43,12 @@ def max_level_3oct(spectrum_signal_samples, freq):
     return max_level_3oct
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     
     sig, fs = load(True,r"Programas_y_repositorios\MoSQITo\tests\input\1KHZ60DB.WAV", calib=1)
 
-    spectrum_signal_samples = calc_third_octave_levels(sig,fs)[0]
-    freq = np.array(calc_third_octave_levels(sig,fs)[1])
+    spectrum_signal_samples = noct_spectrum(sig,fs)[0]
+    freq = np.array(noct_spectrum(sig,fs)[1])
 
     max = max_level_3oct(spectrum_signal_samples,freq)
     print(max)
