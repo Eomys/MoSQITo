@@ -54,9 +54,12 @@ if __name__ == "__main__":
     print(sig)
     print(fs)
 
-    spectrum_signal_1 = noct_spectrum(sig,fs,2000,20000)[0]
-    spectrum_signal_2 = noct_spectrum(sig,fs,2000,20000)[0]
-    spectrum_signal_3 = noct_spectrum(sig,fs,2000,20000)[0]
+    f_min = 2000
+    f_max =20000
+    spectrum_signal_1 = noct_spectrum(sig,fs,f_min,f_max)[0]
+    spectrum_signal_2 = noct_spectrum(sig,fs,f_min,f_max)[0]
+    spectrum_signal_3 = noct_spectrum(sig,fs,f_min,f_max)[0]
+
     print(spectrum_signal_1)
     print(spectrum_signal_1.shape[0])
     print(spectrum_signal_1.shape[1])
