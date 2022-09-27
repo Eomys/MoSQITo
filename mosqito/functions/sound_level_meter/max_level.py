@@ -7,7 +7,6 @@ Created on Wen Dic 1 18:08:08 2021
 
 # Third party imports
 import numpy as np
-import math
 
 # Local imports
 from  mosqito.utils.load import load
