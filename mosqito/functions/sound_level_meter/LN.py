@@ -10,56 +10,54 @@ import numpy as np
 import math
 
 # Local imports
-#from  mosqito.utils.load import load
-#from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
+from mosqito.utils.load import load
+from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
+from mosqito.utils.conversion import amp2db
 
-def LN(db_samples_signal):
-    """Calculate the percentile you want to study from a series of levels (dB) collected over time (samples)  
+def LN(signal):
+    """Calculate the percentile value of the series of levels (dB) of the one signal.  
 
     Parameters
     ----------
-    db_samples_signal : numpy.ndarray
-        array in which each line is the db values of a sample.
+    signal : numpy.array
+        time signal values
 
     Outputs
     -------
     percentiles : numpy.ndarray
-        calculated values ordered from lowest to highest percentile.
+        The values in dB of L90, L50 and L25 of the signal.
     """
+    # Empty array to store the values in dB of the signal.
+    dB_values = np.zeros(signal.shape[0])
+    # Performs the conversion to dB with all the values of the signal.
+    print(signal)
+    print(signal.shape)
+    for i in range(signal.shape[0]):
+        # Conversion Pa to dB.
+        dB = amp2db(np.array(signal[i]))
+        # Save all values in dB of the third octave in another array.
+        dB_values[i] = dB
     print('percentiles using interpolation = ', "linear")
     # Calculate the percentiles with the values. "q" of np.percentile = 100 - N (N of LN).
-    L90 = np.percentile(db_samples_signal, 10,interpolation='linear') 
-    L50 = np.percentile(db_samples_signal, 50,interpolation='linear') 
-    L25 = np.percentile(db_samples_signal, 75,interpolation='linear')
+    L90 = np.percentile(dB_values, 10,interpolation='linear') 
+    L50 = np.percentile(dB_values, 50,interpolation='linear') 
+    L25 = np.percentile(dB_values, 75,interpolation='linear')
+    print("The values of L90, L50 and L25 of the thirds octaves")
     # Save the calculated percentile values.
-    percentiles = np.array([L25,L50,L90])
+    percentiles = np.array([L90,L50,L25])
 
     return percentiles
 
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
     
-    sig, fs = load(True, r"Programas_y_repositorios\MoSQITo\tests\input\1KHZ60DB.WAV", calib=1)
+    sig, fs = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
+    print(sig.shape)
+    print(fs)
 
-    spectrum_signal_samples = noct_spectrum(sig,fs)[0]
-    freq = np.array(noct_spectrum(sig,fs)[1])
+    signal = np.array(sig)
 
-    # Creating a list of zeros of the size of the frequency bands (to keep the Leq values).
-    sig_dB = np.zeros(spectrum_signal_samples.shape[1])
-    # For each frequency band you perform the operation.
-    for i in range(spectrum_signal_samples.shape[1]): 
-        sum = 0
-        # Performs the summation with all the values of the frequency band in the different samples.
-        for j in range(spectrum_signal_samples.shape[0]):  
-            # Operation: summation(10^(level(db)[i]/10))
-            sum = sum + 10.0**(spectrum_signal_samples[j][i]/10.0)
-        # Keep the Leq value in the box corresponding to the frequency band from which the calculation is being made.
-        # Operation: 10 x log(base 10)[sum]
-        sig_dB[i] = 10.0 * math.log((sum),10)
-
-    print(sig_dB)
-
-    percentile = LN(sig_dB)
-    print(percentile)
+    percentiles = LN(signal)
+    print(percentiles)
     
     pass

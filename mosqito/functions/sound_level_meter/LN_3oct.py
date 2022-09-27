@@ -27,7 +27,7 @@ def LN_3oct(spectrum_all_signals, freq):
 
     Outputs
     -------
-    percentiles : numpy.ndarray
+    LN_3oct : numpy.ndarray
         The values in dB of L90, L50 and L25 for each third of an octave.
     """
     # Empty array to store the values in dB of the third octave whose percentiles values are going to be calculated.
