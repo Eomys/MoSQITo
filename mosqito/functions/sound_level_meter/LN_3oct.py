@@ -14,22 +14,40 @@ from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 from mosqito.utils.conversion import amp2db
 
 
-def LN_3oct(spectrum_all_signals, freq):
+def LN_3oct(data_all_signals, fs, f_min, f_max):
     """Calculate the percentiles of the frequency bands you choose, returns the results for each frequency band.
     Each one is calculated with the levels (dB) of its band in the different samples.
 
     Parameters
     ----------
-    spectrum_all_signals : numpy.ndarray
-        Array which each column is the third octave band spectrum of each signal (Pa).
-    freq : numpy.ndarray
-        Corresponding preferred third octave band center frequencies.
+    data_all_signals : numpy.ndarray
+        Array which each row corresponds to the data of a signal [Pa].
+    fs : float
+        Sampling frequency [Hz].
+    fmax : float
+        Max frequency band [Hz].
+    fmin : float
+        Min frequency band [Hz].
 
     Outputs
     -------
     LN_3oct : numpy.ndarray
         The values in dB of L90, L50 and L25 for each third of an octave.
     """
+    # We initialize the array that stores the third octave values of the all signals ​​with the first signal.
+    spectrum_all_signals = noct_spectrum(data_all_signals[0],fs,f_min,f_max)[0]
+    # We initialize the center frequencies of the third octaves with the first signal.
+    freq = noct_spectrum(data_all_signals[0],fs,f_min,f_max)[1]
+    # Calculate the value of the third octave of each signal.
+    for i in range(data_all_signals.shape[0]):
+        # We skip the first signal because we have initialized with it.
+        if i != 0:
+            # We calculate and save the values ​​of the third octaves of the signals
+            spectrum_all_signals = np.append(spectrum_all_signals,noct_spectrum(data_all_signals[i],fs,f_min,f_max)[0],axis=1)
+    print(spectrum_all_signals)
+    print(spectrum_all_signals.shape[0])
+    print(spectrum_all_signals.shape[1])
+
     # Empty array to store the values in dB of the third octave whose percentiles values are going to be calculated.
     main_freq_dB = np.zeros(spectrum_all_signals.shape[1])
     # Empty array to store the L90 values of each frequency band.
@@ -44,7 +62,7 @@ def LN_3oct(spectrum_all_signals, freq):
         # Performs the conversion to dB with all the values of the frequency band in the different signals.
         for j in range(spectrum_all_signals.shape[1]): 
             # Conversion Pa to dB.
-            dB = amp2db(spectrum_all_signals[i][j])
+            dB = amp2db(np.array(spectrum_all_signals[i][j]))
             # Save all values in dB of the third octave in another array.
             main_freq_dB[j] = dB
         # Calculate and keep the percentiles with the values. "q" of np.percentile = 100 - N (N of LN).
@@ -59,30 +77,24 @@ def LN_3oct(spectrum_all_signals, freq):
 
 
 if __name__ == "__main__":
-    
-    sig, fs = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
-    print(sig)
-    print(fs)
+
+    sig_1, fs_1 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
+    print(sig_1)
+    print(fs_1)
+
+    sig_2, fs_2 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
+    sig_3, fs_3 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
+
+    data_all_signals = np.stack((sig_1,sig_2,sig_3))
+    print(data_all_signals)
+    print(data_all_signals[0])
 
     f_min = 2000
     f_max =20000
-    spectrum_signal_1 = noct_spectrum(sig,fs,f_min,f_max)[0]
-    spectrum_signal_2 = noct_spectrum(sig,fs,f_min,f_max)[0]
-    spectrum_signal_3 = noct_spectrum(sig,fs,f_min,f_max)[0]
+    fs = fs_1
 
-    print(spectrum_signal_1)
-    print(spectrum_signal_1.shape[0])
-    print(spectrum_signal_1.shape[1])
-
-    spectrum_all_signals = np.stack((spectrum_signal_1,spectrum_signal_2,spectrum_signal_3), axis=1)
-    print(spectrum_all_signals)
-    print(spectrum_all_signals.shape[0])
-    print(spectrum_all_signals.shape[1])
-
-    freq = np.array(noct_spectrum(sig,fs,2000,20000)[1])
-    print(freq)
-    print(freq.shape[0])
-
-    LN = LN_3oct(spectrum_all_signals,freq)
+    print(data_all_signals.shape[0])
+    LN = LN_3oct(data_all_signals,fs,f_min,f_max)
     print(LN)
+
     pass
