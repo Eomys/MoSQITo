@@ -13,65 +13,107 @@ from mosqito.utils.load import load
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 from mosqito.utils.conversion import amp2db
 
-def min_level_3oct(spectrum_all_signals, freq):
+def min_level_3oct(data_all_signals, fs, f_min, f_max):
     """Return the minimum value of the frequency bands you choose. Each one is calculated with the levels (dB)
     of its band in the different signals.
 
     Parameters
     ----------
-    spectrum_all_signals : numpy.ndarray
-        Array which each column is the third octave band spectrum of each signal (Pa).
-    freq : numpy.ndarray
-        Corresponding preferred third octave band center frequencies.
+    data_all_signals : numpy.ndarray
+        Array which each row corresponds to the data of a signal [Pa].
+    fs : float
+        Sampling frequency [Hz].
+    fmax : float
+        Max frequency band [Hz].
+    fmin : float
+        Min frequency band [Hz].
 
     Outputs
     -------
     min_level_3oct : numpy.ndarray
         The minimum values of each frequency band.
     """
-    # Creating a list of zeros of the size of the frequency bands (to keep the minimum level values).
-    min_level_3oct = np.zeros(freq.shape)
-    # Empty array to store the values in dB of the third octave whose minimum value is going to be calculated.
-    main_freq_dB = np.zeros(spectrum_all_signals.shape[1])
+    # We initialize the array that stores the third octave values (in Pa) of the all signals ​​with the first signal.
+    spectrum_all_signals_Pa = noct_spectrum(data_all_signals[0],fs,f_min,f_max)[0]
+    # We initialize the center frequencies of the third octaves with the first signal.
+    freq = noct_spectrum(data_all_signals[0],fs,f_min,f_max)[1]
+    # We initialize the number of the signals.
+    num_signals = data_all_signals.shape[0]
+    # We initialize the number of frequency bands.
+    num_bands = freq.shape[0]
+
+    # Calculate the value of the third octave in Pa of each signal.
+    for i in range(num_signals):
+        # We skip the first signal because we have initialized with it.
+        if i != 0:
+            # We calculate and save the values ​​of the third octaves of the signals
+            spectrum_all_signals_Pa = np.append(spectrum_all_signals_Pa,noct_spectrum(data_all_signals[i],fs,f_min,f_max)[0],axis=1)
+
+    # Creating a list of zeros of the size of the frequency bands (to keep the maximum level values).
+    min_level_3oct = np.zeros(num_bands)
+    # Empty array to store the values in dB of the third octave whose maximum value is going to be calculated.
+    band_value_all_signals = np.zeros(num_signals)
     # For each frequency band you perform the operation.
-    for i in range(freq.shape[0]):
+    for i in range(num_bands):
         # Performs the conversion to dB with all the values of the frequency band in the different signals.
-        for j in range(spectrum_all_signals.shape[1]): 
+        for j in range(num_signals): 
             # Conversion Pa to dB.
-            dB = amp2db(spectrum_all_signals[i][j])
+            dB = amp2db(np.array(spectrum_all_signals_Pa[i][j]))
             # Save all values in dB of the third octave in another array.
-            main_freq_dB[j] = dB
-        # Calculate and keep the minimum value found in the array. That value will be the minimum of the third of an octave.
-        min_level_3oct[i] = min(main_freq_dB)
+            band_value_all_signals[j] = dB
+        # Calculate and keep the maximum value found in the array. That value will be the maximum of the third of an octave.
+        min_level_3oct[i] = min(band_value_all_signals)
     
+    print("frecuencias centrales")
+    print(freq)
+    print("El valor max de cada banda del tercio de octava")
+
     return min_level_3oct
 
 
 if __name__ == "__main__":
     
-    sig, fs = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
-    print(sig)
-    print(fs)
+    sig_1, fs_1 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
+    print("Una señal de ruido rosa 60 dB despues del load")
+    print(sig_1)
+    print(sig_1.shape)
+    print("frecuencia de muestreo")
+    print(fs_1)
 
-    f_min = 2000
+    sig_2, fs_2 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
+    print("Una señal de tono puro 1 KHZ 10 ms 70 dB despues del load")
+    print(sig_2)
+    print(sig_2.shape)
+    print("frecuencia de muestreo")
+    print(fs_2)
+    sig_3, fs_3 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
+
+    data_all_signals = np.stack((sig_1,sig_2,sig_3))
+    print("Data all signals de tres .wav")
+    print(data_all_signals)
+    print(data_all_signals.shape[0])
+    print(data_all_signals.shape[1])
+
+    ########## Validacion
+     # [10, 20, 30, ... 100]
+    validacion_1 = np.array([0.00006324555320337, 0.0002, 0.0006324555320337, 0.002, 0.006324555320337, 0.02, 
+    0.06324555320337, 0.2, 0.6324555320337, 2])
+    print(validacion_1)
+
+    validacion_2 = np.array([0.00006324555320337, 0.0002, 0.0006324555320337, 0.002, 0.006324555320337, 0.02, 
+    0.06324555320337, 0.2, 0.6324555320337, 2])
+
+    validacion_3 = np.array([0.00006324555320337, 0.0002, 0.0006324555320337, 0.002, 0.006324555320337, 0.02, 
+    0.06324555320337, 0.2, 0.6324555320337, 2])
+
+    all_validaciones = np.stack((validacion_1,validacion_2,validacion_3))
+    ##################
+
+    f_min = 250
     f_max =20000
-    spectrum_signal_1 = noct_spectrum(sig,fs,f_min,f_max)[0]
-    spectrum_signal_2 = noct_spectrum(sig,fs,f_min,f_max)[0]
-    spectrum_signal_3 = noct_spectrum(sig,fs,f_min,f_max)[0]
+    fs = fs_1
 
-    print(spectrum_signal_1)
-    print(spectrum_signal_1.shape[0])
-    print(spectrum_signal_1.shape[1])
+    min = min_level_3oct(data_all_signals,fs,f_min,f_max)
+    print(min)
 
-    spectrum_all_signals = np.stack((spectrum_signal_1,spectrum_signal_2,spectrum_signal_3), axis=1)
-    print(spectrum_all_signals)
-    print(spectrum_all_signals.shape[0])
-    print(spectrum_all_signals.shape[1])
-
-    freq = np.array(noct_spectrum(sig,fs,2000,20000)[1])
-    print(freq)
-    print(freq.shape[0])
-
-    min_level = min_level_3oct(spectrum_all_signals,freq)
-    print(min_level)
     pass
