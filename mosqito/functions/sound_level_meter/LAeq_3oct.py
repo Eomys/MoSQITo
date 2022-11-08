@@ -6,106 +6,129 @@ Created on Wed Jan 26 18:07:36 2022
 """
 
 # Third party imports
-from sqlite3 import dbapi2
-from this import d
 import numpy as np
+import math
 
 # Local imports
-from Leq_3oct import Leq_3oct
-from mosqito.utils.conversion import spectrum2dBA
+from spectrum2dBA_2 import spectrum2dBA_2
 from  mosqito.utils.load import load
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 from mosqito.utils.conversion import amp2db
 
-#from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import _third_octave_levels
-
-def LAeq_3oct (spectrum_all_signals,freq):
+def LAeq_3oct (data_all_signals, fs, f_min, f_max):
     """Calculate the LAeq of the frequency bands you choose, returns the calculated LAeq values for each band.
     Each one is calculated with the levels (dBA) of its band in the different samples.
 
     Parameters
     ----------
-    spectrum_all_signals : numpy.ndarray
-        Array which each column is the third octave band spectrum of each signal (Pa).
-    freq : numpy.ndarray
-        Corresponding preferred third octave band center frequencies.
+    data_all_signals : numpy.ndarray
+        Array which each row corresponds to the data of a signal [Pa].
+    fs : float
+        Sampling frequency [Hz].
+    fmax : float
+        Max frequency band [Hz].
+    fmin : float
+        Min frequency band [Hz].
 
     Outputs
     -------
     LAeq_3oct : numpy.ndarray
         The LAeq values (dBA) for each frequency band.
     """
-    # Creating a empty list to keep the signals in dBA values. 
-    signal_sample_A = []
-    spectrum_all_signals_dB = np.zeros(spectrum_all_signals.shape)
-    # For each column (each signal) of the array you perform the operation.
-    for i in range(spectrum_all_signals.shape[1]):
-        # For each value in the column (signal) a conversion to dB is performed.
-        print("EMPIEZA UNA COLUMNA")
-        for j in range(freq.shape[0]): 
-            # Conversion Pa to dB
-            dB = amp2db(spectrum_all_signals[j][i])
-            # Save the values in dB in another array
-            spectrum_all_signals_dB[j][i] = dB
-        print(spectrum_all_signals_dB[:,i])
-        print("Pasa a se dBA")
-        # Conversion Pa to dB
-        dBA = spectrum2dBA(spectrum_all_signals_dB[:,i], 48000)
-        print(dBA)
-
-           
-
-""""
-    cogemos una a una las columnas (for i 3)
-        coger todos los datos de la columna(for j 11)
-            pasarlo a dB
-            y guardarlo en su sitio de la columna en nuevo array
-        transformarla en dba
-        guardar la columna dBA en nuevo array
-        pasarlar a Pa
-        guardar en el array de entrada
-    
+    # We initialize the array that stores the third octave values (in Pa) of the all signals ​​with the first signal.
+    spectrum_all_signals_Pa = noct_spectrum(data_all_signals[0],fs,f_min,f_max)[0]
+    # We initialize the center frequencies of the third octaves with the first signal.
+    freq = noct_spectrum(data_all_signals[0],fs,f_min,f_max)[1]
+    # We initialize the number of the signals.
+    num_signals = data_all_signals.shape[0]
+    # We initialize the number of frequency bands.
+    num_bands = freq.shape[0]
 
 
-"""
+    # Calculate the value of the third octave in Pa of each signal.
+    for i in range(num_signals):
+        # We skip the first signal because we have initialized with it.
+        if i != 0:
+            # We calculate and save the values ​​of the third octaves of the signals
+            spectrum_all_signals_Pa = np.append(spectrum_all_signals_Pa,noct_spectrum(data_all_signals[i],fs,f_min,f_max)[0],axis=1)
+    # We initialize the size of the array in which the data is stored.
+    array_shape = spectrum_all_signals_Pa.shape
 
 
-"""   
-        # Save dBA values lists in the list "signal_sample_A".
-        signal_sample_A.append(spectrum2dBA(spectrum_all_signals.T[i],freq))
-    # Create an array in which each sample in dBA is a line of the array.
-    spectrum_all_signals_A_T = np.array(signal_sample_A)
-    # You have to do the transpose of the array to be able to put each sample in a column
-    spectrum_all_signals_A = np.transpose(spectrum_all_signals_A_T)
-    # Calculate Leq of each frequency bands with the new dBA values.
-    LAeq_3oct = Leq_3oct(spectrum_all_signals_A, freq)
-    
+    # Empty array to store the values in dB of the third octave of the all signals.
+    spectrum_all_signals_dB = np.zeros(array_shape)
+    # For each frequency band you perform the operation.
+    for i in range(num_bands):
+        # Performs the conversion to dB with all the values of the frequency band in the different signals.
+        for j in range(num_signals): 
+            # Conversion Pa to dB.
+            dB = amp2db(np.array(spectrum_all_signals_Pa[i][j]))
+            # Save all values in dB of the third octave in another array.
+            spectrum_all_signals_dB[i][j] = dB
+
+    # Empty array to store the values in dBA of the third octave of the all signals.
+    spectrum_all_signals_dBA = np.zeros(array_shape)
+    # For each signal you perform the operation.
+    for i in range(num_signals):
+        # conversion dB to dBA of the all third octave values.
+        dBA = spectrum2dBA_2(np.array(spectrum_all_signals_dB[:,i]), freq)
+        # For each frequency band you perform the operation.
+        for j in range(num_bands):
+            # Save all values in dBA of the third octave in another array.
+            spectrum_all_signals_dBA[j][i] = dBA[j]
+
+    # Creating a list of zeros of the size of the frequency bands (to keep the LAeq values).
+    LAeq_3oct = np.zeros(num_bands)
+    # For each frequency band you perform the operation.
+    for i in range(num_bands): 
+        sum = 0
+        # Performs the summation with all the values of the frequency band in the different signals.
+        for j in range(num_signals):
+            # Operation: summation(10^(level(db)[i]/10))
+            sum = sum + 10.0**(spectrum_all_signals_dBA[i][j]/10.0)
+        # Keep the LAeq value in the box corresponding to the frequency band from which the calculation is being made.
+        # Operation: 10 x log(base 10)[1/number of samples x sum]
+        LAeq_3oct[i] = 10.0 * math.log(((1/num_signals)*sum),10)
+
     return LAeq_3oct
-"""
+
 
 if __name__ == "__main__":
     
-    sig, fs = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
+    sig_1, fs_1 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
+    print("Una señal de ruido rosa 60 dB despues del load")
+    print(sig_1)
+    print(sig_1.shape)
+    print("frecuencia de muestreo")
+    print(fs_1)
 
-    f_min = 25
-    f_max = 20000
-    spectrum_signal_1 = noct_spectrum(sig,fs,f_min,f_max)[0]
-    spectrum_signal_2 = noct_spectrum(sig,fs,f_min,f_max)[0]
-    spectrum_signal_3 = noct_spectrum(sig,fs,f_min,f_max)[0]
+    sig_2, fs_2 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
+    sig_3, fs_3 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
 
-    print(spectrum_signal_1)
-    print(spectrum_signal_1.shape[0])
-    print(spectrum_signal_1.shape[1])
+    data_all_signals = np.stack((sig_1,sig_2,sig_3))
+    print("Data all signals de tres .wav")
+    print(data_all_signals)
+    print(data_all_signals.shape[0])
+    print(data_all_signals.shape[1])
 
-    spectrum_all_signals = np.stack((spectrum_signal_1,spectrum_signal_2,spectrum_signal_3), axis=1)
-    print(spectrum_all_signals)
-    print(spectrum_all_signals.shape[0])
-    print(spectrum_all_signals.shape[1])
+    ########## Validacion
+     # [10, 20, 30, ... 100]
+    validacion_1 = np.array([0.00006324555320337, 0.0002, 0.0006324555320337, 0.002, 0.006324555320337, 0.02, 
+    0.06324555320337, 0.2, 0.6324555320337, 2])
+    #print(validacion_1)
 
-    freq = np.array(noct_spectrum(sig,fs,f_min,f_max)[1])
-    print(freq)
-    print(freq.shape[0])
+    validacion_2 = np.array([0.00006324555320337, 0.0002, 0.0006324555320337, 0.002, 0.006324555320337, 0.02, 
+    0.06324555320337, 0.2, 0.6324555320337, 2])
 
-    LAeq = LAeq_3oct(spectrum_all_signals,freq)
+    validacion_3 = np.array([0.00006324555320337, 0.0002, 0.0006324555320337, 0.002, 0.006324555320337, 0.02, 
+    0.06324555320337, 0.2, 0.6324555320337, 2])
+
+    all_validaciones = np.stack((validacion_1,validacion_2,validacion_3))
+    ##################
+    f_min = 250
+    f_max =20000
+    fs = fs_1
+
+    LAeq = LAeq_3oct(data_all_signals,fs,f_min,f_max)
     print(LAeq)
     pass

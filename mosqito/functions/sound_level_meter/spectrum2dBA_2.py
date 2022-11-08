@@ -7,8 +7,8 @@ Created on Mon Nov 15 16:37:08 2021
 
 import numpy as np
 
-def C_weighting(spectrum, freq_axis):
-    """C_weighting dB ponderation of a spectrum according to CEI 61672:2003
+def spectrum2dBA_2(spectrum, freq_axis):
+    """A_weighting dB ponderation of a spectrum according to CEI 61672:2003
 
     Third-octave spectrum are directly calculated, other are calculated
     using linear interpolation.
@@ -23,42 +23,42 @@ def C_weighting(spectrum, freq_axis):
     """
 
     # Ponderation coefficients from the standard
-    C_standard = np.array(
+    A_standard = np.array(
         [
-            -14.3,
-            -11.2,
-            -8.5,
-            -6.2,
-            -4.4,
-            -3.0,
-            -2.0,
-            -1.3,
+            -70.4,
+            -63.4,
+            -56.7,
+            -50.5,
+            -44.7,
+            -39.4,
+            -34.6,
+            -30.2,
+            -26.2,
+            -22.5,
+            -19.1,
+            -16.1,
+            -13.4,
+            -10.9,
+            -8.6,
+            -6.6,
+            -4.8,
+            -3.2,
+            -1.9,
             -0.8,
-            -0.5,
-            -0.3,
-            -0.2,
-            -0.1,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
             0,
-            0.0,
+            0.6,
+            1,
+            1.2,
+            1.3,
+            1.2,
+            1,
+            0.5,
             -0.1,
-            -0.2,
-            -0.3,
-            -0.5,
-            -0.8,
-            -1.3,
-            -2.0,
-            -3.0,
-            -4.4,
-            -6.2,
-            -8.5,
-            -11.2,
+            -1.1,
+            -2.5,
+            -4.3,
+            -6.6,
+            -9.3,
         ]
     )
 
@@ -101,10 +101,10 @@ def C_weighting(spectrum, freq_axis):
         ]
     )
 
-    C_pond = np.interp(freq_axis, freq_standard, C_standard)
+    A_pond = np.interp(freq_axis, freq_standard, A_standard)
 
-    spectrum_dBC = np.zeros(spectrum.shape)
+    spectrum_dBA = np.zeros(spectrum.shape)
     for i in range(spectrum.shape[0]):
-        spectrum_dBC[i] = spectrum[i] + C_pond[i]
+        spectrum_dBA[i] = spectrum[i] + A_pond[i]
 
-    return spectrum_dBC
+    return spectrum_dBA
