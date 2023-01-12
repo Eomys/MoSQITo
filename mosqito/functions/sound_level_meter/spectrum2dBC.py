@@ -16,10 +16,14 @@ def spectrum2dBC(spectrum, freq_axis):
     Parameters
     ----------
     spectrum: numpy.array
-              input spectrum
-    fs: integer
-        sampling frequency
+        input spectrum
+    freq_axis: numpy.ndarray
+        Corresponding preferred third octave band center frequencies
 
+    Outputs
+    -------
+    spectrum_dBC : numpy.ndarray
+        spectrum in dBC.
     """
 
     # Ponderation coefficients from the standard

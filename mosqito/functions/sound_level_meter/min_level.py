@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wen Dic 1 18:08:08 2021
+Created on Thu Jan 12 19:44:20 2023
 
 @author: Igarciac117 
 """
@@ -9,7 +9,6 @@ Created on Wen Dic 1 18:08:08 2021
 import numpy as np
 
 # Local imports
-from  mosqito.utils.load import load
 from mosqito.utils.conversion import amp2db
 
 def min_level(signal):
@@ -28,8 +27,6 @@ def min_level(signal):
     # Empty array to store the values in dB of the signal.
     dB_values = np.zeros(signal.shape[0])
     # Performs the conversion to dB with all the values of the signal.
-    print(signal)
-    print(signal.shape)
     for i in range(signal.shape[0]):
         #If the value is negative value.
         if signal[i] <= 0:
@@ -42,25 +39,4 @@ def min_level(signal):
     # Save the minimum level.
     min_level = np.array(min(dB_values))
 
-    print("Ruido rosa tiempo dB")
-    print(dB_values)
-
     return min_level
-
-
-if __name__ == "__main__":
-    
-    sig, fs = load(r"tests\input\white_noise_200_2000_Hz_stationary.wav")
-    print(sig.shape)
-    print(fs)
-
-    signal = np.array(sig)
-
-    # [20, 40, 60, 80, 100]
-    validacion_2 = np.array([0.0002, 0.002, 0.02, 0.2, 2])
-    print(validacion_2)
-
-    min = min_level(signal)
-    print (min)
-    
-    pass

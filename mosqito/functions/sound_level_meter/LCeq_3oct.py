@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jan 26 18:07:36 2022
+Created on Thu Jan 12 19:36:20 2023
 
 @author: Igarciac117 
 """
@@ -11,7 +11,6 @@ import math
 
 # Local imports
 from spectrum2dBC import spectrum2dBC
-from  mosqito.utils.load import load
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 from mosqito.utils.conversion import amp2db
 
@@ -44,7 +43,6 @@ def LCeq_3oct (data_all_signals, fs, f_min, f_max):
     # We initialize the number of frequency bands.
     num_bands = freq.shape[0]
 
-
     # Calculate the value of the third octave in Pa of each signal.
     for i in range(num_signals):
         # We skip the first signal because we have initialized with it.
@@ -53,7 +51,6 @@ def LCeq_3oct (data_all_signals, fs, f_min, f_max):
             spectrum_all_signals_Pa = np.append(spectrum_all_signals_Pa,noct_spectrum(data_all_signals[i],fs,f_min,f_max)[0],axis=1)
     # We initialize the size of the array in which the data is stored.
     array_shape = spectrum_all_signals_Pa.shape
-
 
     # Empty array to store the values in dB of the third octave of the all signals.
     spectrum_all_signals_dB = np.zeros(array_shape)
@@ -91,44 +88,3 @@ def LCeq_3oct (data_all_signals, fs, f_min, f_max):
         LCeq_3oct[i] = 10.0 * math.log(((1/num_signals)*sum),10)
 
     return LCeq_3oct
-
-
-if __name__ == "__main__":
-    
-    sig_1, fs_1 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
-    print("Una señal de ruido rosa 60 dB despues del load")
-    print(sig_1)
-    print(sig_1.shape)
-    print("frecuencia de muestreo")
-    print(fs_1)
-
-    sig_2, fs_2 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
-    sig_3, fs_3 = load(r"tests\input\Test signal 5 (pinknoise 60 dB).wav")
-
-    data_all_signals = np.stack((sig_1,sig_2,sig_3))
-    print("Data all signals de tres .wav")
-    print(data_all_signals)
-    print(data_all_signals.shape[0])
-    print(data_all_signals.shape[1])
-
-    ########## Validacion
-     # [10, 20, 30, ... 100]
-    validacion_1 = np.array([0.00006324555320337, 0.0002, 0.0006324555320337, 0.002, 0.006324555320337, 0.02, 
-    0.06324555320337, 0.2, 0.6324555320337, 2])
-    #print(validacion_1)
-
-    validacion_2 = np.array([0.00006324555320337, 0.0002, 0.0006324555320337, 0.002, 0.006324555320337, 0.02, 
-    0.06324555320337, 0.2, 0.6324555320337, 2])
-
-    validacion_3 = np.array([0.00006324555320337, 0.0002, 0.0006324555320337, 0.002, 0.006324555320337, 0.02, 
-    0.06324555320337, 0.2, 0.6324555320337, 2])
-
-    all_validaciones = np.stack((validacion_1,validacion_2,validacion_3))
-    ##################
-    f_min = 250
-    f_max =20000
-    fs = fs_1
-
-    LCeq = LCeq_3oct(data_all_signals,fs,f_min,f_max)
-    print(LCeq)
-    pass

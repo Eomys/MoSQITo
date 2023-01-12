@@ -26,7 +26,7 @@ def db2amp(dB, ref=1):
     return np.power(10, 0.05 * dB) * ref
 
 
-def amp2db(amp, ref=1):
+def amp2db(amp, ref=2*(10**-5)):
     """Conversion of an amplitude value into dB
 
     Parameters:
