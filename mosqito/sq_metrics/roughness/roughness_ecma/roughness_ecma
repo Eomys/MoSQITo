@@ -1,0 +1,98 @@
+from numpy import(
+    abs,
+    fft,
+    power,
+    zeros,
+    empty,
+    sum,
+
+
+)
+from scipy.signal import (hilbert, resample)
+from scipy.signal.windows import hann
+
+# Project Imports
+from mosqito.sq_metrics.loudness.loudness_ecma._rectified_band_pass_signals import _rectified_band_pass_signals
+from mosqito.sq_metrics.loudness.loudness_ecma._nonlinearity import _nonlinearity
+
+# Data import
+# Threshold in quiet
+from mosqito.sq_metrics import loudness_ecma
+
+
+def roughness_ecma(signal):
+    """Calculation of the roughness according to ECMA-418-2 section 7
+
+    Parameters
+    ----------
+    signal: numpy.array
+        time signal values in 'Pa'. The sampling frequency of the signal must be 48000 Hz.
+
+    Returns
+    -------
+    n_specific: list of numpy.array
+        Specific Loudness [sone_HMS per Bark]. Each of the 53 element of the list corresponds to the time-dependant
+        specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.
+    bark_axis: numpy.array
+        Bark axis
+    """
+
+    # Sampling frequency
+    fs = 48000
+    N_samples = len(signal)
+
+    # Hop size and block size for specific loudness calculation (7.1.1)
+    sb=16384
+    sh=4096
+    N_specific, bark_axis = loudness_ecma(signal, sb, sh)
+    # ! ces valeurs sont déjà calculées dans la loudness
+    block_array_rect = _rectified_band_pass_signals(signal, sb, sh)
+
+    # ENVELOPPE CALCULATION AND DOWNSAMPLING (7.1.2)
+    envelopes = abs(block_array_rect + 1j * hilbert(block_array_rect))
+
+    # Downsampling to 1500 Hz
+    new_N_samples = int(N_samples * 1500 / fs)
+    envelopes = resample(envelopes, new_N_samples)
+    # New block and hop sizes
+    sbb = 512
+    shh = 128
+
+    # CALCULATION OF SCALED POWER SPECTRUM (7.1.3)
+    spectrum = zeros((53,sbb))
+    N_specific_max = N_specific.max()
+    phi_e = sum(power(envelopes * hann(new_N_samples),2))
+    den = N_specific_max * phi_e
+    spectrum[den!=0] = power(N_specific,2)/den * power(abs(fft((envelopes * hann(new_N_samples)),n=sbb)),2)
+
+
+    # NOISE REDUCTION OF THE ENVELOPES (7.1.4)
+
+    # Averaging with neighbouring bands
+    av_spectrum = empty((spectrum.shape))
+    av_spectrum[0,:] = (spectrum[0,:]+spectrum[1,:])/2
+    av_spectrum[-1,:] = (spectrum[-1,:]+spectrum[-2,:])/2
+    av_spectrum[1::-1,:] = (spectrum[:-2,:]+spectrum[1::-1,:]+spectrum[2:,:])/3
+
+    s = sum(av_spectrum)
+
+    # Weighting
+    ww = 0.0856 * 
+
+    # SPECTRAL WEIGHTING (7.1.5)
+
+    # Peak picking
+    # Weighting of high modulation rates
+    # Estimation of fundamental modulation rate
+    # Weighting of low modulation rates
+
+    # ENTROPY WEIGHTING (OPTIONAL) (7.1.6)
+
+    # CALCULATION OF TIME DEPENDENT SPECIFIC ROUGHNESS (7.1.7)
+
+    # CALCULATION OF REPRESENTATIVE VALUES (7.1.8)
+
+    # CALCULATION OF ROUGHNESS FOR BINAURAL SIGNALS
+
+
+
