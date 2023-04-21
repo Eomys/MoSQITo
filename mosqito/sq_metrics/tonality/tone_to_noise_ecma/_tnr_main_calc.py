@@ -185,9 +185,7 @@ def _tnr_main_calc(spectrum_db, freq_axis):
             # SPL of the masking noise
             delta_fc = f2 - f1
             delta_ftot = frs[high_limit_idx] - frs[low_limit_idx]
-            Ln = 10 * np.log10(10 ** (Ltot / 10) - 10 ** (Lt / 10)) + 10 * np.log10(
-                delta_fc / (delta_ftot - delta_ft)
-            )
+            Ln = 10 * np.log10(10 ** (Ltot / 10) - 10 ** (Lt / 10)) + 10 * np.log10(delta_fc / (delta_ftot - delta_ft))
     
             # Tone-to-noise ratio
             f = fr[ind_p]
