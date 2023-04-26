@@ -1,7 +1,6 @@
 from numpy import(
-    arange,
-    int32,
     abs,
+    append,
     power,
     zeros,
     empty,
@@ -9,22 +8,25 @@ from numpy import(
     array,
     clip,
     exp,
-    mean,
     median,
     where,
-    diff,
-    sign,
     argmax,
     argmin,
-    flip,
     argsort,
-    ones,
     delete,
     exp,
     dot,
     round,
     squeeze,
-
+    sqrt,
+    tanh,
+    sign,
+    diff,
+    percentile,
+    dot,
+    int32,
+    transpose,
+    mean,
 )
 from numpy.fft import fft
 from numpy.linalg import inv
@@ -34,7 +36,6 @@ from scipy.signal.windows import hann
 
 # Project Imports
 from mosqito.sq_metrics.loudness.loudness_ecma._rectified_band_pass_signals import _rectified_band_pass_signals
-from mosqito.sq_metrics.loudness.loudness_ecma._nonlinearity import _nonlinearity
 from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq import _auditory_filters_centre_freq
 
 # Data import
@@ -43,7 +44,8 @@ from mosqito.sq_metrics import loudness_ecma
 
 from mosqito.utils import load
 
-from peak_correction import rho, r_max, Q2_high, Q2_low
+from _weighting import rho, f_max, r_max, Q2_high, Q2_low, _high_mod_rate_weighting, _low_mod_rate_weighting
+from _comp_prominence import _comp_prominence
 
 
 def roughness_ecma(signal):
@@ -65,261 +67,217 @@ def roughness_ecma(signal):
     # Sampling frequency
     fs = 48000
     N_samples = len(signal)
+    duration = N_samples / fs
     CBF = 53
     center_freq = _auditory_filters_centre_freq()
 
     # Hop size and block size for specific loudness calculation (7.1.1)
     sb=16384
     sh=4096
-    N_specific, bark_axis = loudness_ecma(signal, sb, sh)
-    N_specific = array(N_specific)
+    N_specific, _ = loudness_ecma(signal, sb, sh)
+    N_specific = array(transpose(N_specific))
     # ! ces valeurs sont déjà calculées dans la loudness
     block_array_rect = array(_rectified_band_pass_signals(signal, sb, sh))
     L = block_array_rect.shape[1]
     # ENVELOPPE CALCULATION AND DOWNSAMPLING (7.1.2)
-    envelopes = abs(block_array_rect + 1j * hilbert(block_array_rect))
+    envelopes = transpose(abs(block_array_rect + 1j * hilbert(block_array_rect)), (1,0,2))  # transpose is used to stick to the standard index order l,z,k
+    N_pts = envelopes.shape[2]
 
     # Downsampling to 1500 Hz
     # New block and hop sizes
     sbb = 512
+    K = sbb//2
     shh = 128
     envelopes = resample(envelopes, sbb, axis=2)
-    ########## BOUCLE SUR LES TIME BLOCKS l (voir nouveau fichier)
-
 
     # CALCULATION OF SCALED POWER SPECTRUM (7.1.3)
-    spectrum = zeros((CBF,L,sbb//2))
-    N_specific_max = array(N_specific).max(axis=0)
+    spectrum = zeros((L,CBF,K))
+    N_specific_max = array(N_specific).max(axis=1)
     phi_e = sum(power(envelopes * hann(sbb),2), axis=2)
-    den = N_specific_max * phi_e
+    den = transpose(N_specific_max * transpose(phi_e))
     # pk den nul ?
 
     # Hann window is precisely defined in the standard !!
-    dft = power(abs(fft((envelopes * hann(sbb)),n=sbb//2, axis=2)),2)
-    
-    for z in range(envelopes.shape[0]): # for each CBF
-        for l in range(envelopes.shape[1]): # for each time block
-            if den[z,l]!=0:
-                spectrum[z,l,:] = power(N_specific[z,l],2) / den[z,l] * dft[z,l,:]
+    dft = power(abs(fft((envelopes * hann(sbb)),n=K, axis=2)),2)
+    spectrum[where((den!=0))[0],where((den!=0))[1],:] = transpose(power(N_specific[where((den!=0))],2) / den[where((den!=0))] * transpose(dft[where((den!=0))[0],where((den!=0))[1],:]))
 
     # NOISE REDUCTION OF THE ENVELOPES (7.1.4)
-
     # Averaging with neighbouring bands
-    av_spectrum = empty((spectrum.shape))
-    av_spectrum[0,:] = (spectrum[0,:]+spectrum[1,:])/2
-    av_spectrum[-1,:] = (spectrum[-1,:]+spectrum[-2,:])/2
-    av_spectrum[1:-1,:] = (spectrum[:-2,:]+spectrum[1:-1,:]+spectrum[2:,:])/3
+    av_spectrum = empty((L,CBF,K))
+    av_spectrum[:,0] = (spectrum[:,0]+spectrum[:,1])/2
+    av_spectrum[:,-1] = (spectrum[:,-1]+spectrum[:,-2])/2
+    av_spectrum[:,1:-1] = (spectrum[:,:-2]+spectrum[:,1:-1]+spectrum[:,2:])/3
 
-    S = av_spectrum.sum(axis=0)
+    S = av_spectrum.sum(axis=1)
     SS = median(S, axis=1)
 
     # Weighting 
-    wfw = zeros(S.shape)
-    wf = zeros(S.shape)
-    for k in range(sbb//2): # for each time block
-        wfw[:,k] = 0.0856 * S[:,k]/(SS+10e-10) * clip(0.1891*exp(0.0120*k),0,1)
+    w_wave = zeros((L,K))
+    noise_suppression_weighting = zeros((L,K))
+    for k in range(K): 
+        w_wave[:,k] = 0.0856 * S[:,k]/(SS+10e-10) * clip(0.1891*exp(0.0120*k),0,1)
+    idt = 0.05 * w_wave.max(axis=1)
+    Phi_E = zeros((L,CBF,K))
+    amplitude = zeros((L,CBF))
 
-    idt = 0.05 * wfw.max(axis=1)
-    Phi_E = zeros(av_spectrum.shape)
-    amplitude = zeros((S.shape))
-
-    for l in range(S.shape[0]):       
-        idt = where(wfw[l,:]>0.05 * wfw[l,:].max())
-        wf[l,idt] = clip(wfw[l,idt]-0.1407,0,1)
-        
+    for l in range(L):       
+        idt = where((w_wave[l,:]>0.05 * w_wave[l,:].max()))[0]
+        noise_suppression_weighting[l,idt] = clip(w_wave[l,idt]-0.1407,0,1)
         
         for z in range(CBF):
-            Phi_E[z,l,:] = av_spectrum[z,l,:] * wf[l,:]
-            fmax = 72.6937*(1-1.1739*exp(-5.4583*center_freq[z]/1000)) # center_freq = fréquence centrale de la bande z (eq 86 clause 7.1.5.2)
+            Phi_E[l,z,:] = av_spectrum[l,z,:] * noise_suppression_weighting[l,:]
+            # Critical bands characteristics for the weightings to come
+            fmax = f_max(center_freq[z]) # center_freq = fréquence centrale de la bande z (eq 86 clause 7.1.5.2)
             rmax = r_max(center_freq[z])
             q2_high = Q2_high(center_freq[z])
             q2_low = Q2_low(center_freq[z])
-        # SPECTRAL WEIGHTING (7.1.5)
-        for k in range(sbb//2):
+
+            # SPECTRAL WEIGHTING (7.1.5)
             # Peak picking
-            maxima = find_peaks(Phi_E[:,l,k])[0]
-            
-    
-        # create a function "compute_prominence(Phi_E, maxima)"
-            
-            if len(maxima) > 0:
-                
+            maxima = find_peaks(Phi_E[l,z,:])[0]
+            if len(maxima) == 0:
+                amplitude[l,z] = 0
+                prominence = []
+                prominence_idx = []
+            elif len(maxima) > 0:
                 if len(maxima) == 1:
-                    print('only 1 maximum')
-                    # since there is only one peak, the limits of the interval where to search for the maximum valley are the signal's ones
-                    # left side
-                    left_limit = 0 
-                    left_valley_idx = maxima[0] - argmax(flip(Phi_E[maxima[0],l,k]-Phi_E[left_limit:maxima[0],l,k]))
-                    left_valley =  Phi_E[maxima[0],l,k] - Phi_E[left_valley_idx,l,k]
-
-                    # right side
-                    right_limit = CBF
-                    right_valley_idx = argmax(Phi_E[maxima[0],l,k]-Phi_E[maxima[0]:right_limit,l,k])
-                    right_valley = Phi_E[maxima[0],l,k] - Phi_E[right_valley_idx,l,k]
-
-                    if left_valley > right_valley:
-                        prominence = [left_valley]
-                        prominence_idx = maxima
-                    else:
-                        prominence = [right_valley]
-                        prominence_idx = maxima
-
-                else:
-                    print('multiple maxima')
+                    prominence = _comp_prominence(Phi_E[l,z,:], maxima, 0)
+                    prominence_idx = maxima
+                elif len(maxima) > 0:
                     prominence = zeros(len(maxima))
-                    
+                    # For each peak
                     for i in range(len(maxima)):
-                        
-                        peak_level = Phi_E[maxima[i],l,k]
-                        crossing = False
-                        offset = 1
-                        # left side
-                        while crossing == False: 
-                            if (i == 0) or ((i-offset)<0): # first peak or no more peak at the left
-                                crossing = True # left limit of the signal
-                                left_limit = 0
-                            elif Phi_E[maxima[i-offset],l,k] > peak_level:
-                                crossing = True
-                                left_limit = maxima[i-offset]
-                            else:
-                                offset += 1
-
-                        
-
-                        left_valley_idx = maxima[i] - 1 - argmax(flip(Phi_E[maxima[i],l,k]-Phi_E[left_limit:maxima[i],l,k]))
-                        left_valley =  peak_level - Phi_E[left_valley_idx,l,k]
-
-                        # right side
-                        crossing = False
-                        offset = 1
-                        while crossing == False:
-                            if (i == len(maxima)) or ((i+offset)>len(maxima)-1): # last peak or no more peak at the right
-                                crossing = True # right limit of the signal
-                                right_limit = CBF
-                            elif Phi_E[maxima[i+offset],l,k] > peak_level:
-                                crossing = True
-                                right_limit = maxima[i+offset]
-                            else:
-                                offset += 1
-
-                        right_valley_idx = maxima[i] + argmax(peak_level-Phi_E[maxima[i]:right_limit,l,k])
-                        right_valley = peak_level - Phi_E[right_valley_idx,l,k]
-
-                        if left_valley > right_valley:
-                            prominence[i] = left_valley
-                        else:
-                            prominence[i] = right_valley
-                               
-
-
-                    # garder les 10 plus grands
-                    if len(maxima)>10:
+                        prominence[i] = _comp_prominence(Phi_E[l,z,:], maxima, i)
+                    # Keep 10 maximum values
+                    if len(maxima) > 10:
                         sort_idx = argsort(prominence)
                         prominence = prominence[sort_idx[-10:]]
                         prominence_idx = maxima[sort_idx[-10:]]
                     else:
                         prominence_idx = maxima
-                    prominence_idx = prominence_idx.astype(int32)
+                idx = where((Phi_E[l,z,prominence_idx]) <= 0.05*max(Phi_E[l,z,prominence_idx]))[0]
+                prominence = delete(prominence, idx)
+                prominence_idx = delete(prominence_idx, idx)
 
-                     #TODO: supprimer la boucle
-                    for peak in arange(len(prominence)):
-                        print(peak)
-                        if Phi_E[prominence_idx[peak],l,k]<=0.05*max(Phi_E[prominence_idx,l,k]):
-                            prominence = delete(prominence, peak)
-                            prominence_idx = delete(prominence_idx, peak)
+                N_peak = len(prominence)
+                amp = zeros(N_peak)
+                mod_rate = zeros(N_peak)
 
-                amp = zeros(len(prominence))
-                mod_rate = zeros(len(prominence))
+                # For each prominent peak identified
+                for i in range(N_peak):
+                    kpi = prominence_idx[i]
+                    # Refinement step
+                    Km = array([[kpi**2, kpi-1, 1],[kpi**2, kpi, 1],[(kpi+1)**2, kpi+1, 1]])
+                    
+                    if kpi == 0:
+                        Phi = array([0, Phi_E[l,z,kpi], Phi_E[l,z,kpi+1]])
+                        amp_temp = Phi_E[l,z,kpi] + Phi_E[l,z,kpi+1] 
+                    elif k == K-1:
+                        Phi = array([Phi_E[l,z,kpi-1], Phi_E[l,z,kpi], 0])
+                        amp_temp = Phi_E[l,z,kpi-1] + Phi_E[l,z,kpi]
+                    else:
+                        Phi = array([Phi_E[l,z,kpi-1], Phi_E[l,z,kpi], Phi_E[l,z,kpi+1]])
+                        amp_temp = Phi_E[l,z,kpi-1] + Phi_E[l,z,kpi] + Phi_E[l,z,kpi+1] 
 
-                for i in range(len(prominence)):
-                
-                    K = array([[prominence_idx[i]**2, prominence_idx[i]-1, 1],[prominence_idx[i]**2, prominence_idx[i], 1],[(prominence_idx[i]+1)**2, prominence_idx[i]+1, 1]])
-                    Phi = array([Phi_E[prominence_idx[i],l,k-1], Phi_E[prominence_idx[i],l,k], Phi_E[prominence_idx[i],l,k+1]])
-                    C = dot(inv(K), Phi)
-
+                    C = dot(inv(Km), Phi)
                     delta_f = 1500/512
                     F = -C[1]/(2*C[0])*delta_f
                     mod_rate[i] = F + rho(F, delta_f) # modulation rate
 
-                    
-
                     # Weighting of high modulation rates
-                    A = Phi_E[prominence_idx[i],l,k-1] + Phi_E[prominence_idx[i],l,k] + Phi_E[prominence_idx[i],l,k+1] # amplitude
-
-                    if mod_rate[i]<fmax:
-                        amp[i] = A * rmax
-                    else:
-                        G = 1/((1+((mod_rate[i]/fmax-fmax/mod_rate[i])*1.2822)**2)**q2_high)
-                        amp[i] = G * A * rmax
+                    amp[i] = _high_mod_rate_weighting(mod_rate[i], amp_temp, fmax, rmax, q2_high)
 
                 # Estimation of fundamental modulation rate (7.1.5.3) (ne dépend pas de l et z)
-                complex_energy = zeros((len(prominence)))
-                harmonic_complex = zeros((len(prominence)), dtype=object)
-                for i0 in range(len(prominence)):
+                complex_energy = zeros((N_peak))
+                harmonic_complex = zeros((N_peak), dtype=object)
+                for i0 in range(N_peak):
                     mod_rate_temp = mod_rate[i0:]
                     R = round(mod_rate_temp/mod_rate[i0])
                     
                     # check for duplicates in R
-                    duplicates = set()
-                    duplicates = [x for x in R if x in duplicates or duplicates.add(x)]
-
+                    if len(R)>1:
+                        duplicates = set()
+                        duplicates = [x for x in R if x in duplicates or duplicates.add(x)]
+                    else:
+                        duplicates = []
                     if len(duplicates)> 0 :
-                        delete_list = []
+                        delete_list = array([])
                         for dup in duplicates:                                
                             dup_idx = where((R==dup))[0]
                             keep = argmin(abs(mod_rate_temp[dup_idx]/(array(R)[dup_idx]*mod_rate[i0])-1))
-                            delete_list.append([dup_idx[x] for x in range(len(dup_idx)) if x!=keep])
-                        R = delete(R, squeeze(delete_list))
-                        mod_rate_temp = delete(mod_rate_temp, squeeze(delete_list))
-                        
-
+                            delete_list = append(delete_list, [dup_idx[x] for x in range(len(dup_idx)) if x!=keep])
+                        R = delete(R, squeeze(delete_list).astype(int32))
+                        mod_rate_temp = delete(mod_rate_temp, squeeze(delete_list).astype(int32))   
                         
                         
-                    
                     harmonic_complex[i0] = where((abs(mod_rate_temp/(R*mod_rate[i0])-1) < 0.04))[0]
                     complex_energy[i0] = sum(amp[harmonic_complex[i0]])
-                
-                import pdb; pdb.set_trace()
-                
-                    
                         
-                i_max = prominence_idx[argmax(complex_energy)]
+                i_max = argmax(complex_energy)
                 h_complex_max = harmonic_complex[argmax(complex_energy)]
 
                 w = 1 + 0.1 * abs(sum(mod_rate[h_complex_max]*amp[h_complex_max])/sum(amp[h_complex_max])-mod_rate[argmax(amp[h_complex_max])])**0.749
-
-                Amp = amp[h_complex_max] * w
-
+                amp_temp = amp[h_complex_max] * w
+                
                 # Weighting of low modulation rates
-                if mod_rate[i_max] < fmax:
-                    G = 1/((1+((mod_rate[i]/fmax-fmax/mod_rate[i])*0.7066)**2)**q2_low)
-                    amplitude[l,z] = sum(G * Amp)
-                else:
-                    amplitude[l,z]= sum(Amp)
+                amplitude[l,z] = _low_mod_rate_weighting(mod_rate[i_max], amp_temp, fmax, q2_low)
 
-                if A<0.074376:
+                if amplitude[l,z]<0.074376:
                     amplitude[l,z] = 0
 
-            else:
-                amplitude[l,z] = 0
-
+    
     # ENTROPY WEIGHTING (OPTIONAL) (7.1.6)
 
-
     # CALCULATION OF TIME DEPENDENT SPECIFIC ROUGHNESS (7.1.7)
-
+    # amplitude_50 = CubicHermiteSpline(amplitude, linspace(0,256),)
     
+    N50 = int(N_pts/48000*50)
+    amplitude_50 = resample(amplitude, N50, axis=0)
+    amplitude_50 = amplitude_50[:int(duration*50),:] # delete zero-padding
+    
+    idx = where((amplitude_50>=0))
+    R_est = zeros((N50, CBF))
+    R_est[idx] = amplitude_50[idx]
+
+    R_lin_mean = sum(R_est, axis=1)/53
+    R_sq_mean = sqrt(sum(R_est, axis=1)**2/53)
+
+    B = zeros((N50))
+    B[R_lin_mean!=0] = R_sq_mean[R_lin_mean!=0] / R_lin_mean[R_lin_mean!=0]
+    E = 0.95555 * (tanh(1.6407*(B-2.5804))+1)*0.5+0.58449
+
+    R_time_spec_temp = transpose(0.0180909 * power(transpose(R_est),E))
+
+    slope = sign(diff(R_time_spec_temp, axis=0))
+    tau = zeros((N50-1,CBF))
+    tau[where((slope>=0))] = 0.0625
+    tau[where((slope<0))] = 0.5000
+    R_time_spec = zeros((N50, CBF))
+    R_time_spec[0,:] = R_time_spec_temp[0,:]
+    R_time_spec[1:,:] = R_time_spec_temp[1:,:]*(1-exp(-1/(50*tau)))  + R_time_spec_temp[0:-1,:]*exp(-1/(50*tau))
 
     # CALCULATION OF REPRESENTATIVE VALUES (7.1.8)
+    # CBF dependent value
+    R_spec = mean(R_time_spec[15:,:], axis=0)
+    # time_dependent value
+    R_time = 0.5 * sum(R_time_spec, axis=1)
+    # single value
+    R = percentile(R_time, 90)
+    
+    return R_spec, R_time, R
 
-    # CALCULATION OF ROUGHNESS FOR BINAURAL SIGNALS
 
-
-    return envelopes
-
-
-signal, fs = load(r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod70.wav", wav_calib=0.02)
-signal, fs = load(r"C:\Users\LAP16\Desktop\loudness scale\marteau_piqueur.wav", wav_calib=0.2)
+signal, fs = load(r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod70.wav",)
+#signal, fs = load(r"C:\Users\LAP16\Desktop\loudness scale\marteau_piqueur.wav", wav_calib=0.8)
 import matplotlib.pyplot as plt
 
-envelopes = roughness_ecma(signal[:int(len(signal)/2)])
+R_spec, R_time, R = roughness_ecma(signal[:int(len(signal)/2)])
+
+
+import matplotlib.pyplot as plt
+from numpy import linspace
+
+plt.step(linspace(0,53,53), R_spec)
+plt.title('Specific roughness, global value = ')
+
+plt.show(block=True)
