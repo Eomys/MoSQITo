@@ -1,4 +1,4 @@
-def get_standard_speech_level(method, speech):
+def get_standard_speech_level(method, speech_type):
     """
     # Import and return the standard speech spectrum and overall level according to the method and speech type given according to ANSI S3.5-1997
     Parameters
@@ -61,11 +61,11 @@ def get_standard_speech_level(method, speech):
             OVERALL_SPEECH_LEVEL_SHOUT,
         )
 
-    if speech == "normal":
+    if speech_type == "normal":
         return STANDARD_SPEECH_SPECTRUM_NORMAL, OVERALL_SPEECH_LEVEL_NORMAL
-    elif speech == "raised":
+    elif speech_type == "raised":
         return STANDARD_SPEECH_SPECTRUM_RAISED, OVERALL_SPEECH_LEVEL_RAISED
-    elif speech == "loud":
+    elif speech_type == "loud":
         return STANDARD_SPEECH_SPECTRUM_LOUD, OVERALL_SPEECH_LEVEL_LOUD
-    elif speech == "shout":
+    elif speech_type == "shout":
         return STANDARD_SPEECH_SPECTRUM_SHOUT, OVERALL_SPEECH_LEVEL_SHOUT

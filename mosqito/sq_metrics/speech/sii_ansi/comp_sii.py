@@ -9,22 +9,19 @@ from numpy import (
 )
 from get_band_procedure import get_band_procedure
 from get_standard_speech_level import get_standard_speech_level
+from comp_band_spectrum import comp_band_spectrum
+
+from mosqito.utils.LTQ import LTQ
+from mosqito.utils.conversion import freq2bark
 
 
-def compute_band_spectrum(x, y, lower_frequencies, upper_frequencies):
-    nbands = len(lower_frequencies)
-    band_spectrum = zeros((nbands))
-    # convert spectrum on the selected frequency bands
-    for i in range(nbands):
-        # index of the frequencies within the band
-        idx = where((x >= lower_frequencies[i]) & (x < upper_frequencies[i]))[0]
-        band_spectrum[i] = 10 * log10(sum(10 ** (y[idx] / 10)))
-    return band_spectrum
-
-
-### Speech Intelligibility Index ANSI S3.5 ###
 def comp_sii(
-    method, noise, speech, speech_distance=1, speech_level="default", threshold=None
+    method,
+    noise,
+    speech_type,
+    speech_distance=1,
+    speech_level=0,
+    threshold=None,
 ):
     """
     Computation of the Speech Intelligibility Index based on ANSI S3.5-1997.
@@ -34,21 +31,19 @@ def comp_sii(
         Frequency bands choice, either 'critical_bands', 'equal_critical_bands', 'third_octave_bands' or 'octave_bands'.
       noise: int / float
         Value of the noise that will be used as background noise data or overall dB level.
-      speech: str
+       speech_type: str
         Str to used as speech data either 'normal', 'raised', 'loud', 'shouted'.
       speech_distance: float
         Distance from the lips of the talker to the center of the head of the listener in meters.
         Default is 1m.
-      speech_level: str
+      speech_level: float
         If the speech was measured, the standard speech spectra can be adjusted to the measured overall level.
-        'default' is the standard level corresponding to the input method.
+        By default the standard level corresponds to the input method.
       threshold: str
         Either 'standard' to use ANSI standard threshold, or None (0 on all bands).
     """
 
-    # sanity checks
-
-    # load the calculation parameters corresponding to the chosen method
+    # Step 1 : Loading the computation parameters corresponding to the chosen method
     (
         CENTER_FREQUENCIES,
         LOWER_FREQUENCIES,
@@ -60,41 +55,40 @@ def comp_sii(
 
     nbands = len(CENTER_FREQUENCIES)
 
-    # if noise is an overall dB level
-    if (type(noise) == float) or (type(noise) == int):
-        nbands = len(CENTER_FREQUENCIES)
-        noise_data = np_empty((nbands))
-        noise_data.fill(10 * log10(10 ** (noise / 10) / nbands))
-        noise_axis = CENTER_FREQUENCIES
+    # Step 2 : Creating a vector for the background noise
+    nbands = len(CENTER_FREQUENCIES)
+    noise_data = np_empty((nbands))
+    noise_data.fill(10 * log10(10 ** (noise / 10) / nbands))
+    noise_axis = CENTER_FREQUENCIES
 
-    # convert the data to match the frequency bands
+    # Convert the data to match the frequency bands
     if array(noise_axis != CENTER_FREQUENCIES).any():
-        N = compute_band_spectrum(
+        N = comp_band_spectrum(
             noise_axis, noise_data, LOWER_FREQUENCIES, UPPER_FREQUENCIES
         )
     else:
         N = noise_data
 
-    # if speech is an import from the standard
-    if type(speech) == str:
-        E, reference_level = get_standard_speech_level(method=method, speech=speech)
+    # Step 3: Recovering the speech according to the input given (method and speech type)
+    E, reference_level = get_standard_speech_level(
+        method=method, speech_type=speech_type
+    )
 
-        if speech_distance != 1:
-            # correct the level according to the distance between talker's lips and listener's head center
-            E -= 20 * log10(speech_distance)
-        if speech_level != "default":
-            # set dB level by comparison with standard data
-            E += speech_level - reference_level
+    # correct the level according to the distance between talker's lips and listener's head center
+    if speech_distance != 1:
+        E -= 20 * log10(speech_distance)
 
+    # set dB level by comparison with standard data
+    if speech_level != 0:
+        E += speech_level - reference_level
+
+    # Defining threshold if necessary
     if threshold == None:
         T = zeros((nbands))
     elif threshold == "standard":
-        from mosqito.utils.LTQ import LTQ
-        from mosqito.utils.conversion import freq2bark
-
         T = LTQ(freq2bark(CENTER_FREQUENCIES))
 
-    # Computation
+    # Step 4: Computation
     if method == "octave_bands":
         Z = N
     else:
