@@ -1,5 +1,4 @@
 from numpy import (
-    empty as np_empty,
     log10,
     zeros,
     array,
@@ -29,10 +28,12 @@ def comp_sii(
     ----------
       method: str
         Frequency bands choice, either 'critical_bands', 'equal_critical_bands', 'third_octave_bands' or 'octave_bands'.
-      noise: int / float
-        Value of the noise that will be used as background noise data or overall dB level.
-       speech_type: str
-        Str to used as speech data either 'normal', 'raised', 'loud', 'shouted'.
+    noise : ndarray
+        Background noise spectrum in dB. ! axis should be the same as the one specified in method.
+        In case of a single value, it will be set on each frequency band.
+        If None, it is set to -50 dB.
+    speech_type: str / array
+        Str to used as speech data either 'normal', 'raised', 'loud', 'shouted'. Could also be a array to use directly
       speech_distance: float
         Distance from the lips of the talker to the center of the head of the listener in meters.
         Default is 1m.
@@ -42,6 +43,27 @@ def comp_sii(
       threshold: str
         Either 'standard' to use ANSI standard threshold, or None (0 on all bands).
     """
+
+    if (
+        (method != "critical_bands")
+        & (method != "equal_critical_bands")
+        & (method != "third_octave_bands")
+        & (method != "octave_bands")
+    ):
+        raise ValueError(
+            'Method should be "critical_bands", "equal_critical_bands", "third_octave_bands" or "octave_bands".'
+        )
+
+    if (
+        (speech_type.astype != array)
+        & (speech_type != "normal")
+        & (speech_type != "raised")
+        & (speech_type != "loud")
+        & (speech_type != "shout")
+    ):
+        raise ValueError(
+            'Speech should be either an array or "normal", "raised", "loud" or "shout" to use standard data.'
+        )
 
     # Step 1 : Loading the computation parameters corresponding to the chosen method
     (
@@ -57,23 +79,34 @@ def comp_sii(
 
     # Step 2 : Creating a vector for the background noise
     nbands = len(CENTER_FREQUENCIES)
-    noise_data = np_empty((nbands))
-    noise_data.fill(10 * log10(10 ** (noise / 10) / nbands))
-    noise_axis = CENTER_FREQUENCIES
 
-    # Convert the data to match the frequency bands
-    if array(noise_axis != CENTER_FREQUENCIES).any():
-        N = comp_band_spectrum(
-            noise_axis, noise_data, LOWER_FREQUENCIES, UPPER_FREQUENCIES
-        )
+    if noise is None:
+        N = zeros((len(E)))
+        N.fill(-50)
     else:
-        N = noise_data
+        N = array(noise)
+        if N.size == 1:
+            N = zeros((len(E)))
+            N.fill(noise)
+
+    # noise_data = np_empty((nbands))
+    # noise_data.fill(10 * log10(10 ** (noise / 10) / nbands))
+    # noise_axis = CENTER_FREQUENCIES
+
+    # # Convert the data to match the frequency bands
+    # if array(noise_axis != CENTER_FREQUENCIES).any():
+    #     N = comp_band_spectrum(
+    #         noise_axis, noise_data, LOWER_FREQUENCIES, UPPER_FREQUENCIES
+    #     )
+    # else:
+    #     N = noise_data
 
     # Step 3: Recovering the speech according to the input given (method and speech type)
     E, reference_level = get_standard_speech_level(
         method=method, speech_type=speech_type
     )
 
+    ######### Not sure if correcting level is necessary
     # correct the level according to the distance between talker's lips and listener's head center
     if speech_distance != 1:
         E -= 20 * log10(speech_distance)
@@ -85,8 +118,10 @@ def comp_sii(
     # Defining threshold if necessary
     if threshold == None:
         T = zeros((nbands))
-    elif threshold == "standard":
+    elif threshold == "zwicker":
         T = LTQ(freq2bark(CENTER_FREQUENCIES))
+    else:
+        T = array(threshold)
 
     # Step 4: Computation
     if method == "octave_bands":
@@ -154,4 +189,4 @@ def comp_sii(
     spec_sii = IMPORTANCE * A
     sii = sum(spec_sii)
 
-    return sii, spec_sii, CENTER_FREQUENCIES
+    return sii, spec_sii
