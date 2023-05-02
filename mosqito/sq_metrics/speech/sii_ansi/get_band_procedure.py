@@ -20,7 +20,7 @@ def get_band_procedure(method):
     """
 
     if method == "critical_bands":
-        from SII_critical_band_procedure import (
+        from .SII_critical_band_procedure import (
             CENTER_FREQUENCIES,
             LOWER_FREQUENCIES,
             UPPER_FREQUENCIES,
@@ -30,7 +30,7 @@ def get_band_procedure(method):
         )
 
     elif method == "equal_critical_bands":
-        from SII_equal_critical_band_procedure import (
+        from .SII_equal_critical_band_procedure import (
             CENTER_FREQUENCIES,
             LOWER_FREQUENCIES,
             UPPER_FREQUENCIES,
@@ -39,7 +39,7 @@ def get_band_procedure(method):
             STANDARD_SPEECH_SPECTRUM_NORMAL,
         )
     elif method == "third_octave_bands":
-        from SII_third_octave_band_procedure import (
+        from .SII_third_octave_band_procedure import (
             CENTER_FREQUENCIES,
             LOWER_FREQUENCIES,
             UPPER_FREQUENCIES,
@@ -48,7 +48,7 @@ def get_band_procedure(method):
             STANDARD_SPEECH_SPECTRUM_NORMAL,
         )
     elif method == "octave_bands":
-        from SII_octave_band_procedure import (
+        from .SII_octave_band_procedure import (
             CENTER_FREQUENCIES,
             LOWER_FREQUENCIES,
             UPPER_FREQUENCIES,

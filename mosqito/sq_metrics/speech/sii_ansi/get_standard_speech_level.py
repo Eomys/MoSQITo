@@ -20,7 +20,7 @@ def get_standard_speech_level(method, speech_type):
     # if speech type is a str, then we must import the standard associated
     if isinstance(speech_type, str):
         if method == "critical_bands":
-            from SII_critical_band_procedure import (
+            from .SII_critical_band_procedure import (
                 STANDARD_SPEECH_SPECTRUM_NORMAL,
                 OVERALL_SPEECH_LEVEL_NORMAL,
                 STANDARD_SPEECH_SPECTRUM_RAISED,
@@ -32,7 +32,7 @@ def get_standard_speech_level(method, speech_type):
             )
 
         elif method == "equal_critical_bands":
-            from SII_equal_critical_band_procedure import (
+            from .SII_equal_critical_band_procedure import (
                 STANDARD_SPEECH_SPECTRUM_NORMAL,
                 OVERALL_SPEECH_LEVEL_NORMAL,
                 STANDARD_SPEECH_SPECTRUM_RAISED,
@@ -43,7 +43,7 @@ def get_standard_speech_level(method, speech_type):
                 OVERALL_SPEECH_LEVEL_SHOUT,
             )
         elif method == "third_octave_bands":
-            from SII_third_octave_band_procedure import (
+            from .SII_third_octave_band_procedure import (
                 STANDARD_SPEECH_SPECTRUM_NORMAL,
                 OVERALL_SPEECH_LEVEL_NORMAL,
                 STANDARD_SPEECH_SPECTRUM_RAISED,
@@ -54,7 +54,7 @@ def get_standard_speech_level(method, speech_type):
                 OVERALL_SPEECH_LEVEL_SHOUT,
             )
         elif method == "octave_bands":
-            from SII_octave_band_procedure import (
+            from .SII_octave_band_procedure import (
                 STANDARD_SPEECH_SPECTRUM_NORMAL,
                 OVERALL_SPEECH_LEVEL_NORMAL,
                 STANDARD_SPEECH_SPECTRUM_RAISED,

@@ -1,14 +1,7 @@
-from numpy import (
-    log10,
-    zeros,
-    array,
-    maximum as np_maximum,
-    where,
-    sum,
-)
-from get_band_procedure import get_band_procedure
-from get_standard_speech_level import get_standard_speech_level
-from comp_band_spectrum import comp_band_spectrum
+from numpy import log10, zeros, array, maximum as np_maximum, where, sum, ndarray
+from .get_band_procedure import get_band_procedure
+from .get_standard_speech_level import get_standard_speech_level
+from .comp_band_spectrum import comp_band_spectrum
 
 from mosqito.utils.LTQ import LTQ
 from mosqito.utils.conversion import freq2bark
@@ -41,29 +34,32 @@ def comp_sii(
         If the speech was measured, the standard speech spectra can be adjusted to the measured overall level.
         By default the standard level corresponds to the input method.
       threshold: str
-        Either 'standard' to use ANSI standard threshold, or None (0 on all bands).
+        Either an array to use directly, 'zwicker' to use ANSI standard threshold or None (0 on all bands).
     """
 
     if (
         (method != "critical_bands")
-        & (method != "equal_critical_bands")
-        & (method != "third_octave_bands")
-        & (method != "octave_bands")
+        and (method != "equal_critical_bands")
+        and (method != "third_octave_bands")
+        and (method != "octave_bands")
     ):
         raise ValueError(
             'Method should be "critical_bands", "equal_critical_bands", "third_octave_bands" or "octave_bands".'
         )
 
     if (
-        (speech_type.astype != array)
-        & (speech_type != "normal")
-        & (speech_type != "raised")
-        & (speech_type != "loud")
-        & (speech_type != "shout")
+        (not type(speech_type) != array)
+        and (speech_type != "normal")
+        and (speech_type != "raised")
+        and (speech_type != "loud")
+        and (speech_type != "shout")
     ):
         raise ValueError(
             'Speech should be either an array or "normal", "raised", "loud" or "shout" to use standard data.'
         )
+
+    if (not type(speech_type) != array) and (method != "zwicker") and (method != None):
+        raise ValueError('Threshold should be "zwicker", an array or "None".')
 
     # Step 1 : Loading the computation parameters corresponding to the chosen method
     (
