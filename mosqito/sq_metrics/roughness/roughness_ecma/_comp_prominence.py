@@ -1,9 +1,13 @@
 from numpy import argmax, flip, argsort, delete, int32
 
-def _comp_prominence(Phi_E, maxima, peak_nb,):
+def _comp_prominence(Phi_E, maxima, peak_nb):
     """ 
     Function to compute the prominence value of the peak at index maxima[peak_nb] in the averaged spectrum Phi_E
     """
+
+    if len(maxima) == 0:
+        raise ValueError("ERROR: no maxima detected, impossible to compute the prominence.")
+
 
     if len(maxima) == 1:
         # since there is only one peak, the limits of the interval where to search for the maximum valley are the signal's ones
@@ -59,6 +63,5 @@ def _comp_prominence(Phi_E, maxima, peak_nb,):
             prominence = left_valley
         else:
             prominence = right_valley
-
 
     return prominence

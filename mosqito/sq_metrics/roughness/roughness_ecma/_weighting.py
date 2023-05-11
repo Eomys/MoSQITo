@@ -1,20 +1,4 @@
 import numpy as np
-from error_correction import E
-
-
-def rho(f, delta_f):
-    theta = np.arange(0,34)
-    B = (np.floor(f/delta_f)+theta/32)*delta_f-(f+E[theta])
-    theta_min = np.argmin(B)
-
-    if (theta_min>0) and (B[theta_min]*B[theta_min-1]<0):
-        theta_corr = theta_min
-    else:
-        theta_corr = theta_min + 1
-
-    rho = E[theta_corr]-(E[theta_corr]-E[theta_corr-1])*B[theta_corr-1]/(B[theta_corr]-B[theta_corr-1])
-
-    return rho
 
 def f_max(center_freq):
     return 72.6937*(1-1.1739*np.exp(-5.4583*center_freq/1000))
