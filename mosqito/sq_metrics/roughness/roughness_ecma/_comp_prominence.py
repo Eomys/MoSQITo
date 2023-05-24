@@ -1,67 +1,75 @@
-from numpy import argmax, flip, argsort, delete, int32
+from numpy import argmax, flip, argsort, delete, int32, asarray, triu, tril, apply_along_axis, tile, where, nan, isnan, maximum, array
+import matplotlib.pyplot as plt
 
-def _comp_prominence(Phi_E, maxima, peak_nb):
+def find_right_limit(a, maxima):
+    
+    idx = asarray(a>0).nonzero()[0]
+    if len(idx) == 0:
+        return 255
+    else:
+        return maxima[idx[0]]
+
+def find_left_limit(a, maxima):
+
+    idx = asarray(a>0).nonzero()[0]
+    if len(idx) == 0:
+        return 0
+    else:
+        return maxima[idx[-1]]
+    
+def find_left_valley(limits, Phi_E):
+    return limits[1] - 1 - argmax(flip(Phi_E[limits[1]]-Phi_E[limits[0]:limits[1]]))
+
+def find_right_valley(limits, Phi_E):
+    return limits[0] + argmax(Phi_E[limits[0]]-Phi_E[limits[0]:limits[1]])
+
+
+def _comp_prominence(Phi_E, maxima):
     """ 
     Function to compute the prominence value of the peak at index maxima[peak_nb] in the averaged spectrum Phi_E
     """
-
     if len(maxima) == 0:
         raise ValueError("ERROR: no maxima detected, impossible to compute the prominence.")
+    
+    else :
+        T_right = triu(tile(Phi_E[maxima], (len(maxima),1))-Phi_E[maxima,None])
+        right_limit = array(apply_along_axis(find_right_limit, axis=1, arr=where((T_right>0), T_right, 0), maxima=maxima), dtype=object)
+
+        T_left = tril(tile(Phi_E[maxima], (len(maxima),1))-Phi_E[maxima,None])
+        left_limit = array(apply_along_axis(find_left_limit, axis=1, arr=where((T_left>0), T_left, 0), maxima=maxima), dtype=object)
+
+        # plt.figure()
+        # plt.plot(Phi_E)
+        # plt.plot(maxima, Phi_E[maxima], 'o')
+        # plt.plot([left_limit, right_limit], [Phi_E[left_limit],Phi_E[right_limit]], 's')
+        # plt.show() 
 
 
-    if len(maxima) == 1:
-        # since there is only one peak, the limits of the interval where to search for the maximum valley are the signal's ones
-        # left side
-        left_limit = 0 
-        left_valley_idx = maxima[0] - argmax(flip(Phi_E[maxima[0]]-Phi_E[left_limit:maxima[0]]))
-        left_valley =  Phi_E[maxima[0]] - Phi_E[left_valley_idx]
-        # right side
-        right_limit = 255 # sb
-        right_valley_idx = argmax(Phi_E[maxima[0]]-Phi_E[maxima[0]:right_limit])
-        right_valley = Phi_E[maxima[0]] - Phi_E[right_valley_idx]
-
-        if left_valley > right_valley:
-            prominence = [left_valley]
-        else:
-            prominence = [right_valley]
-
-    elif len(maxima) > 1:
         # the limits of the interval are the closest neighbour peaks that are higher to the peak studied or the signal's
-        peak_level = Phi_E[maxima[peak_nb]]
-        # Left side
-        crossing = False
-        offset = 1    
-        while crossing == False: 
-            if (peak_nb == 0) or ((peak_nb-offset) < 0): # first peak or no more peak at the left
-                crossing = True # left limit of the signal
-                left_limit = 0
-            elif Phi_E[maxima[peak_nb-offset]] > peak_level:
-                crossing = True
-                left_limit = maxima[peak_nb-offset]
-            else:
-                offset += 1     
-        left_valley_idx = maxima[peak_nb] - 1 - argmax(flip(Phi_E[maxima[peak_nb]]-Phi_E[left_limit:maxima[peak_nb]]))
-        left_valley =  peak_level - Phi_E[left_valley_idx]
+        peak_levels = Phi_E[maxima]
+
+        # Left side   
+        left_valley_idx = apply_along_axis(find_left_valley, axis=1, arr=[i for i in zip(left_limit, maxima)],Phi_E=Phi_E)
+        left_valley =  peak_levels - Phi_E[left_valley_idx]
 
         # Right side
-        crossing = False
-        offset = 1
-        while crossing == False:
-            if (peak_nb == len(maxima)) or ((peak_nb+offset)>=len(maxima)): # last peak or no more peak at the right
-                crossing = True # right limit of the signal
-                right_limit = 255 #CBF=53
-            elif Phi_E[maxima[peak_nb+offset]] > peak_level:
-                crossing = True
-                right_limit = maxima[peak_nb+offset]
-            else:
-                offset += 1
-        right_valley_idx = maxima[peak_nb] + argmax(peak_level-Phi_E[maxima[peak_nb]:right_limit])
-        right_valley = peak_level - Phi_E[right_valley_idx]
+        right_valley_idx = apply_along_axis(find_left_valley, axis=1, arr=[i for i in zip(maxima, right_limit)], Phi_E=Phi_E)
+        right_valley = peak_levels - Phi_E[right_valley_idx]
 
-        # Set prominence values
-        if left_valley > right_valley:
-            prominence = left_valley
-        else:
-            prominence = right_valley
+        prominence = maximum(left_valley, right_valley)
+
 
     return prominence
+
+if __name__ == "__main__":
+
+    import numpy as np
+
+    a = np.array([5,1,3,0,2,6,4])
+    aa = np.array([[5,1,3,0,2,6,4], [5,1,3,0,2,6,4],[5,1,3,0,2,6,4],[5,1,3,0,2,6,4],[5,1,3,0,2,6,4],[5,1,3,0,2,6,4],[5,1,3,0,2,6,4]])
+
+
+    
+
+
+

@@ -5,23 +5,26 @@ def f_max(center_freq):
 
 def r_max(center_freq):
 
-    if center_freq<1000:
-        r1 = 0.3560
-        r2 = 0.8049
-    else:
-        r1 = 0.8024
-        r2 = 0.9333
+    r1 = np.zeros((len(center_freq)))
+    r2 = np.zeros((len(center_freq)))
+
+    r1[center_freq<1000] = 0.3560
+    r2[center_freq<1000] = 0.8049
+
+    r1[center_freq>=1000] = 0.8024
+    r2[center_freq>=1000] = 0.9333
 
     r = 1/(1+r1*abs(np.log2(center_freq/1000))**r2)
 
     return r
 
 def Q2_high(center_freq):
-    if center_freq/1000 < 2**-3.4253 :
-        q2 = 0.2471
-    else:
-        q2 = 0.2471+0.0129*(np.log2(center_freq/1000)+3.4253)**2
-    
+
+
+    q2 = np.zeros((len(center_freq)))
+    q2[center_freq/1000 < 2**-3.4253] = 0.2471
+    q2[center_freq/1000 >= 2**-3.4253] = 0.2471+0.0129*(np.log2(center_freq[center_freq/1000 >= 2**-3.4253]/1000)+3.4253)**2
+
     return q2
 
 def Q2_low(center_freq):

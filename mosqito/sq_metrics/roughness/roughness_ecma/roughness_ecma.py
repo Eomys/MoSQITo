@@ -1,5 +1,6 @@
 from numpy import(abs,arange,cos,pi,append,power,zeros,empty,sum,array,clip,exp,median,where,argmax,argmin,argsort,
-                  delete,exp,dot,round,squeeze,sqrt,tanh,sign,diff,percentile,dot,int32,transpose,mean)
+                  delete,exp,dot,round,squeeze,sqrt,tanh,sign,diff,percentile,dot,int32,transpose,mean, linspace, vstack,
+                  apply_along_axis, nan)
 from numpy.fft import fft
 from scipy.signal import (hilbert, resample, find_peaks)
 from scipy.signal.windows import hann
@@ -15,7 +16,17 @@ from mosqito.sq_metrics import loudness_ecma
 from mosqito.utils import load
 from _weighting import f_max, r_max, Q2_high, Q2_low, _high_mod_rate_weighting, _low_mod_rate_weighting
 from _comp_prominence import _comp_prominence
+from _comp_prominence_old import _comp_prominence_old
 from _refinement import _refinement
+
+
+def find_maxima(Phi_E):
+    print(Phi_E.shape)
+    idx = find_peaks(Phi_E)[0]
+    if idx.size == 0:
+        return nan
+    else:
+        return idx 
 
 def roughness_ecma(signal):
     """Calculation of the roughness according to ECMA-418-2 section 7
@@ -33,8 +44,6 @@ def roughness_ecma(signal):
     bark_axis: numpy.array
         Bark axis
     """
-
-
     # Sampling frequency
     fs = 48000
     N_samples = len(signal)
@@ -52,22 +61,23 @@ def roughness_ecma(signal):
     L = block_array_rect.shape[1]
 
     # ENVELOPPE CALCULATION AND DOWNSAMPLING (7.1.2)
-    envelopes = transpose(abs(block_array_rect + 1j * hilbert(block_array_rect)), (1,0,2))  # transpose is used to stick to the standard index order l,z,k
-    N_pts = envelopes.shape[2]
+    envelopes = abs(block_array_rect + 1j * hilbert(block_array_rect))  # transpose is used to stick to the standard index order l,z,k
     # Downsampling to 1500 Hz
     sbb = 512 # new block size
     K = sbb//2 
-    shh = 128
     envelopes = resample(envelopes, sbb, axis=2)
+    envelopes = transpose(envelopes,(1,0,2))
+
 
     # CALCULATION OF SCALED POWER SPECTRUM (7.1.3)
     spectrum = zeros((L,CBF,K))
     N_specific_max = array(N_specific).max(axis=1)
     hann_window = (0.5-0.5*cos(2*pi*arange(sbb)/sbb))/sqrt(0.375)
+    #hann_window = hann_window / sum(hann_window)
     phi_e = sum(power(envelopes * hann_window,2), axis=2)
     den = transpose(N_specific_max * transpose(phi_e))
     # Hann window is precisely defined in the standard (different from numpy version)
-    dft = power(abs(fft((envelopes * hann(sbb)),n=K, axis=2)),2)
+    dft = power(abs(fft((envelopes * hann_window),n=K, axis=2)/1.18),2)
     spectrum[where((den!=0))[0],where((den!=0))[1],:] = transpose(power(N_specific[where((den!=0))],2) / den[where((den!=0))] * transpose(dft[where((den!=0))[0],where((den!=0))[1],:]))
 
     # NOISE REDUCTION OF THE ENVELOPES (7.1.4)
@@ -81,69 +91,63 @@ def roughness_ecma(signal):
     SS = median(S, axis=1)
 
     # Weighting 
-    w_wave = zeros((L,K))
     noise_suppression_weighting = zeros((L,K))
-    for k in range(K): 
-        w_wave[:,k] = 0.0856 * S[:,k]/(SS+10e-10) * clip(0.1891*exp(0.0120*k),0,1)
-    idt = 0.05 * w_wave.max(axis=1)
-    Phi_E = zeros((L,CBF,K))
+    w_wave = 0.0856 * S/(SS[:,None]+10e-10) * clip(0.1891*exp(0.0120*arange(K)),0,1)
+    w_wave[where((w_wave<=0.05 * w_wave.max()))] = 0
+    noise_suppression_weighting = clip(w_wave-0.1407,0,1)
+    Phi_E = av_spectrum * noise_suppression_weighting[:,None,:]
+
+    # Critical bands characteristics for the weightings to come
+    fmax = f_max(center_freq) # center_freq = fréquence centrale de la bande z (eq 86 clause 7.1.5.2)
+    rmax = r_max(center_freq)
+    q2_high = Q2_high(center_freq)
+    q2_low = Q2_low(center_freq)
+
+    # Peak picking
+    maxima = apply_along_axis(find_peaks, axis=2, arr=Phi_E)[...,0]
+
     amplitude = zeros((L,CBF))
-
     for l in range(L):       
-        idt = where((w_wave[l,:]>0.05 * w_wave[l,:].max()))[0]
-        noise_suppression_weighting[l,idt] = clip(w_wave[l,idt]-0.1407,0,1)
         for z in range(CBF):
-            Phi_E[l,z,:] = av_spectrum[l,z,:] * noise_suppression_weighting[l,:]
-            # Critical bands characteristics for the weightings to come
-            fmax = f_max(center_freq[z]) # center_freq = fréquence centrale de la bande z (eq 86 clause 7.1.5.2)
-            rmax = r_max(center_freq[z])
-            q2_high = Q2_high(center_freq[z])
-            q2_low = Q2_low(center_freq[z])
-
+            maxima_idx = maxima[l,z]
             # SPECTRAL WEIGHTING (7.1.5)
-            # Peak picking
-            maxima = find_peaks(Phi_E[l,z,:])[0]
-            if len(maxima) == 0:
+            if len(maxima_idx) == 0:
                 amplitude[l,z] = 0
-            elif len(maxima) > 0:
-                idx = where((Phi_E[l,z,maxima]) <= 0.05*max(Phi_E[l,z,maxima]))[0]
-                maxima = delete(maxima, idx)
-                if len(maxima) == 0:
-                    amplitude[l,z] = 0
-                elif len(maxima) == 1:
-                    prominence = _comp_prominence(Phi_E[l,z,:], maxima, 0)
-                    prominence_idx = maxima[0]
+            elif len(maxima_idx) > 0:
+                maxima_idx = delete(maxima_idx, where((Phi_E[l,z,maxima_idx]) <= 0.05*max(Phi_E[l,z,maxima_idx]))[0])
+            if len(maxima_idx) == 0:
+                amplitude[l,z] = 0
+            else :
+                prominence = _comp_prominence(Phi_E[l,z,:], maxima_idx)
+                # Keep 10 maximum values
+                if len(maxima_idx) > 10:
+                    sort_idx = argsort(prominence)
+                    prominence = prominence[sort_idx[-10:]]
+                    prominence_idx = maxima_idx[sort_idx[-10:]]
+                else:
+                    prominence_idx = maxima_idx
+
+                N_peak = len(prominence)
+                amp = zeros(N_peak)
+                mod_rate = zeros(N_peak)
+                complex_energy = zeros((N_peak))
+                harmonic_complex = zeros((N_peak), dtype=object)
+
+                if N_peak == 1:
                     # Refinement step
-                    mod_rate, amp_temp = _refinement(prominence_idx, Phi_E[l,z,:])
+                    mod_rate, amp_temp = _refinement(prominence_idx[0], Phi_E[l,z,:])
                     # Weighting of modulation rates
-                    amp_temp = _high_mod_rate_weighting(mod_rate, amp_temp, fmax, rmax, q2_high)
-                    amplitude[l,z] = _low_mod_rate_weighting(mod_rate, array([amp_temp]), fmax, q2_low)
-
-                elif len(maxima) > 0:
-                    prominence = zeros(len(maxima))
-                    # For each peak
-                    for i in range(len(maxima)):
-                        prominence[i] = _comp_prominence(Phi_E[l,z,:], maxima, i)
-                    # Keep 10 maximum values
-                    if len(maxima) > 10:
-                        sort_idx = argsort(prominence)
-                        prominence = prominence[sort_idx[-10:]]
-                        prominence_idx = maxima[sort_idx[-10:]]
-                    else:
-                        prominence_idx = maxima
-                    N_peak = len(prominence)
-                    amp = zeros(N_peak)
-                    mod_rate = zeros(N_peak)
-                    complex_energy = zeros((N_peak))
-                    harmonic_complex = zeros((N_peak), dtype=object)
-
+                    amp_temp = _high_mod_rate_weighting(mod_rate, amp_temp, fmax[z], rmax[z], q2_high[z])
+                    amplitude[l,z] = _low_mod_rate_weighting(mod_rate, array([amp_temp]), fmax[z], q2_low[z])
+                else:
                     # Modulation rate and maxima's amplitudes
                     for i0 in range(N_peak):
                         kpi = prominence_idx[i0]
                         # Refinement step
                         mod_rate[i0], amp_temp = _refinement(kpi, Phi_E[l,z,:])
                         # Weighting of high modulation rates
-                        amp[i0] = _high_mod_rate_weighting(mod_rate[i0], amp_temp, fmax, rmax, q2_high)
+                        amp[i0] = _high_mod_rate_weighting(mod_rate[i0], amp_temp, fmax[z], rmax[z], q2_high[z])
+
                     # Estimation of fundamental modulation rate (7.1.5.3) (ne dépend pas de l et z)
                     for i0 in range(N_peak):
                         mod_rate_temp = mod_rate[i0:]
@@ -171,23 +175,24 @@ def roughness_ecma(signal):
                     # print(mod_rate[i_max])
                     amp_temp = amp[h_complex_max] * w
                     # Weighting of low modulation rates
-                    amplitude[l,z] = _low_mod_rate_weighting(mod_rate[i_max], amp_temp, fmax, q2_low)
+                    amplitude[l,z] = _low_mod_rate_weighting(mod_rate[i_max], amp_temp, fmax[z], q2_low[z])
 
-                if amplitude[l,z]<0.074376:
-                    amplitude[l,z] = 0
+            if amplitude[l,z]<0.074376:
+                amplitude[l,z] = 0
 
     
     # OPTIONAL ENTROPY WEIGHTING (specific to ITT equipment): needs a signal of rotational speed (7.1.6)
 
     # CALCULATION OF TIME DEPENDENT SPECIFIC ROUGHNESS (7.1.7)
-    
     N50 = int(duration*50)
     amplitude_50 = resample(amplitude, N50, axis=0)
-    amplitude_50 = amplitude_50[:int(duration*50),:] # delete zero-padding
+    amplitude_50 = amplitude_50[:N50,:] # delete zero-padding
+
+    #N50 = L
+    #amplitude_50 = amplitude
     
-    idx = where((amplitude_50>=0))
     R_est = zeros((N50, CBF))
-    R_est[idx] = amplitude_50[idx]
+    R_est[where((amplitude_50>=0))] = amplitude_50[where((amplitude_50>=0))]
 
     R_lin_mean = sum(R_est, axis=1)/53
     R_sq_mean = sqrt(sum(R_est, axis=1)**2/53)
@@ -196,23 +201,24 @@ def roughness_ecma(signal):
     B[R_lin_mean!=0] = R_sq_mean[R_lin_mean!=0] / R_lin_mean[R_lin_mean!=0]
     E = 0.95555 * (tanh(1.6407*(B-2.5804))+1) * 0.5 + 0.58449
 
-    R_time_spec_temp = transpose(0.0180909 * power(transpose(R_est),E))
+    R_time_spec_temp = transpose(0.0180909 * 0.75 * power(transpose(R_est),E))
 
-    slope = sign(diff(R_time_spec_temp, axis=0))
+    slope = vstack((R_time_spec_temp[None,0,:],diff(R_time_spec_temp, axis=0)[:-1,:]))
+
     tau = zeros((N50-1,CBF))
     tau[where((slope>=0))] = 0.0625
     tau[where((slope<0))] = 0.5000
     R_time_spec = zeros((N50, CBF))
     R_time_spec[0,:] = R_time_spec_temp[0,:]
-    R_time_spec[1:,:] = R_time_spec_temp[1:,:]*(1-exp(-1/(50*tau)))  + R_time_spec_temp[0:-1,:]*exp(-1/(50*tau))
+    R_time_spec[1:,:] = R_time_spec_temp[1:,:]*(1-exp(-1/(50*tau)))  + R_time_spec_temp[:-1,:]*exp(-1/(50*tau))
 
     # CALCULATION OF REPRESENTATIVE VALUES (7.1.8)
     # CBF dependent value
     R_spec = mean(R_time_spec[15:,:], axis=0)
     # time_dependent value
-    R_time = 0.5 * sum(R_time_spec, axis=1)
+    R_time = 0.2 * sum(R_time_spec, axis=1)
     # single value
-    R = percentile(R_time, 90)
+    R = percentile(R_time[15:], 90)
     
     return R_spec, R_time, R
 
@@ -242,9 +248,10 @@ if __name__ == "__main__":
     R = zeros((16))
     plt.figure()
     for i in range(16):
+        print("Signal n : ", i)
         signal, fs = load(path[i])
         R_spec, R_time, R[i] = roughness_ecma(signal[:int(len(signal)/2)])
-        plt.step(freqs, R_spec)
+        plt.step(freqs, R_spec, 'o',where='mid', color="#0069a1", linestyle='--')
 
     x = [20,30,40,50,60,70,80,90,100,120,140,160,180,200,300,400]
     plt.figure()
@@ -256,10 +263,12 @@ if __name__ == "__main__":
     y_ref = [0.00082, 0.00735, 0.02286, 0.05469, 0.12, 0.22857, 0.32571, 0.3698, 0.29959, 0.21388, 0.13224, 0.08082, 0.0498, 0.0302, 0.01878, 0.0098, 0.00571, 0.00327, 0.00082, 0]
     plt.figure()
     signal, fs = load(r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod70.wav")
-    R_spec, R_time, R = roughness_ecma(signal[:int(len(signal)/2)])
+    R_spec, R_time, R = roughness_ecma(signal)
+    #signal, fs = load(r"C:\Users\LAP16\Desktop\loudness scale\marteau_piqueur.wav")
+    #R_spec, R_time, R = roughness_ecma(signal)
     print(R)
     
-    plt.step(freqs, R_spec)
+    plt.step(freqs, R_spec, where='mid')
     plt.step(x_ref, y_ref, 'red', linewidth=8, alpha=0.25, label='référence Artemis')
     plt.title('Specific roughness, global value = 0.13')
     plt.xlabel('Frequency band [Bark]')
