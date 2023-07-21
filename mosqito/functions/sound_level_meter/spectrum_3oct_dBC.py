@@ -14,9 +14,9 @@ from spectrum2dBC import spectrum2dBC
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 from mosqito.utils.conversion import amp2db
 
-def LCeq_3oct (data_all_signals, fs, f_min, f_max):
-    """Calculate the LCeq of the frequency bands you choose, returns the calculated LCeq values for each band.
-    Each one is calculated with the levels (dBC) of its band in the different samples.
+def spectrum_3oct_dBC (data_all_signals, fs, f_min, f_max):
+    """Calculates, in dBC, the spectrum in Thirds of octaves of a .wav file.
+     You can enter different fragments of the same .wav file at the same time or enter a single .wav file.
 
     Parameters
     ----------
@@ -31,8 +31,8 @@ def LCeq_3oct (data_all_signals, fs, f_min, f_max):
 
     Outputs
     -------
-    LCeq_3oct : numpy.ndarray
-        The LCeq values (dBC) for each frequency band.
+    spectrum_3oct_dBC : numpy.ndarray
+        Third octave spectrum in dBC.
     """
     # We initialize the array that stores the third octave values (in Pa) of the all signals ​​with the first signal.
     spectrum_all_signals_Pa = noct_spectrum(data_all_signals[0],fs,f_min,f_max)[0]
@@ -75,7 +75,7 @@ def LCeq_3oct (data_all_signals, fs, f_min, f_max):
             spectrum_all_signals_dBC[j][i] = dBC[j]
 
     # Creating a list of zeros of the size of the frequency bands (to keep the LCeq values).
-    LCeq_3oct = np.zeros(num_bands)
+    spectrum_3oct_dBC = np.zeros(num_bands)
     # For each frequency band you perform the operation.
     for i in range(num_bands): 
         sum = 0
@@ -85,6 +85,6 @@ def LCeq_3oct (data_all_signals, fs, f_min, f_max):
             sum = sum + 10.0**(spectrum_all_signals_dBC[i][j]/10.0)
         # Keep the LCeq value in the box corresponding to the frequency band from which the calculation is being made.
         # Operation: 10 x log(base 10)[1/number of samples x sum]
-        LCeq_3oct[i] = 10.0 * math.log(((1/num_signals)*sum),10)
+        spectrum_3oct_dBC[i] = 10.0 * math.log(((1/num_signals)*sum),10)
 
-    return LCeq_3oct
+    return spectrum_3oct_dBC

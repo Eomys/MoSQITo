@@ -14,9 +14,9 @@ from spectrum2dBA_2 import spectrum2dBA_2
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 from mosqito.utils.conversion import amp2db
 
-def LAeq_3oct (data_all_signals, fs, f_min, f_max):
-    """Calculate the LAeq of the frequency bands you choose, returns the calculated LAeq values for each band.
-    Each one is calculated with the levels (dBA) of its band in the different samples.
+def spectrum_3oct_dBA (data_all_signals, fs, f_min, f_max):
+    """Calculates, in dBA, the spectrum in Thirds of octaves of a .wav file.
+     You can enter different fragments of the same .wav file at the same time or enter a single .wav file.
 
     Parameters
     ----------
@@ -31,8 +31,8 @@ def LAeq_3oct (data_all_signals, fs, f_min, f_max):
 
     Outputs
     -------
-    LAeq_3oct : numpy.ndarray
-        The LAeq values (dBA) for each frequency band.
+    spectrum_3oct_dBA : numpy.ndarray
+        Third octave spectrum in dBA.
     """
     # We initialize the array that stores the third octave values (in Pa) of the all signals ​​with the first signal.
     spectrum_all_signals_Pa = noct_spectrum(data_all_signals[0],fs,f_min,f_max)[0]
@@ -75,7 +75,7 @@ def LAeq_3oct (data_all_signals, fs, f_min, f_max):
             spectrum_all_signals_dBA[j][i] = dBA[j]
 
     # Creating a list of zeros of the size of the frequency bands (to keep the LAeq values).
-    LAeq_3oct = np.zeros(num_bands)
+    spectrum_3oct_dBA = np.zeros(num_bands)
     # For each frequency band you perform the operation.
     for i in range(num_bands): 
         sum = 0
@@ -85,6 +85,6 @@ def LAeq_3oct (data_all_signals, fs, f_min, f_max):
             sum = sum + 10.0**(spectrum_all_signals_dBA[i][j]/10.0)
         # Keep the LAeq value in the box corresponding to the frequency band from which the calculation is being made.
         # Operation: 10 x log(base 10)[1/number of samples x sum]
-        LAeq_3oct[i] = 10.0 * math.log(((1/num_signals)*sum),10)
+        spectrum_3oct_dBA[i] = 10.0 * math.log(((1/num_signals)*sum),10)
 
-    return LAeq_3oct
+    return spectrum_3oct_dBA

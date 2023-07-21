@@ -13,9 +13,9 @@ import math
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
 from mosqito.utils.conversion import amp2db
 
-def Leq_3oct(data_all_signals, fs, f_min, f_max):
-    """Calculate the Leq of the frequency bands you choose, returns the calculated Leq values for each band.
-    Each one is calculated with the levels (dB) of its band in the different signals.
+def spectrum_3oct_dB(data_all_signals, fs, f_min, f_max):
+    """Calculates, in dB, the spectrum in Thirds of octaves of a .wav file.
+     You can enter different fragments of the same .wav file at the same time or enter a single .wav file.
 
     Parameters
     ----------
@@ -30,8 +30,8 @@ def Leq_3oct(data_all_signals, fs, f_min, f_max):
 
     Outputs
     -------
-    Leq_3oct : numpy.ndarray
-        The Leq values [dB] for each frequency band.
+    spectrum_3oct_dB : numpy.ndarray
+        Third octave spectrum in dB.
     """
 
     # We initialize the array that stores the third octave values (in Pa) of the all signals ​​with the first signal.
@@ -51,7 +51,7 @@ def Leq_3oct(data_all_signals, fs, f_min, f_max):
             spectrum_all_signals_Pa = np.append(spectrum_all_signals_Pa,noct_spectrum(data_all_signals[i],fs,f_min,f_max)[0],axis=1)
  
     # Creating a list of zeros of the size of the frequency bands (to keep the Leq values).
-    Leq_3oct = np.zeros(num_bands)
+    spectrum_3oct_dB = np.zeros(num_bands)
     # For each frequency band you perform the operation.
     for i in range(num_bands): 
         sum = 0
@@ -63,6 +63,6 @@ def Leq_3oct(data_all_signals, fs, f_min, f_max):
             sum = sum + 10.0**(dB/10.0)
         # Keep the Leq value in the box corresponding to the frequency band from which the calculation is being made.
         # Operation: 10 x log(base 10)[1/number of samples x sum]
-        Leq_3oct[i] = 10.0 * math.log(((1/num_signals)*sum),10)
+        spectrum_3oct_dB[i] = 10.0 * math.log(((1/num_signals)*sum),10)
 
-    return Leq_3oct
+    return spectrum_3oct_dB
