@@ -24,7 +24,7 @@ def LTQ(bark_axis, reference="zwicker"):
         'zwicker' or 'roughness'
     """
 
-    # Make list of minimum excitation (Hearing Treshold)
+    # Make list of minimum excitation (Hearing Threshold)
 
     if reference == "zwicker":
         HTres_x = np.array(

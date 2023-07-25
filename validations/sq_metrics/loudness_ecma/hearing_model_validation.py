@@ -61,7 +61,7 @@ def hearing_model_validation():
     if plt is None:
         raise RuntimeError(
             "In order to make this validation plot you need the 'matplotlib' package."
-            )
+        )
 
     phons = [80, 60, 40, 20]
 
@@ -95,7 +95,7 @@ def hearing_model_validation():
         plt.semilogx(freq_vec, spl_iso_vec, ":", color=col)
         # Plot the ECMA equal contour loudness
         if phon == 0:
-            label = "lower treshold of hearing"
+            label = "lower threshold of hearing"
         else:
             label = str(phon) + " phon"
         plt.semilogx(freq_vec[5:], spl_ecma_vec[5:], color=col, label=label)
