@@ -102,14 +102,14 @@ def loudness_zwst_perseg(
                 include_endpoint=True,
             )
             N_specific = DataFreq(
-                name="Specific Loudness",
+                name="Specific loudness (Zwicker method for stationnary signal)",
                 symbol="N'_{zwst}",
                 axes=[bark_data, time],
                 values=N_specific,
                 unit="sone/Bark",
             )
             N = DataTime(
-                name="Loudness",
+                name="Loudness (Zwicker method for stationnary signal)",
                 symbol="N_{zwst}",
                 axes=[time],
                 values=N,
