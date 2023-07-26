@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mosqito.utils.LTQ &mdash; MOSQITO 1.0.8 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            MOSQITO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MOSQITO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">mosqito.utils.LTQ</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mosqito.utils.LTQ</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Thu Nov  5 17:32:06 2020</span>
+
+<span class="sd">@author: wantysal</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="LTQ"><a class="viewcode-back" href="../../../functions/mosqito.utils.html#mosqito.utils.LTQ.LTQ">[docs]</a><span class="k">def</span> <span class="nf">LTQ</span><span class="p">(</span><span class="n">bark_axis</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="s2">&quot;zwicker&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the level threshold in quiet over bark_axis</span>
+
+<span class="sd">    Linear interpolation from the data given in E. Zwicker, H. Fastl:</span>
+<span class="sd">    Psychoacoustics. Springer, Berlin, Heidelberg, 1990. (figure 2.1)</span>
+<span class="sd">    SPL is given for a free-field condition relative to 2 × 10−5 Pa</span>
+<span class="sd">    (Threshold for roughness is slightly different)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bark_axis: numpy.array</span>
+<span class="sd">        frequency axis in bark to compute the threshold</span>
+<span class="sd">    reference: str()</span>
+<span class="sd">        &#39;zwicker&#39; or &#39;roughness&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Make list of minimum excitation (Hearing Threshold)</span>
+
+    <span class="k">if</span> <span class="n">reference</span> <span class="o">==</span> <span class="s2">&quot;zwicker&quot;</span><span class="p">:</span>
+        <span class="n">HTres_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="mf">2.40445500e-04</span><span class="p">,</span>
+                <span class="mf">2.97265560e-04</span><span class="p">,</span>
+                <span class="mf">3.83444580e-04</span><span class="p">,</span>
+                <span class="mf">4.87665300e-04</span><span class="p">,</span>
+                <span class="mf">6.38024300e-04</span><span class="p">,</span>
+                <span class="mf">8.26911900e-04</span><span class="p">,</span>
+                <span class="mf">1.06166650e-03</span><span class="p">,</span>
+                <span class="mf">1.54817010e-03</span><span class="p">,</span>
+                <span class="mf">2.08369200e-03</span><span class="p">,</span>
+                <span class="mf">2.92606650e-03</span><span class="p">,</span>
+                <span class="mf">4.05138200e-03</span><span class="p">,</span>
+                <span class="mf">6.02053940e-03</span><span class="p">,</span>
+                <span class="mf">9.07457100e-03</span><span class="p">,</span>
+                <span class="mf">1.38729700e-02</span><span class="p">,</span>
+                <span class="mf">2.19208700e-02</span><span class="p">,</span>
+                <span class="mf">3.27319300e-02</span><span class="p">,</span>
+                <span class="mf">5.14789440e-02</span><span class="p">,</span>
+                <span class="mf">7.68705100e-02</span><span class="p">,</span>
+                <span class="mf">1.13174880e-01</span><span class="p">,</span>
+                <span class="mf">1.81393830e-01</span><span class="p">,</span>
+                <span class="mf">3.22530400e-01</span><span class="p">,</span>
+                <span class="mf">4.97813570e-01</span><span class="p">,</span>
+                <span class="mf">7.79302600e-01</span><span class="p">,</span>
+                <span class="mf">1.26089480e00</span><span class="p">,</span>
+                <span class="mf">1.83900010e00</span><span class="p">,</span>
+                <span class="mf">2.49687100e00</span><span class="p">,</span>
+                <span class="mf">3.30065520e00</span><span class="p">,</span>
+                <span class="mf">4.01741500e00</span><span class="p">,</span>
+                <span class="mf">4.82492625e00</span><span class="p">,</span>
+                <span class="mf">5.38932800e00</span><span class="p">,</span>
+                <span class="mf">6.06309500e00</span><span class="p">,</span>
+                <span class="mf">6.92502964e00</span><span class="p">,</span>
+                <span class="mf">8.12003875e00</span><span class="p">,</span>
+                <span class="mf">9.61927600e00</span><span class="p">,</span>
+                <span class="mf">1.15144812e01</span><span class="p">,</span>
+                <span class="mf">1.26382940e01</span><span class="p">,</span>
+                <span class="mf">1.41298833e01</span><span class="p">,</span>
+                <span class="mf">1.53680458e01</span><span class="p">,</span>
+                <span class="mf">1.68414347e01</span><span class="p">,</span>
+                <span class="mf">1.86183590e01</span><span class="p">,</span>
+                <span class="mf">1.99594350e01</span><span class="p">,</span>
+                <span class="mf">2.10583273e01</span><span class="p">,</span>
+                <span class="mf">2.17400030e01</span><span class="p">,</span>
+                <span class="mf">2.22243315e01</span><span class="p">,</span>
+                <span class="mf">2.25462820e01</span><span class="p">,</span>
+                <span class="mf">2.27627940e01</span><span class="p">,</span>
+                <span class="mf">2.29925427e01</span><span class="p">,</span>
+                <span class="mf">2.31538743e01</span><span class="p">,</span>
+                <span class="mf">2.32710993e01</span><span class="p">,</span>
+                <span class="mf">2.33580350e01</span><span class="p">,</span>
+                <span class="mf">2.34824357e01</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">HTres_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="mf">73.28456</span><span class="p">,</span>
+                <span class="mf">69.49444</span><span class="p">,</span>
+                <span class="mf">65.17124</span><span class="p">,</span>
+                <span class="mf">61.262524</span><span class="p">,</span>
+                <span class="mf">57.471996</span><span class="p">,</span>
+                <span class="mf">53.918324</span><span class="p">,</span>
+                <span class="mf">50.60151</span><span class="p">,</span>
+                <span class="mf">46.27743</span><span class="p">,</span>
+                <span class="mf">42.78269</span><span class="p">,</span>
+                <span class="mf">39.050854</span><span class="p">,</span>
+                <span class="mf">36.08868</span><span class="p">,</span>
+                <span class="mf">32.060455</span><span class="p">,</span>
+                <span class="mf">28.624102</span><span class="p">,</span>
+                <span class="mf">25.48363</span><span class="p">,</span>
+                <span class="mf">22.461315</span><span class="p">,</span>
+                <span class="mf">20.090572</span><span class="p">,</span>
+                <span class="mf">18.015444</span><span class="p">,</span>
+                <span class="mf">16.47346</span><span class="p">,</span>
+                <span class="mf">15.286756</span><span class="p">,</span>
+                <span class="mf">14.158645</span><span class="p">,</span>
+                <span class="mf">12.970594</span><span class="p">,</span>
+                <span class="mf">12.612313</span><span class="p">,</span>
+                <span class="mf">12.07634</span><span class="p">,</span>
+                <span class="mf">11.066555</span><span class="p">,</span>
+                <span class="mf">10.412693</span><span class="p">,</span>
+                <span class="mf">9.108175</span><span class="p">,</span>
+                <span class="mf">7.8235803</span><span class="p">,</span>
+                <span class="mf">6.4902444</span><span class="p">,</span>
+                <span class="mf">5.551555</span><span class="p">,</span>
+                <span class="mf">5.00799</span><span class="p">,</span>
+                <span class="mf">4.513699</span><span class="p">,</span>
+                <span class="mf">5.2524257</span><span class="p">,</span>
+                <span class="mf">6.6815033</span><span class="p">,</span>
+                <span class="mf">8.505031</span><span class="p">,</span>
+                <span class="mf">11.117457</span><span class="p">,</span>
+                <span class="mf">12.546872</span><span class="p">,</span>
+                <span class="mf">13.827873</span><span class="p">,</span>
+                <span class="mf">14.665177</span><span class="p">,</span>
+                <span class="mf">15.699439</span><span class="p">,</span>
+                <span class="mf">17.867777</span><span class="p">,</span>
+                <span class="mf">20.875132</span><span class="p">,</span>
+                <span class="mf">24.474821</span><span class="p">,</span>
+                <span class="mf">28.814922</span><span class="p">,</span>
+                <span class="mf">33.59928</span><span class="p">,</span>
+                <span class="mf">38.82787</span><span class="p">,</span>
+                <span class="mf">45.191124</span><span class="p">,</span>
+                <span class="mf">51.653038</span><span class="p">,</span>
+                <span class="mf">58.213753</span><span class="p">,</span>
+                <span class="mf">65.02121</span><span class="p">,</span>
+                <span class="mf">75.87385</span><span class="p">,</span>
+                <span class="mf">89.63695</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">reference</span> <span class="o">==</span> <span class="s2">&quot;roughness&quot;</span><span class="p">:</span>
+        <span class="n">HTres_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="mf">0.01</span><span class="p">,</span>
+                <span class="mf">0.17</span><span class="p">,</span>
+                <span class="mf">0.8</span><span class="p">,</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="mf">1.5</span><span class="p">,</span>
+                <span class="mi">2</span><span class="p">,</span>
+                <span class="mf">3.3</span><span class="p">,</span>
+                <span class="mi">4</span><span class="p">,</span>
+                <span class="mi">5</span><span class="p">,</span>
+                <span class="mi">6</span><span class="p">,</span>
+                <span class="mi">8</span><span class="p">,</span>
+                <span class="mi">10</span><span class="p">,</span>
+                <span class="mi">12</span><span class="p">,</span>
+                <span class="mf">13.3</span><span class="p">,</span>
+                <span class="mi">15</span><span class="p">,</span>
+                <span class="mi">16</span><span class="p">,</span>
+                <span class="mi">17</span><span class="p">,</span>
+                <span class="mi">18</span><span class="p">,</span>
+                <span class="mi">19</span><span class="p">,</span>
+                <span class="mi">20</span><span class="p">,</span>
+                <span class="mi">21</span><span class="p">,</span>
+                <span class="mi">22</span><span class="p">,</span>
+                <span class="mi">23</span><span class="p">,</span>
+                <span class="mi">24</span><span class="p">,</span>
+                <span class="mf">24.5</span><span class="p">,</span>
+                <span class="mi">25</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">HTres_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="mi">130</span><span class="p">,</span>
+                <span class="mi">70</span><span class="p">,</span>
+                <span class="mi">60</span><span class="p">,</span>
+                <span class="mi">30</span><span class="p">,</span>
+                <span class="mi">25</span><span class="p">,</span>
+                <span class="mi">20</span><span class="p">,</span>
+                <span class="mi">15</span><span class="p">,</span>
+                <span class="mi">10</span><span class="p">,</span>
+                <span class="mf">8.1</span><span class="p">,</span>
+                <span class="mf">6.3</span><span class="p">,</span>
+                <span class="mi">5</span><span class="p">,</span>
+                <span class="mf">3.5</span><span class="p">,</span>
+                <span class="mf">2.5</span><span class="p">,</span>
+                <span class="mf">1.7</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">3.7</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="mf">1.4</span><span class="p">,</span>
+                <span class="mf">3.8</span><span class="p">,</span>
+                <span class="mi">5</span><span class="p">,</span>
+                <span class="mf">7.5</span><span class="p">,</span>
+                <span class="mi">15</span><span class="p">,</span>
+                <span class="mi">48</span><span class="p">,</span>
+                <span class="mi">60</span><span class="p">,</span>
+                <span class="mi">130</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="n">threshold</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">bark_axis</span><span class="p">,</span> <span class="n">HTres_x</span><span class="p">,</span> <span class="n">HTres_y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">threshold</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Green Forge Coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

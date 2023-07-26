@@ -1,0 +1,29 @@
+tests.sq\_metrics.roughness package
+===================================
+
+Submodules
+----------
+
+tests.sq\_metrics.roughness.signals\_test\_generation module
+------------------------------------------------------------
+
+.. automodule:: tests.sq_metrics.roughness.signals_test_generation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tests.sq\_metrics.roughness.test\_roughness\_dw module
+------------------------------------------------------
+
+.. automodule:: tests.sq_metrics.roughness.test_roughness_dw
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: tests.sq_metrics.roughness
+   :members:
+   :undoc-members:
+   :show-inheritance:

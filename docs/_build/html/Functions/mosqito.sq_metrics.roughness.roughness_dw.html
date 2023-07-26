@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mosqito.sq_metrics.roughness.roughness_dw package &mdash; MOSQITO 1.0.8 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MOSQITO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">mosqito.sq_metrics.roughness.roughness_dw package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw">mosqito.sq_metrics.roughness.roughness_dw.roughness_dw module</a><ul>
+<li><a class="reference internal" href="#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw"><code class="docutils literal notranslate"><span class="pre">roughness_dw()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq">mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq module</a><ul>
+<li><a class="reference internal" href="#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.roughness_dw_freq"><code class="docutils literal notranslate"><span class="pre">roughness_dw_freq()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-mosqito.sq_metrics.roughness.roughness_dw">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MOSQITO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">mosqito.sq_metrics.roughness.roughness_dw package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/functions/mosqito.sq_metrics.roughness.roughness_dw.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mosqito-sq-metrics-roughness-roughness-dw-package">
+<h1>mosqito.sq_metrics.roughness.roughness_dw package<a class="headerlink" href="#mosqito-sq-metrics-roughness-roughness-dw-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw">
+<span id="mosqito-sq-metrics-roughness-roughness-dw-roughness-dw-module"></span><h2>mosqito.sq_metrics.roughness.roughness_dw.roughness_dw module<a class="headerlink" href="#module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw">
+<span class="sig-prename descclassname"><span class="pre">mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.</span></span><span class="sig-name descname"><span class="pre">roughness_dw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_sdt_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mosqito/sq_metrics/roughness/roughness_dw/roughness_dw.html#roughness_dw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw" title="Permalink to this definition"></a></dt>
+<dd><p>Roughness calculation of a signal sampled at 48kHz.</p>
+<p>The code is based on the algorithm described in “Psychoacoustical roughness:
+implementation of an optimized model” by Daniel and Weber in 1997.
+The roughness model consists of a parallel processing structure that is made up
+of successive stages and calculates intermediate specific roughnesses R_spec,
+which are summed up to determine the total roughness R.</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>signal :numpy.array  or DataTime object</dt><dd><p>A time signal in Pa</p>
+</dd>
+<dt>fs<span class="classifier">float, optional</span></dt><dd><p>Sampling frequency, can be omitted if the input is a DataTime
+object. Default to None</p>
+</dd>
+<dt>overlap<span class="classifier">float</span></dt><dd><p>Overlapping coefficient for the time windows of 200ms</p>
+</dd>
+</dl>
+</section>
+<section id="outputs">
+<h3>Outputs<a class="headerlink" href="#outputs" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>R<span class="classifier">numpy.array</span></dt><dd><p>Roughness in [asper].</p>
+</dd>
+<dt>R_spec<span class="classifier">numpy.array</span></dt><dd><p>Specific roughness over bark axis.</p>
+</dd>
+<dt>bark_axis<span class="classifier">numpy.array</span></dt><dd><p>Frequency axis in [bark].</p>
+</dd>
+<dt>time<span class="classifier">numpy.array</span></dt><dd><p>Time axis in [s].</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq">
+<span id="mosqito-sq-metrics-roughness-roughness-dw-roughness-dw-freq-module"></span><h2>mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq module<a class="headerlink" href="#module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.roughness_dw_freq">
+<span class="sig-prename descclassname"><span class="pre">mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.</span></span><span class="sig-name descname"><span class="pre">roughness_dw_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mosqito/sq_metrics/roughness/roughness_dw/roughness_dw_freq.html#roughness_dw_freq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.roughness_dw_freq" title="Permalink to this definition"></a></dt>
+<dd><p>Roughness calculation of a spectrum sampled at 48kHz.</p>
+<p>The code is based on the algorithm described in “Psychoacoustical roughness:
+implementation of an optimized model” by Daniel and Weber in 1997.
+The roughness model consists of a parallel processing structure that is made up
+of successive stages and calculates intermediate specific roughnesses R_spec,
+which are summed up to determine the total roughness R.</p>
+<section id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>spectrum :numpy.array</dt><dd><p>An amplitude or complex frequency spectrum [nperseg x nseg].</p>
+</dd>
+<dt>freqs<span class="classifier">np.array</span></dt><dd><p>Frequency axis [nperseg] if identical for all the blocks, [nperseg x nseg] if not.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h3>Outputs<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>R<span class="classifier">numpy.array</span></dt><dd><p>Roughness in [asper], dim [nseg].</p>
+</dd>
+<dt>R_spec<span class="classifier">numpy.array</span></dt><dd><p>Specific roughness over bark axis, dim [47 bark x nseg].</p>
+</dd>
+<dt>bark_axis<span class="classifier">numpy.array</span></dt><dd><p>Frequency axis in [bark], dim [nseg].</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-mosqito.sq_metrics.roughness.roughness_dw">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mosqito.sq_metrics.roughness.roughness_dw" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Green Forge Coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

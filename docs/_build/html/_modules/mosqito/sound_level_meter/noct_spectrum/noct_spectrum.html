@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mosqito.sound_level_meter.noct_spectrum.noct_spectrum &mdash; MOSQITO 1.0.8 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            MOSQITO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">MOSQITO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">mosqito.sound_level_meter.noct_spectrum.noct_spectrum</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mosqito.sound_level_meter.noct_spectrum.noct_spectrum</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># Standard library imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Local application imports</span>
+<span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._filter_bandwidth</span> <span class="kn">import</span> <span class="n">_filter_bandwidth</span>
+<span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._n_oct_time_filter</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_n_oct_time_filter</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._center_freq</span> <span class="kn">import</span> <span class="n">_center_freq</span>
+
+
+<div class="viewcode-block" id="noct_spectrum"><a class="viewcode-back" href="../../../../functions/mosqito.sound_level_meter.noct_spectrum.html#mosqito.sound_level_meter.noct_spectrum.noct_spectrum.noct_spectrum">[docs]</a><span class="k">def</span> <span class="nf">noct_spectrum</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute nth-octave band spectrum</span>
+
+<span class="sd">    Calculate the rms level of the signal &quot;sig&quot; sampled at freqency &quot;fs&quot;</span>
+<span class="sd">    for each third octave band between &quot;fc_min&quot; and &quot;fc_max&quot;.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sig : numpy.ndarray</span>
+<span class="sd">        A time signal array with size (nperseg, nseg).</span>
+<span class="sd">    fs : float</span>
+<span class="sd">        Sampling frequency [Hz]</span>
+<span class="sd">    fmin : float</span>
+<span class="sd">        Min frequency band [Hz]</span>
+<span class="sd">    fmax : float</span>
+<span class="sd">        Max frequency band [Hz]</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Number of bands pr octave</span>
+<span class="sd">    G : int</span>
+<span class="sd">        System for specifying the exact geometric mean frequencies.</span>
+<span class="sd">        Can be base 2 or base 10</span>
+<span class="sd">    fr : int</span>
+<span class="sd">        Reference frequency. Shall be set to 1 kHz for audible frequency</span>
+<span class="sd">        range, to 1 Hz for infrasonic range (f &lt; 20 Hz) and to 1 MHz for</span>
+<span class="sd">        ultrasonic range (f &gt; 31.5 kHz)</span>
+
+<span class="sd">    Outputs</span>
+<span class="sd">    -------</span>
+<span class="sd">    spec : numpy.ndarray</span>
+<span class="sd">        The third octave band spectrum of signal sig with size (nfreq, nseg)</span>
+<span class="sd">    fpref : numpy.ndarray</span>
+<span class="sd">        Corresponding preferred third octave band center frequencies</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># 1-dimensional array to 2-dimensional array with size (nperseg, 1)</span>
+    <span class="k">if</span> <span class="n">sig</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">sig</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="c1"># Get filters center frequencies</span>
+    <span class="n">fc_vec</span><span class="p">,</span> <span class="n">fpref</span> <span class="o">=</span> <span class="n">_center_freq</span><span class="p">(</span><span class="n">fmin</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="n">fmax</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="n">G</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="n">fr</span><span class="p">)</span>
+
+    <span class="c1"># Compute the filters bandwidth</span>
+    <span class="n">alpha_vec</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_filter_bandwidth</span><span class="p">(</span><span class="n">fc_vec</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># Calculation of the rms level of the signal in each band</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">fc</span><span class="p">,</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fc_vec</span><span class="p">,</span> <span class="n">alpha_vec</span><span class="p">):</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_n_oct_time_filter</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">alpha</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">spec</span><span class="p">),</span> <span class="n">fpref</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Green Forge Coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

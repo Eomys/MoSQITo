@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv &mdash; MOSQITO 1.0.8 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            MOSQITO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">MOSQITO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># Standard library imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Local applications imports</span>
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_zwst._main_loudness</span> <span class="kn">import</span> <span class="n">_main_loudness</span>
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes</span> <span class="kn">import</span> <span class="n">_calc_slopes</span>
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_zwtv._nonlinear_decay</span> <span class="kn">import</span> <span class="n">_nl_loudness</span>
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_zwtv._temporal_weighting</span> <span class="kn">import</span> <span class="n">_temporal_weighting</span>
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels</span> <span class="kn">import</span> <span class="n">_third_octave_levels</span>
+
+
+<div class="viewcode-block" id="loudness_zwtv"><a class="viewcode-back" href="../../../../../functions/mosqito.sq_metrics.loudness.loudness_zwtv.html#mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv.loudness_zwtv">[docs]</a><span class="k">def</span> <span class="nf">loudness_zwtv</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s1">&#39;free&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate Zwicker-loudness for time-varying signals</span>
+<span class="sd">    Calculate the acoustic loudness according to Zwicker method for</span>
+<span class="sd">    time-varying signals.</span>
+<span class="sd">    Normatice reference:</span>
+<span class="sd">        DIN 45631/A1:2010</span>
+<span class="sd">        ISO 532-1:2017 (method 2)</span>
+<span class="sd">    The code is based on C program source code published alongside</span>
+<span class="sd">    with ISO 532-1 standard.</span>
+<span class="sd">    Note that for reasons of normative continuity, as defined in the</span>
+<span class="sd">    preceeding standards, the method is in accordance with</span>
+<span class="sd">    ISO 226:1987 equal loudness contours (instead of ISO 226:2003)</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    signal : numpy.array</span>
+<span class="sd">        A time signal values [Pa].</span>
+<span class="sd">    fs : integer</span>
+<span class="sd">        Sampling frequency.</span>
+<span class="sd">    field_type : str</span>
+<span class="sd">        Type of soundfield corresponding to signal (&quot;free&quot; by or &quot;diffuse&quot;).</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs</span>
+<span class="sd">    -------</span>
+<span class="sd">    N : float</span>
+<span class="sd">        Calculated loudness [sones], size (Ntime,).</span>
+<span class="sd">    N_specific : numpy.ndarray</span>
+<span class="sd">        Specific loudness [sones/bark], size (Nbark, Ntime).</span>
+<span class="sd">    bark_axis : numpy.ndarray</span>
+<span class="sd">        Corresponding bark axis, size (Nbark,).</span>
+<span class="sd">    time_axis : numpy.ndarray</span>
+<span class="sd">        Time axis, size (Ntime,).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>        
+
+    <span class="c1"># Compute third octave band spectrum vs. time</span>
+    <span class="n">spec_third</span><span class="p">,</span> <span class="n">time_axis</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_third_octave_levels</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+
+    <span class="c1"># Calculate core loudness (vectorized version)</span>
+    <span class="n">core_loudness</span> <span class="o">=</span> <span class="n">_main_loudness</span><span class="p">(</span><span class="n">spec_third</span><span class="p">,</span> <span class="n">field_type</span><span class="p">)</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># Nonlinearity</span>
+    <span class="n">core_loudness</span> <span class="o">=</span> <span class="n">_nl_loudness</span><span class="p">(</span><span class="n">core_loudness</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># Calculation of specific loudness</span>
+    <span class="n">loudness</span><span class="p">,</span> <span class="n">spec_loudness</span> <span class="o">=</span> <span class="n">_calc_slopes</span><span class="p">(</span><span class="n">core_loudness</span><span class="p">)</span>
+
+    <span class="c1"># temporal weigthing</span>
+    <span class="n">filt_loudness</span> <span class="o">=</span> <span class="n">_temporal_weighting</span><span class="p">(</span><span class="n">loudness</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># Decimation from temporal resolution 0.5 ms to 2ms and return</span>
+    <span class="n">dec_factor</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">filt_loudness</span><span class="p">[::</span><span class="n">dec_factor</span><span class="p">]</span>
+    <span class="n">N_spec</span> <span class="o">=</span> <span class="n">spec_loudness</span><span class="p">[:,</span> <span class="p">::</span><span class="n">dec_factor</span><span class="p">]</span>
+    <span class="n">time_axis</span> <span class="o">=</span> <span class="n">time_axis</span><span class="p">[::</span><span class="n">dec_factor</span><span class="p">]</span>
+    <span class="c1">#</span>
+    <span class="c1"># Build bark axis</span>
+    <span class="n">bark_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">24</span> <span class="o">/</span> <span class="mf">0.1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">N</span><span class="p">,</span> <span class="n">N_spec</span><span class="p">,</span> <span class="n">bark_axis</span><span class="p">,</span> <span class="n">time_axis</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Green Forge Coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

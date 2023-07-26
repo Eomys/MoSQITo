@@ -1,0 +1,61 @@
+tests.sq\_metrics.tonality package
+==================================
+
+Submodules
+----------
+
+tests.sq\_metrics.tonality.test\_pr\_ecma\_freq module
+------------------------------------------------------
+
+.. automodule:: tests.sq_metrics.tonality.test_pr_ecma_freq
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tests.sq\_metrics.tonality.test\_pr\_ecma\_st module
+----------------------------------------------------
+
+.. automodule:: tests.sq_metrics.tonality.test_pr_ecma_st
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tests.sq\_metrics.tonality.test\_pr\_ecma\_tv module
+----------------------------------------------------
+
+.. automodule:: tests.sq_metrics.tonality.test_pr_ecma_tv
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tests.sq\_metrics.tonality.test\_tnr\_ecma\_freq module
+-------------------------------------------------------
+
+.. automodule:: tests.sq_metrics.tonality.test_tnr_ecma_freq
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tests.sq\_metrics.tonality.test\_tnr\_ecma\_st module
+-----------------------------------------------------
+
+.. automodule:: tests.sq_metrics.tonality.test_tnr_ecma_st
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tests.sq\_metrics.tonality.test\_tnr\_ecma\_tv module
+-----------------------------------------------------
+
+.. automodule:: tests.sq_metrics.tonality.test_tnr_ecma_tv
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: tests.sq_metrics.tonality
+   :members:
+   :undoc-members:
+   :show-inheritance:

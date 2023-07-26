@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scope of the project &mdash; MOSQITO 1.0.8 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How to contribute to MOSQITO" href="contribute.html" />
+    <link rel="prev" title="Architecture of the package" href="architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MOSQITO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture of the package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Scope of the project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sound-quality-metrics">Sound quality metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-sq-tools">Other SQ tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html">How to contribute to MOSQITO</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../functions/index.html">Functions description</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MOSQITO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">User guide</a></li>
+      <li class="breadcrumb-item active">Scope of the project</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user_guide/scope.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scope-of-the-project">
+<h1>Scope of the project<a class="headerlink" href="#scope-of-the-project" title="Permalink to this heading"></a></h1>
+<section id="sound-quality-metrics">
+<h2>Sound quality metrics<a class="headerlink" href="#sound-quality-metrics" title="Permalink to this heading"></a></h2>
+<p>The scope of the project is to implement the following first set of
+metrics:</p>
+<div class="line-block">
+<div class="line">| Reference                                            | Validated                                          | Available                                     | Under dev. | To do |</div>
+</div>
+<p><a href="#id1"><span class="problematic" id="id2">|:-------------------------------------------------- |:---------------------------------------------------- |:-------------------------------------------:|</span></a>:———————————————:<a href="#id3"><span class="problematic" id="id4">|:----------:|</span></a>:—–:|
+| Loudness for&lt;br&gt;steady signals&lt;br&gt;(Zwicker method) | ISO 532B:1975&lt;br&gt;DIN 45631:1991&lt;br&gt;ISO 532-1:2017 §5 | [x](./loudness_zwst.md)               | x |  |  |
+| Loudness for non-stationary&lt;br&gt;(Zwicker method)    | DIN 45631/A1:2010&lt;br&gt;ISO 532-1:2017 §6               | [x](./loudness_zwtv.md)             | x |  |  |
+| Loudness for non-stationary&lt;br&gt;(ECMA method)       | ECMA 418-2:2019 section 5&lt;br&gt;Sottek, 2016            | [x](./loudness_ecma.md)                     | x |  |  |
+| Roughness                                          | Daniel and Weber, 1997                               | [x](./roughness_dw.md)   | x |  |  |
+| Roughness                                          | ECMA-418-2:2020                                      |                                             |  |  | x |
+| Fluctuation Strength                               | To be defined                                        |                                             |  |  | x |
+| Sharpness                                          | DIN 45692:2009                                       | [x](./sharpness_din.md)                         | x |  |  |
+| Tonality (Hearing model)                           | ECMA-74:2019 annex G                                 |                                             |  |   | x |</p>
+<p>As a second priority, the project could address the following metrics:</p>
+<div class="line-block">
+<div class="line">| Reference                             | Validated | Available | Under dev. | To do |</div>
+</div>
+<p><a href="#id5"><span class="problematic" id="id6">|:----------------------------------------------------------------------------------- |:------------------------------------- |:---------:|</span></a>:———:<a href="#id7"><span class="problematic" id="id8">|:----------:|</span></a>:—–:|
+| Loudness for steady signals&lt;br&gt;(Moore/Glasberg method)                              | ISO 532-2:2017                        |           |           |            | x     |
+| Loudness for non-stationary&lt;br&gt;(Moore/Glasberg method)                              | Moore, 2014                           |           |           |            | x     |
+| Sharpness (using &lt;br&gt;Moore/Glasberg loudness)                                       | Hales-Swift&lt;br&gt;and Gee, 2017          |           |           |            | x     |
+| Tone-to-noise ratio / Prominence &lt;br&gt; ratio (occupational noise,&lt;br&gt;discrete tones) | ECMA-74:2019 annex D&lt;br&gt;ISO 7719:2018 |           | x         |            |       |
+| Tone-to-noise ratio&lt;br&gt;(environmental noise,&lt;br&gt;automatic tone detection)           | DIN 45681                             |           |           |            | x     |
+| Audibility of tone in noise &lt;br&gt;(Engineering method)                                | ISO 1996-2 annex J                    |           |           |             |   x   |
+| Audibility of tone in noise &lt;br&gt;(Survey method)                                     | ISO 1996-2 annex K                    |           |           |       x     |       |
+| Tone-to-noise ratio&lt;br&gt;(environmental noise)                                        | ANSI S1.13:2005                       |           |           |            | x     |</p>
+</section>
+<section id="other-sq-tools">
+<h2>Other SQ tools<a class="headerlink" href="#other-sq-tools" title="Permalink to this heading"></a></h2>
+<p>In parallel, tools for signal listening and manipulation will be
+developed. The objective is to be able to apply some modification to a
+signal (filtering, tone removal, etc.) and assess the impact on
+different SQ metrics. The integration of tools to define jury tests and
+analyze the results is also planned.</p>
+<p>Of course, any other sound quality related implementation by anyone who
+wants to contribute is welcome.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
+<p>Daniel, P., and Weber, R. (1997). “Psychoacoustical Roughness: Implementation
+of an Optimized Model”, Acta Acustica, Vol. 83: 113-123</p>
+<p>Hales Swift, S., and Gee, K. L. (2017). “Extending sharpness calculation
+for an alternative loudness metric input,” J. Acoust. Soc. Am.142,
+EL549.</p>
+<p>Moore, B. C. J. et al. (2016) ‘A Loudness Model for Time-Varying Sounds Incorporating Binaural Inhibition’, Trends in Hearing. [doi: 10.1177/2331216516682698](<a class="reference external" href="https://doi.org/10.1177/2331216516682698">https://doi.org/10.1177/2331216516682698</a>).</p>
+<p>Sottek, R. (2016) A Hearing Model Approach to Time-Varying Loudness, Acta Acustica united with Acustica, vol. 102, no. 4, pp. 725-744.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="architecture.html" class="btn btn-neutral float-left" title="Architecture of the package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contribute.html" class="btn btn-neutral float-right" title="How to contribute to MOSQITO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Green Forge Coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+User guide 
+==========
+
+Architecture of the package
+---------------------------
+
+:mod:`mosqito` functions are sorted by modules.Each subfolder contains one main function that is intended to be called by the user. The subfunctions are identified by a trailing underscore. Each main function is accompanied by a documentation (in the [docs](.) folder), a tutorial (in the [tutorials](../tutorials) folder) and a detailed validation of the implementation in the [validations](../validations) folder. 
+
+For example, considering the function to compute the acoustic loudness according to the Zwicker method for stationary signals, the folowing elements can be found in :mod:`mosqito`:
+- source code of the function and subfunctions in the [mosqito/sq_metrics/loudness/loudness_zwst](../mosqito/sq_metrics/loudness/loudness_zwst/) folder,
+- source code of the main function in the [loudness_zwst.py](../mosqito/sq_metrics/loudness/loudness_zwst/loudness_zwst.py) file,
+- documentation in the [docs/loudness_zwst.md](../docs/loudness_zwst.md) file,  
+- tutorial explaining how to use the function in the [tutorials/tuto_loudness_zwst.ipynb](../tutorials/tuto_loudness_zwst.ipynb) file,
+- script used to validate the implementation by using the tests signals from the IS0 532-1 standard is available, together with the output of the validation process, in the [validations/sq_metrics/loudness_zwst](../validations/sq_metrics/loudness_zwst) folder.
+
+Scope of the project
+---------------------
+
+
+The scope of the project is to implement the following first set of metrics:
+
+.. list-table:: 
+   :header-rows: 1
+
+   * -  
+     - Reference
+     - Validated
+     - Available
+     - Under dev.
+     - To do
+   * - Loudness for steady signals (Zwicker method)
+     - ISO 532B:1975
+       DIN 45631:1991
+       ISO 532-1:2017 §5
+     - X 
+     - X 
+     - 
+     - 
+   * - Loudness for non-stationary (Zwicker method)
+     - DIN 45631/A1:2010
+       ISO 532-1:2017 §6
+     - X 
+     - X 
+     - 
+     - 
+   * - Loudness for non-stationary (ECMA method)
+     - ECMA 418-2:2019 section 5, Sottek, 2016
+     - X 
+     - X 
+     - 
+     - 
+   * - Sharpness 
+     - DIN 45692:2009
+     - X 
+     - X 
+     - 
+     - 
+   * - Roughness (Daniel and Weber)
+     - Daniel and Weber, 1997
+     - X 
+     - X 
+     - 
+     - 
+   * - Roughness (ECMA method)
+     - ECMA-418-2:2020
+     -  
+     -  
+     - X
+     - 
+
+   * - Fluctuation Strength
+     - To be defined
+     -  
+     -  
+     - 
+     - X
+   * - Tonality (Hearing model)
+     - ECMA-74:2019 annex G
+     -  
+     -  
+     - X
+     - 
+
+As a second priority, the project could address the following metrics:
+
+.. list-table:: 
+   :header-rows: 1
+
+   * -  
+     - Reference
+     - Validated
+     - Available
+     - Under dev.
+     - To do
+   * - Loudness for steady signals (Moore/Glasberg method)
+     - ISO 532-2:2017
+     -  
+     -  
+     - 
+     - X 
+   * - Loudness for non-stationary (Moore/Glasberg method)
+     - Moore, 2014
+     -   
+     -   
+     - 
+     - X
+   * - Sharpness (using Moore/Glasberg loudness)
+     - Hales-Swift and Gee, 2017
+     -  
+     -  
+     - 
+     - X 
+   * - Tone-to-noise ratio / Prominence ratio (occupational noise, discrete tones)
+     - ECMA-74:2019 annex D ISO 7719:2018
+     -  
+     - X 
+     - 
+     - 
+   * - Tone-to-noise ratio (environmental noise, automatic tone detection)
+     - DIN 45681
+     -  
+     -  
+     - 
+     - X
+
+   * - Audibility of tone in noise (Engineering method)
+     - ISO 1996-2 annex J
+     -  
+     -  
+     - 
+     - X
+   * - Audibility of tone in noise (Survey method)    
+     - ISO 1996-2 annex K
+     -  
+     -  
+     - X
+     - 
+   * - Tone-to-noise ratio (environmental noise) 
+     - ANSI S1.13:2005
+     -  
+     -  
+     - 
+     - X 
+
+Other SQ tools
+
+In parallel, tools for signal listening and manipulation will be
+developed. The objective is to be able to apply some modification to a
+signal (filtering, tone removal, etc.) and assess the impact on
+different SQ metrics. The integration of tools to define jury tests and 
+analyze the results is also planned.
+
+Of course, any other sound quality related implementation by anyone who
+wants to contribute is welcome.
+
+References
+
+
+Daniel, P., and Weber, R. (1997). “Psychoacoustical Roughness: Implementation 
+of an Optimized Model”, Acta Acustica, Vol. 83: 113-123
+
+Hales Swift, S., and Gee, K. L. (2017). “Extending sharpness calculation
+for an alternative loudness metric input,” J. Acoust. Soc. Am.142,
+EL549. 
+
+Moore, B. C. J. et al. (2016) ‘A Loudness Model for Time-Varying Sounds Incorporating Binaural Inhibition’, Trends in Hearing. [doi: 10.1177/2331216516682698](https://doi.org/10.1177/2331216516682698).
+
+Sottek, R. (2016) A Hearing Model Approach to Time-Varying Loudness, Acta Acustica united with Acustica, vol. 102, no. 4, pp. 725-744.

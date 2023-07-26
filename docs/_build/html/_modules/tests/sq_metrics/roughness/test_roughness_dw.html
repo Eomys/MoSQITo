@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.sq_metrics.roughness.test_roughness_dw &mdash; MOSQITO 1.0.8 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            MOSQITO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">MOSQITO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.sq_metrics.roughness.test_roughness_dw</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.sq_metrics.roughness.test_roughness_dw</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># Optional package import</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">pytest</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+        <span class="s2">&quot;In order to perform the tests you need the &#39;pytest&#39; package.&quot;</span>
+    <span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">SciDataTool</span> <span class="kn">import</span> <span class="n">DataLinspace</span><span class="p">,</span> <span class="n">DataTime</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+        <span class="s2">&quot;In order to handle Data objects you need the &#39;SciDataTool&#39; package.&quot;</span>
+    <span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.fft</span> <span class="kn">import</span> <span class="n">fft</span>
+
+<span class="c1"># Local application imports</span>
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics</span> <span class="kn">import</span> <span class="n">roughness_dw</span><span class="p">,</span> <span class="n">roughness_dw_freq</span>
+<span class="kn">from</span> <span class="nn">tests.sq_metrics.roughness.signals_test_generation</span> <span class="kn">import</span> <span class="n">signal_test</span>
+
+
+<div class="viewcode-block" id="test_roughness_dw"><a class="viewcode-back" href="../../../../functions/tests.sq_metrics.roughness.html#tests.sq_metrics.roughness.test_roughness_dw.test_roughness_dw">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">roughness_dw</span>  <span class="c1"># to skip or run only Daniel and Weber roughness tests</span>
+<span class="k">def</span> <span class="nf">test_roughness_dw</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test function for the roughness calculation of a audio signal</span>
+
+<span class="sd">    Test function for the script &quot;comp_roughness&quot; method with signal array</span>
+<span class="sd">    as input. The input signals are chosen according to the article &quot;Psychoacoustical</span>
+<span class="sd">    roughness: implementation of an optimized model&quot; by Daniel and Weber in 1997.</span>
+<span class="sd">    The figure 3 is used to compare amplitude-modulated signals created according to</span>
+<span class="sd">    their carrier frequency and modulation frequency to the article results.</span>
+<span class="sd">    One .png compliance plot is generated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Outputs</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Stimulus generation</span>
+    <span class="n">stimulus</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">signal_test</span><span class="p">(</span>
+        <span class="n">fc</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">fmod</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">mdepth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">dB</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+    <span class="c1"># Roughness calculation</span>
+    <span class="n">roughness</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">roughness_dw</span><span class="p">(</span><span class="n">stimulus</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Roughness&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">roughness</span><span class="p">,</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Check compliance</span>
+    <span class="n">tst</span> <span class="o">=</span> <span class="n">check_compliance</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">tst</span></div>
+
+
+<div class="viewcode-block" id="test_roughness_dw_sdt"><a class="viewcode-back" href="../../../../functions/tests.sq_metrics.roughness.html#tests.sq_metrics.roughness.test_roughness_dw.test_roughness_dw_sdt">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">roughness_dw</span>  <span class="c1"># to skip or run only Daniel and Weber roughness tests</span>
+<span class="k">def</span> <span class="nf">test_roughness_dw_sdt</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test function for the roughness calculation of a audio signal</span>
+
+<span class="sd">    Test function for the script &quot;comp_roughness&quot; method with signal array</span>
+<span class="sd">    as input. The input signals are chosen according to the article &quot;Psychoacoustical</span>
+<span class="sd">    roughness: implementation of an optimized model&quot; by Daniel and Weber in 1997.</span>
+<span class="sd">    The figure 3 is used to compare amplitude-modulated signals created according to</span>
+<span class="sd">    their carrier frequency and modulation frequency to the article results.</span>
+<span class="sd">    One .png compliance plot is generated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Outputs</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Stimulus generation</span>
+    <span class="n">stimulus</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">signal_test</span><span class="p">(</span>
+        <span class="n">fc</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">fmod</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">mdepth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">dB</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">DataLinspace</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+        <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
+        <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">final</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">44100</span><span class="p">,</span>
+        <span class="n">number</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">),</span>
+        <span class="n">include_endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">stimulus</span> <span class="o">=</span> <span class="n">DataTime</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Test signal&quot;</span><span class="p">,</span>
+        <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span>
+        <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;Pa&quot;</span><span class="p">,</span>
+        <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="n">time</span><span class="p">],</span>
+        <span class="n">values</span><span class="o">=</span><span class="n">stimulus</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Roughness calculation</span>
+    <span class="n">roughness</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">roughness_dw</span><span class="p">(</span>
+        <span class="n">stimulus</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">is_sdt_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">roughness</span> <span class="o">=</span> <span class="n">roughness</span><span class="o">.</span><span class="n">get_along</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)[</span><span class="n">roughness</span><span class="o">.</span><span class="n">symbol</span><span class="p">]</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Roughness&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">roughness</span><span class="p">,</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Check compliance</span>
+    <span class="n">tst</span> <span class="o">=</span> <span class="n">check_compliance</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">tst</span></div>
+
+
+<div class="viewcode-block" id="test_roughness_dw_freq"><a class="viewcode-back" href="../../../../functions/tests.sq_metrics.roughness.html#tests.sq_metrics.roughness.test_roughness_dw.test_roughness_dw_freq">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">roughness_dw</span>  <span class="c1"># to skip or run only Daniel and Weber roughness tests</span>
+<span class="k">def</span> <span class="nf">test_roughness_dw_freq</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test function for the roughness calculation of a audio signal</span>
+
+<span class="sd">    Test function for the script &quot;comp_roughness&quot; method with spectrum array</span>
+<span class="sd">    as input. The input signals are chosen according to the article &quot;Psychoacoustical</span>
+<span class="sd">    roughness: implementation of an optimized model&quot; by Daniel and Weber in 1997.</span>
+<span class="sd">    The figure 3 is used to compare amplitude-modulated signals created according to</span>
+<span class="sd">    their carrier frequency and modulation frequency to the article results.</span>
+<span class="sd">    One .png compliance plot is generated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Outputs</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Stimulus generation</span>
+    <span class="n">stimulus</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">signal_test</span><span class="p">(</span>
+        <span class="n">fc</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">fmod</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">mdepth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">dB</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+    <span class="c1"># conversion into frequency domain</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stimulus</span><span class="p">)</span>
+
+    <span class="c1"># Creation of the spectrum by FFT using the Blackman window</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">stimulus</span> <span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.42</span>
+    <span class="c1"># Highest frequency</span>
+    <span class="n">nMax</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Frequency axis in Hertz</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nMax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">44100</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># Roughness calculation</span>
+    <span class="n">roughness</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">roughness_dw_freq</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">freqs</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Roughness&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">roughness</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+
+    <span class="c1"># Check compliance</span>
+    <span class="n">tst</span> <span class="o">=</span> <span class="n">check_compliance</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">tst</span></div>
+
+
+<div class="viewcode-block" id="check_compliance"><a class="viewcode-back" href="../../../../functions/tests.sq_metrics.roughness.html#tests.sq_metrics.roughness.test_roughness_dw.check_compliance">[docs]</a><span class="k">def</span> <span class="nf">check_compliance</span><span class="p">(</span><span class="n">R</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the compliance of roughness calc. to Daniel and Weber article</span>
+<span class="sd">    &quot;Psychoacoustical roughness: implementation of an optimized model&quot;, 1997.</span>
+
+<span class="sd">    Check the compliance of the input data R to figure 3 of the article</span>
+<span class="sd">    using the reference data described in the dictionary article_ref.</span>
+
+<span class="sd">    Parameter</span>
+<span class="sd">    ---------</span>
+<span class="sd">    R: numpy.array</span>
+<span class="sd">        Calculated roughnesses [asper]</span>
+
+<span class="sd">    Output</span>
+<span class="sd">    ------</span>
+<span class="sd">    tst : bool</span>
+<span class="sd">        Compliance to the reference data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Reference value of 1 asper given by Zwicker and Fastl</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># Test for comformance (17% tolerance)</span>
+    <span class="n">tst</span> <span class="o">=</span> <span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">ref</span> <span class="o">*</span> <span class="mf">0.83</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">ref</span> <span class="o">*</span> <span class="mf">1.17</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">tst</span></div>
+
+
+<span class="c1"># test de la fonction</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">test_roughness_dw</span><span class="p">()</span>
+    <span class="n">test_roughness_dw_sdt</span><span class="p">()</span>
+    <span class="n">test_roughness_dw_freq</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Green Forge Coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

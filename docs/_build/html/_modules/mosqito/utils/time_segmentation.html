@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mosqito.utils.time_segmentation &mdash; MOSQITO 1.0.8 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            MOSQITO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MOSQITO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">mosqito.utils.time_segmentation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mosqito.utils.time_segmentation</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="time_segmentation"><a class="viewcode-back" href="../../../functions/mosqito.utils.html#mosqito.utils.time_segmentation.time_segmentation">[docs]</a><span class="k">def</span> <span class="nf">time_segmentation</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">noverlap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_ecma</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function used for the segmentation of a time signal into</span>
+<span class="sd">    smaller parts of audio (blocks).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sig: numpy.array</span>
+<span class="sd">        A 1-dimensional time signal array.</span>
+<span class="sd">    fs : float</span>
+<span class="sd">        The time signal sampling frequency.</span>
+<span class="sd">    nperseg: int, optional</span>
+<span class="sd">        Length of each segment. Defaults to 2048.</span>
+<span class="sd">    noverlap: int, optional</span>
+<span class="sd">        Number of points to overlap between segments.</span>
+<span class="sd">        If None, noverlap = nperseg / 2. Defaults to None.</span>
+<span class="sd">    is_ecma: bool, optional</span>
+<span class="sd">        If is_ecma = True, the implementation is as described</span>
+<span class="sd">        in Formula 16 (section 5.1.4) of ECMA-418-2. Defaults</span>
+<span class="sd">        to False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    block_array: numpy.array</span>
+<span class="sd">        A 2-dimensional array of size (nperseg, nseg)</span>
+<span class="sd">        containing the segmented signal.</span>
+<span class="sd">    time: numpy.array</span>
+<span class="sd">        The time axis corresponding to the segmented</span>
+<span class="sd">        signal, size (nseg,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">noverlap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">noverlap</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nperseg</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">noverlap</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">noverlap</span> <span class="o">=</span> <span class="n">nperseg</span>
+
+    <span class="k">if</span> <span class="n">is_ecma</span><span class="p">:</span>
+        <span class="c1"># pad with zeros at the begining</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nperseg</span><span class="p">),</span> <span class="n">sig</span><span class="p">))</span>
+
+    <span class="c1"># build time axis for sig</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="p">))</span>
+
+    <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">block_array</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">time_array</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">-</span> <span class="n">nperseg</span><span class="p">:</span>
+        <span class="n">block_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">[</span><span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span> <span class="p">:</span> <span class="n">nperseg</span> <span class="o">+</span> <span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span><span class="p">])</span>
+        <span class="n">time_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span> <span class="p">:</span> <span class="n">nperseg</span> <span class="o">+</span> <span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span><span class="p">]))</span>
+        <span class="n">l</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">block_array</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">time_array</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Green Forge Coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
