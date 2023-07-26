@@ -1,5 +1,5 @@
-# "The specific loudness in each band z is zero if it is at or below a critical-band-dependent specific loudness
-# threshold LTQ(z)"
+# Specific loudness threshold (ECMA-418-2:2020 Table 3)
+# for z = linspace(0.5, 26.5, num=53, endpoint=True)
 ltq_z = [
     0.3310,
     0.1625,
