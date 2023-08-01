@@ -10,31 +10,83 @@ from mosqito.sq_metrics.roughness.roughness_dw._H_weighting import _H_weighting
 
 
 def roughness_dw_freq(spectrum, freqs):
-    """Roughness calculation of a spectrum sampled at 48kHz.
+    """
+    Returns the roughness according to Daniel and Weber method.
 
-    The code is based on the algorithm described in "Psychoacoustical roughness:
-    implementation of an optimized model" by Daniel and Weber in 1997.
-    The roughness model consists of a parallel processing structure that is made up
-    of successive stages and calculates intermediate specific roughnesses R_spec,
-    which are summed up to determine the total roughness R.
+    This function computes the global and specific roughness values 
+    of a signal sampled at 48 kHz.
 
     Parameters
     ----------
-    spectrum :numpy.array
-        An amplitude or complex frequency spectrum [nperseg x nseg].
-    freqs : np.array
-        Frequency axis [nperseg] if identical for all the blocks, [nperseg x nseg] if not.
 
-    Outputs
+    spectrum : array_like
+        Input amplitude or complex frequency spectrum, dim [nperseg x nseg]
+    freqs : np.array
+        Input frequency axis , dim [nperseg] if identical for all the blocks,
+        else [nperseg x nseg].
+
+    Returns
     -------
     R : numpy.array
-        Roughness in [asper], dim [nseg].
+        Roughness value in [asper], dim [nseg].
     R_spec : numpy.array
         Specific roughness over bark axis, dim [47 bark x nseg].
     bark_axis : numpy.array
         Frequency axis in [bark], dim [nseg].
 
+    Raises
+    ------
+    ValueError
+        If len(spectrum) != len(freqs)
+    ValueError
+        If spectrum.any() < 0
+
+    See Also
+    --------
+    roughness_dw : roughness computation from a time signal
+
+    Notes
+    -----
+    The model consists of a parallel processing structure that is made up
+    of successive stages and calculates intermediate specific roughnesses R_spec,
+    which are summed up to determine the total roughness R.
+
+    References
+    ----------
+    .. [DW] P. Daniel and R. Weber, "Psychoacoustical roughness: 
+            implementation of an optimized model", 1997
+
+    Examples
+    --------
+    .. plot::
+       :include-source:
+
+       >>> from mosqito.sq_metrics import roughness_dw_freq
+       >>> import matplotlib.pyplot as plt
+       >>> import numpy as np
+       >>> fc=1000
+       >>> fmod=70
+       >>> fs=44100
+       >>> d=0.2
+       >>> dB=60
+       >>> time = np.arange(0, d, 1/fs)
+       >>> stimulus = (
+       >>> 0.5
+       >>> * (1 + np.sin(2 * np.pi * fmod * time))
+       >>> * np.sin(2 * np.pi * fc * time))   
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> stimulus = stimulus * ampl
+       >>> n = len(stimulus)
+       >>> spec = np.fft.fft(stimulus )[0:n//2] * 1.42
+       >>> freqs = np.arange(1, round(n / 2) + 1, 1) * (44100 / n)
+       >>> R, R_specific, bark = roughness_dw_freq(spec, freqs)
+       >>> plt.plot(bark, R_specific)
+       >>> plt.xlabel("Bark axis [Bark]")
+       >>> plt.ylabel("Roughness, [Asper]")
+
     """
+        
 
     # Check input size coherence
     if len(spectrum) != len(freqs):

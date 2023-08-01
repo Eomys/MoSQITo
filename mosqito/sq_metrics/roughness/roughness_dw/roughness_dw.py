@@ -23,7 +23,10 @@ except ImportError:
 
 def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     """
-    Roughness calculation of a signal sampled at 48kHz.
+    Returns the roughness according to Daniel and Weber method.
+
+    This function computes the global and specific roughness values 
+    of a signal sampled at 48 kHz.
 
     Parameters
     ----------
@@ -64,7 +67,8 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
 
     References
     ----------
-    .. [DW] P. Daniel and R. Weber, "Psychoacoustical roughness: implementation of an optimized model", 1997
+    .. [DW] P. Daniel and R. Weber, "Psychoacoustical roughness: 
+            implementation of an optimized model", 1997
 
     Examples
     --------
