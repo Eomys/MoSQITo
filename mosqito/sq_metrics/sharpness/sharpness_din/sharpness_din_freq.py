@@ -10,7 +10,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     """Acoustic sharpness calculation according to different methods
       (Aures, Von Bismarck, DIN 45692, Fastl) from a complex spectrum.
 
-    Parameters:
+    Parameters: 
     ----------
     signal: numpy.array
         A RMS spectrum.

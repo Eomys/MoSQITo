@@ -22,35 +22,74 @@ except ImportError:
 
 
 def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
-    """Roughness calculation of a signal sampled at 48kHz.
-
-    The code is based on the algorithm described in "Psychoacoustical roughness:
-    implementation of an optimized model" by Daniel and Weber in 1997.
-    The roughness model consists of a parallel processing structure that is made up
-    of successive stages and calculates intermediate specific roughnesses R_spec,
-    which are summed up to determine the total roughness R.
+    """
+    Roughness calculation of a signal sampled at 48kHz.
 
     Parameters
     ----------
-    signal :numpy.array  or DataTime object
-        A time signal in Pa
+
+    signal : array_like or DataTime object
+        Input time signal in Pa
     fs : float, optional
         Sampling frequency, can be omitted if the input is a DataTime
         object. Default to None
     overlap : float
         Overlapping coefficient for the time windows of 200ms
 
-    Outputs
+    Returns
     -------
     R : numpy.array
-        Roughness in [asper].
+        Roughness value in [asper]
     R_spec : numpy.array
-        Specific roughness over bark axis.
+        Specific roughness over bark axis
     bark_axis : numpy.array
-        Frequency axis in [bark].
+        Frequency axis in [bark]
     time : numpy.array
-        Time axis in [s].
+        Time axis in [s]
 
+    Raises
+    ------
+    IndexError
+        If `axis` is not a valid axis of `a`.
+
+    See Also
+    --------
+    roughness_dw_freq : roughness computation from a sound spectrum
+
+    Notes
+    -----
+    The model consists of a parallel processing structure that is made up
+    of successive stages and calculates intermediate specific roughnesses R_spec,
+    which are summed up to determine the total roughness R.
+
+    References
+    ----------
+    Daniel and Weber, 1997, "Psychoacoustical roughness: implementation of an optimized model"
+
+    Examples
+    --------
+    .. plot::
+
+       from mosqito.sq_metrics import roughness_dw 
+       import matplotlib.pyplot as plt
+       fc=1000
+       fmod=70
+       fs=44100
+       d=0.2
+       dB=60
+       time = np.arange(0, d, 1/fs)
+       stimulus = (
+       0.5
+       * (1 + np.sin(2 * np.pi * fmod * time))
+       * np.sin(2 * np.pi * fc * time))   
+       rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       ampl = 0.00002 * np.power(10, dB / 20) / rms
+       stimulus = stimulus * ampl
+       R, R_specific, bark, time = roughness_dw(stimulus, fs=44100, overlap=0)
+       plt.plot(bark, R_specific)
+       plt.xlabel("Bark axis [Bark]")
+       plt.ylabel("Roughness, [Asper]")
+       
     """
 
     # Manage input type

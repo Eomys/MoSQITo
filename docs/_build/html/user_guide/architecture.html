@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Scope of the project" href="scope.html" />
-    <link rel="prev" title="User guide" href="index.html" /> 
+    <link rel="next" title="mosqito.sound_level_meter" href="../source/mosqito.sound_level_meter.html" />
+    <link rel="prev" title="Scope of the project" href="scope.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,15 +42,24 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <p class="caption" role="heading"><span class="caption-text">🦟 Installation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">User guide</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Architecture of the package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="scope.html">Scope of the project</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contribute.html">How to contribute to MOSQITO</a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../functions/index.html">Functions description</a></li>
+<p class="caption" role="heading"><span class="caption-text">📖 User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="scope.html">Scope of the project</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture of the package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/mosqito.utils.html">mosqito.utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">✏️ Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contribution/index.html">How to contribute</a></li>
 </ul>
 
         </div>
@@ -67,7 +76,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">User guide</a></li>
       <li class="breadcrumb-item active">Architecture of the package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/user_guide/architecture.rst.txt" rel="nofollow"> View page source</a>
@@ -80,27 +88,25 @@
              
   <section id="architecture-of-the-package">
 <h1>Architecture of the package<a class="headerlink" href="#architecture-of-the-package" title="Permalink to this heading"></a></h1>
+<p><a class="reference internal" href="../source/mosqito.html#module-mosqito" title="mosqito"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mosqito</span></code></a> functions are sorted by modules.Each subfolder contains one main function that is intended to be called by the user. The subfunctions are identified by a trailing underscore. Each main function is accompanied by a documentation (in the [docs](.) folder), a tutorial (in the [tutorials](../tutorials) folder) and a detailed validation of the implementation in the [validations](../validations) folder.</p>
 <dl class="simple">
-<dt>All the functions available in MOSQITO can be imported via the command:</dt><dd><p>import mosqito</p>
-</dd>
-<dt>To import only a specific module like the sound quality metrics, the following command can be used:</dt><dd><p>import mosqito.sq_metrics</p>
+<dt>For example, considering the function to compute the acoustic loudness according to the Zwicker method for stationary signals, the following elements can be found in <a class="reference internal" href="../source/mosqito.html#module-mosqito" title="mosqito"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mosqito</span></code></a>:</dt><dd><ul class="simple">
+<li><p>source code of the function and subfunctions in the “/mosqito/sq_metrics/loudness/loudness_zwst/” folder,</p></li>
+<li><p>source code of the main function in the “/mosqito/sq_metrics/loudness/loudness_zwst/loudness_zwst.py” file,</p></li>
+<li><p>documentation in the docstring of the main function,</p></li>
+<li><p>tutorial explaining how to use the function in the “/tutorials/tuto_loudness_zwst.ipynb” file,</p></li>
+<li><p>script used to validate the implementation by using the tests signals from the IS0 532-1 standard is available, together with the output of the validation process, in the “/validations/sq_metrics/loudness_zwst” folder.</p></li>
+</ul>
 </dd>
 </dl>
-<p>The code of all the functions available in MOSQITO is accessible in the [mosqito](../mosqito) folder, sorted by module. Each subfolder contains one main function that is intended to be called by the user. The subfunctions are identified by a trailing underscore. Each main function is accompanied by a documentation (in the [docs](.) folder), a tutorial (in the [tutorials](../tutorials) folder) and a detailed validation of the implementation in the [validations](../validations) folder.</p>
-<p>For example, considering the function to compute the acoustic loudness according to the Zwicker method for stationary signals, the folowing elements can be found in MOSQITO:
-- source code of the function and subfunctions in the [mosqito/sq_metrics/loudness/loudness_zwst](../mosqito/sq_metrics/loudness/loudness_zwst/) folder,
-- source code of the main function in the [loudness_zwst.py](../mosqito/sq_metrics/loudness/loudness_zwst/loudness_zwst.py) file,
-- documentation in the [docs/loudness_zwst.md](../docs/loudness_zwst.md) file,
-- tutorial explaining how to use the function in the [tutorials/tuto_loudness_zwst.ipynb](../tutorials/tuto_loudness_zwst.ipynb) file,
-- script used to validate the implementation by using the tests signals from the IS0 532-1 standard is available, together with the output of the validation process, in the [validations/sq_metrics/loudness_zwst](../validations/sq_metrics/loudness_zwst) folder.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="User guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="scope.html" class="btn btn-neutral float-right" title="Scope of the project" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="scope.html" class="btn btn-neutral float-left" title="Scope of the project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../source/mosqito.sound_level_meter.html" class="btn btn-neutral float-right" title="mosqito.sound_level_meter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

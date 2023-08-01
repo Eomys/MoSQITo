@@ -1,0 +1,7 @@
+{%- if show_headings %}
+{{- [basename] | join(' ') | e | heading }}
+{% endif -%}
+
+.. automodule:: {{ qualname }}
+
+

@@ -18,9 +18,7 @@
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Functions description" href="functions/index.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,14 +40,23 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">User guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#architecture-of-the-package">Architecture of the package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#scope-of-the-project">Scope of the project</a></li>
+              <p class="caption" role="heading"><span class="caption-text">🦟 Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation/index.html">Installation</a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="functions/index.html">Functions description</a></li>
+<p class="caption" role="heading"><span class="caption-text">📖 User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/scope.html">Scope of the project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/architecture.html">Architecture of the package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="source/mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/mosqito.utils.html">mosqito.utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">✏️ Contribution</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="contribution/index.html">How to contribute</a></li>
 </ul>
 
@@ -79,187 +86,12 @@
              
   <section id="user-guide">
 <h1>User guide<a class="headerlink" href="#user-guide" title="Permalink to this heading"></a></h1>
-<section id="architecture-of-the-package">
-<h2>Architecture of the package<a class="headerlink" href="#architecture-of-the-package" title="Permalink to this heading"></a></h2>
-<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">mosqito</span></code> functions are sorted by modules.Each subfolder contains one main function that is intended to be called by the user. The subfunctions are identified by a trailing underscore. Each main function is accompanied by a documentation (in the [docs](.) folder), a tutorial (in the [tutorials](../tutorials) folder) and a detailed validation of the implementation in the [validations](../validations) folder.</p>
-<p>For example, considering the function to compute the acoustic loudness according to the Zwicker method for stationary signals, the folowing elements can be found in <code class="xref py py-mod docutils literal notranslate"><span class="pre">mosqito</span></code>:
-- source code of the function and subfunctions in the [mosqito/sq_metrics/loudness/loudness_zwst](../mosqito/sq_metrics/loudness/loudness_zwst/) folder,
-- source code of the main function in the [loudness_zwst.py](../mosqito/sq_metrics/loudness/loudness_zwst/loudness_zwst.py) file,
-- documentation in the [docs/loudness_zwst.md](../docs/loudness_zwst.md) file,
-- tutorial explaining how to use the function in the [tutorials/tuto_loudness_zwst.ipynb](../tutorials/tuto_loudness_zwst.ipynb) file,
-- script used to validate the implementation by using the tests signals from the IS0 532-1 standard is available, together with the output of the validation process, in the [validations/sq_metrics/loudness_zwst](../validations/sq_metrics/loudness_zwst) folder.</p>
-</section>
-<section id="scope-of-the-project">
-<h2>Scope of the project<a class="headerlink" href="#scope-of-the-project" title="Permalink to this heading"></a></h2>
-<p>The scope of the project is to implement the following first set of metrics:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"></th>
-<th class="head"><p>Reference</p></th>
-<th class="head"><p>Validated</p></th>
-<th class="head"><p>Available</p></th>
-<th class="head"><p>Under dev.</p></th>
-<th class="head"><p>To do</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Loudness for steady signals (Zwicker method)</p></td>
-<td><p>ISO 532B:1975
-DIN 45631:1991
-ISO 532-1:2017 §5</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Loudness for non-stationary (Zwicker method)</p></td>
-<td><p>DIN 45631/A1:2010
-ISO 532-1:2017 §6</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>Loudness for non-stationary (ECMA method)</p></td>
-<td><p>ECMA 418-2:2019 section 5, Sottek, 2016</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Sharpness</p></td>
-<td><p>DIN 45692:2009</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>Roughness (Daniel and Weber)</p></td>
-<td><p>Daniel and Weber, 1997</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Roughness (ECMA method)</p></td>
-<td><p>ECMA-418-2:2020</p></td>
-<td></td>
-<td></td>
-<td><p>X</p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>Fluctuation Strength</p></td>
-<td><p>To be defined</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td><p>X</p></td>
-</tr>
-<tr class="row-odd"><td><p>Tonality (Hearing model)</p></td>
-<td><p>ECMA-74:2019 annex G</p></td>
-<td></td>
-<td></td>
-<td><p>X</p></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>As a second priority, the project could address the following metrics:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"></th>
-<th class="head"><p>Reference</p></th>
-<th class="head"><p>Validated</p></th>
-<th class="head"><p>Available</p></th>
-<th class="head"><p>Under dev.</p></th>
-<th class="head"><p>To do</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Loudness for steady signals (Moore/Glasberg method)</p></td>
-<td><p>ISO 532-2:2017</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td><p>X</p></td>
-</tr>
-<tr class="row-odd"><td><p>Loudness for non-stationary (Moore/Glasberg method)</p></td>
-<td><p>Moore, 2014</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td><p>X</p></td>
-</tr>
-<tr class="row-even"><td><p>Sharpness (using Moore/Glasberg loudness)</p></td>
-<td><p>Hales-Swift and Gee, 2017</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td><p>X</p></td>
-</tr>
-<tr class="row-odd"><td><p>Tone-to-noise ratio / Prominence ratio (occupational noise, discrete tones)</p></td>
-<td><p>ECMA-74:2019 annex D ISO 7719:2018</p></td>
-<td></td>
-<td><p>X</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>Tone-to-noise ratio (environmental noise, automatic tone detection)</p></td>
-<td><p>DIN 45681</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td><p>X</p></td>
-</tr>
-<tr class="row-odd"><td><p>Audibility of tone in noise (Engineering method)</p></td>
-<td><p>ISO 1996-2 annex J</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td><p>X</p></td>
-</tr>
-<tr class="row-even"><td><p>Audibility of tone in noise (Survey method)</p></td>
-<td><p>ISO 1996-2 annex K</p></td>
-<td></td>
-<td></td>
-<td><p>X</p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Tone-to-noise ratio (environmental noise)</p></td>
-<td><p>ANSI S1.13:2005</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td><p>X</p></td>
-</tr>
-</tbody>
-</table>
-<p>Other SQ tools</p>
-<p>In parallel, tools for signal listening and manipulation will be
-developed. The objective is to be able to apply some modification to a
-signal (filtering, tone removal, etc.) and assess the impact on
-different SQ metrics. The integration of tools to define jury tests and
-analyze the results is also planned.</p>
-<p>Of course, any other sound quality related implementation by anyone who
-wants to contribute is welcome.</p>
-<p>References</p>
-<p>Daniel, P., and Weber, R. (1997). “Psychoacoustical Roughness: Implementation
-of an Optimized Model”, Acta Acustica, Vol. 83: 113-123</p>
-<p>Hales Swift, S., and Gee, K. L. (2017). “Extending sharpness calculation
-for an alternative loudness metric input,” J. Acoust. Soc. Am.142,
-EL549.</p>
-<p>Moore, B. C. J. et al. (2016) ‘A Loudness Model for Time-Varying Sounds Incorporating Binaural Inhibition’, Trends in Hearing. [doi: 10.1177/2331216516682698](<a class="reference external" href="https://doi.org/10.1177/2331216516682698">https://doi.org/10.1177/2331216516682698</a>).</p>
-<p>Sottek, R. (2016) A Hearing Model Approach to Time-Varying Loudness, Acta Acustica united with Acustica, vol. 102, no. 4, pp. 725-744.</p>
-</section>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="functions/index.html" class="btn btn-neutral float-right" title="Functions description" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

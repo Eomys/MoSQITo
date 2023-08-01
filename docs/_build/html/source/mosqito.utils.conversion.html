@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parameters: &mdash; MOSQITO 1.0.8 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="mosqito.utils.isoclose.html" />
+    <link rel="prev" title="mosqito.utils" href="mosqito.utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MOSQITO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">🦟 Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">📖 User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/scope.html">Scope of the project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/architecture.html">Architecture of the package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="mosqito.utils.html">mosqito.utils</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">amp2db()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mosqito.utils.conversion.bark2freq"><code class="docutils literal notranslate"><span class="pre">bark2freq()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mosqito.utils.conversion.db2amp"><code class="docutils literal notranslate"><span class="pre">db2amp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mosqito.utils.conversion.freq2bark"><code class="docutils literal notranslate"><span class="pre">freq2bark()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mosqito.utils.conversion.spectrum2dBA"><code class="docutils literal notranslate"><span class="pre">spectrum2dBA()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.isoclose.html"><code class="docutils literal notranslate"><span class="pre">isoclose()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.load.html"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.LTQ.html"><code class="docutils literal notranslate"><span class="pre">LTQ()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.sine_wave_generator.html"><code class="docutils literal notranslate"><span class="pre">sine_wave_generator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.time_segmentation.html"><code class="docutils literal notranslate"><span class="pre">time_segmentation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">✏️ Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contribution/index.html">How to contribute</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MOSQITO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="mosqito.utils.html">mosqito.utils</a></li>
+      <li class="breadcrumb-item active">Parameters:</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/mosqito.utils.conversion.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="module-mosqito.utils.conversion"></span><p>Created on Mon Nov 16 11:02:48 2020</p>
+<p>&#64;author: wantysal</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="mosqito.utils.conversion.amp2db">
+<span class="sig-name descname"><span class="pre">amp2db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mosqito/utils/conversion.html#amp2db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.conversion.amp2db" title="Permalink to this definition"></a></dt>
+<dd><p>Conversion of an amplitude value into dB</p>
+<section id="parameters">
+<h1>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h1>
+<dl class="simple">
+<dt>amp: np.array</dt><dd><p>amplitude values to be converted</p>
+</dd>
+<dt>ref: float</dt><dd><p>reference value</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mosqito.utils.conversion.bark2freq">
+<span class="sig-name descname"><span class="pre">bark2freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bark_axis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mosqito/utils/conversion.html#bark2freq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.conversion.bark2freq" title="Permalink to this definition"></a></dt>
+<dd><p>Frequency conversion from Bark to Hertz</p>
+<blockquote>
+<div><p>See E. Zwicker, H. Fastl: Psychoacoustics. Springer,Berlin, Heidelberg, 1990.
+The coefficients are linearly interpolated from the values given in table 6.1.</p>
+<dl class="simple">
+<dt>bark_axis<span class="classifier">numpy.array</span></dt><dd><p>Bark frequencies to be converted</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>freq_axis<span class="classifier">numpy.array</span></dt><dd><p>frequencies converted in Hertz</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mosqito.utils.conversion.db2amp">
+<span class="sig-name descname"><span class="pre">db2amp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mosqito/utils/conversion.html#db2amp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.conversion.db2amp" title="Permalink to this definition"></a></dt>
+<dd><p>Linearisation of a SPL level in dB</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dB</strong> (<em>numpy.array</em>) – dB values to be converted</p></li>
+<li><p><strong>ref</strong> (<em>float</em>) – reference value</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mosqito.utils.conversion.freq2bark">
+<span class="sig-name descname"><span class="pre">freq2bark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq_axis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mosqito/utils/conversion.html#freq2bark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.conversion.freq2bark" title="Permalink to this definition"></a></dt>
+<dd><p>Frequency conversion from Hertz to Bark</p>
+<blockquote>
+<div><p>See E. Zwicker, H. Fastl: Psychoacoustics. Springer,Berlin, Heidelberg, 1990.
+The coefficients are linearly interpolated from the values given in table 6.1.</p>
+<dl class="simple">
+<dt>freq_axis<span class="classifier">numpy.array</span></dt><dd><p>Hertz frequencies to be converted</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>bark_axis<span class="classifier">numpy.array</span></dt><dd><p>frequencies converted in Bark</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mosqito.utils.conversion.spectrum2dBA">
+<span class="sig-name descname"><span class="pre">spectrum2dBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mosqito/utils/conversion.html#spectrum2dBA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.conversion.spectrum2dBA" title="Permalink to this definition"></a></dt>
+<dd><p>A_weighting dB ponderation of a spectrum according to CEI 61672:2014</p>
+<p>Third-octave spectrum are directly calculated, other are calculated
+using linear interpolation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spectrum</strong> (<em>numpy.array</em>) – input spectrum</p></li>
+<li><p><strong>fs</strong> (<em>integer</em>) – sampling frequency</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mosqito.utils.html" class="btn btn-neutral float-left" title="mosqito.utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mosqito.utils.isoclose.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Green Forge Coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -19,7 +19,8 @@ sys.path.insert(0, os.path.abspath(".."))
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.todo", "sphinx.ext.viewcode", "sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.todo", "sphinx.ext.viewcode", "sphinx.ext.autodoc", "sphinx.ext.napoleon", 'matplotlib.sphinxext.mathmpl',
+          'matplotlib.sphinxext.plot_directive']
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
@@ -31,3 +32,17 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
+autosummary_generate = True
+
+autodoc_default_options = {
+    'members': True,
+    # The ones below should be optional but work nicely together with
+    # example_package/autodoctest/doc/source/_templates/autosummary/class.rst
+    # and other defaults in sphinx-autodoc.
+    'show-inheritance': True,
+    'inherited-members': True,
+    'no-special-members': True,
+}
+
+add_module_names = False

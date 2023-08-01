@@ -39,8 +39,26 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">🦟 Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation/index.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">📖 User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/scope.html">Scope of the project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/architecture.html">Architecture of the package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/mosqito.sound_level_meter.html">mosqito.sound_level_meter package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/mosqito.sq_metrics.html">mosqito.sq_metrics package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/mosqito.utils.html">mosqito.utils package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">✏️ Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribution/index.html">How to contribute</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -77,8 +95,9 @@
 <span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter</span> <span class="kn">import</span> <span class="n">_n_oct_freq_filter</span>
 
 
-<div class="viewcode-block" id="noct_synthesis"><a class="viewcode-back" href="../../../../functions/mosqito.sound_level_meter.noct_spectrum.html#mosqito.sound_level_meter.noct_spectrum.noct_synthesis.noct_synthesis">[docs]</a><span class="k">def</span> <span class="nf">noct_synthesis</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<div class="viewcode-block" id="noct_synthesis"><a class="viewcode-back" href="../../../../source/mosqito.sound_level_meter.noct_spectrum.html#mosqito.sound_level_meter.noct_spectrum.noct_synthesis.noct_synthesis">[docs]</a><span class="k">def</span> <span class="nf">noct_synthesis</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Adapt input spectrum to nth-octave band spectrum</span>
+<span class="sd">    </span>
 <span class="sd">    Convert the input spectrum to third-octave band spectrum</span>
 <span class="sd">    between &quot;fc_min&quot; and &quot;fc_max&quot;.</span>
 <span class="sd">    Parameters</span>

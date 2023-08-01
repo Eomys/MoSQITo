@@ -39,8 +39,26 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">🦟 Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">📖 User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/scope.html">Scope of the project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/architecture.html">Architecture of the package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/mosqito.sound_level_meter.html">mosqito.sound_level_meter package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/mosqito.sq_metrics.html">mosqito.sq_metrics package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/mosqito.utils.html">mosqito.utils package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">✏️ Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribution/index.html">How to contribute</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -76,7 +94,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="LTQ"><a class="viewcode-back" href="../../../functions/mosqito.utils.html#mosqito.utils.LTQ.LTQ">[docs]</a><span class="k">def</span> <span class="nf">LTQ</span><span class="p">(</span><span class="n">bark_axis</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="s2">&quot;zwicker&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="LTQ"><a class="viewcode-back" href="../../../source/mosqito.utils.html#mosqito.utils.LTQ.LTQ">[docs]</a><span class="k">def</span> <span class="nf">LTQ</span><span class="p">(</span><span class="n">bark_axis</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="s2">&quot;zwicker&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the level threshold in quiet over bark_axis</span>
 
 <span class="sd">    Linear interpolation from the data given in E. Zwicker, H. Fastl:</span>
@@ -92,7 +110,7 @@
 <span class="sd">        &#39;zwicker&#39; or &#39;roughness&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Make list of minimum excitation (Hearing Threshold)</span>
+    <span class="c1"># Make list of minimum excitation (Hearing Treshold)</span>
 
     <span class="k">if</span> <span class="n">reference</span> <span class="o">==</span> <span class="s2">&quot;zwicker&quot;</span><span class="p">:</span>
         <span class="n">HTres_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>

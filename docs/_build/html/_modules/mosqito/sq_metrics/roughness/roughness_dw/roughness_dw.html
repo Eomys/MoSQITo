@@ -39,8 +39,26 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">🦟 Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation/index.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">📖 User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/scope.html">Scope of the project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/architecture.html">Architecture of the package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/mosqito.utils.html">mosqito.utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">✏️ Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contribution/index.html">How to contribute</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -89,36 +107,75 @@
     <span class="n">DataFreq</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<div class="viewcode-block" id="roughness_dw"><a class="viewcode-back" href="../../../../../functions/mosqito.sq_metrics.roughness.roughness_dw.html#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw">[docs]</a><span class="k">def</span> <span class="nf">roughness_dw</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">is_sdt_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Roughness calculation of a signal sampled at 48kHz.</span>
-
-<span class="sd">    The code is based on the algorithm described in &quot;Psychoacoustical roughness:</span>
-<span class="sd">    implementation of an optimized model&quot; by Daniel and Weber in 1997.</span>
-<span class="sd">    The roughness model consists of a parallel processing structure that is made up</span>
-<span class="sd">    of successive stages and calculates intermediate specific roughnesses R_spec,</span>
-<span class="sd">    which are summed up to determine the total roughness R.</span>
+<div class="viewcode-block" id="roughness_dw"><a class="viewcode-back" href="../../../../../source/mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.html#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw">[docs]</a><span class="k">def</span> <span class="nf">roughness_dw</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">is_sdt_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Roughness calculation of a signal sampled at 48kHz.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    signal :numpy.array  or DataTime object</span>
-<span class="sd">        A time signal in Pa</span>
+
+<span class="sd">    signal : array_like or DataTime object</span>
+<span class="sd">        Input time signal in Pa</span>
 <span class="sd">    fs : float, optional</span>
 <span class="sd">        Sampling frequency, can be omitted if the input is a DataTime</span>
 <span class="sd">        object. Default to None</span>
 <span class="sd">    overlap : float</span>
 <span class="sd">        Overlapping coefficient for the time windows of 200ms</span>
 
-<span class="sd">    Outputs</span>
+<span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    R : numpy.array</span>
-<span class="sd">        Roughness in [asper].</span>
+<span class="sd">        Roughness value in [asper]</span>
 <span class="sd">    R_spec : numpy.array</span>
-<span class="sd">        Specific roughness over bark axis.</span>
+<span class="sd">        Specific roughness over bark axis</span>
 <span class="sd">    bark_axis : numpy.array</span>
-<span class="sd">        Frequency axis in [bark].</span>
+<span class="sd">        Frequency axis in [bark]</span>
 <span class="sd">    time : numpy.array</span>
-<span class="sd">        Time axis in [s].</span>
+<span class="sd">        Time axis in [s]</span>
 
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    IndexError</span>
+<span class="sd">        If `axis` is not a valid axis of `a`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    roughness_dw_freq : roughness computation from a sound spectrum</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The model consists of a parallel processing structure that is made up</span>
+<span class="sd">    of successive stages and calculates intermediate specific roughnesses R_spec,</span>
+<span class="sd">    which are summed up to determine the total roughness R.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Daniel and Weber, 1997, &quot;Psychoacoustical roughness: implementation of an optimized model&quot;</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+
+<span class="sd">       from mosqito.sq_metrics import roughness_dw </span>
+<span class="sd">       import matplotlib.pyplot as plt</span>
+<span class="sd">       fc=1000</span>
+<span class="sd">       fmod=70</span>
+<span class="sd">       fs=44100</span>
+<span class="sd">       d=0.2</span>
+<span class="sd">       dB=60</span>
+<span class="sd">       time = np.arange(0, d, 1/fs)</span>
+<span class="sd">       stimulus = (</span>
+<span class="sd">       0.5</span>
+<span class="sd">       * (1 + np.sin(2 * np.pi * fmod * time))</span>
+<span class="sd">       * np.sin(2 * np.pi * fc * time))   </span>
+<span class="sd">       rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
+<span class="sd">       ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
+<span class="sd">       stimulus = stimulus * ampl</span>
+<span class="sd">       R, R_specific, bark, time = roughness_dw(stimulus, fs=44100, overlap=0)</span>
+<span class="sd">       plt.plot(bark, R_specific)</span>
+<span class="sd">       plt.xlabel(&quot;Bark axis [Bark]&quot;)</span>
+<span class="sd">       plt.ylabel(&quot;Roughness, [Asper]&quot;)</span>
+<span class="sd">       </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Manage input type</span>

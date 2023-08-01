@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; MOSQITO 1.0.8 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="mosqito.utils.load.html" />
+    <link rel="prev" title="Parameters:" href="mosqito.utils.conversion.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MOSQITO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">🦟 Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">📖 User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/scope.html">Scope of the project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/architecture.html">Architecture of the package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="mosqito.utils.html">mosqito.utils</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.html"><code class="docutils literal notranslate"><span class="pre">amp2db()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.html#mosqito.utils.conversion.bark2freq"><code class="docutils literal notranslate"><span class="pre">bark2freq()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.html#mosqito.utils.conversion.db2amp"><code class="docutils literal notranslate"><span class="pre">db2amp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.html#mosqito.utils.conversion.freq2bark"><code class="docutils literal notranslate"><span class="pre">freq2bark()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.html#mosqito.utils.conversion.spectrum2dBA"><code class="docutils literal notranslate"><span class="pre">spectrum2dBA()</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">isoclose()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.load.html"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.LTQ.html"><code class="docutils literal notranslate"><span class="pre">LTQ()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.sine_wave_generator.html"><code class="docutils literal notranslate"><span class="pre">sine_wave_generator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.time_segmentation.html"><code class="docutils literal notranslate"><span class="pre">time_segmentation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">✏️ Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contribution/index.html">How to contribute</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MOSQITO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="mosqito.utils.html">mosqito.utils</a></li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/mosqito.utils.isoclose.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="module-mosqito.utils.isoclose"></span><dl class="py function">
+<dt class="sig sig-object py" id="mosqito.utils.isoclose.isoclose">
+<span class="sig-name descname"><span class="pre">isoclose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xaxis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mosqito/utils/isoclose.html#isoclose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.isoclose.isoclose" title="Permalink to this definition"></a></dt>
+<dd><p>Check if two arrays are equal up to desired tolerance.</p>
+<p>The test is inspired from section 5.1 of ISO 532-1. It compares
+<code class="docutils literal notranslate"><span class="pre">actual</span></code> to <code class="docutils literal notranslate"><span class="pre">desired</span> <span class="pre">+/-</span> <span class="pre">min(atol,</span> <span class="pre">rtol</span> <span class="pre">*</span> <span class="pre">abs(desired))</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actual</strong> (<em>array_like</em>) – Array obtained.</p></li>
+<li><p><strong>desired</strong> (<em>array_like</em>) – Array desired.</p></li>
+<li><p><strong>rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative tolerance.</p></li>
+<li><p><strong>atol</strong> (<em>float</em><em>, </em><em>optional</em>) – Absolute tolerance.</p></li>
+<li><p><strong>is_plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – To generate a “compliance” plot</p></li>
+<li><p><strong>tol_label</strong> (<em>str</em>) – Label for the tolerance curves</p></li>
+<li><p><strong>xaxis</strong> (<em>array_like</em><em>, </em><em>optional</em>) – x axis for the “compliance” plot</p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>------</strong> – </p></li>
+<li><p><strong>is_isoclose</strong> (<em>bool</em>) – False if actual and desired are not equal up to specified tolerance.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mosqito.utils.conversion.html" class="btn btn-neutral float-left" title="Parameters:" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mosqito.utils.load.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Green Forge Coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

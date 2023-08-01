@@ -1,3 +1,44 @@
+"""This module includes functions to compute the main sound quality metrics :
+
+Loudness
+==========
+
+.. toctree::
+   :maxdepth: 2
+
+   /source/mosqito.sq_metrics.loudness.loudness_ecma
+   /source/mosqito.sq_metrics.loudness.loudness_zwst
+   /source/mosqito.sq_metrics.loudness.loudness_zwtv
+
+Sharpness
+==========
+
+.. toctree::
+   :maxdepth: 2
+
+   /source/mosqito.sq_metrics.sharpness.sharpness_din
+
+Roughness
+==========
+
+.. toctree::
+   :maxdepth: 2
+
+   /source/mosqito.sq_metrics.roughness.roughness_dw
+
+Tonality
+==========
+
+.. toctree::
+   :maxdepth: 2
+
+   /source/mosqito.sq_metrics.tonality.tone_to_noise_ecma
+   /source/mosqito.sq_metrics.tonality.prominence_ratio_ecma
+
+"""
+
+__all__ = ['sq_metrics']
+
 from mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma import loudness_ecma
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq import (
@@ -32,3 +73,4 @@ from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg import shar
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq import sharpness_din_freq
 
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon
+

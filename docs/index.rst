@@ -3,6 +3,50 @@ MOSQITO documentation
 
 **Date**: |today| **Version**: 1.0.8
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: 🦟 Installation
+
+   /installation/index
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: 📖 User guide
+
+   /user_guide/scope
+   /user_guide/architecture
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: 🔧 Functions
+
+   /source/mosqito.sound_level_meter
+   /source/mosqito.sq_metrics
+   /source/mosqito.utils
+
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: ✏️ Contribution
+
+   /contribution/index
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: 👩‍🏫 Tutorials
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: ✔️ Validation
+
+   
+
 The objective of :mod:`mosqito` is to provide a unified and modular development framework of key sound quality tools 
 (including key SQ metrics), favoring reproducible science and efficient shared scripting among engineers, teachers and researchers
 community. The development roadmap of the project is presented in more details in the [scope section] of the documentation. 
@@ -10,19 +54,6 @@ community. The development roadmap of the project is presented in more details i
 It is written in Python, one of the most popular free programming language in the scientific computing community. 
 It is meant to be highly documented and validated with reference sound samples and scientific publications.
 
-
-Contents
---------
-
-.. toctree::
-   :maxdepth: 1
-
-   installation
-   user_guide
-   functions/index
-   contribution/index
-   tutorials
-   validations
 
 
 Background
