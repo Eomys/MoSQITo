@@ -150,32 +150,33 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Daniel and Weber, 1997, &quot;Psychoacoustical roughness: implementation of an optimized model&quot;</span>
+<span class="sd">    .. [DW] P. Daniel and R. Weber, &quot;Psychoacoustical roughness: implementation of an optimized model&quot;, 1997</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    .. plot::</span>
+<span class="sd">       :include-source:</span>
 
-<span class="sd">       from mosqito.sq_metrics import roughness_dw </span>
-<span class="sd">       import matplotlib.pyplot as plt</span>
-<span class="sd">       fc=1000</span>
-<span class="sd">       fmod=70</span>
-<span class="sd">       fs=44100</span>
-<span class="sd">       d=0.2</span>
-<span class="sd">       dB=60</span>
-<span class="sd">       time = np.arange(0, d, 1/fs)</span>
-<span class="sd">       stimulus = (</span>
-<span class="sd">       0.5</span>
-<span class="sd">       * (1 + np.sin(2 * np.pi * fmod * time))</span>
-<span class="sd">       * np.sin(2 * np.pi * fc * time))   </span>
-<span class="sd">       rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
-<span class="sd">       ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
-<span class="sd">       stimulus = stimulus * ampl</span>
-<span class="sd">       R, R_specific, bark, time = roughness_dw(stimulus, fs=44100, overlap=0)</span>
-<span class="sd">       plt.plot(bark, R_specific)</span>
-<span class="sd">       plt.xlabel(&quot;Bark axis [Bark]&quot;)</span>
-<span class="sd">       plt.ylabel(&quot;Roughness, [Asper]&quot;)</span>
-<span class="sd">       </span>
+<span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import roughness_dw </span>
+<span class="sd">       &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">       &gt;&gt;&gt; fc=1000</span>
+<span class="sd">       &gt;&gt;&gt; fmod=70</span>
+<span class="sd">       &gt;&gt;&gt; fs=44100</span>
+<span class="sd">       &gt;&gt;&gt; d=0.2</span>
+<span class="sd">       &gt;&gt;&gt; dB=60</span>
+<span class="sd">       &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
+<span class="sd">       &gt;&gt;&gt; stimulus = (</span>
+<span class="sd">       &gt;&gt;&gt; 0.5</span>
+<span class="sd">       &gt;&gt;&gt; * (1 + np.sin(2 * np.pi * fmod * time))</span>
+<span class="sd">       &gt;&gt;&gt; * np.sin(2 * np.pi * fc * time))   </span>
+<span class="sd">       &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
+<span class="sd">       &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
+<span class="sd">       &gt;&gt;&gt; stimulus = stimulus * ampl</span>
+<span class="sd">       &gt;&gt;&gt; R, R_specific, bark, time = roughness_dw(stimulus, fs=44100, overlap=0)</span>
+<span class="sd">       &gt;&gt;&gt; plt.plot(bark, R_specific)</span>
+<span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Bark axis [Bark]&quot;)</span>
+<span class="sd">       &gt;&gt;&gt; plt.ylabel(&quot;Roughness, [Asper]&quot;)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Manage input type</span>

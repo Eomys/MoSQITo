@@ -49,8 +49,8 @@
     Examples
     --------
     .. plot::
+       :include-source:
 
-       An example
        >>> from mosqito.sq_metrics import roughness_dw 
        >>> import matplotlib.pyplot as plt
        >>> fc=1000
@@ -70,5 +70,5 @@
        >>> plt.plot(bark, R_specific)
        >>> plt.xlabel("Bark axis [Bark]")
        >>> plt.ylabel("Roughness, [Asper]")
-       >>> 
+       
     """
