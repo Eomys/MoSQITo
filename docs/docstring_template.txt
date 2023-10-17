@@ -7,7 +7,7 @@
     ----------
 
     a : array_like
-        Description
+        Description, dim (nperseg x nseg)
     b : float
         Description. Default to None
     c : {'method 1', 'method 2'},  optional

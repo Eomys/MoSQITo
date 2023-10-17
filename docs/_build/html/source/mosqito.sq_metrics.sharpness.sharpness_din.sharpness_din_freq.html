@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Parameters: &mdash; MOSQITO 1.0.8 documentation</title>
+  <title>&lt;no title&gt; &mdash; MOSQITO 1.0.8 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Parameters:" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.html" />
-    <link rel="prev" title="Parameters:" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.html" /> 
+    <link rel="prev" title="&lt;no title&gt;" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -94,7 +94,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
           <li class="breadcrumb-item"><a href="mosqito.sq_metrics.sharpness.sharpness_din.html">mosqito.sq_metrics.sharpness.sharpness_din</a></li>
-      <li class="breadcrumb-item active">Parameters:</li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/source/mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -107,36 +107,76 @@
   <span class="target" id="module-mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq"></span><dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq.sharpness_din_freq">
 <span class="sig-name descname"><span class="pre">sharpness_din_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'din'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'free'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mosqito/sq_metrics/sharpness/sharpness_din/sharpness_din_freq.html#sharpness_din_freq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq.sharpness_din_freq" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Acoustic sharpness calculation according to different methods</dt><dd><p>(Aures, Von Bismarck, DIN 45692, Fastl) from a complex spectrum.</p>
+<dd><p>Returns the sharpness value</p>
+<p>This function computes the sharpness value along time according to different methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spectrum</strong> (<em>array_like</em>) – A RMS spectrum.</p></li>
+<li><p><strong>freqs</strong> (<em>array_like</em>) – Frequency axis.</p></li>
+<li><p><strong>weighting</strong> (<em>{'din'</em><em>, </em><em>'aures'</em><em>, </em><em>'bismarck'</em><em>, </em><em>'fastl'}</em>) – Weighting function used for the sharpness computation.
+Default is ‘din’</p></li>
+<li><p><strong>field_type</strong> (<em>{'free'</em><em>, </em><em>'diffuse'}</em>) – Type of soundfield corresponding to spec_third.
+Default is ‘free’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>S</strong> – Sharpness value in [acum]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.array</p>
 </dd>
 </dl>
-<section id="parameters">
-<h1>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h1>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
 <dl class="simple">
-<dt>signal: numpy.array</dt><dd><p>A RMS spectrum.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_from_loudness</span></code></dt><dd><p>sharpness computation from loudness values</p>
 </dd>
-<dt>freqs: integer</dt><dd><p>Frequency axis.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_st</span></code></dt><dd><p>sharpness computation for a stationary time signal</p>
 </dd>
-<dt>method<span class="classifier">string</span></dt><dd><p>To specify the Loudness computation method</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_tv</span></code></dt><dd><p>sharpness computation for a non-stationary time signal</p>
 </dd>
-<dt>weighting<span class="classifier">string</span></dt><dd><p>To specify the weighting function used for the
-sharpness computation.’din’ by default,’aures’, ‘bismarck’,’fastl’</p>
-</dd>
-<dt>field_type<span class="classifier">str</span></dt><dd><p>Type of soundfield corresponding to spec_third (“free” by
-default or “diffuse”).</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_perseg</span></code></dt><dd><p>sharpness computation by time-segment</p>
 </dd>
 </dl>
-</section>
-<section id="outputs">
-<h1>Outputs<a class="headerlink" href="#outputs" title="Permalink to this heading"></a></h1>
+</div>
+<p class="rubric">Notes</p>
 <dl class="simple">
-<dt>S<span class="classifier">float</span></dt><dd><p>sharpness value</p>
-</dd>
-<dt>time_axis: numpy.array</dt><dd><p>The time axis array, size (Ntime,) or None</p>
+<dt>The different methods account for the weighting function applied on the specific loudness values:</dt><dd><ul class="simple">
+<li><p>DIN 45692 : weighting defined in the standard</p></li>
+<li><p>Aures</p></li>
+<li><p>Bismarck</p></li>
+<li><p>Fastl</p></li>
+</ul>
 </dd>
 </dl>
-</section>
+<p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="din45692" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DIN45692<span class="fn-bracket">]</span></span>
+<p>Measurement technique for the simulation of the auditory sensation of sharpness, 2009</p>
+</div>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mosqito.sq_metrics</span> <span class="kn">import</span> <span class="n">sharpness_din_freq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span><span class="o">=</span><span class="mi">48000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dB</span><span class="o">=</span><span class="mi">60</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">fs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">5000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stimulus</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f</span> <span class="o">*</span> <span class="n">time</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">stimulus</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ampl</span> <span class="o">=</span> <span class="mf">0.00002</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dB</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span> <span class="o">/</span> <span class="n">rms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stimulus</span> <span class="o">=</span> <span class="n">stimulus</span> <span class="o">*</span> <span class="n">ampl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">stimulus</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fs</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S</span> <span class="o">=</span> <span class="n">sharpness_din_freq</span><span class="p">(</span><span class="n">spec</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">],</span> <span class="n">freqs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sharpness value : &#39;</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="s1">&#39; acum.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../source/mosqito-sq_metrics-sharpness-sharpness_din-sharpness_din_freq-1.py">Source code</a>)</p>
 </dd></dl>
 
 
@@ -144,7 +184,7 @@ default or “diffuse”).</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.html" class="btn btn-neutral float-left" title="Parameters:" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.html" class="btn btn-neutral float-right" title="Parameters:" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

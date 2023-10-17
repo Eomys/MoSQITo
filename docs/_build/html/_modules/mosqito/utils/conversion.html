@@ -50,9 +50,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../source/mosqito.sound_level_meter.html">mosqito.sound_level_meter package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../source/mosqito.sq_metrics.html">mosqito.sq_metrics package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../source/mosqito.utils.html">mosqito.utils package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/mosqito.utils.html">mosqito.utils</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">✏️ Contribution</span></p>
 <ul>
@@ -96,7 +96,7 @@
 
 
 <span class="c1"># ----------------------------------Pa &lt;-&gt; dB-----------------------------------</span>
-<div class="viewcode-block" id="db2amp"><a class="viewcode-back" href="../../../source/mosqito.utils.html#mosqito.utils.conversion.db2amp">[docs]</a><span class="k">def</span> <span class="nf">db2amp</span><span class="p">(</span><span class="n">dB</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="db2amp"><a class="viewcode-back" href="../../../source/mosqito.utils.conversion.html#mosqito.utils.conversion.db2amp">[docs]</a><span class="k">def</span> <span class="nf">db2amp</span><span class="p">(</span><span class="n">dB</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Linearisation of a SPL level in dB</span>
 
 <span class="sd">    Parameters</span>
@@ -112,7 +112,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">dB</span><span class="p">)</span> <span class="o">*</span> <span class="n">ref</span></div>
 
 
-<div class="viewcode-block" id="amp2db"><a class="viewcode-back" href="../../../source/mosqito.utils.html#mosqito.utils.conversion.amp2db">[docs]</a><span class="k">def</span> <span class="nf">amp2db</span><span class="p">(</span><span class="n">amp</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="amp2db"><a class="viewcode-back" href="../../../source/mosqito.utils.conversion.html#mosqito.utils.conversion.amp2db">[docs]</a><span class="k">def</span> <span class="nf">amp2db</span><span class="p">(</span><span class="n">amp</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Conversion of an amplitude value into dB</span>
 
 <span class="sd">    Parameters:</span>
@@ -136,7 +136,7 @@
 <span class="c1"># ------------------------------Hertz &lt;-&gt; Bark----------------------------------</span>
 
 
-<div class="viewcode-block" id="bark2freq"><a class="viewcode-back" href="../../../source/mosqito.utils.html#mosqito.utils.conversion.bark2freq">[docs]</a><span class="k">def</span> <span class="nf">bark2freq</span><span class="p">(</span><span class="n">bark_axis</span><span class="p">):</span>
+<div class="viewcode-block" id="bark2freq"><a class="viewcode-back" href="../../../source/mosqito.utils.conversion.html#mosqito.utils.conversion.bark2freq">[docs]</a><span class="k">def</span> <span class="nf">bark2freq</span><span class="p">(</span><span class="n">bark_axis</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Frequency conversion from Bark to Hertz</span>
 
 <span class="sd">     See E. Zwicker, H. Fastl: Psychoacoustics. Springer,Berlin, Heidelberg, 1990.</span>
@@ -214,7 +214,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">bark_axis</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="freq2bark"><a class="viewcode-back" href="../../../source/mosqito.utils.html#mosqito.utils.conversion.freq2bark">[docs]</a><span class="k">def</span> <span class="nf">freq2bark</span><span class="p">(</span><span class="n">freq_axis</span><span class="p">):</span>
+<div class="viewcode-block" id="freq2bark"><a class="viewcode-back" href="../../../source/mosqito.utils.conversion.html#mosqito.utils.conversion.freq2bark">[docs]</a><span class="k">def</span> <span class="nf">freq2bark</span><span class="p">(</span><span class="n">freq_axis</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Frequency conversion from Hertz to Bark</span>
 
 <span class="sd">     See E. Zwicker, H. Fastl: Psychoacoustics. Springer,Berlin, Heidelberg, 1990.</span>
@@ -295,7 +295,7 @@
 <span class="c1"># -----------------------------------dB &lt;-&gt; dBA---------------------------------</span>
 
 
-<div class="viewcode-block" id="spectrum2dBA"><a class="viewcode-back" href="../../../source/mosqito.utils.html#mosqito.utils.conversion.spectrum2dBA">[docs]</a><span class="k">def</span> <span class="nf">spectrum2dBA</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<div class="viewcode-block" id="spectrum2dBA"><a class="viewcode-back" href="../../../source/mosqito.utils.conversion.html#mosqito.utils.conversion.spectrum2dBA">[docs]</a><span class="k">def</span> <span class="nf">spectrum2dBA</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A_weighting dB ponderation of a spectrum according to CEI 61672:2014</span>
 
 <span class="sd">    Third-octave spectrum are directly calculated, other are calculated</span>

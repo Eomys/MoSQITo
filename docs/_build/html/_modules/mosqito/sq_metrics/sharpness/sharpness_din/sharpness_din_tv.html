@@ -50,9 +50,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../source/mosqito.sound_level_meter.html">mosqito.sound_level_meter package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../source/mosqito.sq_metrics.html">mosqito.sq_metrics package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../source/mosqito.utils.html">mosqito.utils package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/mosqito.utils.html">mosqito.utils</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">✏️ Contribution</span></p>
 <ul>
@@ -94,33 +94,78 @@
 <span class="kn">from</span> <span class="nn">mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness</span> <span class="kn">import</span> <span class="n">sharpness_din_from_loudness</span>
 
 
-<div class="viewcode-block" id="sharpness_din_tv"><a class="viewcode-back" href="../../../../../source/mosqito.sq_metrics.sharpness.sharpness_din.html#mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.sharpness_din_tv">[docs]</a><span class="k">def</span> <span class="nf">sharpness_din_tv</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;din&quot;</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Acoustic sharpness calculation according to different methods</span>
-<span class="sd">        (Aures, Von Bismarck, DIN 45692, Fastl) for a time varying signal.</span>
+<div class="viewcode-block" id="sharpness_din_tv"><a class="viewcode-back" href="../../../../../source/mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.html#mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.sharpness_din_tv">[docs]</a><span class="k">def</span> <span class="nf">sharpness_din_tv</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;din&quot;</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Returns the sharpness value </span>
 
-<span class="sd">    Parameters:</span>
+<span class="sd">    This function computes the sharpness value along time according to different methods.</span>
+
+<span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    signal : numpy.array</span>
-<span class="sd">        A time signal values [Pa], size (Ntime,) </span>
-<span class="sd">    fs : integer</span>
-<span class="sd">        Sampling frequency.</span>
-<span class="sd">    weighting : string</span>
-<span class="sd">        To specify the weighting function used for the</span>
-<span class="sd">        sharpness computation.&#39;din&#39; by default,&#39;aures&#39;, &#39;bismarck&#39;,&#39;fastl&#39;</span>
-<span class="sd">    field_type : str</span>
-<span class="sd">        Type of soundfield corresponding to spec_third (&quot;free&quot; by</span>
-<span class="sd">        default or &quot;diffuse&quot;).</span>
+<span class="sd">    signal: array_like</span>
+<span class="sd">        Input time signal in [Pa], dim (nperseg, nseg)</span>
+<span class="sd">    fs: float</span>
+<span class="sd">        Sampling frequency</span>
+<span class="sd">    weighting : {&#39;din&#39;, &#39;aures&#39;, &#39;bismarck&#39;, &#39;fastl&#39;}</span>
+<span class="sd">        Weighting function used for the sharpness computation. </span>
+<span class="sd">        Default is &#39;din&#39;</span>
+<span class="sd">    field_type : {&#39;free&#39;, &#39;diffuse&#39;}</span>
+<span class="sd">        Type of soundfield corresponding to spec_third.</span>
+<span class="sd">        Default is &#39;free&#39;</span>
 <span class="sd">    skip : float</span>
 <span class="sd">        Number of second to be cut at the beginning of the analysis to skip the transient effect.</span>
+<span class="sd">        Default is 0</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    S : numpy.array</span>
+<span class="sd">        Sharpness value in [acum], dim (nseg)</span>
+<span class="sd">    time_axis : numpy.array</span>
+<span class="sd">        Time axis in [s]</span>
 
-<span class="sd">    Outputs</span>
-<span class="sd">    ------</span>
-<span class="sd">    S : float</span>
-<span class="sd">        Sharpness value, size (Ntime,) .</span>
-<span class="sd">    time_axis: numpy.array</span>
-<span class="sd">        The time axis array, size (Ntime,) .</span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    sharpness_din_from_loudness : sharpness computation from loudness values</span>
+<span class="sd">    sharpness_din_st : sharpness computation for a stationary time signal</span>
+<span class="sd">    sharpness_din_perseg : sharpness computation by time-segment</span>
+<span class="sd">    sharpness_din_freq : sharpness computation from a sound spectrum</span>
 
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    When computing sharpness for a time-varying signal, a transient effect appears on the first points. To cut it, use *skip* argument.</span>
+<span class="sd">    The different methods account for the weighting function applied on the specific loudness values:</span>
+<span class="sd">     * DIN 45692 : weighting defined in the standard</span>
+<span class="sd">     * Aures</span>
+<span class="sd">     * Bismarck</span>
+<span class="sd">     * Fastl</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [DIN45692] Measurement technique for the simulation of the auditory sensation of sharpness, 2009</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">       :include-source:</span>
+
+<span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import sharpness_din_tv </span>
+<span class="sd">       &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">       &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">       &gt;&gt;&gt; fs=48000</span>
+<span class="sd">       &gt;&gt;&gt; d=1</span>
+<span class="sd">       &gt;&gt;&gt; dB=60</span>
+<span class="sd">       &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
+<span class="sd">       &gt;&gt;&gt; f = np.linspace(1000,5000, len(time))</span>
+<span class="sd">       &gt;&gt;&gt; stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))</span>
+<span class="sd">       &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
+<span class="sd">       &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
+<span class="sd">       &gt;&gt;&gt; stimulus = stimulus * ampl</span>
+<span class="sd">       &gt;&gt;&gt; S, time_axis = sharpness_din_tv(stimulus, fs=fs, skip=0.1)</span>
+<span class="sd">       &gt;&gt;&gt; plt.plot(time_axis, S)</span>
+<span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Time axis [s]&quot;)</span>
+<span class="sd">       &gt;&gt;&gt; plt.ylabel(&quot;Sharpness, [Acum]&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
 
     <span class="k">if</span> <span class="n">skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Warning] when computing sharpness from time-varying loudness, a transient effect appears on the first points. To cut it, use &#39;skip=&#39;&quot;</span><span class="p">)</span>

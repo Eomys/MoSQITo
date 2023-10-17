@@ -109,11 +109,13 @@
 
 <div class="viewcode-block" id="roughness_dw"><a class="viewcode-back" href="../../../../../source/mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.html#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw">[docs]</a><span class="k">def</span> <span class="nf">roughness_dw</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">is_sdt_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Roughness calculation of a signal sampled at 48kHz.</span>
+<span class="sd">    Returns the roughness according to Daniel and Weber method.</span>
+
+<span class="sd">    This function computes the global and specific roughness values </span>
+<span class="sd">    of a signal sampled at 48 kHz.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-
 <span class="sd">    signal : array_like or DataTime object</span>
 <span class="sd">        Input time signal in Pa</span>
 <span class="sd">    fs : float, optional</span>
@@ -150,7 +152,8 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    .. [DW] P. Daniel and R. Weber, &quot;Psychoacoustical roughness: implementation of an optimized model&quot;, 1997</span>
+<span class="sd">    .. [DW] P. Daniel and R. Weber, &quot;Psychoacoustical roughness: </span>
+<span class="sd">            implementation of an optimized model&quot;, 1997</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
