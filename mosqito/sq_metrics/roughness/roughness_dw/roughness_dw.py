@@ -30,7 +30,6 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
 
     Parameters
     ----------
-
     signal : array_like or DataTime object
         Input time signal in Pa
     fs : float, optional

@@ -18,21 +18,20 @@ def roughness_dw_freq(spectrum, freqs):
 
     Parameters
     ----------
-
     spectrum : array_like
-        Input amplitude or complex frequency spectrum, dim [nperseg x nseg]
+        Input amplitude or complex frequency spectrum, dim (nperseg x nseg)
     freqs : np.array
-        Input frequency axis , dim [nperseg] if identical for all the blocks,
-        else [nperseg x nseg].
+        Input frequency axis , dim (nperseg) if identical for all the blocks,
+        else (nperseg x nseg).
 
     Returns
     -------
     R : numpy.array
-        Roughness value in [asper], dim [nseg].
+        Roughness value in [asper], dim (nseg).
     R_spec : numpy.array
-        Specific roughness over bark axis, dim [47 bark x nseg].
+        Specific roughness over bark axis, dim (47 bark x nseg).
     bark_axis : numpy.array
-        Frequency axis in [bark], dim [nseg].
+        Frequency axis in [bark], dim (nseg).
 
     Raises
     ------
