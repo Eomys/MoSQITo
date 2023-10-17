@@ -1,6 +1,6 @@
 from numpy import(abs,arange,cos,pi,append,power,zeros,empty,sum,array,clip,exp,median,where,argmax,argmin,argsort,
                   delete,exp,dot,round,squeeze,sqrt,tanh,sign,diff,percentile,dot,int32,transpose,mean, linspace, vstack,
-                  apply_along_axis, nan)
+                  apply_along_axis, nan, sinh)
 from numpy.fft import fft
 from scipy.signal import (hilbert, resample, find_peaks)
 from scipy.signal.windows import hann
@@ -8,7 +8,8 @@ from scipy.signal.windows import hann
 
 # Project Imports
 from mosqito.sq_metrics.loudness.loudness_ecma._rectified_band_pass_signals import _rectified_band_pass_signals
-from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq import _auditory_filters_centre_freq
+from mosqito.utils.conversion import bark2freq
+#from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq import _auditory_filters_centre_freq
 
 # Data import
 # Threshold in quiet
@@ -27,6 +28,35 @@ def find_maxima(Phi_E):
         return nan
     else:
         return idx 
+    
+
+
+def _auditory_filters_centre_freq():
+    """
+    Auditory filter bank center frequencies generation
+
+    This function generates the Auditory filter bank center frequencies according
+    to ECMA-418-2 section 5.1.4.1 equation 9
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+    centre_freq: ndarray
+        Vector of auditory filter bank center frequencies
+
+    """
+
+    z = arange(0.5,27,0.5)
+    df_0 = 81.9289  # ECMA-418-2
+    c = 0.1618  # ECMA-418-2
+
+    # Central frequency
+    center_freq = (df_0 / c) * sinh(c * z)
+
+    return center_freq
+
 
 def roughness_ecma(signal):
     """Calculation of the roughness according to ECMA-418-2 section 7
@@ -227,52 +257,56 @@ if __name__ == "__main__":
     from numpy import array
     freqs = _auditory_filters_centre_freq()
 
-    path = [r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod20.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod30.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod40.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod50.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod60.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod70.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod80.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod90.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod100.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod120.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod140.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod160.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod180.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod200.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod300.wav",
-            r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod400.wav"
-            ]
-    ref = array([0.2340, 0.4596, 0.7007, 0.8960, 0.9768, 1.0009, 0.9185, 0.7998, 0.6840, 0.5003, 0.3748, 0.2888, 0.2309, 0.1956, 0.0910, 0.0419])
-    R = zeros((16))
-    plt.figure()
-    for i in range(16):
-        print("Signal n : ", i)
-        signal, fs = load(path[i])
-        R_spec, R_time, R[i] = roughness_ecma(signal[:int(len(signal)/2)])
-        plt.step(freqs, R_spec, 'o',where='mid', color="#0069a1", linestyle='--')
+    # path = [r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod20.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod30.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod40.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod50.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod60.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod70.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod80.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod90.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod100.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod120.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod140.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod160.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod180.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod200.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod300.wav",
+    #         r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod400.wav"
+    #         ]
+    # ref = array([0.2340, 0.4596, 0.7007, 0.8960, 0.9768, 1.0009, 0.9185, 0.7998, 0.6840, 0.5003, 0.3748, 0.2888, 0.2309, 0.1956, 0.0910, 0.0419])
+    # R = zeros((16))
+    # plt.figure()
+    # for i in range(16):
+    #     print("Signal n : ", i)
+    #     signal, fs = load(path[i])
+    #     R_spec, R_time, R[i] = roughness_ecma(signal[:int(len(signal)/2)])
+    #     plt.step(freqs, R_spec, 'o',where='post', color="#0069a1", linestyle='--')
 
-    x = [20,30,40,50,60,70,80,90,100,120,140,160,180,200,300,400]
-    plt.figure()
-    plt.step(x, R, 'blue')
-    plt.step(x, ref, 'red', linewidth=8, alpha=0.25, label='référence Artemis')
+    # x = [20,30,40,50,60,70,80,90,100,120,140,160,180,200,300,400]
+    # plt.figure()
+    # plt.step(x, R, 'blue')
+    # plt.step(x, ref, 'red', linewidth=8, alpha=0.25, label='référence Artemis')
     
 
-    x_ref = [484.83844, 544.6495, 603.52273, 668.75979, 741.04857, 815.55158, 897.5449, 981.04555, 1079.67719, 1172.07431, 1281.11505, 1400.3001, 1520.13563, 1661.5573, 1803.75082, 1971.55787, 2140.28076, 2323.4427, 2522.27935, 2756.93274]
-    y_ref = [0.00082, 0.00735, 0.02286, 0.05469, 0.12, 0.22857, 0.32571, 0.3698, 0.29959, 0.21388, 0.13224, 0.08082, 0.0498, 0.0302, 0.01878, 0.0098, 0.00571, 0.00327, 0.00082, 0]
+    x_ref = [485.20056, 544.18116, 603.69901, 673.39525, 738.9283, 815.28005, 899.52143, 981.68271, 1077.21749, 1175.60934, 1290.01601, 1400.1749, 1519.74064, 1658.55205, 1810.04311, 1964.60889, 2132.37358, 2314.46426, 2525.86485, 2726.6215]
+    y_ref = [0, 0.00781, 0.02344, 0.05468, 0.11978, 0.2285, 0.3255, 0.36976, 0.29881, 0.21418, 0.1328, 0.08137, 0.05013, 0.0306, 0.01888, 0.01042, 0.00586, 0.00325, 0.0013, 0.00065]
+    
     plt.figure()
     signal, fs = load(r"C:\Users\LAP16\Documents\MoSQITooo\validations\sq_metrics\roughness_dw\input\Test_signal_fc1000_fmod70.wav")
     R_spec, R_time, R = roughness_ecma(signal)
     #signal, fs = load(r"C:\Users\LAP16\Desktop\loudness scale\marteau_piqueur.wav")
     #R_spec, R_time, R = roughness_ecma(signal)
     print(R)
-    
-    plt.step(freqs, R_spec, where='mid')
-    plt.step(x_ref, y_ref, 'red', linewidth=8, alpha=0.25, label='référence Artemis')
+
+    plt.step(freqs, R_spec, where='mid', label='mosqito')
+    plt.step(x_ref, y_ref, 'red', where='post', linewidth=8, alpha=0.25, label='référence Artemis')
     plt.title('Specific roughness, global value = 0.13')
     plt.xlabel('Frequency band [Bark]')
     plt.ylabel('Specific roughness [Asper/Bark]')
+    plt.grid(visible=True)
+    plt.legend()
     plt.show(block=True)
+    
 
     print('done')
