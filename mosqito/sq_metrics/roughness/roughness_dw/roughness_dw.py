@@ -123,14 +123,14 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
                 include_endpoint=True,
             )
             R_spec = DataFreq(
-                name="Specific Roughness",
+                name="Specific roughness (Daniel & Weber method)",
                 symbol="R'_{dw}",
                 axes=[bark_data, time],
                 values=R_spec,
                 unit="asper/Bark",
             )
             R = DataTime(
-                name="Roughness",
+                name="Roughness (Daniel & Weber method)",
                 symbol="R_{dw}",
                 axes=[time],
                 values=R,
