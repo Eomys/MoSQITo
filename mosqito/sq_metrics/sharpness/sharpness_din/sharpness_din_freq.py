@@ -69,7 +69,11 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
        >>> spec = np.abs(np.fft.fft(stimulus))
        >>> freqs = np.linspace(0, fs//2,len(spec)//2)
        >>> S = sharpness_din_freq(spec[:len(spec)//2], freqs)
-       >>> print('Sharpness value : ', S, ' acum.')
+       >>> plt.plot(time, stimulus)
+       >>> plt.xlim(0, 0.05)
+       >>> plt.xlabel("Time [s]")
+       >>> plt.ylabel("Amplitude [Pa]")
+       >>> plt.title("Sharpness = " + f"{S:.2f}" + " acum")
     """
 
     if len(spectrum) != len(freqs):
