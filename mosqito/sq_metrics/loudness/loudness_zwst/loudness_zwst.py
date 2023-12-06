@@ -19,43 +19,80 @@ except ImportError:
 
 
 def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
-    """Zwicker-loudness calculation for stationary signals
+    """
+    Returns the loudness value 
 
-    Calculates the acoustic loudness according to Zwicker method for
+    This function computes the acoustic loudness according to Zwicker method for
     stationary signals.
-    Normatice reference:
-        ISO 532:1975 (method B)
-        DIN 45631:1991
-        ISO 532-1:2017 (method 1)
-    The code is based on BASIC program published in "Program for
-    calculating loudness according to DIN 45631 (ISO 532B)", E.Zwicker
-    and H.Fastl, J.A.S.J (E) 12, 1 (1991).
-    Note that due to normative continuity, as defined in the
-    preceeding standards, the method is in accordance with
-    ISO 226:1987 equal loudness contours (instead of ISO 226:2003)
-
+    
     Parameters
     ----------
-    signal : numpy.array or DataTime object
-        Signal time values [Pa]
+    signal: array_like or DataTime object
+        Signal time values [Pa], dim (nperseg, nseg).
     fs : float, optional
-        Sampling frequency, can be omitted if the input is a DataTime
-        object. Default to None
-    field_type : str
-        Type of soundfield corresponding to spec_third ("free" by
-        default or "diffuse").
+        Sampling frequency, can be omitted if the input is a DataTime object. 
+        Default to None
+    field_type : {'free', 'diffuse'}
+        Type of soundfield corresponding to spec_third.
+        Default is 'free'
     is_sdt_output : Bool, optional
         If True, the outputs are returned as SciDataTool objects.
         Default to False
-
-    Outputs
+        
+    Returns
     -------
-    N : float or numpy.array
-        The overall loudness array [sones], size (Ntime,).
-    N_specific : numpy.ndarray or DataFreq object
-        The specific loudness array [sones/bark], size (Nbark, Ntime).
-    bark_axis: numpy.array
-        The Bark axis array, size (Nbark,).
+    S : float
+        Sharpness value in [acum], dim (nseg)
+
+    N : float or array_like
+        Overall loudness array in [sones], size (Ntime,).
+    N_specific : array_like
+        Specific loudness array [sones/bark], size (Nbark, Ntime).
+    bark_axis: array_like
+        Bark axis array, size (Nbark,).
+
+    See Also
+    --------
+    loudness_zwst_perseg : loudness computation by time-segment
+    loudness_zwst_freq : loudness computation from a sound spectrum
+    loudness_zwtv : loudness computation for a non-stationary time signal
+
+    Notes
+    -----
+    Normative reference:
+        ISO 532:1975 (method B)
+        DIN 45631:1991
+        ISO 532-1:2017 (method 1)
+    Due to normative continuity, as defined in the preceeding standards, the method is in accordance with
+    ISO 226:1987 equal loudness contours (instead of ISO 226:2003).
+    
+    References
+    ----------
+    .. [ZF] E.Zwicker and H.Fastl, "Program for calculating loudness according to DIN 45631 (ISO 532B)", 
+            J.A.S.J (E) 12, 1 (1991).
+            
+    Examples
+    --------
+    .. plot::
+       :include-source:
+
+       >>> from mosqito.sq_metrics import loudness_zwst
+       >>> import matplotlib.pyplot as plt
+       >>> import numpy as np
+       >>> f=1000
+       >>> fs=48000
+       >>> d=0.2
+       >>> dB=60
+       >>> time = np.arange(0, d, 1/fs)
+       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> stimulus = stimulus * ampl
+       >>> N, N_spec, bark_axis = loudness_zwst(stimulus, fs)
+       >>> plt.plot(bark_axis, N_spec)
+       >>> plt.xlabel("Frequency band [Bark]")
+       >>> plt.ylabel("Specific loudness [Sone/Bark]")
+       >>> plt.title("Loudness = " + f"{N:.2f}" + " [Sone]")
     """
 
     # Manage SciDataTool input type
