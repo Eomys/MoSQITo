@@ -41,9 +41,6 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
         
     Returns
     -------
-    S : float
-        Sharpness value in [acum], dim (nseg)
-
     N : float or array_like
         Overall loudness array in [sones], size (Ntime,).
     N_specific : array_like

@@ -12,39 +12,77 @@ from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import _thir
 
 
 def loudness_zwtv(signal, fs, field_type='free'):
-    """Calculate Zwicker-loudness for time-varying signals
-    Calculate the acoustic loudness according to Zwicker method for
+    """
+    Returns the loudness value 
+
+    This function computes the acoustic loudness according to Zwicker method for
     time-varying signals.
-    Normatice reference:
-        DIN 45631/A1:2010
-        ISO 532-1:2017 (method 2)
-    The code is based on C program source code published alongside
-    with ISO 532-1 standard.
-    Note that for reasons of normative continuity, as defined in the
-    preceeding standards, the method is in accordance with
-    ISO 226:1987 equal loudness contours (instead of ISO 226:2003)
+    
     Parameters
     ----------
-    signal : numpy.array
-        A time signal values [Pa].
-    fs : integer
-        Sampling frequency.
-    field_type : str
-        Type of soundfield corresponding to signal ("free" by or "diffuse").
+    signal: array_like or DataTime object
+        Signal time values [Pa], dim (nperseg, nseg).
+    fs : float, optional
+        Sampling frequency, can be omitted if the input is a DataTime object. 
+        Default to None
+    field_type : {'free', 'diffuse'}
+        Type of soundfield corresponding to spec_third.
+        Default is 'free'
         
-    Outputs
+    Returns
     -------
     N : float
-        Calculated loudness [sones], size (Ntime,).
+        Overall loudness [sones], size (Ntime,).
     N_specific : numpy.ndarray
         Specific loudness [sones/bark], size (Nbark, Ntime).
     bark_axis : numpy.ndarray
-        Corresponding bark axis, size (Nbark,).
+        Bark axis, size (Nbark,).
     time_axis : numpy.ndarray
         Time axis, size (Ntime,).
+    
+    See Also
+    --------
+    loudness_zwst : loudness computation for a stationary time signal
+    loudness_zwst_perseg : loudness computation by time-segment
+    loudness_zwst_freq : loudness computation from a sound spectrum
 
-    """        
+    Notes
+    -----
+    Normative reference:
+        ISO 532:1975 (method B)
+        DIN 45631:1991
+        ISO 532-1:2017 (method 1)
+    Due to normative continuity, as defined in the preceeding standards, the method is in accordance with
+    ISO 226:1987 equal loudness contours (instead of ISO 226:2003).
+    
+    References
+    ----------
+    .. [ZF] E.Zwicker and H.Fastl, "Program for calculating loudness according to DIN 45631 (ISO 532B)", 
+            J.A.S.J (E) 12, 1 (1991).
+            
+    Examples
+    --------
+    .. plot::
+       :include-source:
 
+       >>> from mosqito.sq_metrics import loudness_zwtv
+       >>> import matplotlib.pyplot as plt
+       >>> import numpy as np
+       >>> fs=48000
+       >>> d=1
+       >>> dB=60
+       >>> time = np.arange(0, d, 1/fs)
+       >>> f = np.linspace(1000,5000, len(time))
+       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> stimulus = stimulus * ampl
+       >>> N, N_spec, bark_axis, time_axis = loudness_zwtv(stimulus, fs)
+       >>> plt.plot(time_axis, N)
+       >>> plt.xlabel("Time [s]")
+       >>> plt.ylabel("Loudness [Sone]")
+    """
+    
     # Compute third octave band spectrum vs. time
     spec_third, time_axis, _ = _third_octave_levels(signal, fs)
 

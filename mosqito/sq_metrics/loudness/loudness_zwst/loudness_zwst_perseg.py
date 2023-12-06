@@ -16,25 +16,16 @@ except ImportError:
 def loudness_zwst_perseg(
     signal, fs=None, nperseg=4096, noverlap=None, field_type="free", is_sdt_output=False
 ):
-    """Zwicker-loudness calculation for stationary signals
+    """
+    Returns the loudness value 
 
-    Calculates the acoustic loudness according to Zwicker method for
-    stationary signals per signal segment.
-    Normatice reference:
-        ISO 532:1975 (method B)
-        DIN 45631:1991
-        ISO 532-1:2017 (method 1)
-    The code is based on BASIC program published in "Program for
-    calculating loudness according to DIN 45631 (ISO 532B)", E.Zwicker
-    and H.Fastl, J.A.S.J (E) 12, 1 (1991).
-    Note that due to normative continuity, as defined in the
-    preceeding standards, the method is in accordance with
-    ISO 226:1987 equal loudness contours (instead of ISO 226:2003)
+    This function computes the acoustic loudness according to Zwicker method by segmentation
+    of a stationary signal.
 
-    Parameters
+    Parameters:
     ----------
-    signal : numpy.array or DataTime object
-        Time signal values [Pa].
+    signal: array_like
+        Input time signal in [Pa]
     fs : float, optional
         Sampling frequency, can be omitted if the input is a DataTime
         object. Default to None
@@ -43,25 +34,66 @@ def loudness_zwst_perseg(
     noverlap: int, optional
         Number of points to overlap between segments.
         If None, noverlap = nperseg / 2. Defaults to None.
-    field_type : str
-        Type of soundfield corresponding to spec_third ("free" by
-        default or "diffuse").
+    field_type : {'free', 'diffuse'}
+        Type of soundfield corresponding to spec_third.
+        Default is 'free'
     is_sdt_output : Bool, optional
         If True, the outputs are returned as SciDataTool objects.
         Default to False
-
-    Outputs
+        
+    Returns
     -------
-    N : numpy.array or DataTime object
-        The overall loudness array [sones], size (Ntime,).
-    N_specific : numpy.ndarray or DataFreq object
-        The specific loudness array [sones/bark], size (Nbark, Ntime).
-    bark_axis: numpy.array
-        The Bark axis array, size (Nbark,).
-    time_axis: numpy.array
-        The time axis array, size (Ntime,) or None.
+    N : float
+        Overall loudness [sones], size (Ntime,).
+    N_specific : numpy.ndarray
+        Specific loudness [sones/bark], size (Nbark, Ntime).
+    bark_axis : numpy.ndarray
+        Bark axis, size (Nbark,).
+    time_axis : numpy.ndarray
+        Time axis, size (Ntime,).
 
-    """
+    See Also
+    --------
+    loudness_zwst : loudness computation for a stationary time signal
+    loudness_zwst_freq : loudness computation from a sound spectrum
+    loudness_zwtv : loudness computation for a non-stationary time signal
+
+    Notes
+    -----
+    Normative reference:
+        ISO 532:1975 (method B)
+        DIN 45631:1991
+        ISO 532-1:2017 (method 1)
+    Due to normative continuity, as defined in the preceeding standards, the method is in accordance with
+    ISO 226:1987 equal loudness contours (instead of ISO 226:2003).
+    
+    References
+    ----------
+    .. [ZF] E.Zwicker and H.Fastl, "Program for calculating loudness according to DIN 45631 (ISO 532B)", 
+            J.A.S.J (E) 12, 1 (1991).
+            
+    Examples
+    --------
+    .. plot::
+       :include-source:
+
+       >>> from mosqito.sq_metrics import loudness_zwst_perseg
+       >>> import matplotlib.pyplot as plt
+       >>> import numpy as np
+       >>> fs=48000
+       >>> d=1
+       >>> dB=60
+       >>> time = np.arange(0, d, 1/fs)
+       >>> f = np.linspace(1000,5000, len(time))
+       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> stimulus = stimulus * ampl
+       >>> N, N_spec, bark_axis, time_axis = loudness_zwst_perseg(stimulus, fs=fs)
+       >>> plt.plot(time_axis, N)
+       >>> plt.xlabel("Time [s]")
+       >>> plt.ylabel("Loudness [Sone]")
+    """    
 
     # Manage input type
     if DataTime is not None and isinstance(signal, DataTime):
