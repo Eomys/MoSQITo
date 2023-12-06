@@ -103,5 +103,3 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
 
     return N, N_specific, bark_axis
-
-

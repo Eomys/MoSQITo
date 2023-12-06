@@ -10,36 +10,82 @@ from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import _pr_
 
 
 def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
-    """Computation of prominence ratio according to ECMA-74, annex D.10
-    for a time varying signal.
-        The T-PR value is calculated according to ECMA-TR/108
+    """
+    Returns the tone-to-noise ratio value 
+    
+    This function computes the prominence ratio according to ECMA-74, annex D.9
+    for a non-stationary signal.
 
     Parameters
     ----------
     signal :numpy.array
-        A time varying signal in [Pa].
+        Signal time values in [Pa].
     fs : integer
         Sampling frequency.
-    prominence : boolean
+    prominence : Bool
         If True, the algorithm only returns the prominent tones, if False it returns all tones detected.
-        Default is True.
+        Default to True
     overlap : float
-        Overlapping parameter for the time frames of 500ms. Default is 0.5.
+        Overlapping coefficient for the time windows of 200ms.
+        Default to 0
 
-    Output
-    ------
-    t_pr : array of float
-        Global PR value along time.
+    Returns
+    -------
+    t_pr : float
+        Global PR value.
     pr : array of float
         PR values for each detected tone.
     promi : array of bool
         Prominence criterion for each detected tone.
-    tones_freqs : array of float
-        Frequency list of the detected tones.
-    time  : array of float
-        Time axis.   
-     """
+    freqs : array_like
+        Frequency axis [Hz].
+    time : array_like
+        Time axis [s].
+
+    See Also
+    --------
+    pr_ecma_freq : PR computation for a sound spectrum
+    pr_ecma_st : PR computation for a stationary signal
+    tnr_ecma_tv : TNR for a non-stationary signal
     
+    Notes
+    -----
+    The algorithm automatically detects the frequency of the tonal components according to Sottek method.
+
+    
+    References
+    ----------
+    .. [ECMA-418-2] Psychoacoustic metrics for ITT equipment — Part 2 (models based on human perception), 2022.
+            
+    Examples
+    --------
+    The example stimulus is made of white noise + 2 sine waves at 1kHz and 3kHz.
+
+    .. plot::
+       :include-source:
+       
+        >>> import numpy as np
+        >>> import matplotlib.pyplot as plt
+        >>> from mosqito.sq_metrics import pr_ecma_tv
+        >>> fs = 48000
+        >>> d = 2
+        >>> dB = 60
+        >>> time = np.arange(0, d, 1/fs)
+        >>> f1 = 1000
+        >>> f2 = np.zeros((len(time)))
+        >>> f2[len(time)//2:] = 1500
+        >>> stimulus = 2 * np.sin(2 * np.pi * f1 * time) + np.sin(2 * np.pi * f2 * time)+ np.random.normal(0,0.5, len(time))
+        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+        >>> stimulus = stimulus * ampl
+        >>> t_pr, pr, promi, tones_freqs, time = pr_ecma_tv(stimulus, fs)
+        >>> plt.figure(figsize=(10,8))
+        >>> plt.pcolormesh(time, tones_freqs, np.nan_to_num(pr), vmin=0)
+        >>> plt.colorbar(label = "PR value in dB")
+        >>> plt.xlabel("Time [s]")
+        >>> plt.ylabel("Frequency [Hz]")
+        >>> plt.ylim(90,2000)
+        """        
     if len(signal.shape) == 1:
       
         # Number of points within each frame according to the time resolution of 500ms
@@ -63,7 +109,6 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
             
     # compute tnr values
     tones_freqs, pr_, prom, t_pr = _pr_main_calc(spectrum_db, freq_axis)
- 
             
     # Retore the results in a time vs frequency array
     freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
@@ -87,3 +132,26 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
 
     return t_pr, pr, promi, freqs, time 
     
+if __name__ == "__main__":
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from mosqito.sq_metrics import pr_ecma_tv
+    fs = 48000
+    d = 2
+    dB = 60
+    time = np.arange(0, d, 1/fs)
+    f1 = 1000
+    f2 = np.zeros((len(time)))
+    f2[len(time)//2:] = 1500
+    stimulus = 2 * np.sin(2 * np.pi * f1 * time) + np.sin(2 * np.pi * f2 * time)+ np.random.normal(0,0.5, len(time))
+    rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+    ampl = 0.00002 * np.power(10, dB / 20) / rms
+    stimulus = stimulus * ampl
+    t_pr, pr, promi, tones_freqs, time = pr_ecma_tv(stimulus, fs)
+    plt.figure(figsize=(10,8))
+    plt.pcolormesh(time, tones_freqs, np.nan_to_num(pr), vmin=0)
+    plt.colorbar(label = "PR value in dB")
+    plt.xlabel("Time [s]")
+    plt.ylabel("Frequency [Hz]")
+    plt.ylim(90,2000)
+    plt.show(block=True)
