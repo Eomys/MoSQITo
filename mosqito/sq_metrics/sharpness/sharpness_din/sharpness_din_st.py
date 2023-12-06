@@ -71,7 +71,6 @@ def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
        >>> plt.xlabel("Time [s]")
        >>> plt.ylabel("Amplitude [Pa]")
        >>> plt.title("Sharpness = " + f"{S:.2f}" + " [Acum]")
-
     """
 
     # Compute loudness

@@ -83,13 +83,11 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
        >>> plt.xlabel("Time [s]")
        >>> plt.ylabel("Sharpness [Acum]")
     """
-
-
     if skip == 0:
         print("[Warning] when computing sharpness from time-varying loudness, a transient effect appears on the first points. To cut it, use 'skip='")
 
     # Compute loudness
-    N, N_specific, _, time_axis = loudness_zwtv(signal, fs)
+    N, N_specific, _, time_axis = loudness_zwtv(signal, fs, field_type)
 
     # Compute sharpness from loudness
     S = sharpness_din_from_loudness(
