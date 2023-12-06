@@ -42,7 +42,7 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     """
     
     # Deduce sampling frequency
-    fs = np.mean(freqs[1:] - freqs[:-1]) * 2 * len(spectrum)
+    fs = np.mean(freqs[1:] - freqs[:-1]) * 2 * (len(spectrum)-1)
     
     # Sampling frequency shall be equal to 48 kHz (as per ISO 532)
     if fs != 48000:
