@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st &mdash; MOSQITO 1.0.8 documentation</title>
-      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../../_static/jquery.js"></script>
-        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
-        <script src="../../../../../_static/doctools.js"></script>
-        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=8cbfd27f"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
@@ -140,6 +142,7 @@
 <span class="sd">       :include-source:</span>
 
 <span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import sharpness_din_st </span>
+<span class="sd">       &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">       &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">       &gt;&gt;&gt; f=1000</span>
 <span class="sd">       &gt;&gt;&gt; fs=48000</span>
@@ -150,9 +153,12 @@
 <span class="sd">       &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
 <span class="sd">       &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
 <span class="sd">       &gt;&gt;&gt; stimulus = stimulus * ampl</span>
-<span class="sd">       &gt;&gt;&gt; S = sharpness_din_st(stimulus, fs=fs, overlap=0)</span>
-<span class="sd">       &gt;&gt;&gt; print(&#39;Sharpness value : &#39;, S, &#39; acum.&#39;)</span>
-
+<span class="sd">       &gt;&gt;&gt; S = sharpness_din_st(stimulus, fs=fs)</span>
+<span class="sd">       &gt;&gt;&gt; plt.plot(time, stimulus)</span>
+<span class="sd">       &gt;&gt;&gt; plt.xlim(0, 0.05)</span>
+<span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Time [s]&quot;)</span>
+<span class="sd">       &gt;&gt;&gt; plt.ylabel(&quot;Amplitude [Pa]&quot;)</span>
+<span class="sd">       &gt;&gt;&gt; plt.title(&quot;Sharpness = &quot; + f&quot;{S:.2f}&quot; + &quot; [Acum]&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Compute loudness</span>

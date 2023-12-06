@@ -12,5 +12,5 @@ ampl = 0.00002 * np.power(10, dB / 20) / rms
 stimulus = stimulus * ampl
 S, time_axis = sharpness_din_tv(stimulus, fs=fs, skip=0.1)
 plt.plot(time_axis, S)
-plt.xlabel("Time axis [s]")
-plt.ylabel("Sharpness, [Acum]")
+plt.xlabel("Time [s]")
+plt.ylabel("Sharpness [Acum]")

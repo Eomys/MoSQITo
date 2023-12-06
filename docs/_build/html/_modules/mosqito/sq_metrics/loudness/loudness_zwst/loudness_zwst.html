@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst &mdash; MOSQITO 1.0.8 documentation</title>
-      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../../_static/jquery.js"></script>
-        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
-        <script src="../../../../../_static/doctools.js"></script>
-        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=8cbfd27f"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
@@ -105,43 +107,77 @@
 
 
 <div class="viewcode-block" id="loudness_zwst"><a class="viewcode-back" href="../../../../../source/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.html#mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.loudness_zwst">[docs]</a><span class="k">def</span> <span class="nf">loudness_zwst</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">,</span> <span class="n">is_sdt_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Zwicker-loudness calculation for stationary signals</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the loudness value </span>
 
-<span class="sd">    Calculates the acoustic loudness according to Zwicker method for</span>
+<span class="sd">    This function computes the acoustic loudness according to Zwicker method for</span>
 <span class="sd">    stationary signals.</span>
-<span class="sd">    Normatice reference:</span>
-<span class="sd">        ISO 532:1975 (method B)</span>
-<span class="sd">        DIN 45631:1991</span>
-<span class="sd">        ISO 532-1:2017 (method 1)</span>
-<span class="sd">    The code is based on BASIC program published in &quot;Program for</span>
-<span class="sd">    calculating loudness according to DIN 45631 (ISO 532B)&quot;, E.Zwicker</span>
-<span class="sd">    and H.Fastl, J.A.S.J (E) 12, 1 (1991).</span>
-<span class="sd">    Note that due to normative continuity, as defined in the</span>
-<span class="sd">    preceeding standards, the method is in accordance with</span>
-<span class="sd">    ISO 226:1987 equal loudness contours (instead of ISO 226:2003)</span>
-
+<span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    signal : numpy.array or DataTime object</span>
-<span class="sd">        Signal time values [Pa]</span>
+<span class="sd">    signal: array_like or DataTime object</span>
+<span class="sd">        Signal time values [Pa], dim (nperseg, nseg).</span>
 <span class="sd">    fs : float, optional</span>
-<span class="sd">        Sampling frequency, can be omitted if the input is a DataTime</span>
-<span class="sd">        object. Default to None</span>
-<span class="sd">    field_type : str</span>
-<span class="sd">        Type of soundfield corresponding to spec_third (&quot;free&quot; by</span>
-<span class="sd">        default or &quot;diffuse&quot;).</span>
+<span class="sd">        Sampling frequency, can be omitted if the input is a DataTime object. </span>
+<span class="sd">        Default to None</span>
+<span class="sd">    field_type : {&#39;free&#39;, &#39;diffuse&#39;}</span>
+<span class="sd">        Type of soundfield corresponding to spec_third.</span>
+<span class="sd">        Default is &#39;free&#39;</span>
 <span class="sd">    is_sdt_output : Bool, optional</span>
 <span class="sd">        If True, the outputs are returned as SciDataTool objects.</span>
 <span class="sd">        Default to False</span>
-
-<span class="sd">    Outputs</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    N : float or numpy.array</span>
-<span class="sd">        The overall loudness array [sones], size (Ntime,).</span>
-<span class="sd">    N_specific : numpy.ndarray or DataFreq object</span>
-<span class="sd">        The specific loudness array [sones/bark], size (Nbark, Ntime).</span>
-<span class="sd">    bark_axis: numpy.array</span>
-<span class="sd">        The Bark axis array, size (Nbark,).</span>
+<span class="sd">    N : float or array_like</span>
+<span class="sd">        Overall loudness array in [sones], size (Ntime,).</span>
+<span class="sd">    N_specific : array_like</span>
+<span class="sd">        Specific loudness array [sones/bark], size (Nbark, Ntime).</span>
+<span class="sd">    bark_axis: array_like</span>
+<span class="sd">        Bark axis array, size (Nbark,).</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    loudness_zwst_perseg : loudness computation by time-segment</span>
+<span class="sd">    loudness_zwst_freq : loudness computation from a sound spectrum</span>
+<span class="sd">    loudness_zwtv : loudness computation for a non-stationary time signal</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Normative reference:</span>
+<span class="sd">        ISO 532:1975 (method B)</span>
+<span class="sd">        DIN 45631:1991</span>
+<span class="sd">        ISO 532-1:2017 (method 1)</span>
+<span class="sd">    Due to normative continuity, as defined in the preceeding standards, the method is in accordance with</span>
+<span class="sd">    ISO 226:1987 equal loudness contours (instead of ISO 226:2003).</span>
+<span class="sd">    </span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [ZF] E.Zwicker and H.Fastl, &quot;Program for calculating loudness according to DIN 45631 (ISO 532B)&quot;, </span>
+<span class="sd">            J.A.S.J (E) 12, 1 (1991).</span>
+<span class="sd">            </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">       :include-source:</span>
+
+<span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import loudness_zwst</span>
+<span class="sd">       &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">       &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">       &gt;&gt;&gt; f=1000</span>
+<span class="sd">       &gt;&gt;&gt; fs=48000</span>
+<span class="sd">       &gt;&gt;&gt; d=0.2</span>
+<span class="sd">       &gt;&gt;&gt; dB=60</span>
+<span class="sd">       &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
+<span class="sd">       &gt;&gt;&gt; stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))</span>
+<span class="sd">       &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
+<span class="sd">       &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
+<span class="sd">       &gt;&gt;&gt; stimulus = stimulus * ampl</span>
+<span class="sd">       &gt;&gt;&gt; N, N_spec, bark_axis = loudness_zwst(stimulus, fs)</span>
+<span class="sd">       &gt;&gt;&gt; plt.plot(bark_axis, N_spec)</span>
+<span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Frequency band [Bark]&quot;)</span>
+<span class="sd">       &gt;&gt;&gt; plt.ylabel(&quot;Specific loudness [Sone/Bark]&quot;)</span>
+<span class="sd">       &gt;&gt;&gt; plt.title(&quot;Loudness = &quot; + f&quot;{N:.2f}&quot; + &quot; [Sone]&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Manage SciDataTool input type</span>
@@ -149,6 +185,11 @@
         <span class="n">time</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">get_along</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
         <span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">signal</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">get_along</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)[</span><span class="n">signal</span><span class="o">.</span><span class="n">symbol</span><span class="p">]</span>
+        
+    <span class="k">if</span> <span class="n">fs</span> <span class="o">&lt;</span> <span class="mi">32768</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;ERROR: Design not possible. Sampling frequency should be &gt;32768 Hz to cover the audio range from 24Hz to 12.6kHz.&quot;&quot;&quot;</span>
+        <span class="p">)</span>
 
     <span class="c1"># Compute third octave band spectrum</span>
     <span class="n">spec_third</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">noct_spectrum</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">fmin</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mi">12600</span><span class="p">)</span>

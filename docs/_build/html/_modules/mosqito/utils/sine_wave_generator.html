@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>mosqito.utils.sine_wave_generator &mdash; MOSQITO 1.0.8 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=8cbfd27f"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -91,26 +93,33 @@
 
 
 <div class="viewcode-block" id="sine_wave_generator"><a class="viewcode-back" href="../../../source/mosqito.utils.sine_wave_generator.html#mosqito.utils.sine_wave_generator.sine_wave_generator">[docs]</a><span class="k">def</span> <span class="nf">sine_wave_generator</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">spl_value</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;It creates a sine wave signal given some input parameters like frequency, duration, sampling rate or sound</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sine wave signal generation</span>
+<span class="sd">    </span>
+<span class="sd">    This function creates a sine wave signal given a frequency, duration, sampling rate and sound</span>
 <span class="sd">    pressure level.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    fs: int</span>
-<span class="sd">        &#39;Hz&#39;, sampling frequency.</span>
+<span class="sd">        Sampling frequency in [Hz].</span>
 <span class="sd">    t: int</span>
-<span class="sd">        &#39;s&#39;, signal duration.</span>
+<span class="sd">        Signal duration in [s].</span>
 <span class="sd">    spl_value: int</span>
-<span class="sd">        &#39;dB SPL&#39;, signal sound pressure level.</span>
+<span class="sd">        Sound pressure level signal in [dB SPL].</span>
 <span class="sd">    freq: int</span>
-<span class="sd">        &#39;Hz&#39;, sine wave frequency.</span>
+<span class="sd">        Sine wave frequency in [Hz].</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    signal: numpy.array</span>
-<span class="sd">        &#39;Pa&#39;, time signal values. For ECMA-418-2 the sampling frequency of the signal must be 48000 Hz.</span>
-<span class="sd">    time: numpy.array</span>
-<span class="sd">        Time scale arranged in a numpy array.</span>
+<span class="sd">    signal: array_like</span>
+<span class="sd">        Signal time values in [Pa]. </span>
+<span class="sd">    time: array_like</span>
+<span class="sd">        Time axis in [s].</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Signal to be used for ECMA-418-2 validation must have a sampling frequency of 48 kHz.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># &quot;Peak&quot; value in Pascals (amplitude)</span>

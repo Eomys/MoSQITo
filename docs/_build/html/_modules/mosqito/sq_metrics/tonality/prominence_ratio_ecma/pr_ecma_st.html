@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st &mdash; MOSQITO 1.0.8 documentation</title>
-      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../../_static/jquery.js"></script>
-        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
-        <script src="../../../../../_static/doctools.js"></script>
-        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=8cbfd27f"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
@@ -92,31 +94,100 @@
 
 
 <div class="viewcode-block" id="pr_ecma_st"><a class="viewcode-back" href="../../../../../source/mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.html#mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.pr_ecma_st">[docs]</a><span class="k">def</span> <span class="nf">pr_ecma_st</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">prominence</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computation of prominence ratio according to ECMA-74, annex D.10</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the tone-to-noise ratio value </span>
+<span class="sd">    </span>
+<span class="sd">    This function computes the prominence ratio according to ECMA-74, annex D.9</span>
 <span class="sd">    for a stationary signal.</span>
-<span class="sd">        The T-PR value is calculated according to ECMA-TR/108</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    signal :numpy.array</span>
-<span class="sd">        A stationary signal in [Pa].</span>
+<span class="sd">        Signal time values in [Pa].</span>
 <span class="sd">    fs : integer</span>
 <span class="sd">        Sampling frequency.</span>
-<span class="sd">    prominence : boolean</span>
+<span class="sd">    prominence : Bool</span>
 <span class="sd">        If True, the algorithm only returns the prominent tones, if False it returns all tones detected.</span>
-<span class="sd">        Default is True.</span>
+<span class="sd">        Default to True</span>
 
-<span class="sd">    Output</span>
-<span class="sd">    ------</span>
-<span class="sd">    t_pr : array of float</span>
-<span class="sd">        Global PR value along time.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    t_pr : float</span>
+<span class="sd">        Global PR value.</span>
 <span class="sd">    pr : array of float</span>
 <span class="sd">        PR values for each detected tone.</span>
 <span class="sd">    promi : array of bool</span>
 <span class="sd">        Prominence criterion for each detected tone.</span>
 <span class="sd">    tones_freqs : array of float</span>
-<span class="sd">        Frequency list of the detected tones.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        Frequency of the detected tones.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    pr_ecma_freq : PR computation for a sound spectrum</span>
+<span class="sd">    pr_ecma_tv : PR computation for a non-stationary signal</span>
+<span class="sd">    tnr_ecma_st : Tone-to-noise ratio for a stationary signal</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The algorithm automatically detects the frequency of the tonal components according to Sottek method.</span>
+
+<span class="sd">    </span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [ECMA-418-2] Psychoacoustic metrics for ITT equipment — Part 2 (models based on human perception), 2022.</span>
+<span class="sd">            </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    The example stimulus is made of white noise + 2 sine waves at 1kHz and 3kHz.</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">       :include-source:</span>
+<span class="sd">       </span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from mosqito.sound_level_meter.spectrum import spectrum</span>
+<span class="sd">        &gt;&gt;&gt; fs = 48000</span>
+<span class="sd">        &gt;&gt;&gt; d = 2</span>
+<span class="sd">        &gt;&gt;&gt; f = 1000</span>
+<span class="sd">        &gt;&gt;&gt; dB = 60</span>
+<span class="sd">        &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = np.sin(2 * np.pi * f * time) + 0.5 * np.sin(2 * np.pi * 3 * f * time)+ np.random.normal(0,0.5, len(time))</span>
+<span class="sd">        &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
+<span class="sd">        &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = stimulus * ampl</span>
+<span class="sd">        &gt;&gt;&gt; spectrum_db, freq_axis = spectrum(stimulus, fs, db=True)</span>
+<span class="sd">        &gt;&gt;&gt; plt.plot(freq_axis, spectrum_db)</span>
+<span class="sd">        &gt;&gt;&gt; plt.ylim(0,60)</span>
+<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Frequency [Hz]&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Acoustic pressure [dB]&quot;)</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">       :include-source:</span>
+<span class="sd">       </span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import pr_ecma_st</span>
+<span class="sd">        &gt;&gt;&gt; fs = 48000</span>
+<span class="sd">        &gt;&gt;&gt; d = 2</span>
+<span class="sd">        &gt;&gt;&gt; f = 1000</span>
+<span class="sd">        &gt;&gt;&gt; dB = 60</span>
+<span class="sd">        &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = np.sin(2 * np.pi * f * time) + 0.5 * np.sin(2 * np.pi * 3 * f * time)+ np.random.normal(0,0.5, len(time))</span>
+<span class="sd">        &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
+<span class="sd">        &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = stimulus * ampl</span>
+<span class="sd">        &gt;&gt;&gt; t_pr, pr, prom, tones_freqs = pr_ecma_st(stimulus, fs)</span>
+<span class="sd">        &gt;&gt;&gt; plt.bar(tones_freqs, pr, width=50)  </span>
+<span class="sd">        &gt;&gt;&gt; plt.grid(axis=&#39;y&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;PR [dB]&quot;)     </span>
+<span class="sd">        &gt;&gt;&gt; plt.title(&quot;Total PR = &quot;+ f&quot;{t_pr[0]:.2f}&quot; + &quot; dB&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; plt.xscale(&#39;log&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; xticks_pos = list(tones_freqs) + [100,1000,10000]</span>
+<span class="sd">        &gt;&gt;&gt; xticks_pos = np.sort(xticks_pos)</span>
+<span class="sd">        &gt;&gt;&gt; xticks_label = [str(elem) for elem in xticks_pos]</span>
+<span class="sd">        &gt;&gt;&gt; plt.xticks(xticks_pos, labels=xticks_label, rotation = 30)   </span>
+<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Frequency [Hz]&quot;)     </span>
+<span class="sd">    &quot;&quot;&quot;</span>    
     
     <span class="c1"># Compute db spectrum</span>
     <span class="n">spectrum_db</span><span class="p">,</span> <span class="n">freq_axis</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

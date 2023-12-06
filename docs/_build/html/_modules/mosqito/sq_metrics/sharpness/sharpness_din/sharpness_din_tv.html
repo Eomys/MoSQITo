@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv &mdash; MOSQITO 1.0.8 documentation</title>
-      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../../_static/jquery.js"></script>
-        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
-        <script src="../../../../../_static/doctools.js"></script>
-        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=8cbfd27f"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
@@ -142,6 +144,10 @@
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
 <span class="sd">    .. [DIN45692] Measurement technique for the simulation of the auditory sensation of sharpness, 2009</span>
+<span class="sd">    .. [Aures] W. Aures, &quot;Sensory pleasantness as a function of psychoacoustic sensations&quot;, Acustica 58, 1985</span>
+<span class="sd">    .. [Bismarck] G. Von Bismarck, &quot;Sharpness as an attribute of the timbre of steady sounds&quot;, Acustica 30, 1974</span>
+<span class="sd">    .. [Fastl] E. Zwicker and H. Fastl, &quot;Psychoacoustics&quot;, 1999</span>
+
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -162,20 +168,18 @@
 <span class="sd">       &gt;&gt;&gt; stimulus = stimulus * ampl</span>
 <span class="sd">       &gt;&gt;&gt; S, time_axis = sharpness_din_tv(stimulus, fs=fs, skip=0.1)</span>
 <span class="sd">       &gt;&gt;&gt; plt.plot(time_axis, S)</span>
-<span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Time axis [s]&quot;)</span>
-<span class="sd">       &gt;&gt;&gt; plt.ylabel(&quot;Sharpness, [Acum]&quot;)</span>
+<span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Time [s]&quot;)</span>
+<span class="sd">       &gt;&gt;&gt; plt.ylabel(&quot;Sharpness [Acum]&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-
     <span class="k">if</span> <span class="n">skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Warning] when computing sharpness from time-varying loudness, a transient effect appears on the first points. To cut it, use &#39;skip=&#39;&quot;</span><span class="p">)</span>
 
     <span class="c1"># Compute loudness</span>
-    <span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">time_axis</span> <span class="o">=</span> <span class="n">loudness_zwtv</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">time_axis</span> <span class="o">=</span> <span class="n">loudness_zwtv</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">field_type</span><span class="p">)</span>
 
     <span class="c1"># Compute sharpness from loudness</span>
     <span class="n">S</span> <span class="o">=</span> <span class="n">sharpness_din_from_loudness</span><span class="p">(</span>
-        <span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="n">weighting</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="n">weighting</span><span class="p">)</span>
 
     <span class="c1"># Cut transient effect</span>
     <span class="n">cut_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">time_axis</span> <span class="o">-</span> <span class="n">skip</span><span class="p">))</span>

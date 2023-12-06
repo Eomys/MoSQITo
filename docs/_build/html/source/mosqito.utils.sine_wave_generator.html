@@ -1,26 +1,28 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>&lt;no title&gt; &mdash; MOSQITO 1.0.8 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=8cbfd27f"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="&lt;no title&gt;" href="mosqito.utils.time_segmentation.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="mosqito.utils.LTQ.html" /> 
+    <link rel="prev" title="&lt;no title&gt;" href="mosqito.utils.conversion.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -56,16 +58,15 @@
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="mosqito.utils.html">mosqito.utils</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.html"><code class="docutils literal notranslate"><span class="pre">amp2db()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.html#mosqito.utils.conversion.bark2freq"><code class="docutils literal notranslate"><span class="pre">bark2freq()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.html#mosqito.utils.conversion.db2amp"><code class="docutils literal notranslate"><span class="pre">db2amp()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.html#mosqito.utils.conversion.freq2bark"><code class="docutils literal notranslate"><span class="pre">freq2bark()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.html#mosqito.utils.conversion.spectrum2dBA"><code class="docutils literal notranslate"><span class="pre">spectrum2dBA()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.isoclose.html"><code class="docutils literal notranslate"><span class="pre">isoclose()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.load.html"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.LTQ.html"><code class="docutils literal notranslate"><span class="pre">LTQ()</span></code></a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">sine_wave_generator()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.time_segmentation.html"><code class="docutils literal notranslate"><span class="pre">time_segmentation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.html#conversion">Conversion</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="mosqito.utils.html#sine-wave-generator">Sine wave generator</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">sine_wave_generator()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.html#time-segmentation">Time segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.html#threshold-of-quiet">Threshold of quiet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.html#check-compliance-with-iso">Check compliance with ISO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.html#signal-loading">Signal loading</a></li>
 </ul>
 </li>
 </ul>
@@ -102,25 +103,28 @@
   <span class="target" id="module-mosqito.utils.sine_wave_generator"></span><dl class="py function">
 <dt class="sig sig-object py" id="mosqito.utils.sine_wave_generator.sine_wave_generator">
 <span class="sig-name descname"><span class="pre">sine_wave_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spl_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mosqito/utils/sine_wave_generator.html#sine_wave_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.sine_wave_generator.sine_wave_generator" title="Permalink to this definition"></a></dt>
-<dd><p>It creates a sine wave signal given some input parameters like frequency, duration, sampling rate or sound
+<dd><p>Sine wave signal generation</p>
+<p>This function creates a sine wave signal given a frequency, duration, sampling rate and sound
 pressure level.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fs</strong> (<em>int</em>) – ‘Hz’, sampling frequency.</p></li>
-<li><p><strong>t</strong> (<em>int</em>) – ‘s’, signal duration.</p></li>
-<li><p><strong>spl_value</strong> (<em>int</em>) – ‘dB SPL’, signal sound pressure level.</p></li>
-<li><p><strong>freq</strong> (<em>int</em>) – ‘Hz’, sine wave frequency.</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – Sampling frequency in [Hz].</p></li>
+<li><p><strong>t</strong> (<em>int</em>) – Signal duration in [s].</p></li>
+<li><p><strong>spl_value</strong> (<em>int</em>) – Sound pressure level signal in [dB SPL].</p></li>
+<li><p><strong>freq</strong> (<em>int</em>) – Sine wave frequency in [Hz].</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>signal</strong> (<em>numpy.array</em>) – ‘Pa’, time signal values. For ECMA-418-2 the sampling frequency of the signal must be 48000 Hz.</p></li>
-<li><p><strong>time</strong> (<em>numpy.array</em>) – Time scale arranged in a numpy array.</p></li>
+<li><p><strong>signal</strong> (<em>array_like</em>) – Signal time values in [Pa].</p></li>
+<li><p><strong>time</strong> (<em>array_like</em>) – Time axis in [s].</p></li>
 </ul>
 </p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>Signal to be used for ECMA-418-2 validation must have a sampling frequency of 48 kHz.</p>
 </dd></dl>
 
 
@@ -128,7 +132,7 @@ pressure level.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="mosqito.utils.LTQ.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mosqito.utils.conversion.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="mosqito.utils.time_segmentation.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
