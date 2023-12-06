@@ -80,8 +80,8 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
        >>> stimulus = stimulus * ampl
        >>> S, time_axis = sharpness_din_tv(stimulus, fs=fs, skip=0.1)
        >>> plt.plot(time_axis, S)
-       >>> plt.xlabel("Time axis [s]")
-       >>> plt.ylabel("Sharpness, [Acum]")
+       >>> plt.xlabel("Time [s]")
+       >>> plt.ylabel("Sharpness [Acum]")
     """
 
 
@@ -93,7 +93,7 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
 
     # Compute sharpness from loudness
     S = sharpness_din_from_loudness(
-        N, N_specific, weighting=weighting, skip=0)
+        N, N_specific, weighting=weighting)
 
     # Cut transient effect
     cut_index = np.argmin(np.abs(time_axis - skip))

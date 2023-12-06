@@ -4,7 +4,6 @@
 from mosqito.sq_metrics import loudness_zwst_freq
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
 
-
 def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     """
     Returns the sharpness value 
@@ -73,7 +72,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
        >>> plt.xlim(0, 0.05)
        >>> plt.xlabel("Time [s]")
        >>> plt.ylabel("Amplitude [Pa]")
-       >>> plt.title("Sharpness = " + f"{S:.2f}" + " acum")
+       >>> plt.title("Sharpness = " + f"{S:.2f}" + " [Acum]")
     """
 
     if len(spectrum) != len(freqs):

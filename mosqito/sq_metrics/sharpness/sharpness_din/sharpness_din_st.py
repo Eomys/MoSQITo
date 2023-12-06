@@ -54,6 +54,7 @@ def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
        :include-source:
 
        >>> from mosqito.sq_metrics import sharpness_din_st 
+       >>> import matplotlib.pyplot as plt
        >>> import numpy as np
        >>> f=1000
        >>> fs=48000
@@ -64,8 +65,12 @@ def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
        >>> stimulus = stimulus * ampl
-       >>> S = sharpness_din_st(stimulus, fs=fs, overlap=0)
-       >>> print('Sharpness value : ', S, ' acum.')
+       >>> S = sharpness_din_st(stimulus, fs=fs)
+       >>> plt.plot(time, stimulus)
+       >>> plt.xlim(0, 0.05)
+       >>> plt.xlabel("Time [s]")
+       >>> plt.ylabel("Amplitude [Pa]")
+       >>> plt.title("Sharpness = " + f"{S:.2f}" + " [Acum]")
 
     """
 

@@ -24,36 +24,80 @@ def sharpness_din_perseg(
     field_type="free",
     is_sdt_output=False,
 ):
-    """Acoustic sharpness calculation according to different methods
-        (Aures, Von Bismarck, DIN 45692, Fastl) from a stationary signal.
+    """
+    Returns the sharpness value 
+
+    This function computes the sharpness value according to different methods.
 
     Parameters:
     ----------
-    signal: numpy.array or DataTime object
-        A time signal in [Pa].
+    signal: array_like
+        Input time signal in [Pa]
     fs : float, optional
         Sampling frequency, can be omitted if the input is a DataTime
         object. Default to None
-    weighting : string
-        To specify the weighting function used for the
-        sharpness computation.'din' by default,'aures', 'bismarck','fastl'
+    weighting : {'din', 'aures', 'bismarck', 'fastl'}
+        Weighting function used for the sharpness computation. 
+        Default is 'din'
     nperseg: int, optional
         Length of each segment. Defaults to 4096.
     noverlap: int, optional
         Number of points to overlap between segments.
         If None, noverlap = nperseg / 2. Defaults to None.
-    field_type : str
-        Type of soundfield corresponding to spec_third ("free" by
-        default or "diffuse").
+    field_type : {'free', 'diffuse'}
+        Type of soundfield corresponding to spec_third.
+        Default is 'free'
     is_sdt_output : Bool, optional
         If True, the outputs are returned as SciDataTool objects.
         Default to False
+    Returns
+    -------
+    S : numpy.array
+        Sharpness value in [acum], dim (nseg)
+    time_axis : numpy.array
+        Time axis in [s]
 
-    Outputs
-    ------
-    S : ndarray or DataTime object
-        Sharpness value, size(nseg).
+    See Also
+    --------
+    sharpness_din_from_loudness : sharpness computation from loudness values
+    sharpness_din_tv : sharpness computation for a non-stationary time signal
+    sharpness_din_st : sharpness computation for a stationary time signal
+    sharpness_din_freq : sharpness computation from a sound spectrum
 
+
+    Notes
+    -----
+    The different methods account for the weighting function applied on the specific loudness values:
+     * DIN 45692 : weighting defined in the standard
+     * Aures
+     * Bismarck
+     * Fastl
+
+    References
+    ----------
+    .. [DIN45692] Measurement technique for the simulation of the auditory sensation of sharpness, 2009
+
+    Examples
+    --------
+    .. plot::
+       :include-source:
+
+       >>> from mosqito.sq_metrics import sharpness_din_perseg
+       >>> import matplotlib.pyplot as plt
+       >>> import numpy as np
+       >>> fs=48000
+       >>> d=1
+       >>> dB=60
+       >>> time = np.arange(0, d, 1/fs)
+       >>> f = np.linspace(1000,5000, len(time))
+       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> stimulus = stimulus * ampl
+       >>> S, time_axis = sharpness_din_perseg(stimulus, fs=fs)
+       >>> plt.plot(time_axis, S)
+       >>> plt.xlabel("Time [s]")
+       >>> plt.ylabel("Sharpness [Acum]")
     """
 
     # Manage input type
