@@ -5,26 +5,33 @@ import math
 
 
 def sine_wave_generator(fs, t, spl_value, freq):
-    """It creates a sine wave signal given some input parameters like frequency, duration, sampling rate or sound
+    """
+    Sine wave signal generation
+    
+    This function creates a sine wave signal given a frequency, duration, sampling rate and sound
     pressure level.
 
     Parameters
     ----------
     fs: int
-        'Hz', sampling frequency.
+        Sampling frequency in [Hz].
     t: int
-        's', signal duration.
+        Signal duration in [s].
     spl_value: int
-        'dB SPL', signal sound pressure level.
+        Sound pressure level signal in [dB SPL].
     freq: int
-        'Hz', sine wave frequency.
+        Sine wave frequency in [Hz].
 
     Returns
     -------
-    signal: numpy.array
-        'Pa', time signal values. For ECMA-418-2 the sampling frequency of the signal must be 48000 Hz.
-    time: numpy.array
-        Time scale arranged in a numpy array.
+    signal: array_like
+        Signal time values in [Pa]. 
+    time: array_like
+        Time axis in [s].
+        
+    Notes
+    -----
+    Signal to be used for ECMA-418-2 validation must have a sampling frequency of 48 kHz.
     """
 
     # "Peak" value in Pascals (amplitude)

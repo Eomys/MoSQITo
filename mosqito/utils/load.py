@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Nov 16 08:59:34 2020
-
-@author: wantysal
-"""
 
 # Standard library imports
 import numpy as np
@@ -18,24 +13,30 @@ except ImportError:
 
 
 def load(file, wav_calib=None, mat_signal="", mat_fs=""):
-    """Extract the signal and its time axis from .wav or .uff file,
-    resample the signal to 48 kHz, and affects its sampling frequency
+    """
+    Signal loading
+    
+    This function extracts the signal and its time axis from .wav or .uff file,
+    resamples the signal to 48 kHz, and affects its sampling frequency
     and time signal values.
 
     Parameters
     ----------
     file : string
-        string path to the signal file
+        String path to the signal file.
     wav_calib : float, optional
         Wav file calibration factor [Pa/FS]. Level of the signal in Pa_peak
         corresponding to the full scale of the .wav file. If None, a
-        calibration factor of 1 is considered. Default to None.
+        calibration factor of 1 is considered. 
+        Default to None
     mat_signal : string
-        in case of a .mat file, name of the signal variable
+        In case of a .mat file, name of the signal variable.
+        Default to ""
     mat_fs : string
-        in case of a .mat file, name of the sampling frequency variable
-
-    Outputs
+        In case of a .mat file, name of the sampling frequency variable.
+        Default to ""
+        
+    Returns
     -------
     signal : numpy.array
         time signal values

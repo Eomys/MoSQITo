@@ -25,16 +25,21 @@ def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, 
         Array desired.
     rtol : float, optional
         Relative tolerance.
+        Default to 1e-7
     atol : float, optional
         Absolute tolerance.
+        Default to 0
     is_plot : bool, optional
-        To generate a "compliance" plot
+        To generate a "compliance" plot.
+        Default to False
     tol_label: str
         Label for the tolerance curves
+        Default to None
     xaxis : array_like, optional
-        x axis for the "compliance" plot
+        x axis for the "compliance" plot.
+        Default to None
 
-    Output
+    Returns
     ------
     is_isoclose: bool
         False if actual and desired are not equal up to specified tolerance.

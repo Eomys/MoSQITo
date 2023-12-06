@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Nov 16 11:02:48 2020
-
-@author: wantysal
-"""
 
 # Standard import
 import numpy as np
@@ -12,13 +7,20 @@ import numpy as np
 # ----------------------------------Pa <-> dB-----------------------------------
 def db2amp(dB, ref=1):
     """Linearisation of a SPL level in dB
+    
+    This function linearizes a dB signal into a SPL amplitude signal.
 
     Parameters
     ----------
-    dB : numpy.array
-        dB values to be converted
+    dB : array_like
+        dB values to be converted.
     ref: float
-        reference value
+        Reference value.
+        
+    Returns
+    --------
+    amp : array_like
+        Linearized amplitude values.
     """
     if ref == 0:
         raise ValueError("Reference must be different from 0")
@@ -27,14 +29,21 @@ def db2amp(dB, ref=1):
 
 
 def amp2db(amp, ref=1):
-    """Conversion of an amplitude value into dB
+    """ Amplitude conversion into dB
+    
+    This function converts an amplitude signal into dB with the given reference value.
 
-    Parameters:
+    Parameters
     -----------
-    amp: np.array
-        amplitude values to be converted
+    amp: array_like
+        Amplitude values to be converted.
     ref: float
-        reference value
+        Reference value.
+        
+    Returns
+    --------
+    db: array_like
+        Values in dB.
 
     """
     if ref == 0:
@@ -52,20 +61,24 @@ def amp2db(amp, ref=1):
 
 def bark2freq(bark_axis):
     """Frequency conversion from Bark to Hertz
+    
+    This function does the frequency conversion between bark and hertz.
+    See reference, coefficients are linearly interpolated from the values given in table 6.1.
+    
+    Parameters
+    ----------
+    bark_axis : array_like
+        Bark frequencies to be converted.
 
-     See E. Zwicker, H. Fastl: Psychoacoustics. Springer,Berlin, Heidelberg, 1990.
+    Returns
+    -------
+    freq_axis : array_like
+        Frequencies converted in Hertz.
+                 
+    References
+    ----------
+    ..[ZF] E. Zwicker, H. Fastl: Psychoacoustics. Springer,Berlin, Heidelberg, 1990.
      The coefficients are linearly interpolated from the values given in table 6.1.
-
-     Parameter
-     ---------
-     bark_axis : numpy.array
-                 Bark frequencies to be converted
-
-     Output
-     ------
-    freq_axis : numpy.array
-                frequencies converted in Hertz
-
     """
 
     xp = np.arange(0, 25, 0.5)
@@ -129,21 +142,25 @@ def bark2freq(bark_axis):
 
 
 def freq2bark(freq_axis):
-    """Frequency conversion from Hertz to Bark
-
-     See E. Zwicker, H. Fastl: Psychoacoustics. Springer,Berlin, Heidelberg, 1990.
+    """Frequency conversion from Bark to Hertz
+    
+    This function does the frequency conversion between bark and hertz.
+    See reference, coefficients are linearly interpolated from the values given in table 6.1.
+    
+    Parameters
+    ----------
+    freq_axis : array_like
+        Frequencies converted in Hertz.
+        
+    Returns
+    -------
+    bark_axis : array_like
+        Bark frequencies to be converted.
+                 
+    References
+    ----------
+    ..[ZF] E. Zwicker, H. Fastl: Psychoacoustics. Springer,Berlin, Heidelberg, 1990.
      The coefficients are linearly interpolated from the values given in table 6.1.
-
-     Parameter
-     ---------
-     freq_axis : numpy.array
-                 Hertz frequencies to be converted
-
-     Output
-     ------
-    bark_axis : numpy.array
-               frequencies converted in Bark
-
     """
 
     xp = np.array(
@@ -210,17 +227,27 @@ def freq2bark(freq_axis):
 
 
 def spectrum2dBA(spectrum, fs):
-    """A_weighting dB ponderation of a spectrum according to CEI 61672:2014
-
-    Third-octave spectrum are directly calculated, other are calculated
-    using linear interpolation.
+    """A_weighting dB ponderation 
+    
+    This function does the dBA weighting of a spectrum according to CEI 61672:2014.
+    
 
     Parameters
     ----------
-    spectrum: numpy.array
-              input spectrum
+    spectrum: array_like
+        Input spectrum in [dB].
     fs: integer
-        sampling frequency
+        Sampling frequency in [Hz].
+        
+    Returns
+    -------
+    spectrum_dba: array_like
+        dBA spectrum.
+        
+    Notes
+    -----
+    Third-octave spectrum are directly calculated, other are calculated
+    using linear interpolation.
 
     """
 
