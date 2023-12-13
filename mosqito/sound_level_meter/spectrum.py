@@ -4,7 +4,7 @@ import numpy as np
 from numpy.fft import fft
 
 # local function import
-from mosqito.utils.conversion import amp2db
+from mosqito.utils import amp2db
 
 
 def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=True):
@@ -26,7 +26,34 @@ def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=Tru
         Spectrum [freq_axis x nseg].
     freq_axis : np.array
         Frequency axis.
-
+        
+    See also
+    --------
+    noct_synthesis : conversion of a spectrum to n-th octave band levels
+    noct_spectrum : n-th octave band spectrum computation from a time signal
+    spectrum2dBA : conversion of a spectrum from dB to dBA
+        
+    Examples
+    --------
+    .. plot::
+       :include-source:
+       
+        >>> from mosqito.sound_level_meter import spectrum
+        >>> import matplotlib.pyplot as plt
+        >>> import numpy as np
+        >>> fs=48000
+        >>> d=0.2
+        >>> dB=60
+        >>> time = np.arange(0, d, 1/fs)
+        >>> f = 1000
+        >>> stimulus = 1 + 0.5*np.sin(2 * np.pi * f * time) + 0.1*np.sin(20 * np.pi * f * time)
+        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+        >>> stimulus = stimulus * ampl
+        >>> spec_db, freq_axis = spectrum(stimulus, fs, db=True)
+        >>> plt.step(freq_axis, spec_db)
+        >>> plt.xlabel("Center frequency [Hz]")
+        >>> plt.ylabel("Amplitude [dB]")
     """
     if len(signal.shape)>1:
         nseg = signal.shape[1]
