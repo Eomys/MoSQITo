@@ -23,12 +23,12 @@ def loudness_zwst_perseg(
     of a stationary signal.
 
     Parameters:
-    ----------
+    ------------
     signal: array_like
-        Input time signal in [Pa]
+        Input time signal in [Pa].
     fs : float, optional
-        Sampling frequency, can be omitted if the input is a DataTime
-        object. Default to None
+        Sampling frequency, can be omitted if the input is a DataTimeobject. 
+        Default to None
     nperseg: int, optional
         Length of each segment. Defaults to 4096.
     noverlap: int, optional
@@ -42,9 +42,9 @@ def loudness_zwst_perseg(
         Default to False
         
     Returns
-    -------
+    --------
     N : float
-        Overall loudness [sones], size (Ntime,).
+        Overall loudness [sones], size (Ntime,). 
     N_specific : numpy.ndarray
         Specific loudness [sones/bark], size (Nbark, Ntime).
     bark_axis : numpy.ndarray
@@ -53,13 +53,13 @@ def loudness_zwst_perseg(
         Time axis, size (Ntime,).
 
     See Also
-    --------
+    ---------
     loudness_zwst : loudness computation for a stationary time signal
     loudness_zwst_freq : loudness computation from a sound spectrum
     loudness_zwtv : loudness computation for a non-stationary time signal
 
     Notes
-    -----
+    ------
     Normative reference:
         ISO 532:1975 (method B)
         DIN 45631:1991
@@ -68,12 +68,12 @@ def loudness_zwst_perseg(
     ISO 226:1987 equal loudness contours (instead of ISO 226:2003).
     
     References
-    ----------
+    -----------
     .. [ZF] E.Zwicker and H.Fastl, "Program for calculating loudness according to DIN 45631 (ISO 532B)", 
             J.A.S.J (E) 12, 1 (1991).
             
     Examples
-    --------
+    ---------
     .. plot::
        :include-source:
 

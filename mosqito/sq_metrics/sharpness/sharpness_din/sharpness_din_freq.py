@@ -11,7 +11,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     This function computes the sharpness value along time according to different methods.
 
     Parameters
-    ----------
+    -----------
     spectrum : array_like
         A RMS spectrum.
     freqs : array_like
@@ -24,12 +24,12 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
         Default is 'free'
         
     Returns
-    -------
+    --------
     S : numpy.array
         Sharpness value in [acum]
 
     See Also
-    --------
+    ---------
     sharpness_din_from_loudness : sharpness computation from loudness values
     sharpness_din_st : sharpness computation for a stationary time signal
     sharpness_din_tv : sharpness computation for a non-stationary time signal
@@ -37,7 +37,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
 
 
     Notes
-    -----
+    ------
     The different methods account for the weighting function applied on the specific loudness values:
      * DIN 45692 : weighting defined in the standard
      * Aures
@@ -45,11 +45,11 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
      * Fastl
 
     References
-    ----------
+    -----------
     .. [DIN45692] Measurement technique for the simulation of the auditory sensation of sharpness, 2009
 
     Examples
-    --------
+    ---------
     .. plot::
        :include-source:
 
