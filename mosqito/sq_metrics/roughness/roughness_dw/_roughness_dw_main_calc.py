@@ -10,7 +10,7 @@ from mosqito.utils.LTQ import LTQ
 from mosqito.sq_metrics.roughness.roughness_dw._ear_filter_coeff import (
     _ear_filter_coeff,
 )
-from mosqito.utils.conversion import freq2bark, db2amp, amp2db, bark2freq
+from mosqito.utils import freq2bark, db2amp, amp2db, bark2freq
 
 def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     """

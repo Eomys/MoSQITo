@@ -7,7 +7,7 @@ import numpy as np
 from mosqito.sound_level_meter import noct_spectrum
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
-from mosqito.utils.conversion import amp2db
+from mosqito.utils import amp2db
 
 # Optional package import
 try:

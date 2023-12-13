@@ -5,7 +5,7 @@ import numpy as np
 
 # Local imports
 from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import _pr_main_calc
-from mosqito.utils.conversion import amp2db
+from mosqito.utils import amp2db
 
 
 def pr_ecma_freq(spectrum, freqs, prominence=True):

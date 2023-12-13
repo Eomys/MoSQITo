@@ -15,7 +15,7 @@ def LTQ(bark_axis, reference="zwicker"):
     Parameters
     ----------
     bark_axis: numpy.array
-        frequency axis in bark to compute the threshold
+        Frequency axis in bark to compute the threshold
     reference: str()
         'zwicker' or 'roughness'
     """

@@ -4,7 +4,7 @@
 import numpy as np
 # Local functions imports
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._tnr_main_calc import _tnr_main_calc
-from mosqito.utils.conversion import amp2db
+from mosqito.utils import amp2db
 
 def tnr_ecma_freq(spectrum, freqs,  prominence=True):
     """
