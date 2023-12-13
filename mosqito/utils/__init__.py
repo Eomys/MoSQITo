@@ -4,8 +4,8 @@ Conversion
 ==========
 
 .. toctree::
-   :maxdepth: 1
-
+   :maxdepth: 2
+   
    /source/mosqito.utils.conversion.amp2db
    /source/mosqito.utils.conversion.db2amp
    /source/mosqito.utils.conversion.bark2freq
@@ -58,14 +58,13 @@ Signal loading
 __all__ = ['utils']
 
 
+from mosqito.utils.isoclose import isoclose
+from mosqito.utils.load import load
+from mosqito.utils.sine_wave_generator import sine_wave_generator
+from mosqito.utils.time_segmentation import time_segmentation
 from mosqito.utils.conversion.amp2db import amp2db
 from mosqito.utils.conversion.db2amp import db2amp
 from mosqito.utils.conversion.bark2freq import bark2freq
 from mosqito.utils.conversion.freq2bark import freq2bark
 from mosqito.utils.conversion.spectrum2dBA import spectrum2dBA
-from mosqito.utils.isoclose import isoclose
-from mosqito.utils.load import load
-from mosqito.utils.sine_wave_generator import sine_wave_generator
-from mosqito.utils.time_segmentation import time_segmentation
-
 
