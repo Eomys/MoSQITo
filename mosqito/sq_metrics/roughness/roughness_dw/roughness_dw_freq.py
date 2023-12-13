@@ -61,6 +61,7 @@ def roughness_dw_freq(spectrum, freqs):
        :include-source:
 
        >>> from mosqito.sq_metrics import roughness_dw_freq
+       >>> from mosqito.sound_level_meter import spectrum
        >>> import matplotlib.pyplot as plt
        >>> import numpy as np
        >>> fc=1000
@@ -77,13 +78,12 @@ def roughness_dw_freq(spectrum, freqs):
        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
        >>> stimulus = stimulus * ampl
        >>> n = len(stimulus)
-       >>> spec = np.fft.fft(stimulus )[0:n//2] * 1.42
-       >>> freqs = np.arange(1, round(n / 2) + 1, 1) * (44100 / n)
+       >>> spec, freqs = spectrum(stimulus, fs, db=False)
        >>> R, R_specific, bark = roughness_dw_freq(spec, freqs)
        >>> plt.plot(bark, R_specific)
        >>> plt.xlabel("Bark axis [Bark]")
-       >>> plt.ylabel("Roughness, [Asper]")
-
+       >>> plt.ylabel("Specific roughness, [Asper/Bark]")
+       >>> plt.title("Roughness = " + f"{R:.2f}" + " [Asper]")
     """
         
 
