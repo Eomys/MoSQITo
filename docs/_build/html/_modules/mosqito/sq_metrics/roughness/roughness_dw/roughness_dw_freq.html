@@ -149,6 +149,7 @@
 <span class="sd">       :include-source:</span>
 
 <span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import roughness_dw_freq</span>
+<span class="sd">       &gt;&gt;&gt; from mosqito.sound_level_meter import spectrum</span>
 <span class="sd">       &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">       &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">       &gt;&gt;&gt; fc=1000</span>
@@ -165,13 +166,12 @@
 <span class="sd">       &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
 <span class="sd">       &gt;&gt;&gt; stimulus = stimulus * ampl</span>
 <span class="sd">       &gt;&gt;&gt; n = len(stimulus)</span>
-<span class="sd">       &gt;&gt;&gt; spec = np.fft.fft(stimulus )[0:n//2] * 1.42</span>
-<span class="sd">       &gt;&gt;&gt; freqs = np.arange(1, round(n / 2) + 1, 1) * (44100 / n)</span>
+<span class="sd">       &gt;&gt;&gt; spec, freqs = spectrum(stimulus, fs, db=False)</span>
 <span class="sd">       &gt;&gt;&gt; R, R_specific, bark = roughness_dw_freq(spec, freqs)</span>
 <span class="sd">       &gt;&gt;&gt; plt.plot(bark, R_specific)</span>
 <span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Bark axis [Bark]&quot;)</span>
-<span class="sd">       &gt;&gt;&gt; plt.ylabel(&quot;Roughness, [Asper]&quot;)</span>
-
+<span class="sd">       &gt;&gt;&gt; plt.ylabel(&quot;Specific roughness, [Asper/Bark]&quot;)</span>
+<span class="sd">       &gt;&gt;&gt; plt.title(&quot;Roughness = &quot; + f&quot;{R:.2f}&quot; + &quot; [Asper]&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
         
 

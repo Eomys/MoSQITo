@@ -92,7 +92,7 @@
 <span class="kn">from</span> <span class="nn">numpy.fft</span> <span class="kn">import</span> <span class="n">fft</span>
 
 <span class="c1"># local function import</span>
-<span class="kn">from</span> <span class="nn">mosqito.utils.conversion</span> <span class="kn">import</span> <span class="n">amp2db</span>
+<span class="kn">from</span> <span class="nn">mosqito.utils</span> <span class="kn">import</span> <span class="n">amp2db</span>
 
 
 <div class="viewcode-block" id="spectrum"><a class="viewcode-back" href="../../../source/mosqito.sound_level_meter.spectrum.html#mosqito.sound_level_meter.spectrum.spectrum">[docs]</a><span class="k">def</span> <span class="nf">spectrum</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span><span class="n">fs</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="s1">&#39;hanning&#39;</span><span class="p">,</span> <span class="n">one_sided</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -114,7 +114,34 @@
 <span class="sd">        Spectrum [freq_axis x nseg].</span>
 <span class="sd">    freq_axis : np.array</span>
 <span class="sd">        Frequency axis.</span>
-
+<span class="sd">        </span>
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    noct_synthesis : conversion of a spectrum to n-th octave band levels</span>
+<span class="sd">    noct_spectrum : n-th octave band spectrum computation from a time signal</span>
+<span class="sd">    spectrum2dBA : conversion of a spectrum from dB to dBA</span>
+<span class="sd">        </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">       :include-source:</span>
+<span class="sd">       </span>
+<span class="sd">        &gt;&gt;&gt; from mosqito.sound_level_meter import spectrum</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; fs=48000</span>
+<span class="sd">        &gt;&gt;&gt; d=0.2</span>
+<span class="sd">        &gt;&gt;&gt; dB=60</span>
+<span class="sd">        &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
+<span class="sd">        &gt;&gt;&gt; f = 1000</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = 1 + 0.5*np.sin(2 * np.pi * f * time) + 0.1*np.sin(20 * np.pi * f * time)</span>
+<span class="sd">        &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
+<span class="sd">        &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = stimulus * ampl</span>
+<span class="sd">        &gt;&gt;&gt; spec_db, freq_axis = spectrum(stimulus, fs, db=True)</span>
+<span class="sd">        &gt;&gt;&gt; plt.step(freq_axis, spec_db)</span>
+<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Center frequency [Hz]&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Amplitude [dB]&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
         <span class="n">nseg</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>

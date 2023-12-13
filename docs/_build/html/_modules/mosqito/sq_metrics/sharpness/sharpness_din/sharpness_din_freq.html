@@ -99,7 +99,7 @@
 <span class="sd">    This function computes the sharpness value along time according to different methods.</span>
 
 <span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
+<span class="sd">    -----------</span>
 <span class="sd">    spectrum : array_like</span>
 <span class="sd">        A RMS spectrum.</span>
 <span class="sd">    freqs : array_like</span>
@@ -112,12 +112,12 @@
 <span class="sd">        Default is &#39;free&#39;</span>
 <span class="sd">        </span>
 <span class="sd">    Returns</span>
-<span class="sd">    -------</span>
+<span class="sd">    --------</span>
 <span class="sd">    S : numpy.array</span>
 <span class="sd">        Sharpness value in [acum]</span>
 
 <span class="sd">    See Also</span>
-<span class="sd">    --------</span>
+<span class="sd">    ---------</span>
 <span class="sd">    sharpness_din_from_loudness : sharpness computation from loudness values</span>
 <span class="sd">    sharpness_din_st : sharpness computation for a stationary time signal</span>
 <span class="sd">    sharpness_din_tv : sharpness computation for a non-stationary time signal</span>
@@ -125,7 +125,7 @@
 
 
 <span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    ------</span>
 <span class="sd">    The different methods account for the weighting function applied on the specific loudness values:</span>
 <span class="sd">     * DIN 45692 : weighting defined in the standard</span>
 <span class="sd">     * Aures</span>
@@ -133,15 +133,16 @@
 <span class="sd">     * Fastl</span>
 
 <span class="sd">    References</span>
-<span class="sd">    ----------</span>
+<span class="sd">    -----------</span>
 <span class="sd">    .. [DIN45692] Measurement technique for the simulation of the auditory sensation of sharpness, 2009</span>
 
 <span class="sd">    Examples</span>
-<span class="sd">    --------</span>
+<span class="sd">    ---------</span>
 <span class="sd">    .. plot::</span>
 <span class="sd">       :include-source:</span>
 
 <span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import sharpness_din_freq </span>
+<span class="sd">       &gt;&gt;&gt; from mosqito.sound_level_meter import spectrum</span>
 <span class="sd">       &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">       &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">       &gt;&gt;&gt; fs=48000</span>
@@ -153,9 +154,8 @@
 <span class="sd">       &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
 <span class="sd">       &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
 <span class="sd">       &gt;&gt;&gt; stimulus = stimulus * ampl</span>
-<span class="sd">       &gt;&gt;&gt; spec = np.abs(np.fft.fft(stimulus))</span>
-<span class="sd">       &gt;&gt;&gt; freqs = np.linspace(0, fs//2,len(spec)//2)</span>
-<span class="sd">       &gt;&gt;&gt; S = sharpness_din_freq(spec[:len(spec)//2], freqs)</span>
+<span class="sd">       &gt;&gt;&gt; spec, freqs = spectrum(stimulus, fs, db=False)</span>
+<span class="sd">       &gt;&gt;&gt; S = sharpness_din_freq(spec, freqs)</span>
 <span class="sd">       &gt;&gt;&gt; plt.plot(time, stimulus)</span>
 <span class="sd">       &gt;&gt;&gt; plt.xlim(0, 0.05)</span>
 <span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Time [s]&quot;)</span>
@@ -179,6 +179,7 @@
     <span class="n">S</span> <span class="o">=</span> <span class="n">sharpness_din_from_loudness</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="n">weighting</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">S</span></div>
+
 </pre></div>
 
            </div>

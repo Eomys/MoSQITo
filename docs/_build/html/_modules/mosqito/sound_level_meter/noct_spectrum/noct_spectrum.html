@@ -89,34 +89,32 @@
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="c1"># Standard library imports</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">newaxis</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">squeeze</span>
 
 <span class="c1"># Local application imports</span>
 <span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._filter_bandwidth</span> <span class="kn">import</span> <span class="n">_filter_bandwidth</span>
-<span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._n_oct_time_filter</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">_n_oct_time_filter</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._n_oct_time_filter</span> <span class="kn">import</span> <span class="n">_n_oct_time_filter</span>
 <span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._center_freq</span> <span class="kn">import</span> <span class="n">_center_freq</span>
 
 
 <div class="viewcode-block" id="noct_spectrum"><a class="viewcode-back" href="../../../../source/mosqito.sound_level_meter.noct_spectrum.noct_spectrum.html#mosqito.sound_level_meter.noct_spectrum.noct_spectrum.noct_spectrum">[docs]</a><span class="k">def</span> <span class="nf">noct_spectrum</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute nth-octave band spectrum</span>
-
-<span class="sd">    Calculate the rms level of the signal &quot;sig&quot; sampled at freqency &quot;fs&quot;</span>
-<span class="sd">    for each third octave band between &quot;fc_min&quot; and &quot;fc_max&quot;.</span>
-
+<span class="sd">    </span>
+<span class="sd">    This function computes the rms level of a signal for each third octave band</span>
+<span class="sd">    between the 2 limit frequencies.</span>
+<span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    sig : numpy.ndarray</span>
-<span class="sd">        A time signal array with size (nperseg, nseg).</span>
+<span class="sd">    sig : array_like</span>
+<span class="sd">        Time signal array with size (nperseg, nseg).</span>
 <span class="sd">    fs : float</span>
 <span class="sd">        Sampling frequency [Hz]</span>
 <span class="sd">    fmin : float</span>
-<span class="sd">        Min frequency band [Hz]</span>
+<span class="sd">        Minimum frequency band [Hz]</span>
 <span class="sd">    fmax : float</span>
-<span class="sd">        Max frequency band [Hz]</span>
+<span class="sd">        Maximum frequency band [Hz]</span>
 <span class="sd">    n : int</span>
-<span class="sd">        Number of bands pr octave</span>
+<span class="sd">        Number of bands per octave</span>
 <span class="sd">    G : int</span>
 <span class="sd">        System for specifying the exact geometric mean frequencies.</span>
 <span class="sd">        Can be base 2 or base 10</span>
@@ -125,17 +123,46 @@
 <span class="sd">        range, to 1 Hz for infrasonic range (f &lt; 20 Hz) and to 1 MHz for</span>
 <span class="sd">        ultrasonic range (f &gt; 31.5 kHz)</span>
 
-<span class="sd">    Outputs</span>
+<span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    spec : numpy.ndarray</span>
-<span class="sd">        The third octave band spectrum of signal sig with size (nfreq, nseg)</span>
-<span class="sd">    fpref : numpy.ndarray</span>
-<span class="sd">        Corresponding preferred third octave band center frequencies</span>
+<span class="sd">    spec : array_like</span>
+<span class="sd">        Third octave band spectrum of signal sig with size (nfreq, nseg)</span>
+<span class="sd">    fpref : array_like</span>
+<span class="sd">        Corresponding prefered third octave band center frequencies</span>
+<span class="sd">        </span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    spectrum : spectrum computation from a time signal</span>
+<span class="sd">    noct_synthesis : conversion of a spectrum to n-th octave band levels</span>
+<span class="sd">            </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">       :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from mosqito.sound_level_meter import noct_spectrum</span>
+<span class="sd">        &gt;&gt;&gt; from mosqito.utils import amp2db</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; f=1000</span>
+<span class="sd">        &gt;&gt;&gt; fs=48000</span>
+<span class="sd">        &gt;&gt;&gt; d=0.2</span>
+<span class="sd">        &gt;&gt;&gt; dB=60</span>
+<span class="sd">        &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = np.sin(2 * np.pi * f * time) + 0.5 * np.sin(6 * np.pi * f * time)</span>
+<span class="sd">        &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
+<span class="sd">        &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = stimulus * ampl</span>
+<span class="sd">        &gt;&gt;&gt; spec, freq_axis = noct_spectrum(stimulus, fs, fmin=90, fmax=14000)</span>
+<span class="sd">        &gt;&gt;&gt; spec_db = amp2db(spec, ref=2e-5)</span>
+<span class="sd">        &gt;&gt;&gt; plt.step(freq_axis, spec_db)</span>
+<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Center frequency [Hz]&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Amplitude [dB]&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># 1-dimensional array to 2-dimensional array with size (nperseg, 1)</span>
     <span class="k">if</span> <span class="n">sig</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">sig</span> <span class="o">=</span> <span class="n">sig</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">sig</span><span class="p">[:,</span> <span class="n">newaxis</span><span class="p">]</span>
 
     <span class="c1"># Get filters center frequencies</span>
     <span class="n">fc_vec</span><span class="p">,</span> <span class="n">fpref</span> <span class="o">=</span> <span class="n">_center_freq</span><span class="p">(</span><span class="n">fmin</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="n">fmax</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="n">G</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="n">fr</span><span class="p">)</span>
@@ -148,7 +175,7 @@
     <span class="k">for</span> <span class="n">fc</span><span class="p">,</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fc_vec</span><span class="p">,</span> <span class="n">alpha_vec</span><span class="p">):</span>
         <span class="n">spec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_n_oct_time_filter</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">alpha</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">spec</span><span class="p">),</span> <span class="n">fpref</span></div>
+    <span class="k">return</span> <span class="n">squeeze</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="n">spec</span><span class="p">)),</span> <span class="n">fpref</span></div>
 </pre></div>
 
            </div>

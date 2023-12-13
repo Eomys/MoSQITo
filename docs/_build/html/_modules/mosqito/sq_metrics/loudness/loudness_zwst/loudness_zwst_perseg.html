@@ -111,12 +111,12 @@
 <span class="sd">    of a stationary signal.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">    ----------</span>
+<span class="sd">    ------------</span>
 <span class="sd">    signal: array_like</span>
-<span class="sd">        Input time signal in [Pa]</span>
+<span class="sd">        Input time signal in [Pa].</span>
 <span class="sd">    fs : float, optional</span>
-<span class="sd">        Sampling frequency, can be omitted if the input is a DataTime</span>
-<span class="sd">        object. Default to None</span>
+<span class="sd">        Sampling frequency, can be omitted if the input is a DataTimeobject. </span>
+<span class="sd">        Default to None</span>
 <span class="sd">    nperseg: int, optional</span>
 <span class="sd">        Length of each segment. Defaults to 4096.</span>
 <span class="sd">    noverlap: int, optional</span>
@@ -130,9 +130,9 @@
 <span class="sd">        Default to False</span>
 <span class="sd">        </span>
 <span class="sd">    Returns</span>
-<span class="sd">    -------</span>
+<span class="sd">    --------</span>
 <span class="sd">    N : float</span>
-<span class="sd">        Overall loudness [sones], size (Ntime,).</span>
+<span class="sd">        Overall loudness [sones], size (Ntime,). </span>
 <span class="sd">    N_specific : numpy.ndarray</span>
 <span class="sd">        Specific loudness [sones/bark], size (Nbark, Ntime).</span>
 <span class="sd">    bark_axis : numpy.ndarray</span>
@@ -141,13 +141,13 @@
 <span class="sd">        Time axis, size (Ntime,).</span>
 
 <span class="sd">    See Also</span>
-<span class="sd">    --------</span>
+<span class="sd">    ---------</span>
 <span class="sd">    loudness_zwst : loudness computation for a stationary time signal</span>
 <span class="sd">    loudness_zwst_freq : loudness computation from a sound spectrum</span>
 <span class="sd">    loudness_zwtv : loudness computation for a non-stationary time signal</span>
 
 <span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    ------</span>
 <span class="sd">    Normative reference:</span>
 <span class="sd">        ISO 532:1975 (method B)</span>
 <span class="sd">        DIN 45631:1991</span>
@@ -156,12 +156,12 @@
 <span class="sd">    ISO 226:1987 equal loudness contours (instead of ISO 226:2003).</span>
 <span class="sd">    </span>
 <span class="sd">    References</span>
-<span class="sd">    ----------</span>
+<span class="sd">    -----------</span>
 <span class="sd">    .. [ZF] E.Zwicker and H.Fastl, &quot;Program for calculating loudness according to DIN 45631 (ISO 532B)&quot;, </span>
 <span class="sd">            J.A.S.J (E) 12, 1 (1991).</span>
 <span class="sd">            </span>
 <span class="sd">    Examples</span>
-<span class="sd">    --------</span>
+<span class="sd">    ---------</span>
 <span class="sd">    .. plot::</span>
 <span class="sd">       :include-source:</span>
 

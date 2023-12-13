@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mosqito.utils.conversion.spectrum2dBA &mdash; MOSQITO 1.0.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=8cbfd27f"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            MOSQITO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">🦟 Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation/index.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">📖 User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/scope.html">Scope of the project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/architecture.html">Architecture of the package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/mosqito.utils.html">mosqito.utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">✏️ Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribution/index.html">How to contribute</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">MOSQITO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">mosqito.utils.conversion.spectrum2dBA</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mosqito.utils.conversion.spectrum2dBA</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">linspace</span><span class="p">,</span> <span class="n">interp</span><span class="p">,</span> <span class="n">zeros</span>
+
+<div class="viewcode-block" id="spectrum2dBA"><a class="viewcode-back" href="../../../../source/mosqito.utils.conversion.spectrum2dBA.html#mosqito.utils.conversion.spectrum2dBA.spectrum2dBA">[docs]</a><span class="k">def</span> <span class="nf">spectrum2dBA</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A_weighting dB ponderation </span>
+<span class="sd">    </span>
+<span class="sd">    This function does the dBA weighting of a spectrum according to CEI 61672:2014.</span>
+<span class="sd">    </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spectrum: array_like</span>
+<span class="sd">        Input spectrum in [dB].</span>
+<span class="sd">    fs: integer</span>
+<span class="sd">        Sampling frequency in [Hz].</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    spectrum_dba: array_like</span>
+<span class="sd">        dBA spectrum.</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Third-octave spectrum are directly calculated, other are calculated</span>
+<span class="sd">    using linear interpolation.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    noct_spectrum : n-th octave band spectrum computation from a time signal</span>
+<span class="sd">            </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">       :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from mosqito.sound_level_meter import noct_synthesis</span>
+<span class="sd">        &gt;&gt;&gt; from mosqito.utils import amp2db</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; f=1000</span>
+<span class="sd">        &gt;&gt;&gt; fs=48000</span>
+<span class="sd">        &gt;&gt;&gt; d=0.2</span>
+<span class="sd">        &gt;&gt;&gt; dB=60</span>
+<span class="sd">        &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = np.sin(2 * np.pi * f * time) + 0.5 * np.sin(6 * np.pi * f * time)</span>
+<span class="sd">        &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
+<span class="sd">        &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = stimulus * ampl</span>
+<span class="sd">        &gt;&gt;&gt; n = len(stimulus)</span>
+<span class="sd">        &gt;&gt;&gt; spec = np.abs(2/np.sqrt(2)/n*np.fft.fft(stimulus)[:n//2])</span>
+<span class="sd">        &gt;&gt;&gt; freqs = np.linspace(0, fs//2,n//2)</span>
+<span class="sd">        &gt;&gt;&gt; spec_3, freq_axis = noct_synthesis(spec, freqs, fmin=90, fmax=14000)</span>
+<span class="sd">        &gt;&gt;&gt; spec_3db = amp2db(spec_3, ref=2e-5)</span>
+<span class="sd">        &gt;&gt;&gt; plt.step(freq_axis, spec_3db)</span>
+<span class="sd">        &gt;&gt;&gt; plt.ylim(0,60)</span>
+<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Center frequency [Hz]&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Amplitude [dB]&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="c1"># Ponderation coefficients from the standard</span>
+    <span class="n">A_standard</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="o">-</span><span class="mf">70.4</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">63.4</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">56.7</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">50.5</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">44.7</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">39.4</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">34.6</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">30.2</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">26.2</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">22.5</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">19.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">16.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">13.4</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">10.9</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">8.6</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">6.6</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">4.8</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">3.2</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">1.9</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="mf">0.6</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">,</span>
+            <span class="mf">1.2</span><span class="p">,</span>
+            <span class="mf">1.3</span><span class="p">,</span>
+            <span class="mf">1.2</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">,</span>
+            <span class="mf">0.5</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">2.5</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">4.3</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">6.6</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">9.3</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">freq_standard</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mi">10</span><span class="p">,</span>
+            <span class="mf">12.5</span><span class="p">,</span>
+            <span class="mi">16</span><span class="p">,</span>
+            <span class="mi">20</span><span class="p">,</span>
+            <span class="mi">25</span><span class="p">,</span>
+            <span class="mf">31.5</span><span class="p">,</span>
+            <span class="mi">40</span><span class="p">,</span>
+            <span class="mi">50</span><span class="p">,</span>
+            <span class="mi">63</span><span class="p">,</span>
+            <span class="mi">80</span><span class="p">,</span>
+            <span class="mi">100</span><span class="p">,</span>
+            <span class="mi">125</span><span class="p">,</span>
+            <span class="mi">160</span><span class="p">,</span>
+            <span class="mi">200</span><span class="p">,</span>
+            <span class="mi">250</span><span class="p">,</span>
+            <span class="mi">315</span><span class="p">,</span>
+            <span class="mi">400</span><span class="p">,</span>
+            <span class="mi">500</span><span class="p">,</span>
+            <span class="mi">630</span><span class="p">,</span>
+            <span class="mi">800</span><span class="p">,</span>
+            <span class="mi">1000</span><span class="p">,</span>
+            <span class="mi">1250</span><span class="p">,</span>
+            <span class="mi">1600</span><span class="p">,</span>
+            <span class="mi">2000</span><span class="p">,</span>
+            <span class="mi">2500</span><span class="p">,</span>
+            <span class="mi">3150</span><span class="p">,</span>
+            <span class="mi">4000</span><span class="p">,</span>
+            <span class="mi">5000</span><span class="p">,</span>
+            <span class="mi">6300</span><span class="p">,</span>
+            <span class="mi">8000</span><span class="p">,</span>
+            <span class="mi">10000</span><span class="p">,</span>
+            <span class="mi">12500</span><span class="p">,</span>
+            <span class="mi">16000</span><span class="p">,</span>
+            <span class="mi">20000</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Linear interpolation on the spectrum axis</span>
+    <span class="n">spectrum_freq_axis</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">A_pond</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">spectrum_freq_axis</span><span class="p">,</span> <span class="n">freq_standard</span><span class="p">,</span> <span class="n">A_standard</span><span class="p">)</span>
+
+    <span class="c1"># Ponderation of the given spectrum</span>
+    <span class="n">spectrum_dBA</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">spectrum</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spectrum</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">spectrum_dBA</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">A_pond</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">spectrum_dBA</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Green Forge Coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

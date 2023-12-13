@@ -20,7 +20,9 @@
         <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="mosqito.sound_level_meter.noct_spectrum.noct_spectrum.html" />
+    <link rel="prev" title="mosqito.sound_level_meter" href="mosqito.sound_level_meter.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,8 +54,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../user_guide/architecture.html">Architecture of the package</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">🔧 Functions</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mosqito.sound_level_meter.html">mosqito.sound_level_meter</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mosqito.sound_level_meter.html#frequency-spectrum">Frequency spectrum</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">spectrum()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sound_level_meter.html#n-octave-spectrum">N-octave spectrum</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.html">mosqito.sq_metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.utils.html">mosqito.utils</a></li>
 </ul>
@@ -76,6 +85,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="mosqito.sound_level_meter.html">mosqito.sound_level_meter</a></li>
       <li class="breadcrumb-item active">&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/source/mosqito.sound_level_meter.spectrum.rst.txt" rel="nofollow"> View page source</a>
@@ -106,13 +116,50 @@
 </p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">noct_synthesis</span></code></dt><dd><p>conversion of a spectrum to n-th octave band levels</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">noct_spectrum</span></code></dt><dd><p>n-th octave band spectrum computation from a time signal</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectrum2dBA</span></code></dt><dd><p>conversion of a spectrum from dB to dBA</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mosqito.sound_level_meter</span> <span class="kn">import</span> <span class="n">spectrum</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span><span class="o">=</span><span class="mi">48000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dB</span><span class="o">=</span><span class="mi">60</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">fs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stimulus</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">stimulus</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ampl</span> <span class="o">=</span> <span class="mf">0.00002</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dB</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span> <span class="o">/</span> <span class="n">rms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stimulus</span> <span class="o">=</span> <span class="n">stimulus</span> <span class="o">*</span> <span class="n">ampl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec_db</span><span class="p">,</span> <span class="n">freq_axis</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">(</span><span class="n">stimulus</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">freq_axis</span><span class="p">,</span> <span class="n">spec_db</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Center frequency [Hz]&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitude [dB]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../source/mosqito-sound_level_meter-spectrum-1.py">Source code</a>, <a class="reference external" href="../source/mosqito-sound_level_meter-spectrum-1.png">png</a>, <a class="reference external" href="../source/mosqito-sound_level_meter-spectrum-1.hires.png">hires.png</a>, <a class="reference external" href="../source/mosqito-sound_level_meter-spectrum-1.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../_images/mosqito-sound_level_meter-spectrum-1.png" src="../_images/mosqito-sound_level_meter-spectrum-1.png" />
+</figure>
 </dd></dl>
 
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mosqito.sound_level_meter.html" class="btn btn-neutral float-left" title="mosqito.sound_level_meter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mosqito.sound_level_meter.noct_spectrum.noct_spectrum.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
