@@ -29,6 +29,10 @@ from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness impo
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg import sharpness_din_perseg
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq import sharpness_din_freq
 
+from mosqito.sq_metrics.speech_intelligibility.sii import sii
+from mosqito.sq_metrics.speech_intelligibility.sii_freq import sii_freq
+from mosqito.sq_metrics.speech_intelligibility.sii_level import sii_level
+
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon
 from mosqito.utils.isoclose import isoclose
 from mosqito.utils.load import load
