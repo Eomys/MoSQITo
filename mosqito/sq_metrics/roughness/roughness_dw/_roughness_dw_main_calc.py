@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard imports
-from numpy import concatenate, zeros, arange, where, interp, mean, real, corrcoef, power, sqrt
+from numpy import concatenate, zeros, arange, where, interp, mean, real, corrcoef, power, sqrt, abs
 from numpy.fft import fft, ifft
 import math
 

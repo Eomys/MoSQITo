@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from numpy import tile, hanning, blackman, concatenate, arange
+from numpy import tile, hanning, blackman, concatenate, arange, abs
 from numpy.fft import fft
 
 # local function import

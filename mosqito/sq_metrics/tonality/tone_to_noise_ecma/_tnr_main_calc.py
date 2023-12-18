@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from numpy import where, log10, delete, argmin, asarray, power, append, zeros, array
+from numpy import where, log10, delete, argmin, asarray, power, append, zeros, array, abs
 
 # Local functions imports
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import _critical_band

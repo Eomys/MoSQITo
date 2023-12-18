@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-from numpy import argmin, argsort, delete, where
+from numpy import argmin, argsort, delete, where, abs
 
 # Mosqito functions import
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import _critical_band

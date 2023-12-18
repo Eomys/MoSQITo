@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library import
-from numpy import linspace, logspace, empty, nan, argmin, log10, nan_to_num, sin, power, pi, arange, zeros, sqrt, mean, ravel
+from numpy import linspace, logspace, empty, nan, argmin, log10, nan_to_num, sin, power, pi, arange, zeros, sqrt, mean, ravel, abs
 import numpy.random as rd
 
 # Local imports

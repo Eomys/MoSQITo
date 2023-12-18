@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import asarray, where, append, zeros, array, argmin, log10, power, delete
+from numpy import asarray, where, append, zeros, array, argmin, log10, power, delete, abs
 
 # from scipy.signal import welch, periodogram
 

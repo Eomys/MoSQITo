@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library import
-from numpy import linspace, log10, empty, nan, logspace, argmin, ravel
+from numpy import linspace, log10, empty, nan, logspace, argmin, ravel, abs
 
 # Local functions imports
 from mosqito.utils.time_segmentation import time_segmentation

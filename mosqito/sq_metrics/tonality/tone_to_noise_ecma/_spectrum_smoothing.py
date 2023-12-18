@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library import
-from numpy import arange, zeros, where, delete, argmin, mean, log10, squeeze
+from numpy import arange, zeros, where, delete, argmin, mean, log10, squeeze, abs
 
 # Local import
 from mosqito.sound_level_meter.noct_spectrum._getFrequencies import _getFrequencies
