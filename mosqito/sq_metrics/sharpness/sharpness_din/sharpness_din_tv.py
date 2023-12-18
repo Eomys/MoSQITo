@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # External import
-from numpy import argmin
+from numpy import argmin, abs
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwtv
@@ -73,11 +73,11 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
        >>> fs=48000
        >>> d=1
        >>> dB=60
-       >>> time = arange(0, d, 1/fs)
-       >>> f = linspace(1000,5000, len(time))
-       >>> stimulus = 0.5 * (1 + sin(2 * pi * f * time))
-       >>> rms = sqrt(mean(power(stimulus, 2)))
-       >>> ampl = 0.00002 * power(10, dB / 20) / rms
+       >>> time = np.arange(0, d, 1/fs)
+       >>> f = np.linspace(1000,5000, len(time))
+       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
        >>> stimulus = stimulus * ampl
        >>> S, time_axis = sharpness_din_tv(stimulus, fs=fs, skip=0.1)
        >>> plt.plot(time_axis, S)

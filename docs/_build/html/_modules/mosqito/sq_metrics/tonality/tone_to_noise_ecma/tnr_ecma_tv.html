@@ -89,7 +89,7 @@
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="c1"># Standard library import</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linspace</span><span class="p">,</span> <span class="n">log10</span><span class="p">,</span> <span class="n">empty</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">logspace</span><span class="p">,</span> <span class="n">argmin</span><span class="p">,</span> <span class="n">ravel</span>
 
 <span class="c1"># Local functions imports</span>
 <span class="kn">from</span> <span class="nn">mosqito.utils.time_segmentation</span> <span class="kn">import</span> <span class="n">time_segmentation</span>
@@ -190,7 +190,7 @@
       
     <span class="k">else</span><span class="p">:</span>
         <span class="n">nseg</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">fs</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">nseg</span><span class="p">)</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">fs</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">nseg</span><span class="p">)</span>
         
         <span class="c1"># Compute spectrum</span>
         <span class="n">spectrum_db</span><span class="p">,</span> <span class="n">freq_axis</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -201,15 +201,15 @@
  
             
     <span class="c1"># Retore the results in a time vs frequency array</span>
-    <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">90</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">11200</span><span class="p">),</span> <span class="n">num</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-    <span class="n">tnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">),</span> <span class="n">nseg</span><span class="p">))</span>
-    <span class="n">tnr</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
-    <span class="n">promi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">),</span> <span class="n">nseg</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">logspace</span><span class="p">(</span><span class="n">log10</span><span class="p">(</span><span class="mi">90</span><span class="p">),</span> <span class="n">log10</span><span class="p">(</span><span class="mi">11200</span><span class="p">),</span> <span class="n">num</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">tnr</span> <span class="o">=</span> <span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">),</span> <span class="n">nseg</span><span class="p">))</span>
+    <span class="n">tnr</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">promi</span> <span class="o">=</span> <span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">),</span> <span class="n">nseg</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
     <span class="n">promi</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
     
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nseg</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tones_freqs</span><span class="p">[</span><span class="n">t</span><span class="p">])):</span>
-            <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">freqs</span> <span class="o">-</span> <span class="n">tones_freqs</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">f</span><span class="p">]))</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">freqs</span> <span class="o">-</span> <span class="n">tones_freqs</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">f</span><span class="p">]))</span>
             <span class="k">if</span> <span class="n">prominence</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="n">tnr</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">tnr_</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">f</span><span class="p">]</span>
                 <span class="n">promi</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">prom</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">f</span><span class="p">]</span>
@@ -218,7 +218,7 @@
                     <span class="n">tnr</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">tnr_</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">f</span><span class="p">]</span>
                     <span class="n">promi</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">prom</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">f</span><span class="p">]</span>
 
-    <span class="n">t_tnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">t_tnr</span><span class="p">)</span>
+    <span class="n">t_tnr</span> <span class="o">=</span> <span class="n">ravel</span><span class="p">(</span><span class="n">t_tnr</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">t_tnr</span><span class="p">,</span> <span class="n">tnr</span><span class="p">,</span> <span class="n">promi</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">time</span>     </div>
 </pre></div>

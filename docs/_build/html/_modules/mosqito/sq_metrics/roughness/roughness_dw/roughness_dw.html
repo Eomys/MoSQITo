@@ -89,7 +89,7 @@
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="c1"># Standard imports</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">arange</span><span class="p">,</span> <span class="n">zeros</span>
 
 <span class="c1"># Local imports</span>
 <span class="kn">from</span> <span class="nn">mosqito.utils.time_segmentation</span> <span class="kn">import</span> <span class="n">time_segmentation</span>
@@ -164,6 +164,7 @@
 
 <span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import roughness_dw </span>
 <span class="sd">       &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">       &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">       &gt;&gt;&gt; fc=1000</span>
 <span class="sd">       &gt;&gt;&gt; fmod=70</span>
 <span class="sd">       &gt;&gt;&gt; fs=44100</span>
@@ -203,15 +204,15 @@
     <span class="n">spec</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="s2">&quot;blackman&quot;</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># Frequency axis in Hertz</span>
-    <span class="n">freq_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nperseg</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">fs</span> <span class="o">/</span> <span class="n">nperseg</span><span class="p">)</span>
+    <span class="n">freq_axis</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nperseg</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">fs</span> <span class="o">/</span> <span class="n">nperseg</span><span class="p">)</span>
 
     <span class="c1"># Initialization of the weighting functions H and g</span>
     <span class="n">hWeight</span> <span class="o">=</span> <span class="n">_H_weighting</span><span class="p">(</span><span class="n">nperseg</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
     <span class="c1"># Aures modulation depth weighting function</span>
-    <span class="n">gzi</span> <span class="o">=</span> <span class="n">_gzi_weighting</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">gzi</span> <span class="o">=</span> <span class="n">_gzi_weighting</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
-    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nseg</span><span class="p">))</span>
-    <span class="n">R_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">47</span><span class="p">,</span> <span class="n">nseg</span><span class="p">))</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="n">nseg</span><span class="p">))</span>
+    <span class="n">R_spec</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="mi">47</span><span class="p">,</span> <span class="n">nseg</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nseg</span><span class="p">):</span>
             <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">R_spec</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">bark_axis</span> <span class="o">=</span> <span class="n">_roughness_dw_main_calc</span><span class="p">(</span>
@@ -222,7 +223,7 @@
             <span class="n">spec</span><span class="p">,</span> <span class="n">freq_axis</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">gzi</span><span class="p">,</span> <span class="n">hWeight</span>
         <span class="p">)</span>
 
-    <span class="c1"># print(np.mean(R,axis=0))</span>
+    <span class="c1"># print(mean(R,axis=0))</span>
 
     <span class="c1"># Manage SciDataTool output type</span>
     <span class="k">if</span> <span class="n">is_sdt_output</span><span class="p">:</span>

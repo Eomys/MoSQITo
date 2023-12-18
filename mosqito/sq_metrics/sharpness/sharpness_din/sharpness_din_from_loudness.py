@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import interp, newaxis, array, where, linspace, ndarray, exp, ones, log, squeeze
+from numpy import interp, newaxis, array, where, linspace, ndarray, exp, ones, log, squeeze, sum
 
 from mosqito.sq_metrics.sharpness.sharpness_din._weighting_fastl import x, y
 
@@ -51,24 +51,24 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
     .. plot::
        :include-source:
 
-       >>> from mosqito.sq_metrics import loudness_zwtv, sharpness_din_from_loudness
-       >>> import matplotlib.pyplot as plt
-       >>> import numpy as np
-       >>> f=1000
-       >>> fs=48000
-       >>> d=0.2
-       >>> dB=60
-       >>> time = arange(0, d, 1/fs)
-       >>> f = linspace(1000,5000, len(time))
-       >>> stimulus = 0.5 * (1 + sin(2 * pi * f * time))
-       >>> rms = sqrt(mean(power(stimulus, 2)))
-       >>> ampl = 0.00002 * power(10, dB / 20) / rms
-       >>> stimulus = stimulus * ampl
-       >>> N, N_spec, bark_axis, time_axis = loudness_zwtv(stimulus, fs=fs)
-       >>> S = sharpness_din_from_loudness(N, N_spec)
-       >>> plt.plot(time_axis, S)
-       >>> plt.xlabel("Time [s]")
-       >>> plt.ylabel("Sharpness [Acum]")
+        >>> from mosqito.sq_metrics import loudness_zwtv, sharpness_din_from_loudness
+        >>> import matplotlib.pyplot as plt
+        >>> import numpy as np
+        >>> f=1000
+        >>> fs=48000
+        >>> d=0.2
+        >>> dB=60
+        >>> time = np.arange(0, d, 1/fs)
+        >>> f = np.linspace(1000,5000, len(time))
+        >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
+        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+        >>> stimulus = stimulus * ampl
+        >>> N, N_spec, bark_axis, time_axis = loudness_zwtv(stimulus, fs=fs)
+        >>> S = sharpness_din_from_loudness(N, N_spec)
+        >>> plt.plot(time_axis, S)
+        >>> plt.xlabel("Time [s]")
+        >>> plt.ylabel("Sharpness [Acum]")
        
     Warning
     -------
@@ -114,3 +114,4 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
         S[ind] = 0
         
     return S
+

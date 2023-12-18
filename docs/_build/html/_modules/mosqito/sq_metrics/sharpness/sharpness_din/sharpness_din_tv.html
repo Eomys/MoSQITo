@@ -89,7 +89,7 @@
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="c1"># External import</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">argmin</span><span class="p">,</span> <span class="nb">abs</span>
 
 <span class="c1"># Local imports</span>
 <span class="kn">from</span> <span class="nn">mosqito.sq_metrics</span> <span class="kn">import</span> <span class="n">loudness_zwtv</span>
@@ -117,6 +117,7 @@
 <span class="sd">    skip : float</span>
 <span class="sd">        Number of second to be cut at the beginning of the analysis to skip the transient effect.</span>
 <span class="sd">        Default is 0</span>
+<span class="sd">        </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    S : numpy.array</span>
@@ -182,7 +183,7 @@
         <span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="n">weighting</span><span class="p">)</span>
 
     <span class="c1"># Cut transient effect</span>
-    <span class="n">cut_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">time_axis</span> <span class="o">-</span> <span class="n">skip</span><span class="p">))</span>
+    <span class="n">cut_index</span> <span class="o">=</span> <span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">time_axis</span> <span class="o">-</span> <span class="n">skip</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">S</span><span class="p">[</span><span class="n">cut_index</span><span class="p">:],</span> <span class="n">time_axis</span><span class="p">[</span><span class="n">cut_index</span><span class="p">:]</span></div>
 </pre></div>

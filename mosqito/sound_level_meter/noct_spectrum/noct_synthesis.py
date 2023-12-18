@@ -61,7 +61,7 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
         >>> dB=60
         >>> time = np.arange(0, d, 1/fs)
         >>> stimulus = np.sin(2 * np.pi * f * time) + 0.5 * np.sin(6 * np.pi * f * time)
-        >>> rms = np.sqrt(mean(np.power(stimulus, 2)))
+        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
         >>> spec, freqs = spectrum(stimulus, fs, db=False)

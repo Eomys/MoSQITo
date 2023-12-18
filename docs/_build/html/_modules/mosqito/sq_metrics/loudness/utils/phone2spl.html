@@ -87,11 +87,7 @@
              
   <h1>Source code for mosqito.sq_metrics.loudness.utils.phone2spl</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">@author: Daniel Jiménez-Caminero Costa</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">log10</span>
 
 
 <div class="viewcode-block" id="phone2spl"><a class="viewcode-back" href="../../../../../source/mosqito.sq_metrics.loudness.utils.phone2spl.html#mosqito.sq_metrics.loudness.utils.phone2spl.phone2spl">[docs]</a><span class="k">def</span> <span class="nf">phone2spl</span><span class="p">(</span><span class="n">phones</span><span class="p">,</span> <span class="n">tf</span><span class="p">,</span> <span class="n">af</span><span class="p">,</span> <span class="n">lu</span><span class="p">):</span>
@@ -121,7 +117,7 @@
     <span class="n">Af</span> <span class="o">=</span> <span class="p">(</span><span class="mf">4.47</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)))</span> <span class="o">*</span> <span class="p">((</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.025</span> <span class="o">*</span> <span class="n">phones</span><span class="p">))</span> <span class="o">-</span> <span class="mf">1.15</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="mf">0.4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(((</span><span class="n">tf</span> <span class="o">+</span> <span class="n">lu</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-</span> <span class="mi">9</span><span class="p">)))</span> <span class="o">**</span> <span class="n">af</span><span class="p">)</span>
 
     <span class="c1"># Result of the phone value converted to dB SPL value</span>
-    <span class="n">spl</span> <span class="o">=</span> <span class="p">((</span><span class="mf">10.</span> <span class="o">/</span> <span class="n">af</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">Af</span><span class="p">))</span> <span class="o">-</span> <span class="n">lu</span> <span class="o">+</span> <span class="mi">94</span>
+    <span class="n">spl</span> <span class="o">=</span> <span class="p">((</span><span class="mf">10.</span> <span class="o">/</span> <span class="n">af</span><span class="p">)</span> <span class="o">*</span> <span class="n">log10</span><span class="p">(</span><span class="n">Af</span><span class="p">))</span> <span class="o">-</span> <span class="n">lu</span> <span class="o">+</span> <span class="mi">94</span>
 
     <span class="k">return</span> <span class="n">spl</span></div>
 </pre></div>

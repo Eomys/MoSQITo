@@ -2,7 +2,7 @@
 
 
 # Standard library imports
-from numpy import multiply, sqrt
+from numpy import multiply, sqrt, sum
 from scipy.signal import butter, sosfreqz
 
 def _n_oct_freq_filter(spectrum, fs, fc, alpha, n=3):  

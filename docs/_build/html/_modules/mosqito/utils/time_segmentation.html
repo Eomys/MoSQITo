@@ -88,7 +88,7 @@
   <h1>Source code for mosqito.utils.time_segmentation</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">hstack</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">linspace</span>
 
 
 <div class="viewcode-block" id="time_segmentation"><a class="viewcode-back" href="../../../source/mosqito.utils.time_segmentation.html#mosqito.utils.time_segmentation.time_segmentation">[docs]</a><span class="k">def</span> <span class="nf">time_segmentation</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">noverlap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_ecma</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -129,20 +129,20 @@
 
     <span class="k">if</span> <span class="n">is_ecma</span><span class="p">:</span>
         <span class="c1"># pad with zeros at the begining</span>
-        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nperseg</span><span class="p">),</span> <span class="n">sig</span><span class="p">))</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">hstack</span><span class="p">((</span><span class="n">zeros</span><span class="p">(</span><span class="n">nperseg</span><span class="p">),</span> <span class="n">sig</span><span class="p">))</span>
 
     <span class="c1"># build time axis for sig</span>
-    <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="p">))</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="p">))</span>
 
     <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">block_array</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">time_array</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">while</span> <span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">-</span> <span class="n">nperseg</span><span class="p">:</span>
         <span class="n">block_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">[</span><span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span> <span class="p">:</span> <span class="n">nperseg</span> <span class="o">+</span> <span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span><span class="p">])</span>
-        <span class="n">time_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span> <span class="p">:</span> <span class="n">nperseg</span> <span class="o">+</span> <span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span><span class="p">]))</span>
+        <span class="n">time_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span> <span class="p">:</span> <span class="n">nperseg</span> <span class="o">+</span> <span class="n">l</span> <span class="o">*</span> <span class="n">noverlap</span><span class="p">]))</span>
         <span class="n">l</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">block_array</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">time_array</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">block_array</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">array</span><span class="p">(</span><span class="n">time_array</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

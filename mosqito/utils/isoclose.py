@@ -7,7 +7,7 @@ except ImportError:
         "In order to perform this validation you need the 'matplotlib' package."
     )
 
-from numpy import amin, amax, arange
+from numpy import amin, amax, arange, abs
 
 def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, xaxis=None):
     """

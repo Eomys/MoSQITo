@@ -1,4 +1,4 @@
-from numpy import array, log10, where, arange
+from numpy import array, log10, where, arange, round
 
 from mosqito.sound_level_meter.noct_spectrum._nominal_frequency import (
     NOMINAL_OCTAVE_CENTER_FREQUENCIES,

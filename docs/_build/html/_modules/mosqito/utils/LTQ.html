@@ -88,8 +88,7 @@
   <h1>Source code for mosqito.utils.LTQ</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">interp</span>
 
 
 <div class="viewcode-block" id="LTQ"><a class="viewcode-back" href="../../../source/mosqito.utils.LTQ.html#mosqito.utils.LTQ.LTQ">[docs]</a><span class="k">def</span> <span class="nf">LTQ</span><span class="p">(</span><span class="n">bark_axis</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="s2">&quot;zwicker&quot;</span><span class="p">):</span>
@@ -111,7 +110,7 @@
     <span class="c1"># Make list of minimum excitation (Hearing Treshold)</span>
 
     <span class="k">if</span> <span class="n">reference</span> <span class="o">==</span> <span class="s2">&quot;zwicker&quot;</span><span class="p">:</span>
-        <span class="n">HTres_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">HTres_x</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="mf">2.40445500e-04</span><span class="p">,</span>
                 <span class="mf">2.97265560e-04</span><span class="p">,</span>
@@ -167,7 +166,7 @@
             <span class="p">]</span>
         <span class="p">)</span>
 
-        <span class="n">HTres_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">HTres_y</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="mf">73.28456</span><span class="p">,</span>
                 <span class="mf">69.49444</span><span class="p">,</span>
@@ -224,7 +223,7 @@
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">reference</span> <span class="o">==</span> <span class="s2">&quot;roughness&quot;</span><span class="p">:</span>
-        <span class="n">HTres_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">HTres_x</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="mi">0</span><span class="p">,</span>
                 <span class="mf">0.01</span><span class="p">,</span>
@@ -256,7 +255,7 @@
             <span class="p">]</span>
         <span class="p">)</span>
 
-        <span class="n">HTres_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">HTres_y</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="mi">130</span><span class="p">,</span>
                 <span class="mi">70</span><span class="p">,</span>
@@ -288,7 +287,7 @@
             <span class="p">]</span>
         <span class="p">)</span>
 
-    <span class="n">threshold</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">bark_axis</span><span class="p">,</span> <span class="n">HTres_x</span><span class="p">,</span> <span class="n">HTres_y</span><span class="p">)</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">bark_axis</span><span class="p">,</span> <span class="n">HTres_x</span><span class="p">,</span> <span class="n">HTres_y</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">threshold</span></div>
 </pre></div>

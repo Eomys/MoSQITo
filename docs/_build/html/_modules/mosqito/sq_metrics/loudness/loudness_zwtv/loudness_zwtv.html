@@ -89,7 +89,7 @@
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="c1"># Standard library imports</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linspace</span>
 
 <span class="c1"># Local applications imports</span>
 <span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_zwst._main_loudness</span> <span class="kn">import</span> <span class="n">_main_loudness</span>
@@ -194,7 +194,7 @@
     <span class="n">time_axis</span> <span class="o">=</span> <span class="n">time_axis</span><span class="p">[::</span><span class="n">dec_factor</span><span class="p">]</span>
     <span class="c1">#</span>
     <span class="c1"># Build bark axis</span>
-    <span class="n">bark_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">24</span> <span class="o">/</span> <span class="mf">0.1</span><span class="p">))</span>
+    <span class="n">bark_axis</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">24</span> <span class="o">/</span> <span class="mf">0.1</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">N</span><span class="p">,</span> <span class="n">N_spec</span><span class="p">,</span> <span class="n">bark_axis</span><span class="p">,</span> <span class="n">time_axis</span></div>
 </pre></div>

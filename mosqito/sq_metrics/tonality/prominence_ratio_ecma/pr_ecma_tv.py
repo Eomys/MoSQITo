@@ -2,7 +2,7 @@
 
 # Standard library import
 from numpy import linspace, logspace, empty, nan, argmin, log10, nan_to_num, sin, power, pi, arange, zeros, sqrt, mean, ravel
-from numpy.random import normal
+import numpy.random as rd
 
 # Local imports
 from mosqito.utils.time_segmentation import time_segmentation
@@ -71,17 +71,17 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
         >>> fs = 48000
         >>> d = 2
         >>> dB = 60
-        >>> time = arange(0, d, 1/fs)
+        >>> time = np.arange(0, d, 1/fs)
         >>> f1 = 1000
-        >>> f2 = zeros((len(time)))
+        >>> f2 = np.zeros((len(time)))
         >>> f2[len(time)//2:] = 1500
-        >>> stimulus = 2 * sin(2 * pi * f1 * time) + sin(2 * pi * f2 * time)+ random.normal(0,0.5, len(time))
-        >>> rms = sqrt(mean(power(stimulus, 2)))
-        >>> ampl = 0.00002 * power(10, dB / 20) / rms
+        >>> stimulus = 2 * np.sin(2 * np.pi * f1 * time) + np.sin(2 * np.pi * f2 * time)+ np.random.normal(0,0.5, len(time))
+        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
         >>> t_pr, pr, promi, tones_freqs, time = pr_ecma_tv(stimulus, fs)
         >>> plt.figure(figsize=(10,8))
-        >>> plt.pcolormesh(time, tones_freqs, nan_to_num(pr), vmin=0)
+        >>> plt.pcolormesh(time, tones_freqs, np.nan_to_num(pr), vmin=0)
         >>> plt.colorbar(label = "PR value in dB")
         >>> plt.xlabel("Time [s]")
         >>> plt.ylabel("Frequency [Hz]")
@@ -133,26 +133,3 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
 
     return t_pr, pr, promi, freqs, time 
     
-if __name__ == "__main__":
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from mosqito.sq_metrics import pr_ecma_tv
-    fs = 48000
-    d = 2
-    dB = 60
-    time = arange(0, d, 1/fs)
-    f1 = 1000
-    f2 = zeros((len(time)))
-    f2[len(time)//2:] = 1500
-    stimulus = 2 * sin(2 * pi * f1 * time) + sin(2 * pi * f2 * time)+ normal(0,0.5, len(time))
-    rms = sqrt(mean(power(stimulus, 2)))
-    ampl = 0.00002 * power(10, dB / 20) / rms
-    stimulus = stimulus * ampl
-    t_pr, pr, promi, tones_freqs, time = pr_ecma_tv(stimulus, fs)
-    plt.figure(figsize=(10,8))
-    plt.pcolormesh(time, tones_freqs, nan_to_num(pr), vmin=0)
-    plt.colorbar(label = "PR value in dB")
-    plt.xlabel("Time [s]")
-    plt.ylabel("Frequency [Hz]")
-    plt.ylim(90,2000)
-    plt.show(block=True)

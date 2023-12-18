@@ -69,13 +69,13 @@ def roughness_dw_freq(spectrum, freqs):
        >>> fs=44100
        >>> d=0.2
        >>> dB=60
-       >>> time = arange(0, d, 1/fs)
+       >>> time = np.arange(0, d, 1/fs)
        >>> stimulus = (
        >>> 0.5
-       >>> * (1 + sin(2 * pi * fmod * time))
-       >>> * sin(2 * pi * fc * time))   
-       >>> rms = sqrt(mean(power(stimulus, 2)))
-       >>> ampl = 0.00002 * power(10, dB / 20) / rms
+       >>> * (1 + np.sin(2 * np.pi * fmod * time))
+       >>> * np.sin(2 * np.pi * fc * time))   
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
        >>> stimulus = stimulus * ampl
        >>> n = len(stimulus)
        >>> spec, freqs = spectrum(stimulus, fs, db=False)

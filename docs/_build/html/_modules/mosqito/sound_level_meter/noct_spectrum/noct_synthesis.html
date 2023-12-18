@@ -89,7 +89,7 @@
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="c1"># Standard library import</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">asarray</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">delete</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">tile</span><span class="p">,</span> <span class="n">where</span>
 
 <span class="c1"># Local application imports</span>
 <span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._center_freq</span> <span class="kn">import</span> <span class="n">_center_freq</span>
@@ -156,13 +156,13 @@
 <span class="sd">        &gt;&gt;&gt; spec_3, freq_axis = noct_synthesis(spec, freqs, fmin=90, fmax=14000)</span>
 <span class="sd">        &gt;&gt;&gt; spec_3db = amp2db(spec_3, ref=2e-5)</span>
 <span class="sd">        &gt;&gt;&gt; plt.step(freq_axis, spec_3db)</span>
-<span class="sd">        &gt;&gt;&gt; plt.ylim(0,60)</span>
 <span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Center frequency [Hz]&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Amplitude [dB]&quot;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
     
     <span class="c1"># Deduce sampling frequency</span>
-    <span class="n">fs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">))</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">))</span>
     
     <span class="c1"># Sampling frequency shall be equal to 48 kHz (as per ISO 532)</span>
     <span class="k">if</span> <span class="n">fs</span> <span class="o">!=</span> <span class="mi">48000</span><span class="p">:</span>
@@ -175,32 +175,20 @@
     <span class="n">alpha_vec</span><span class="p">,</span> <span class="n">f_low</span><span class="p">,</span> <span class="n">f_high</span> <span class="o">=</span> <span class="n">_filter_bandwidth</span><span class="p">(</span><span class="n">fc_vec</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
     
     <span class="c1"># Delete ends frequencies to prevent aliasing</span>
-    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">f_high</span> <span class="o">&gt;</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">where</span><span class="p">(</span><span class="n">f_high</span> <span class="o">&gt;</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="n">fc_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">fc_vec</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-        <span class="n">f_low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">f_low</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-        <span class="n">f_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">f_high</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-
-    <span class="c1"># Number of nth bands</span>
-    <span class="n">nband</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fc_vec</span><span class="p">)</span>
-    
-    <span class="c1"># Results array initialization</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">nseg</span> <span class="o">=</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nband</span><span class="p">,</span> <span class="n">nseg</span><span class="p">))</span>
-        <span class="c1"># If only one axis is given, it is used for all the spectra</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">(</span><span class="n">nseg</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">nseg</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nband</span><span class="p">))</span>
+        <span class="n">fc_vec</span> <span class="o">=</span> <span class="n">delete</span><span class="p">(</span><span class="n">fc_vec</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+        <span class="n">f_low</span> <span class="o">=</span> <span class="n">delete</span><span class="p">(</span><span class="n">f_low</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+        <span class="n">f_high</span> <span class="o">=</span> <span class="n">delete</span><span class="p">(</span><span class="n">f_high</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
 
     <span class="c1"># Calculation of the rms level of the signal in each band</span>
     <span class="n">spec</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">fc</span><span class="p">,</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fc_vec</span><span class="p">,</span> <span class="n">alpha_vec</span><span class="p">):</span>
         <span class="n">spec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_n_oct_freq_filter</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">alpha</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">spec</span><span class="p">),</span> <span class="n">fpref</span></div>
+    <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">spec</span><span class="p">),</span> <span class="n">fpref</span></div>
+
+
 </pre></div>
 
            </div>

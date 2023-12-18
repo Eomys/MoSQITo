@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-from numpy import array, append, tile, ones, copy, int32, zeros, arange, roll, logical_not, divide, maximum, minimum, multiply, logical_and, logical_xor, floor
+from numpy import array, append, tile, ones, copy, int32, zeros, arange, roll, logical_not, divide, maximum, minimum, multiply, logical_and, logical_xor, floor, round
 
 from mosqito.sq_metrics.loudness.loudness_zwst._get_rns_index import _get_rns_index
 

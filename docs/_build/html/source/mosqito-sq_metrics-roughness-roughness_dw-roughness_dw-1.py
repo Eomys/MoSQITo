@@ -1,5 +1,6 @@
 from mosqito.sq_metrics import roughness_dw
 import matplotlib.pyplot as plt
+import numpy as np
 fc=1000
 fmod=70
 fs=44100

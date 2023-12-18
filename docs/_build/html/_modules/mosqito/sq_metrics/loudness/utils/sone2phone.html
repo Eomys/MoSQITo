@@ -87,11 +87,7 @@
              
   <h1>Source code for mosqito.sq_metrics.loudness.utils.sone2phone</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">@author: Daniel Jiménez-Caminero Costa</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">log10</span>
 
 
 <div class="viewcode-block" id="sone2phone"><a class="viewcode-back" href="../../../../../source/mosqito.sq_metrics.loudness.utils.sone2phone.html#mosqito.sq_metrics.loudness.utils.sone2phone.sone2phone">[docs]</a><span class="k">def</span> <span class="nf">sone2phone</span><span class="p">(</span><span class="n">sones</span><span class="p">):</span>
@@ -114,7 +110,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">sones</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">phons</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">+</span> <span class="p">((</span><span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">sones</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">phons</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">+</span> <span class="p">((</span><span class="mi">10</span> <span class="o">*</span> <span class="n">log10</span><span class="p">(</span><span class="n">sones</span><span class="p">))</span> <span class="o">/</span> <span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="n">phons</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">*</span> <span class="p">((</span><span class="n">sones</span> <span class="o">+</span> <span class="mf">0.0005</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.35</span><span class="p">)</span>

@@ -91,4 +91,3 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     S = sharpness_din_from_loudness(N, N_specific, weighting=weighting)
 
     return S
-

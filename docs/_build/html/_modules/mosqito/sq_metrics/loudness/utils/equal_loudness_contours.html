@@ -87,11 +87,8 @@
              
   <h1>Source code for mosqito.sq_metrics.loudness.utils.equal_loudness_contours</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">@author: Daniel Jiménez-Caminero Costa</span>
-<span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">log10</span>
 
 
 <div class="viewcode-block" id="equal_loudness_contours"><a class="viewcode-back" href="../../../../../source/mosqito.sq_metrics.loudness.utils.equal_loudness_contours.html#mosqito.sq_metrics.loudness.utils.equal_loudness_contours.equal_loudness_contours">[docs]</a><span class="k">def</span> <span class="nf">equal_loudness_contours</span><span class="p">(</span><span class="n">phones</span><span class="p">):</span>
@@ -116,7 +113,7 @@
 <span class="sd">        Frequencies in which the function computes the resulting &#39;SPL&#39; values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n_frequencies</span> <span class="o">=</span> <span class="mi">29</span>
-    <span class="n">freq_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">,</span> <span class="mf">31.5</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">63.0</span><span class="p">,</span> <span class="mf">80.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">125.0</span><span class="p">,</span> <span class="mf">160.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">,</span> <span class="mf">315.0</span><span class="p">,</span> <span class="mf">400.0</span><span class="p">,</span>
+    <span class="n">freq_array</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">,</span> <span class="mf">31.5</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">63.0</span><span class="p">,</span> <span class="mf">80.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">125.0</span><span class="p">,</span> <span class="mf">160.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">,</span> <span class="mf">315.0</span><span class="p">,</span> <span class="mf">400.0</span><span class="p">,</span>
                            <span class="mf">500.0</span><span class="p">,</span> <span class="mf">630.0</span><span class="p">,</span> <span class="mf">800.0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="mf">1250.0</span><span class="p">,</span> <span class="mf">1600.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">,</span> <span class="mf">2500.0</span><span class="p">,</span> <span class="mf">3150.0</span><span class="p">,</span> <span class="mf">4000.0</span><span class="p">,</span> <span class="mf">5000.0</span><span class="p">,</span> <span class="mf">6300.0</span><span class="p">,</span>
                            <span class="mf">8000.0</span><span class="p">,</span> <span class="mf">10000.0</span><span class="p">,</span> <span class="mf">12500.0</span><span class="p">])</span>
 
@@ -131,7 +128,7 @@
 
     <span class="c1"># Ln = phones</span>
     <span class="c1"># Lp = SPL</span>
-    <span class="n">spl_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_frequencies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">spl_array</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">n_frequencies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="c1"># Deriving sound pressure level from loudness level (iso226 sect 4.1). Ln = phones</span>
     <span class="c1"># An upgrade of this section could be to do all the calculations in one run by using numpy functions</span>
@@ -140,7 +137,7 @@
         <span class="n">Af</span> <span class="o">=</span> <span class="p">(</span><span class="mf">4.47</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)))</span> <span class="o">*</span> <span class="p">((</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.025</span> <span class="o">*</span> <span class="n">phones</span><span class="p">))</span> <span class="o">-</span> <span class="mf">1.15</span><span class="p">)</span> <span class="o">+</span> \
              <span class="p">((</span><span class="mf">0.4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(((</span><span class="n">Tf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">Lu</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-</span> <span class="mi">9</span><span class="p">)))</span> <span class="o">**</span> <span class="n">af</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
-        <span class="n">spl_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="mf">10.</span> <span class="o">/</span> <span class="n">af</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">Af</span><span class="p">))</span> <span class="o">-</span> <span class="n">Lu</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">94</span>
+        <span class="n">spl_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="mf">10.</span> <span class="o">/</span> <span class="n">af</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">log10</span><span class="p">(</span><span class="n">Af</span><span class="p">))</span> <span class="o">-</span> <span class="n">Lu</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">94</span>
 
     <span class="k">return</span> <span class="n">spl_array</span><span class="p">,</span> <span class="n">freq_array</span></div>
 </pre></div>

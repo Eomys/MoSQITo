@@ -89,7 +89,7 @@
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="c1"># Standard imports</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">arange</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">tile</span>
 
 <span class="c1"># Local imports</span>
 <span class="kn">from</span> <span class="nn">mosqito.sq_metrics.roughness.roughness_dw._roughness_dw_main_calc</span> <span class="kn">import</span> <span class="n">_roughness_dw_main_calc</span>
@@ -108,7 +108,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    spectrum : array_like</span>
 <span class="sd">        Input amplitude or complex frequency spectrum, dim (nperseg x nseg)</span>
-<span class="sd">    freqs : np.array</span>
+<span class="sd">    freqs : array</span>
 <span class="sd">        Input frequency axis , dim (nperseg) if identical for all the blocks,</span>
 <span class="sd">        else (nperseg x nseg).</span>
 
@@ -182,13 +182,13 @@
 
     <span class="k">if</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s1">&#39;Input must be an amplitude spectrum (use np.abs() or complex spectrum).&#39;</span><span class="p">)</span>
+            <span class="s1">&#39;Input must be an amplitude spectrum (use abs() or complex spectrum).&#39;</span><span class="p">)</span>
 
     <span class="c1"># 1D spectrum</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">nperseg</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
         <span class="n">nseg</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">fs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">nperseg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">fs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">nperseg</span> <span class="o">*</span> <span class="n">mean</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 
     <span class="c1"># 2D spectrum</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -196,19 +196,19 @@
         <span class="n">nseg</span> <span class="o">=</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="c1"># one frequency axis per block</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">fs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">nperseg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">fs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">nperseg</span> <span class="o">*</span> <span class="n">mean</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
         <span class="c1"># one frequency axis for all the blocks</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">fs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">nperseg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-            <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">(</span><span class="n">nseg</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">fs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">nperseg</span> <span class="o">*</span> <span class="n">mean</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">freqs</span> <span class="o">=</span> <span class="n">tile</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">(</span><span class="n">nseg</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
 
     <span class="c1"># Initialization of the weighting functions H and g</span>
     <span class="n">hWeight</span> <span class="o">=</span> <span class="n">_H_weighting</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">nperseg</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
     <span class="c1"># Aures modulation depth weighting function</span>
-    <span class="n">gzi</span> <span class="o">=</span> <span class="n">_gzi_weighting</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">gzi</span> <span class="o">=</span> <span class="n">_gzi_weighting</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
-    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nseg</span><span class="p">))</span>
-    <span class="n">R_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">47</span><span class="p">,</span> <span class="n">nseg</span><span class="p">))</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="n">nseg</span><span class="p">))</span>
+    <span class="n">R_spec</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="mi">47</span><span class="p">,</span> <span class="n">nseg</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nseg</span><span class="p">):</span>
