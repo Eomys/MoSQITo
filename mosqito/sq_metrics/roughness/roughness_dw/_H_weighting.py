@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Oct  2 11:38:13 2020
 
-@author: pc
-"""
 # Standard library import
 import numpy as np
 import math

@@ -29,6 +29,7 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
     skip : float
         Number of second to be cut at the beginning of the analysis to skip the transient effect.
         Default is 0
+        
     Returns
     -------
     S : numpy.array

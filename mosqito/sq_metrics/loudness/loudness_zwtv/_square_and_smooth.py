@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@date Created on Fri May 22 2020
-@author martin_g for Eomys
-"""
 
 # Standard library imports
 import numpy as np

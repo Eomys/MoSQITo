@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@author: Daniel Jiménez-Caminero Costa
-"""
 
 import numpy as np
 

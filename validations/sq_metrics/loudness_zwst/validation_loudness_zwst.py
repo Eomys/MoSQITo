@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Dec 14 15:17:12 2020
-
-@author: wantysal
-"""
 
 try:
     import matplotlib.pyplot as plt

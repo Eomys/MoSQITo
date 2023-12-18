@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Dec 16 20:23:01 2020
 
-@author: Salomé
-"""
 # Standard library imports
 import numpy as np
 

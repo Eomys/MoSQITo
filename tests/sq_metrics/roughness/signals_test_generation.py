@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Nov 13 15:17:27 2020
 
-@author: wantysal
-"""
 # Standard library import
 import numpy as np
 from scipy.io.wavfile import write

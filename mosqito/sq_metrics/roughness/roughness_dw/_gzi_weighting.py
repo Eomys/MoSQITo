@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Nov  6 10:29:02 2020
 
-@author: wantysal
-"""
-
+# Standard library import
 import numpy as np
-
 
 def _gzi_weighting(center_freq):
     """ Weighting function for the specific roughness given by Aures """
