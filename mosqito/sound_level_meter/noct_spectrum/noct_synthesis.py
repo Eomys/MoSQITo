@@ -59,19 +59,19 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
         >>> fs=48000
         >>> d=0.2
         >>> dB=60
-        >>> time = arange(0, d, 1/fs)
-        >>> stimulus = sin(2 * pi * f * time) + 0.5 * sin(6 * pi * f * time)
-        >>> rms = sqrt(mean(power(stimulus, 2)))
-        >>> ampl = 0.00002 * power(10, dB / 20) / rms
+        >>> time = np.arange(0, d, 1/fs)
+        >>> stimulus = np.sin(2 * np.pi * f * time) + 0.5 * np.sin(6 * np.pi * f * time)
+        >>> rms = np.sqrt(mean(np.power(stimulus, 2)))
+        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
         >>> spec, freqs = spectrum(stimulus, fs, db=False)
         >>> spec_3, freq_axis = noct_synthesis(spec, freqs, fmin=90, fmax=14000)
         >>> spec_3db = amp2db(spec_3, ref=2e-5)
         >>> plt.step(freq_axis, spec_3db)
-        >>> plt.ylim(0,60)
         >>> plt.xlabel("Center frequency [Hz]")
         >>> plt.ylabel("Amplitude [dB]")
-    """
+
+"""
     
     # Deduce sampling frequency
     fs = mean(freqs[1:] - freqs[:-1]) * 2 * (len(spectrum))
@@ -93,23 +93,11 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
         f_low = delete(f_low, idx)
         f_high = delete(f_high, idx)
 
-    # Number of nth bands
-    nband = len(fc_vec)
-    
-    # Results array initialization
-    if len(spectrum.shape) > 1:
-        nseg = spectrum.shape[1]
-        spec = zeros((nband, nseg))
-        # If only one axis is given, it is used for all the spectra
-        if len(freqs.shape) == 1:
-            freqs = tile(freqs, (nseg, 1)).T
-    else:
-        nseg = 1
-        spec = zeros((nband))
-
     # Calculation of the rms level of the signal in each band
     spec = []
     for fc, alpha in zip(fc_vec, alpha_vec):
         spec.append(_n_oct_freq_filter(spectrum, fs, fc, alpha))
 
     return array(spec), fpref
+
+
