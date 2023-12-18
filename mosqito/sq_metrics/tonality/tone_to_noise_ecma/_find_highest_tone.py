@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-import numpy as np
+from numpy import argmin, argsort, delete, where
 
 # Mosqito functions import
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import _critical_band
@@ -41,15 +41,15 @@ def _find_highest_tone(freqs, spec_db, index, nb_tones, ind):
     f = freqs[ind]
     # critical band centered on f
     f1, f2 = _critical_band(f)
-    low_limit_idx = np.argmin(np.abs(freqs - f1))
-    high_limit_idx = np.argmin(np.abs(freqs - f2))
+    low_limit_idx = argmin(abs(freqs - f1))
+    high_limit_idx = argmin(abs(freqs - f2))
 
     # Other tones in the critical band centered on f tones
     multiple_idx = index[index > low_limit_idx]
     multiple_idx = multiple_idx[multiple_idx < high_limit_idx]
 
     if len(multiple_idx) > 1:
-        sort_spec = np.argsort(-1 * spec_db[multiple_idx])
+        sort_spec = argsort(-1 * spec_db[multiple_idx])
 
         # highest tones in the critical band
         ind_p = multiple_idx[sort_spec[0]]
@@ -57,8 +57,8 @@ def _find_highest_tone(freqs, spec_db, index, nb_tones, ind):
 
         # suppression of the lower values
         for s in sort_spec[2:]:
-            sup = np.where(index == multiple_idx[s])[0]
-            index = np.delete(index, sup)
+            sup = where(index == multiple_idx[s])[0]
+            index = delete(index, sup)
             nb_tones -= 1
 
         if ind_p != ind:

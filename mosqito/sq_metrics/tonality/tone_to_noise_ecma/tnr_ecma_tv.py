@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library import
-import numpy as np
+from numpy import linspace, log10, empty, nan, logspace, argmin, ravel
 
 # Local functions imports
 from mosqito.utils.time_segmentation import time_segmentation
@@ -70,17 +70,17 @@ def tnr_ecma_tv(signal, fs, prominence=False, overlap=0):
         >>> fs = 48000
         >>> d = 2
         >>> dB = 60
-        >>> time = np.arange(0, d, 1/fs)
+        >>> time = arange(0, d, 1/fs)
         >>> f1 = 1000
-        >>> f2 = np.zeros((len(time)))
+        >>> f2 = zeros((len(time)))
         >>> f2[len(time)//2:] = 1500
-        >>> stimulus = 2 * np.sin(2 * np.pi * f1 * time) + np.sin(2 * np.pi * f2 * time)+ np.random.normal(0,0.5, len(time))
-        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+        >>> stimulus = 2 * sin(2 * pi * f1 * time) + sin(2 * pi * f2 * time)+ random.normal(0,0.5, len(time))
+        >>> rms = sqrt(mean(power(stimulus, 2)))
+        >>> ampl = 0.00002 * power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
         >>> t_tnr, tnr, promi, tones_freqs, time = tnr_ecma_tv(stimulus, fs)
         >>> plt.figure(figsize=(10,8))
-        >>> plt.pcolormesh(time, tones_freqs, np.nan_to_num(tnr), vmin=0)
+        >>> plt.pcolormesh(time, tones_freqs, nan_to_num(tnr), vmin=0)
         >>> plt.colorbar(label = "TNR value in dB")
         >>> plt.xlabel("Time [s]")
         >>> plt.ylabel("Frequency [Hz]")
@@ -102,7 +102,7 @@ def tnr_ecma_tv(signal, fs, prominence=False, overlap=0):
       
     else:
         nseg = signal.shape[1]
-        time = np.linspace(0, signal.shape[0]/fs, num=nseg)
+        time = linspace(0, signal.shape[0]/fs, num=nseg)
         
         # Compute spectrum
         spectrum_db, freq_axis = spectrum(sig, fs, db=True)
@@ -113,15 +113,15 @@ def tnr_ecma_tv(signal, fs, prominence=False, overlap=0):
  
             
     # Retore the results in a time vs frequency array
-    freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
-    tnr = np.empty((len(freqs), nseg))
-    tnr.fill(np.nan)
-    promi = np.empty((len(freqs), nseg), dtype=bool)
+    freqs = logspace(log10(90), log10(11200), num=1000)
+    tnr = empty((len(freqs), nseg))
+    tnr.fill(nan)
+    promi = empty((len(freqs), nseg), dtype=bool)
     promi.fill(False)
     
     for t in range(nseg):
         for f in range(len(tones_freqs[t])):
-            ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
+            ind = argmin(abs(freqs - tones_freqs[t][f]))
             if prominence == False:
                 tnr[ind, t] = tnr_[t][f]
                 promi[ind, t] = prom[t][f]
@@ -130,6 +130,6 @@ def tnr_ecma_tv(signal, fs, prominence=False, overlap=0):
                     tnr[ind, t] = tnr_[t][f]
                     promi[ind, t] = prom[t][f]
 
-    t_tnr = np.ravel(t_tnr)
+    t_tnr = ravel(t_tnr)
 
     return t_tnr, tnr, promi, freqs, time     

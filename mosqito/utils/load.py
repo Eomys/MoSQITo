@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-import numpy as np
+from numpy import int16, int32
 from scipy.io import wavfile, loadmat
 from scipy.signal import resample
 
@@ -57,11 +57,11 @@ def load(file, wav_calib=None, mat_signal="", mat_fs=""):
         if wav_calib is None:
             wav_calib = 1
             print("[Info] A calibration of 1 Pa/FS is considered")
-        if isinstance(signal[0], np.int16):
+        if isinstance(signal[0], int16):
             signal = wav_calib * signal / (2 ** 15 - 1)
-        elif isinstance(signal[0], np.int32):
+        elif isinstance(signal[0], int32):
             signal = wav_calib * signal / (2 ** 31 - 1)
-        elif isinstance(signal[0], np.float):
+        elif isinstance(signal[0], float):
             signal = wav_calib * signal
 
     # load the .uff file content

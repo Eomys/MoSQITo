@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import numpy as np
+from numpy import array, arange, sin, sqrt
 import math
 
 
@@ -39,16 +39,16 @@ def sine_wave_generator(fs, t, spl_value, freq):
     pressure_rms = p_ref * (10.00 ** (spl_value / 20.00))
 
     # Sample range
-    # samples = np.linspace(0, t, int(fs * t), endpoint=False)
-    time = np.arange(0, t, 1 / fs)
+    # samples = linspace(0, t, int(fs * t), endpoint=False)
+    time = arange(0, t, 1 / fs)
 
     # Theta lets you specify the sine wave value at time 0
     theta = 0
 
     # Amplitude of the signal
-    amplitude = np.sqrt(2) * pressure_rms
+    amplitude = sqrt(2) * pressure_rms
 
     # Signal calculation
-    signal = np.array(amplitude * np.sin((2.00 * math.pi * freq * time) + theta))
+    signal = array(amplitude * sin((2.00 * math.pi * freq * time) + theta))
 
     return signal, time

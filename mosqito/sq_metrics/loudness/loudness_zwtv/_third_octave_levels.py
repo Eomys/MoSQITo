@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # Third party imports
-import numpy as np
-from scipy import signal
+from numpy import linspace, zeros, array, log10
+from scipy.signal import sosfilt
 
 # Local application imports
 from mosqito.sq_metrics.loudness.loudness_zwtv._square_and_smooth import (
@@ -36,17 +36,17 @@ def _third_octave_levels(sig, fs):
     n_filter_coeff = 6
     dec_factor = int(fs / 2000)
     # Initialisation
-    coeff = np.zeros(n_filter_coeff)
+    coeff = zeros(n_filter_coeff)
     # Filter coefficients of one-third-octave-band filters (reference
     # table)
     # ISO 532-1 Table A.1
-    third_octave_filter_ref = np.array(
+    third_octave_filter_ref = array(
         [[1, 2, 1, 1, -2, 1], [1, 0, -1, 1, -2, 1], [1, -2, 1, 1, -2, 1]]
     )
     # Filter coefficients of one-third-octave-band filters (difference to
     # reference table for 28 one-third-octave-band filters)
     # ISO 532-1 Table A.2
-    third_octave_filter = np.array(
+    third_octave_filter = array(
         [
             [
                 [0, 0, 0, 0, -6.70260e-004, 6.59453e-004],
@@ -192,7 +192,7 @@ def _third_octave_levels(sig, fs):
     )
     # Filter gain values
     # ISO 532-1 Table A.2
-    filter_gain = np.array(
+    filter_gain = array(
         [
             4.30764e-011,
             8.59340e-011,
@@ -258,9 +258,9 @@ def _third_octave_levels(sig, fs):
     ]
 
     n_time = len(sig[::dec_factor])
-    time_axis = np.linspace(0, len(sig) / fs, num=n_time)
+    time_axis = linspace(0, len(sig) / fs, num=n_time)
 
-    third_octave_level = np.zeros((n_level_band, n_time))
+    third_octave_level = zeros((n_level_band, n_time))
     for i_bands in range(n_level_band):
         
         # Initialisation
@@ -268,13 +268,13 @@ def _third_octave_levels(sig, fs):
         i_ref = 4 * 10 ** -10
         # 2nd order fltering (See ISO 532-1 section 6.3 and A.2)
         coeff = third_octave_filter_ref - third_octave_filter[i_bands, :, :]
-        sig_filt = filter_gain[i_bands] * signal.sosfilt(coeff, sig)
+        sig_filt = filter_gain[i_bands] * sosfilt(coeff, sig)
         # Calculate center frequency of filter
         center_freq = 10 ** ((i_bands - 16) / 10) * 1000
         # Squaring and smoothing of filtered signal
         sig_filt = _square_and_smooth(sig_filt, center_freq, 48000)
         # SPL calculation and decimation
-        third_octave_level[i_bands, :] = 10 * np.log10(
+        third_octave_level[i_bands, :] = 10 * log10(
             (sig_filt[::dec_factor] + tiny_value) / i_ref
         )
 

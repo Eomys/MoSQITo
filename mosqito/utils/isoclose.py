@@ -7,8 +7,7 @@ except ImportError:
         "In order to perform this validation you need the 'matplotlib' package."
     )
 
-import numpy as np
-
+from numpy import amin, amax, arange
 
 def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, xaxis=None):
     """
@@ -47,9 +46,9 @@ def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, 
     """
 
     # Tolerances
-    range_pos = np.amin(
+    range_pos = amin(
         [desired * (1 - abs(rtol)), desired - abs(atol)], axis=0)
-    range_neg = np.amax(
+    range_neg = amax(
         [desired * (1 + abs(rtol)), desired + abs(atol)], axis=0)
 
     # Test for ISO 532-1 comformance (section 5.1)
@@ -58,7 +57,7 @@ def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, 
     if is_plot:
         # Define xaxis
         if xaxis is None:
-            xaxis = np.arange(actual.shape[0])
+            xaxis = arange(actual.shape[0])
 
         # Plot desired range
         plt.plot(

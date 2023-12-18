@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library import
-import numpy as np
+from numpy import interp
 
 
 def _ear_filter_coeff(bark_axis):
@@ -71,6 +71,6 @@ def _ear_filter_coeff(bark_axis):
         -999,
     ]
 
-    a0tab = np.interp(bark_axis, xp, yp)
+    a0tab = interp(bark_axis, xp, yp)
 
     return a0tab

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import numpy as np
+from numpy import log10
 
 
 def sone2phone(sones):
@@ -23,7 +22,7 @@ def sone2phone(sones):
     """
 
     if sones >= 1:
-        phons = 40 + ((10 * np.log10(sones)) / np.log10(2))
+        phons = 40 + ((10 * log10(sones)) / log10(2))
 
     else:
         phons = 40 * ((sones + 0.0005) ** 0.35)

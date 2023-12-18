@@ -1,7 +1,7 @@
-import numpy as np
+from numpy import array
 
 # Zwicker and Fastl weighting function
-x = np.array(
+x = array(
     [
         0.0985854,
         14.826764,
@@ -57,7 +57,7 @@ x = np.array(
     ]
 )
 
-y = np.array(
+y = array(
     [
         0.9783246,
         0.99701804,

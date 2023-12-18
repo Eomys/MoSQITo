@@ -2,7 +2,7 @@
 
 # Standard library imports
 import math
-import numpy as np
+from numpy import copy, roll, zeros, shape, arange
 #Needed for the loudness_zwicker_lowpass_intp_ea function
 from scipy import signal
 
@@ -25,24 +25,24 @@ def _lowpass_intp(loudness, tau, sample_rate):
     filt_loudness : numpy.ndarray
         Filtered loudness
     """
-    filt_loudness = np.zeros(np.shape(loudness))
+    filt_loudness = zeros(shape(loudness))
     # Factor for virtual upsampling/inner iterations
     lp_iter = 24
 
-    num_samples = np.shape(loudness)[0]
+    num_samples = shape(loudness)[0]
     a1 = math.exp(-1 / (sample_rate * lp_iter * tau))
     b0 = 1 - a1
     y1 = 0
 
-    delta = np.copy(loudness)
-    delta = np.roll(delta,-1)
+    delta = copy(loudness)
+    delta = roll(delta,-1)
     delta [-1] = 0
     delta = (delta - loudness) /  lp_iter
-    ui_delta = np.zeros(loudness.shape[0]*lp_iter).reshape(loudness.shape[0],lp_iter)
+    ui_delta = zeros(loudness.shape[0]*lp_iter).reshape(loudness.shape[0],lp_iter)
     ui_delta [:,0] = loudness  
     
     #Create the array complete of deltas to apply the filter.
-    for i_in in np.arange(1, lp_iter):
+    for i_in in arange(1, lp_iter):
         ui_delta [:,i_in] = delta + ui_delta [:,i_in-1]  
     
     # Rechape into a vector.

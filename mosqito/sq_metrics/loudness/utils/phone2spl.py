@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import numpy as np
+from numpy import log10
 
 
 def phone2spl(phones, tf, af, lu):
@@ -30,6 +29,6 @@ def phone2spl(phones, tf, af, lu):
     Af = (4.47 * (10 ** (-3))) * ((10 ** (0.025 * phones)) - 1.15) + ((0.4 * (10 ** (((tf + lu) / 10) - 9))) ** af)
 
     # Result of the phone value converted to dB SPL value
-    spl = ((10. / af) * np.log10(Af)) - lu + 94
+    spl = ((10. / af) * log10(Af)) - lu + 94
 
     return spl

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-import math
+from math import log2
 
 
 def sone_to_phon(sone):
@@ -27,5 +27,5 @@ def sone_to_phon(sone):
         if phon < 3:
             phon = 3
     else:
-        phon = 10 * math.log2(sone) + 40
+        phon = 10 * log2(sone) + 40
     return phon

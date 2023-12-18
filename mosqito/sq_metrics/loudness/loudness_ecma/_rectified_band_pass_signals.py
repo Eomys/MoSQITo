@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import numpy as np
+from numpy import ones, clip
 import scipy.signal as sp_signal
 
 from mosqito.sq_metrics.loudness.loudness_ecma._ear_filter_design import (
@@ -35,11 +35,11 @@ def _rectified_band_pass_signals(sig, sb=2048, sh=1024):
     """
 
     if isinstance(sb, int):
-        sb = sb * np.ones(53, dtype=int)
+        sb = sb * ones(53, dtype=int)
     elif len(sb) != 53:
         raise ValueError("ERROR: len(sb) shall be either 1 or 53")
     if isinstance(sh, int):
-        sh = sh * np.ones(53, dtype=int)
+        sh = sh * ones(53, dtype=int)
     elif len(sh) != 53:
         raise ValueError("ERROR: len(sh) shall be either 1 or 53")
 
@@ -94,6 +94,6 @@ def _rectified_band_pass_signals(sig, sb=2048, sh=1024):
         # for the signal. "a_min" is set to 0 float, while "a_max" is set to "None" in order to consider the positive
         # value of the signal.
 
-        block_array_rect.append(np.clip(block_array, a_min=0.00, a_max=None))
+        block_array_rect.append(clip(block_array, a_min=0.00, a_max=None))
 
     return block_array_rect

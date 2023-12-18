@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard imports
-import numpy as np
+from numpy import zeros, arange, mean, tile
 
 # Local imports
 from mosqito.sq_metrics.roughness.roughness_dw._roughness_dw_main_calc import _roughness_dw_main_calc
@@ -20,7 +20,7 @@ def roughness_dw_freq(spectrum, freqs):
     ----------
     spectrum : array_like
         Input amplitude or complex frequency spectrum, dim (nperseg x nseg)
-    freqs : np.array
+    freqs : array
         Input frequency axis , dim (nperseg) if identical for all the blocks,
         else (nperseg x nseg).
 
@@ -69,13 +69,13 @@ def roughness_dw_freq(spectrum, freqs):
        >>> fs=44100
        >>> d=0.2
        >>> dB=60
-       >>> time = np.arange(0, d, 1/fs)
+       >>> time = arange(0, d, 1/fs)
        >>> stimulus = (
        >>> 0.5
-       >>> * (1 + np.sin(2 * np.pi * fmod * time))
-       >>> * np.sin(2 * np.pi * fc * time))   
-       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> * (1 + sin(2 * pi * fmod * time))
+       >>> * sin(2 * pi * fc * time))   
+       >>> rms = sqrt(mean(power(stimulus, 2)))
+       >>> ampl = 0.00002 * power(10, dB / 20) / rms
        >>> stimulus = stimulus * ampl
        >>> n = len(stimulus)
        >>> spec, freqs = spectrum(stimulus, fs, db=False)
@@ -94,13 +94,13 @@ def roughness_dw_freq(spectrum, freqs):
 
     if spectrum.any() < 0:
         raise ValueError(
-            'Input must be an amplitude spectrum (use np.abs() or complex spectrum).')
+            'Input must be an amplitude spectrum (use abs() or complex spectrum).')
 
     # 1D spectrum
     if len(spectrum.shape) == 1:
         nperseg = len(spectrum)
         nseg = 1
-        fs = int(2 * nperseg * np.mean(freqs[1:] - freqs[:-1]))
+        fs = int(2 * nperseg * mean(freqs[1:] - freqs[:-1]))
 
     # 2D spectrum
     elif len(spectrum.shape) > 1:
@@ -108,19 +108,19 @@ def roughness_dw_freq(spectrum, freqs):
         nseg = spectrum.shape[1]
         # one frequency axis per block
         if len(freqs.shape) > 1:
-            fs = int(2 * nperseg * np.mean(freqs[0, 1:] - freqs[0, :-1]))
+            fs = int(2 * nperseg * mean(freqs[0, 1:] - freqs[0, :-1]))
         # one frequency axis for all the blocks
         elif len(freqs.shape) == 1:
-            fs = int(2 * nperseg * np.mean(freqs[1:] - freqs[:-1]))
-            freqs = np.tile(freqs, (nseg, 1)).T
+            fs = int(2 * nperseg * mean(freqs[1:] - freqs[:-1]))
+            freqs = tile(freqs, (nseg, 1)).T
 
     # Initialization of the weighting functions H and g
     hWeight = _H_weighting(2*nperseg, fs)
     # Aures modulation depth weighting function
-    gzi = _gzi_weighting(np.arange(1, 48, 1) / 2)
+    gzi = _gzi_weighting(arange(1, 48, 1) / 2)
 
-    R = np.zeros((nseg))
-    R_spec = np.zeros((47, nseg))
+    R = zeros((nseg))
+    R_spec = zeros((47, nseg))
 
     if len(spectrum.shape) > 1:
         for i in range(nseg):

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # Standard library import
-import numpy as np
+from numpy import linspace, logspace, empty, nan, argmin, log10, nan_to_num, sin, power, pi, arange, zeros, sqrt, mean, ravel
+from numpy.random import normal
 
 # Local imports
 from mosqito.utils.time_segmentation import time_segmentation
@@ -70,17 +71,17 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
         >>> fs = 48000
         >>> d = 2
         >>> dB = 60
-        >>> time = np.arange(0, d, 1/fs)
+        >>> time = arange(0, d, 1/fs)
         >>> f1 = 1000
-        >>> f2 = np.zeros((len(time)))
+        >>> f2 = zeros((len(time)))
         >>> f2[len(time)//2:] = 1500
-        >>> stimulus = 2 * np.sin(2 * np.pi * f1 * time) + np.sin(2 * np.pi * f2 * time)+ np.random.normal(0,0.5, len(time))
-        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+        >>> stimulus = 2 * sin(2 * pi * f1 * time) + sin(2 * pi * f2 * time)+ random.normal(0,0.5, len(time))
+        >>> rms = sqrt(mean(power(stimulus, 2)))
+        >>> ampl = 0.00002 * power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
         >>> t_pr, pr, promi, tones_freqs, time = pr_ecma_tv(stimulus, fs)
         >>> plt.figure(figsize=(10,8))
-        >>> plt.pcolormesh(time, tones_freqs, np.nan_to_num(pr), vmin=0)
+        >>> plt.pcolormesh(time, tones_freqs, nan_to_num(pr), vmin=0)
         >>> plt.colorbar(label = "PR value in dB")
         >>> plt.xlabel("Time [s]")
         >>> plt.ylabel("Frequency [Hz]")
@@ -101,7 +102,7 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
         
     else:
         nseg = signal.shape[1]
-        time = np.linspace(0, nseg/fs, num=nseg)
+        time = linspace(0, nseg/fs, num=nseg)
         
         # Compute spectrum
         spectrum_db, freq_axis = spectrum(sig, fs, db=True)
@@ -111,15 +112,15 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
     tones_freqs, pr_, prom, t_pr = _pr_main_calc(spectrum_db, freq_axis)
             
     # Retore the results in a time vs frequency array
-    freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
-    pr = np.empty((len(freqs), nseg))
-    pr.fill(np.nan)
-    promi = np.empty((len(freqs), nseg), dtype=bool)
+    freqs = logspace(log10(90), log10(11200), num=1000)
+    pr = empty((len(freqs), nseg))
+    pr.fill(nan)
+    promi = empty((len(freqs), nseg), dtype=bool)
     promi.fill(False)
     
     for t in range(nseg):
         for f in range(len(tones_freqs[t])):
-            ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
+            ind = argmin(abs(freqs - tones_freqs[t][f]))
             if prominence == False:
                 pr[ind, t] = pr_[t][f]
                 promi[ind, t] = prom[t][f]
@@ -128,7 +129,7 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
                     pr[ind, t] = pr_[t][f]
                     promi[ind, t] = prom[t][f]
 
-    t_pr = np.ravel(t_pr)
+    t_pr = ravel(t_pr)
 
     return t_pr, pr, promi, freqs, time 
     
@@ -139,17 +140,17 @@ if __name__ == "__main__":
     fs = 48000
     d = 2
     dB = 60
-    time = np.arange(0, d, 1/fs)
+    time = arange(0, d, 1/fs)
     f1 = 1000
-    f2 = np.zeros((len(time)))
+    f2 = zeros((len(time)))
     f2[len(time)//2:] = 1500
-    stimulus = 2 * np.sin(2 * np.pi * f1 * time) + np.sin(2 * np.pi * f2 * time)+ np.random.normal(0,0.5, len(time))
-    rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-    ampl = 0.00002 * np.power(10, dB / 20) / rms
+    stimulus = 2 * sin(2 * pi * f1 * time) + sin(2 * pi * f2 * time)+ normal(0,0.5, len(time))
+    rms = sqrt(mean(power(stimulus, 2)))
+    ampl = 0.00002 * power(10, dB / 20) / rms
     stimulus = stimulus * ampl
     t_pr, pr, promi, tones_freqs, time = pr_ecma_tv(stimulus, fs)
     plt.figure(figsize=(10,8))
-    plt.pcolormesh(time, tones_freqs, np.nan_to_num(pr), vmin=0)
+    plt.pcolormesh(time, tones_freqs, nan_to_num(pr), vmin=0)
     plt.colorbar(label = "PR value in dB")
     plt.xlabel("Time [s]")
     plt.ylabel("Frequency [Hz]")

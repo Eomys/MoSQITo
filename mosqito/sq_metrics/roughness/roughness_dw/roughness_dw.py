@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard imports
-import numpy as np
+from numpy import arange, zeros
 
 # Local imports
 from mosqito.utils.time_segmentation import time_segmentation
@@ -81,10 +81,10 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
        >>> fs=44100
        >>> d=0.2
        >>> dB=60
-       >>> time = np.arange(0, d, 1/fs)
-       >>> stimulus = (0.5 * (1 + np.sin(2 * np.pi * fmod * time))* np.sin(2 * np.pi * fc * time))   
-       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> time = arange(0, d, 1/fs)
+       >>> stimulus = (0.5 * (1 + sin(2 * pi * fmod * time))* sin(2 * pi * fc * time))   
+       >>> rms = sqrt(mean(power(stimulus, 2)))
+       >>> ampl = 0.00002 * power(10, dB / 20) / rms
        >>> stimulus = stimulus * ampl
        >>> R, R_specific, bark, time = roughness_dw(stimulus, fs=44100, overlap=0)
        >>> plt.plot(bark, R_specific)
@@ -115,15 +115,15 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     spec, _ = spectrum(sig, fs, nfft="default", window="blackman", db=False)
 
     # Frequency axis in Hertz
-    freq_axis = np.arange(1, nperseg // 2 + 1, 1) * (fs / nperseg)
+    freq_axis = arange(1, nperseg // 2 + 1, 1) * (fs / nperseg)
 
     # Initialization of the weighting functions H and g
     hWeight = _H_weighting(nperseg, fs)
     # Aures modulation depth weighting function
-    gzi = _gzi_weighting(np.arange(1, 48, 1) / 2)
+    gzi = _gzi_weighting(arange(1, 48, 1) / 2)
 
-    R = np.zeros((nseg))
-    R_spec = np.zeros((47, nseg))
+    R = zeros((nseg))
+    R_spec = zeros((47, nseg))
     if len(spec.shape) > 1:
         for i in range(nseg):
             R[i], R_spec[:, i], bark_axis = _roughness_dw_main_calc(
@@ -134,7 +134,7 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
             spec, freq_axis, fs, gzi, hWeight
         )
 
-    # print(np.mean(R,axis=0))
+    # print(mean(R,axis=0))
 
     # Manage SciDataTool output type
     if is_sdt_output:

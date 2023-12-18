@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library import
-import numpy as np
+from numpy import asarray, mean, delete, zeros, array, tile, where
 
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
@@ -59,10 +59,10 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
         >>> fs=48000
         >>> d=0.2
         >>> dB=60
-        >>> time = np.arange(0, d, 1/fs)
-        >>> stimulus = np.sin(2 * np.pi * f * time) + 0.5 * np.sin(6 * np.pi * f * time)
-        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+        >>> time = arange(0, d, 1/fs)
+        >>> stimulus = sin(2 * pi * f * time) + 0.5 * sin(6 * pi * f * time)
+        >>> rms = sqrt(mean(power(stimulus, 2)))
+        >>> ampl = 0.00002 * power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
         >>> spec, freqs = spectrum(stimulus, fs, db=False)
         >>> spec_3, freq_axis = noct_synthesis(spec, freqs, fmin=90, fmax=14000)
@@ -74,7 +74,7 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     """
     
     # Deduce sampling frequency
-    fs = np.mean(freqs[1:] - freqs[:-1]) * 2 * (len(spectrum))
+    fs = mean(freqs[1:] - freqs[:-1]) * 2 * (len(spectrum))
     
     # Sampling frequency shall be equal to 48 kHz (as per ISO 532)
     if fs != 48000:
@@ -87,11 +87,11 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     alpha_vec, f_low, f_high = _filter_bandwidth(fc_vec, n=n)
     
     # Delete ends frequencies to prevent aliasing
-    idx = np.asarray(np.where(f_high > fs / 2))
+    idx = asarray(where(f_high > fs / 2))
     if any(idx[0]):
-        fc_vec = np.delete(fc_vec, idx)
-        f_low = np.delete(f_low, idx)
-        f_high = np.delete(f_high, idx)
+        fc_vec = delete(fc_vec, idx)
+        f_low = delete(f_low, idx)
+        f_high = delete(f_high, idx)
 
     # Number of nth bands
     nband = len(fc_vec)
@@ -99,17 +99,17 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     # Results array initialization
     if len(spectrum.shape) > 1:
         nseg = spectrum.shape[1]
-        spec = np.zeros((nband, nseg))
+        spec = zeros((nband, nseg))
         # If only one axis is given, it is used for all the spectra
         if len(freqs.shape) == 1:
-            freqs = np.tile(freqs, (nseg, 1)).T
+            freqs = tile(freqs, (nseg, 1)).T
     else:
         nseg = 1
-        spec = np.zeros((nband))
+        spec = zeros((nband))
 
     # Calculation of the rms level of the signal in each band
     spec = []
     for fc, alpha in zip(fc_vec, alpha_vec):
         spec.append(_n_oct_freq_filter(spectrum, fs, fc, alpha))
 
-    return np.array(spec), fpref
+    return array(spec), fpref

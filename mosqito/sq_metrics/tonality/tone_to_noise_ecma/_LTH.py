@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import numpy as np
+from numpy import zeros
 
 
 def _LTH(freqs):
     """Definition of the lower threshold of hearing according to
     ECMA-74 annex D.7.1"""
 
-    LTH = np.zeros((freqs.shape))
+    LTH = zeros((freqs.shape))
     for i in range(freqs.shape[0]):
         f = freqs[i]
 

@@ -1,5 +1,4 @@
-from numpy import arange
-from numpy import sinh
+from numpy import arange, sinh
 
 
 def _auditory_filters_centre_freq():

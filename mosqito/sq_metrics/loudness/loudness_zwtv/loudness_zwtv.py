@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-import numpy as np
+from numpy import linspace
 
 # Local applications imports
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
@@ -106,6 +106,6 @@ def loudness_zwtv(signal, fs, field_type='free'):
     time_axis = time_axis[::dec_factor]
     #
     # Build bark axis
-    bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
+    bark_axis = linspace(0.1, 24, int(24 / 0.1))
 
     return N, N_spec, bark_axis, time_axis

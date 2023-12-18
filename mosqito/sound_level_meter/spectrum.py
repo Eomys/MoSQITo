@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import numpy as np
+from numpy import tile, hanning, blackman, concatenate, arange
 from numpy.fft import fft
 
 # local function import
@@ -13,7 +13,7 @@ def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=Tru
 
     Parameters
     ----------
-    signal : np.array
+    signal : array
         A time signal [nperseg x nseg].
     fs : integer
         Sampling frequency.
@@ -22,9 +22,9 @@ def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=Tru
 
     Returns
     -------
-    spectrum : np.array
+    spectrum : array
         Spectrum [freq_axis x nseg].
-    freq_axis : np.array
+    freq_axis : array
         Frequency axis.
         
     See also
@@ -44,11 +44,11 @@ def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=Tru
         >>> fs=48000
         >>> d=0.2
         >>> dB=60
-        >>> time = np.arange(0, d, 1/fs)
+        >>> time = arange(0, d, 1/fs)
         >>> f = 1000
-        >>> stimulus = 1 + 0.5*np.sin(2 * np.pi * f * time) + 0.1*np.sin(20 * np.pi * f * time)
-        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+        >>> stimulus = 1 + 0.5*sin(2 * pi * f * time) + 0.1*sin(20 * pi * f * time)
+        >>> rms = sqrt(mean(power(stimulus, 2)))
+        >>> ampl = 0.00002 * power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
         >>> spec_db, freq_axis = spectrum(stimulus, fs, db=True)
         >>> plt.step(freq_axis, spec_db)
@@ -69,27 +69,27 @@ def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=Tru
 
     # Window definition
     if window == 'hanning':
-        window = np.hanning(nfft)
+        window = hanning(nfft)
     elif window == 'blackman':
-        window = np.blackman(nfft)
+        window = blackman(nfft)
         
     # Amplitude correction
-    window = window / np.sum(window)
+    window = window / sum(window)
     
     if len(signal.shape)>1:
-        window = np.tile(window,(nseg,1)).T
+        window = tile(window,(nseg,1)).T
     
     # Creation of the spectrum by FFT
     if one_sided == True:
         spectrum = fft(signal * window, n=nfft, axis=0)[0:nfft//2] * 1.42
-        freq_axis = np.arange(1, nfft//2+1, 1) * (fs / nfft)
+        freq_axis = arange(1, nfft//2+1, 1) * (fs / nfft)
     else:
         spectrum = fft(signal * window, n=nfft, axis=0) * 1.42
-        freq_axis = np.concatenate((np.arange(1, nfft//2+1, 1) * (fs / nfft), np.arange(nfft//2+1, 1, -1) * (fs / nfft)))
+        freq_axis = concatenate((arange(1, nfft//2+1, 1) * (fs / nfft), arange(nfft//2+1, 1, -1) * (fs / nfft)))
 
     if db == True:
         # Conversion into dB level
-        module = np.abs(spectrum)
+        module = abs(spectrum)
         spectrum = amp2db(module, ref=0.00002)
     
     return spectrum, freq_axis

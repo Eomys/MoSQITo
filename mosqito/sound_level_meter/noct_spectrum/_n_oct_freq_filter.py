@@ -2,7 +2,7 @@
 
 
 # Standard library imports
-import numpy as np
+from numpy import multiply, sqrt
 from scipy.signal import butter, sosfreqz
 
 def _n_oct_freq_filter(spectrum, fs, fc, alpha, n=3):  
@@ -39,9 +39,9 @@ def _n_oct_freq_filter(spectrum, fs, fc, alpha, n=3):
     sos = butter(n, [w1, w2], "bandpass", analog=False, output ='sos')  
     # Get FRF and apply it
     w, h = sosfreqz(sos, worN=len(spectrum))
-    spec_filt = np.multiply(h, spectrum.T).T
+    spec_filt = multiply(h, spectrum.T).T
     
     # Compute overall rms level
-    level = np.sqrt(np.sum(np.abs(spec_filt) ** 2, axis=0)) 
+    level = sqrt(sum(abs(spec_filt) ** 2, axis=0)) 
         
     return level

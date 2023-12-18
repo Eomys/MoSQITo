@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-import numpy as np
+from numpy import arange, diff, sign, where, delete, asarray, append
 
 # Mosqito functions import
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._spectrum_smoothing import _spectrum_smoothing
@@ -54,7 +54,7 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
     n = spec_db.shape[0]
     if len(spec_db.shape)>1:
         m = spec_db.shape[1] 
-        stop = np.arange(1,n+1) * m -1
+        stop = arange(1,n+1) * m -1
         
     else:
         m = spec_db.shape[0]
@@ -70,30 +70,30 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
 
         # Criteria 1 : the level of the spectral line is higher than the level of
         # the two neighboring lines
-        maxima = (np.diff(np.sign(np.diff(spec_db))) < 0).nonzero()[0] + 1
+        maxima = (diff(sign(diff(spec_db))) < 0).nonzero()[0] + 1
 
         # Criteria 2 : the level of the spectral line exceeds the corresponding lines
         # of the 1/24 octave smoothed spectrum by at least 6 dB
-        indexx = np.where(spec_db[maxima] > smooth_spec[maxima] + 6)[0]
+        indexx = where(spec_db[maxima] > smooth_spec[maxima] + 6)[0]
 
         # Criteria 3 : the level of the spectral line exceeds the threshold of hearing
         threshold = _LTH(freqs)
-        audible = np.where(spec_db[maxima][indexx] > threshold[maxima][indexx] + 10)[0]
+        audible = where(spec_db[maxima][indexx] > threshold[maxima][indexx] + 10)[0]
 
-        index = np.arange(0, len(spec_db))[maxima][indexx][audible]
+        index = arange(0, len(spec_db))[maxima][indexx][audible]
 
     if method == "not-smoothed":
         # Criteria 1 : the level of the spectral line is higher than the level of
         # the two neighboring lines
         maxima = (
-            np.diff(np.sign(np.diff(spec_db[3 : len(spec_db) - 3]))) < 0
+            diff(sign(diff(spec_db[3 : len(spec_db) - 3]))) < 0
         ).nonzero()[
             0
         ] + 1  # local max
 
         # Criteria 2 : the level of the spectral line is at least 7 dB higher than its
         # +/- 2,3 neighbors
-        indexx = np.where(
+        indexx = where(
             (spec_db[maxima] > (spec_db[maxima + 2] + 7))
             & (spec_db[maxima] > (spec_db[maxima - 2] + 7))
             & (spec_db[maxima] > (spec_db[maxima + 3] + 7))
@@ -102,9 +102,9 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
 
         # Criteria 3 : the level of the spectral line exceeds the threshold of hearing
         threshold = _LTH(freqs)
-        audible = np.where(spec_db[maxima][indexx] > threshold[maxima][indexx] + 10)[0]
+        audible = where(spec_db[maxima][indexx] > threshold[maxima][indexx] + 10)[0]
 
-        index = np.arange(0, len(spec_db))[maxima][indexx][audible]
+        index = arange(0, len(spec_db))[maxima][indexx][audible]
 
     ###############################################################################
     # Check of the tones width : a candidate is discarded if its width is greater
@@ -159,15 +159,15 @@ def _screening_for_tones(freqs, spec_db, method, low_freq, high_freq):
 
         if t_width < cb_width:
             if n>1:
-                tones[block] = np.append(tones[block], peak_index - block*m)
+                tones[block] = append(tones[block], peak_index - block*m)
             else:
-                tones = np.append(tones, peak_index )
+                tones = append(tones, peak_index )
 
         # All the candidates already screened are deleted from the list
-        sup = np.where(index <= high_limit)[0]
-        index = np.delete(index, sup)
+        sup = where(index <= high_limit)[0]
+        index = delete(index, sup)
     
-    tones = np.asarray(tones, dtype=object)
+    tones = asarray(tones, dtype=object)
 
 
     return tones

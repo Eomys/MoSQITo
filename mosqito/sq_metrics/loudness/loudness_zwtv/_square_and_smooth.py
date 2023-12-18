@@ -2,7 +2,7 @@
 
 # Standard library imports
 import numpy as np
-from scipy import signal
+from scipy.signal import lfilter
 
 
 def _square_and_smooth(sig, center_freq, fs):
@@ -34,5 +34,5 @@ def _square_and_smooth(sig, center_freq, fs):
     b0 = 1 - a1
     # zi = signal.lfilter_zi([b0], [1 -a1])
     for i in range(3):
-        sig = signal.lfilter([b0], [1, -a1], sig)
+        sig = lfilter([b0], [1, -a1], sig)
     return sig

@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-import math
-
-# Third party import
-import numpy as np
+from math import sqrt, exp
+from numpy import copy, roll, zeros, arange, logical_and, logical_not
 
 
 def _nl_loudness(core_loudness):
@@ -22,7 +20,7 @@ def _nl_loudness(core_loudness):
     """
     # Initialization
     sample_rate = 2000
-    nl_loudness = np.copy(core_loudness)
+    nl_loudness = copy(core_loudness)
     # Factor for virtual upsampling/inner iterations
     nl_iter = 24
     # Time constants for non_linear temporal decay
@@ -33,39 +31,39 @@ def _nl_loudness(core_loudness):
     delta_t = 1 / (sample_rate * nl_iter)
     P = (t_var + t_long) / (t_var * t_short)
     Q = 1 / (t_short * t_var)
-    lambda_1 = -P / 2 + math.sqrt(P * P / 4 - Q)
-    lambda_2 = -P / 2 - math.sqrt(P * P / 4 - Q)
+    lambda_1 = -P / 2 + sqrt(P * P / 4 - Q)
+    lambda_2 = -P / 2 - sqrt(P * P / 4 - Q)
     den = t_var * (lambda_1 - lambda_2)
-    e1 = math.exp(lambda_1 * delta_t)
-    e2 = math.exp(lambda_2 * delta_t)
+    e1 = exp(lambda_1 * delta_t)
+    e2 = exp(lambda_2 * delta_t)
     B = [
         (e1 - e2) / den,
         ((t_var * lambda_2 + 1) * e1 - (t_var * lambda_1 + 1) * e2) / den,
         ((t_var * lambda_1 + 1) * e1 - (t_var * lambda_2 + 1) * e2) / den,
         (t_var * lambda_1 + 1) * (t_var * lambda_2 + 1) * (e1 - e2) / den,
-        math.exp(-delta_t / t_long),
-        math.exp(-delta_t / t_var),
+        exp(-delta_t / t_long),
+        exp(-delta_t / t_var),
     ]
     nl_lp = {"B": B}
     #nl_lp["uo_last"] = 0
     #nl_lp["u2_last"] = 0
 
-    delta = np.copy(core_loudness,)
-    delta = np.roll(delta, -1, axis=1)
+    delta = copy(core_loudness,)
+    delta = roll(delta, -1, axis=1)
     delta[:, -1] = 0
     delta = (delta - nl_loudness)/nl_iter
-    ui_delta = np.zeros(core_loudness.size*nl_iter).reshape(
+    ui_delta = zeros(core_loudness.size*nl_iter).reshape(
         core_loudness.shape[0], core_loudness.shape[1], nl_iter)
     ui_delta[:, :, 0] = core_loudness
 
-    for i_in in np.arange(1, nl_iter):
+    for i_in in arange(1, nl_iter):
         ui_delta[:, :, i_in] = ui_delta[:, :, i_in-1] + delta
 
     ui_delta = ui_delta.reshape(
         core_loudness.shape[0], core_loudness.shape[1]*nl_iter)
-    uo_mat = np.copy(ui_delta,)
+    uo_mat = copy(ui_delta,)
     # create u2_mat (equivalent to u2 last) and fill the first col.
-    u2_mat = np.zeros(uo_mat.shape[0]*uo_mat.shape[1]
+    u2_mat = zeros(uo_mat.shape[0]*uo_mat.shape[1]
                       ).reshape(uo_mat.shape[0], uo_mat.shape[1])
     mask = core_loudness[:, 0] >= 1e-5
     u2_mat[mask, 0] = core_loudness[mask, 0]*(1 - nl_lp["B"][5])
@@ -88,28 +86,28 @@ def _nl_loudness(core_loudness):
         False                                                                False                  False        ui                                       u2=f(u2(j-1),B(5),ui(j)
  
     '''
-    for col in np.arange(core_loudness.shape[1]*nl_iter):
+    for col in arange(core_loudness.shape[1]*nl_iter):
         uo2 = uo_mat[:, col-1] * nl_lp["B"][2] - \
             u2_mat[:, col-1] * nl_lp["B"][3]
-        mask = np.logical_and(
+        mask = logical_and(
             uo_mat[:, col-1] > u2_mat[:, col-1], uo2 >= ui_delta[:, col])
         uo_mat[mask, col] = uo2[mask]  # in case uo higher than ui
 
         uo2 = uo_mat[:, col-1] * nl_lp["B"][4]
-        mask = np.logical_and(uo_mat[:, col-1] <=
+        mask = logical_and(uo_mat[:, col-1] <=
                               u2_mat[:, col-1], uo2 >= ui_delta[:, col])
         uo_mat[mask, col] = uo2[mask]  # in case uo_2 higher than ui
 
         u2_mat[:, col] = uo_mat[:, col]  # higher than uo
         u22 = uo_mat[:, col-1] * nl_lp["B"][0] - \
             u2_mat[:, col-1] * nl_lp["B"][1]
-        mask = np.logical_and(np.logical_and(
+        mask = logical_and(logical_and(
             ui_delta[:, col] < uo_mat[:, col-1], uo_mat[:, col-1] > u2_mat[:, col-1]), u22 <= uo_mat[:, col])
         u2_mat[mask, col] = u22[mask]  # in case u22 lower than uo_last
 
         u2_2 = (u2_mat[:, col-1] - ui_delta[:, col]) * \
             nl_lp["B"][5] + ui_delta[:, col]
-        mask = np.logical_and(ui_delta[:, col] >= uo_mat[:, col-1], np.logical_not(np.logical_and(
+        mask = logical_and(ui_delta[:, col] >= uo_mat[:, col-1], logical_not(logical_and(
             abs(ui_delta[:, col] - uo_mat[:, col-1]) < 1e-5,  uo_mat[:, col] <= u2_mat[:, col-1])))
         u2_mat[mask, col] = u2_2[mask]  # lower than ui
 

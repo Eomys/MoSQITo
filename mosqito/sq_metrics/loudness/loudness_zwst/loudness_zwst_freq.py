@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Third party imports
-import numpy as np
+from numpy import linspace
 
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum.noct_synthesis import noct_synthesis
@@ -99,6 +99,6 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     N, N_specific = _calc_slopes(Nm)
 
     # Define Bark axis
-    bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
+    bark_axis = linspace(0.1, 24, int(24 / 0.1))
 
     return N, N_specific, bark_axis

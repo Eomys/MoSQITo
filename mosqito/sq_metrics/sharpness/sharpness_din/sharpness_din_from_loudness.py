@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import numpy as np
+from numpy import interp, newaxis, array, where, linspace, ndarray, exp, ones, log, squeeze
 
 from mosqito.sq_metrics.sharpness.sharpness_din._weighting_fastl import x, y
 
@@ -59,11 +58,11 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
        >>> fs=48000
        >>> d=0.2
        >>> dB=60
-       >>> time = np.arange(0, d, 1/fs)
-       >>> f = np.linspace(1000,5000, len(time))
-       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
-       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> time = arange(0, d, 1/fs)
+       >>> f = linspace(1000,5000, len(time))
+       >>> stimulus = 0.5 * (1 + sin(2 * pi * f * time))
+       >>> rms = sqrt(mean(power(stimulus, 2)))
+       >>> ampl = 0.00002 * power(10, dB / 20) / rms
        >>> stimulus = stimulus * ampl
        >>> N, N_spec, bark_axis, time_axis = loudness_zwtv(stimulus, fs=fs)
        >>> S = sharpness_din_from_loudness(N, N_spec)
@@ -77,41 +76,41 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
     """
 
     # 1D-array => 2D-array
-    if not isinstance(N, np.ndarray):
-        N = np.array([N])
+    if not isinstance(N, ndarray):
+        N = array([N])
     if N.ndim <= 1:
-        ind = np.where(N < 0.1)
-        N = N[np.newaxis, :]
+        ind = where(N < 0.1)
+        N = N[newaxis, :]
     if N_specific.ndim <= 1:
-        N_specific = N_specific[:, np.newaxis]
+        N_specific = N_specific[:, newaxis]
 
     # Bark axis
-    z = np.linspace(0.1, 24, int(24 / 0.1))[:, np.newaxis]
+    z = linspace(0.1, 24, int(24 / 0.1))[:, newaxis]
 
     # weighting function
     if weighting == "din":
-        g = np.ones(z.shape)
-        g[z > 15.8] = 0.15 * np.exp(0.42 * (z[z > 15.8] - 15.8)) + 0.85
+        g = ones(z.shape)
+        g[z > 15.8] = 0.15 * exp(0.42 * (z[z > 15.8] - 15.8)) + 0.85
     elif weighting == "aures":
-        g = 0.078 * (np.exp(0.171 * z) / z) * (N / np.log(N * 0.05 + 1))
+        g = 0.078 * (exp(0.171 * z) / z) * (N / log(N * 0.05 + 1))
     elif weighting == "bismarck":
-        g = np.ones(z.shape)
-        g[z > 15] = 0.2 * np.exp(0.308 * (z[z > 15] - 15)) + 0.8
+        g = ones(z.shape)
+        g[z > 15] = 0.2 * exp(0.308 * (z[z > 15] - 15)) + 0.8
     elif weighting == "fastl":
-        g = np.interp(z, x, y)
+        g = interp(z, x, y)
     else:
         raise ValueError(
             "ERROR: weighting must be 'din', 'aures', 'bismarck' or 'fastl'")
 
-    # S = np.zeros(N.shape)
-    # ind = np.where(N >= 0.1)[1]
-    S = 0.11 * np.sum(N_specific * g *
+    # S = zeros(N.shape)
+    # ind = where(N >= 0.1)[1]
+    S = 0.11 * sum(N_specific * g *
                       z * 0.1, axis=0) / N
 
     if S.size == 1:
         S = float(S)
     else:
-        S = np.squeeze(S)
+        S = squeeze(S)
         S[ind] = 0
         
     return S
