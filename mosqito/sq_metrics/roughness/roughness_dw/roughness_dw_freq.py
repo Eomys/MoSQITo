@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard imports
-from numpy import zeros, arange, mean, tile
+from numpy import empty, arange, mean, tile
 
 # Local imports
 from mosqito.sq_metrics.roughness.roughness_dw._roughness_dw_main_calc import _roughness_dw_main_calc
@@ -119,10 +119,10 @@ def roughness_dw_freq(spectrum, freqs):
     # Aures modulation depth weighting function
     gzi = _gzi_weighting(arange(1, 48, 1) / 2)
 
-    R = zeros((nseg))
-    R_spec = zeros((47, nseg))
 
     if len(spectrum.shape) > 1:
+        R = empty((nseg))
+        R_spec = empty((47, nseg))
         for i in range(nseg):
             R[i], R_spec[:, i], bark_axis = _roughness_dw_main_calc(
                 spectrum[:, i], freqs[:, i], fs, gzi, hWeight)
@@ -131,3 +131,5 @@ def roughness_dw_freq(spectrum, freqs):
             spectrum, freqs, fs, gzi, hWeight)
 
     return R, R_spec, bark_axis
+
+

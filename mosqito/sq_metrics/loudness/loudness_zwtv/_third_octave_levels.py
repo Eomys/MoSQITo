@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Third party imports
-from numpy import linspace, zeros, array, log10
+from numpy import linspace, empty, array, log10
 from scipy.signal import sosfilt
 
 # Local application imports
@@ -33,10 +33,8 @@ def _third_octave_levels(sig, fs):
         raise ValueError("""ERROR: Sampling frequency shall be equal to 48 kHz""")
     # Constants
     n_level_band = 28
-    n_filter_coeff = 6
     dec_factor = int(fs / 2000)
     # Initialisation
-    coeff = zeros(n_filter_coeff)
     # Filter coefficients of one-third-octave-band filters (reference
     # table)
     # ISO 532-1 Table A.1
@@ -260,7 +258,7 @@ def _third_octave_levels(sig, fs):
     n_time = len(sig[::dec_factor])
     time_axis = linspace(0, len(sig) / fs, num=n_time)
 
-    third_octave_level = zeros((n_level_band, n_time))
+    third_octave_level = empty((n_level_band, n_time))
     for i_bands in range(n_level_band):
         
         # Initialisation

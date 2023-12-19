@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import asarray, where, append, zeros, array, argmin, log10, power, delete, abs
+from numpy import asarray, where, append, empty, array, argmin, log10, power, delete, abs
 
 # from scipy.signal import welch, periodogram
 
@@ -69,8 +69,8 @@ def _pr_main_calc(spectrum_db, freq_axis):
         # Initialization
         nfreqs = len(freq_index)
         nseg = spectrum_db.shape[1]
-        freqs = zeros((nseg, nfreqs))
-        spec_db = zeros((nseg, nfreqs))
+        freqs = empty((nseg, nfreqs))
+        spec_db = empty((nseg, nfreqs))
         for i in range(nseg):
             freqs[i, :] = freq_axis[freq_index]
             spec_db[i, :] = spectrum_db[freq_index, i]

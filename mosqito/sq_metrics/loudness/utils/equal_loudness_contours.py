@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from numpy import array, zeros, log10
+from numpy import array, empty, log10
 
 
 def equal_loudness_contours(phones):
@@ -40,7 +40,7 @@ def equal_loudness_contours(phones):
 
     # Ln = phones
     # Lp = SPL
-    spl_array = zeros(n_frequencies, dtype=float)
+    spl_array = empty(n_frequencies, dtype=float)
 
     # Deriving sound pressure level from loudness level (iso226 sect 4.1). Ln = phones
     # An upgrade of this section could be to do all the calculations in one run by using numpy functions

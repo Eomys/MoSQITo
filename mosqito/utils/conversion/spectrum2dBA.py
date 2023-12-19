@@ -1,4 +1,4 @@
-from numpy import array, linspace, interp, zeros
+from numpy import array, linspace, interp, empty
 
 def spectrum2dBA(spectrum, fs):
     """A_weighting dB ponderation 
@@ -142,7 +142,7 @@ def spectrum2dBA(spectrum, fs):
     A_pond = interp(spectrum_freq_axis, freq_standard, A_standard)
 
     # Ponderation of the given spectrum
-    spectrum_dBA = zeros(spectrum.shape)
+    spectrum_dBA = empty(spectrum.shape)
     for i in range(spectrum.shape[0]):
         spectrum_dBA[i] = spectrum[i] + A_pond[i]
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard imports
-from numpy import arange, zeros
+from numpy import arange, empty
 
 # Local imports
 from mosqito.utils.time_segmentation import time_segmentation
@@ -123,9 +123,9 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     # Aures modulation depth weighting function
     gzi = _gzi_weighting(arange(1, 48, 1) / 2)
 
-    R = zeros((nseg))
-    R_spec = zeros((47, nseg))
     if len(spec.shape) > 1:
+        R = empty((nseg))
+        R_spec = empty((47, nseg))
         for i in range(nseg):
             R[i], R_spec[:, i], bark_axis = _roughness_dw_main_calc(
                 spec[:, i], freq_axis, fs, gzi, hWeight

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard imports
-from numpy import concatenate, zeros, arange, where, interp, mean, real, corrcoef, power, sqrt, abs
+from numpy import concatenate, zeros, arange, where, interp, mean, real, corrcoef, power, sqrt, abs, empty
 from numpy.fft import fft, ifft
 import math
 
@@ -172,7 +172,7 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
 
     # Specific roughness calculation with gzi the modulation depth weighting
     # function given by Aures
-    R_spec = zeros((47))
+    R_spec = empty((47))
 
     R_spec[0] = gzi[0] * pow(mod_depth[0] * ki[0], 2)
     R_spec[1] = gzi[1] * pow(mod_depth[1] * ki[1], 2)

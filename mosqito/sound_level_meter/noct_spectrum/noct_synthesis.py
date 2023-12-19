@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library import
-from numpy import asarray, mean, delete, zeros, array, tile, where
+from numpy import asarray, mean, delete, array, where
 
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq

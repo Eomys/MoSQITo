@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from numpy import where, log10, delete, argmin, asarray, power, append, zeros, array, abs
+from numpy import where, log10, delete, argmin, asarray, power, append, empty, array, abs
 
 # Local functions imports
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import _critical_band
@@ -65,8 +65,8 @@ def _tnr_main_calc(spectrum_db, freq_axis):
         # Initialization
         nfreqs = len(freq_index)    
         nseg = spectrum_db.shape[1]
-        freqs = zeros((nseg,nfreqs))
-        spec_db = zeros((nseg,nfreqs))
+        freqs = empty((nseg,nfreqs))
+        spec_db = empty((nseg,nfreqs))
         for i in range(nseg):
             freqs[i,:] = freq_axis[freq_index]
             spec_db[i,:] = spectrum_db[freq_index,i]
