@@ -33,7 +33,7 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
         Sampling frequency, can be omitted if the input is a DataTime object. 
         Default to None
     field_type : {'free', 'diffuse'}
-        Type of soundfield corresponding to spec_third.
+        Type of soundfield.
         Default is 'free'
     is_sdt_output : Bool, optional
         If True, the outputs are returned as SciDataTool objects.

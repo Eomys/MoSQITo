@@ -45,7 +45,7 @@ def sharpness_din_perseg(
         Number of points to overlap between segments.
         If None, noverlap = nperseg / 2. Defaults to None.
     field_type : {'free', 'diffuse'}
-        Type of soundfield corresponding to spec_third.
+        Type of soundfield.
         Default is 'free'
     is_sdt_output : Bool, optional
         If True, the outputs are returned as SciDataTool objects.

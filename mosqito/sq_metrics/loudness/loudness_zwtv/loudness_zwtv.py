@@ -26,7 +26,7 @@ def loudness_zwtv(signal, fs, field_type='free'):
         Sampling frequency, can be omitted if the input is a DataTime object. 
         Default to None
     field_type : {'free', 'diffuse'}
-        Type of soundfield corresponding to spec_third.
+        Type of soundfield.
         Default is 'free'
         
     Returns

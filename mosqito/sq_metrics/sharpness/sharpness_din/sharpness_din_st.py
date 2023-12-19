@@ -20,7 +20,7 @@ def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
         Weighting function used for the sharpness computation. 
         Default is 'din'
     field_type : {'free', 'diffuse'}
-        Type of soundfield corresponding to spec_third.
+        Type of soundfield.
         Default is 'free'
 
     Returns

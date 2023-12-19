@@ -24,7 +24,7 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     freqs : array_like
         Frequency axis.
     field_type : {'free', 'diffuse'}
-        Type of soundfield corresponding to spec_third.
+        Type of soundfield.
         Default is 'free'
                 
     Returns
