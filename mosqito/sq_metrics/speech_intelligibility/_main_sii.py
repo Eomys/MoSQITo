@@ -63,7 +63,7 @@ def _main_sii(method, speech_spectrum, noise_spectrum, threshold):
     elif (method == 'octave_bands') or (method == 'third_octave_bands'):
         noise_spectrum -= BANDWIDTH_ADJUSTEMENT
 
-    
+    # STEP 3
     if method == 'octave':
         Z = noise_spectrum
     else:
@@ -96,7 +96,7 @@ def _main_sii(method, speech_spectrum, noise_spectrum, threshold):
     D = maximum(Z, X)
     
     # STEP 6
-    L = 1 - (speech_spectrum - STANDARD_SPEECH_SPECTRUM_NORMAL )
+    L = 1 - (speech_spectrum - STANDARD_SPEECH_SPECTRUM_NORMAL -10)/160
     L[where(L>1)] = 1
     
     # STEP 7
@@ -107,7 +107,7 @@ def _main_sii(method, speech_spectrum, noise_spectrum, threshold):
     
     # STEP 8
     SII = sum(IMPORTANCE * A)
-    SII_specific = A
+    SII_specific = IMPORTANCE * A
     
     return SII, SII_specific, CENTER_FREQUENCIES
 

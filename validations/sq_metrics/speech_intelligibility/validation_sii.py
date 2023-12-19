@@ -8,23 +8,22 @@ except ImportError:
     )
 
 # Third party imports
-import numpy as np
+from numpy import array, empty, amin, amax
 
 # Local application imports
-from mosqito.sq_metrics import sii_freq
-
+from mosqito.sq_metrics.speech_intelligibility._main_sii import _main_sii
 
 # Reference values from ANSI S3.5 standard
-reference = np.empty((3))
-
-reference[0] = {"spectrum": "input/broadband_250.wav",
-    "method": "critica",
-    "speech_level": "normal",
-    "SII": 0.67,
+reference = {"noise_spectrum": array([70, 65, 45, 25, 1, -15]),
+    "speech_spectrum": array([50, 40, 40, 30, 20, 0]),         
+    "freq_axis": array([250, 500, 1000, 2000, 4000, 8000]),
+    "method": "octave",
+    "SII": 0.504,
+    "SII_spec": array([0, 0, 0.08, 0.17, 0.21, 0.04]),
 }
 
 
-def validation_sii(noise):
+def validation_sii(reference):
     """Test function for the script sii_freq
 
     Test function for the script sharpness_din with .wav filesas input.
@@ -40,61 +39,27 @@ def validation_sii(noise):
     -------
     None
     """
+    # Compute SII
+    SII, SII_spec, _ = _main_sii(reference["method"], reference["speech_spectrum"], reference["noise_spectrum"], threshold=None)
 
-    SII = np.zeros((len(noise)))
-    reference = np.zeros((len(noise)))
-
-    for i in range(len(noise)):
-        # Compute SII
-        SII[i], _, _ = sii_freq(reference[i]["spectrum"], reference[i]["method"], reference[i]["speech_level"] )
-
-        # Load reference value
-        reference[i] = reference[i]["SII"]
-
-
-    _check_compliance(SII, reference)
-
-
-def _check_compliance(sharpness, reference):
-    """Check the compliance of sharpness calc. to ANSI S3.5
-
-    The compliance is assessed with an absolute 1% tolerance.
-    One .png compliance plot is generated.
-
-
-    Parameters
-    ----------
-    sharpness : numpy.array
-        computed sharpness values
-    reference : numpy.array
-        reference sharpness values
-
-
-    Outputs
-    -------
-    tst : bool
-        Compliance to the reference data
-    """
     plt.figure()
 
     # Frequency bark axis
-    barks = np.arange(2.5, len(sharpness) + 2.5, 1)
+    freqs = reference["freq_axis"]
 
-    # Test for DIN 45692_2009E comformance (chapter 6)
-    S = sharpness
-    tstS = (S >= np.amin([reference * 0.99, reference - 0.01], axis=0)).all() and (
-        S <= np.amax([reference * 1.01, reference + 0.01], axis=0)
+    tstS = (SII_spec >= amin([reference["SII_spec"] * 0.99, reference["SII_spec"] - 0.01], axis=0)).all() and (
+        SII_spec <= amax([reference["SII_spec"] * 1.01, reference["SII_spec"] + 0.01], axis=0)
     ).all()
 
     # Tolerance curves definition
-    tol_low = np.amin([reference * 0.99, reference - 0.01], axis=0)
-    tol_high = np.amax([reference * 1.01, reference + 0.01], axis=0)
+    tol_low = amin([reference["SII_spec"] * 0.99, reference["SII_spec"] - 0.01], axis=0)
+    tol_high = amax([reference["SII_spec"] * 1.01, reference["SII_spec"] + 0.01], axis=0)
 
     # Plot tolerance curves
     plt.plot(
-        barks, tol_low, color="red", linestyle="solid", label="tolerance", linewidth=1
+        freqs, tol_low, color="red", linestyle="solid", label="tolerance", linewidth=1
     )
-    plt.plot(barks, tol_high, color="red", linestyle="solid", linewidth=1)
+    plt.plot(freqs, tol_high, color="red", linestyle="solid", linewidth=1)
 
     if tstS:
         plt.text(
@@ -119,16 +84,14 @@ def _check_compliance(sharpness, reference):
         )
 
     # Plot the calculated sharpness
-    plt.plot(barks, sharpness, label="MOSQITO")
-    plt.title("Speech intelligibility index for the 3 test signals", fontsize=10)
+    plt.plot(freqs, SII_spec, label="MOSQITO")
+    plt.title("Speech intelligibility index = "+f"{SII:.3f}"+"\n Octave band procedure", fontsize=10)
     plt.legend()
-    plt.xlabel("Center frequency [bark]")
-    plt.ylabel("Sharpness, [acum]")
-
+    plt.xlabel("Center frequency [Hz]")
+    plt.ylabel("Specific SII")
     plt.savefig(
-        "output/"
-        + "validation_sii_"
-        + ".png",
+        "validations/sq_metrics/speech_intelligibility/output/"
+        + "validation_sii.png",
         format="png",
     )
     plt.clf()
@@ -137,4 +100,4 @@ def _check_compliance(sharpness, reference):
 # test de la fonction
 if __name__ == "__main__":
     # generate compliance plot 
-    validation_sii()
+    validation_sii(reference)
