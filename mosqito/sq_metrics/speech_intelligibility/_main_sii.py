@@ -45,9 +45,9 @@ def _main_sii(method, speech_spectrum, noise_spectrum, threshold):
     elif method == 'equally_critical':
         CENTER_FREQUENCIES, LOWER_FREQUENCIES, UPPER_FREQUENCIES, IMPORTANCE, REFERENCE_INTERNAL_NOISE_SPECTRUM, STANDARD_SPEECH_SPECTRUM_NORMAL = _get_equal_critical_band_data()
     elif method == 'third_octave':
-        CENTER_FREQUENCIES, _, _, BANDWIDTH_ADJUSTEMENT, IMPORTANCE, REFERENCE_INTERNAL_NOISE_SPECTRUM, STANDARD_SPEECH_SPECTRUM_NORMAL = _get_third_octave_band_data()
+        CENTER_FREQUENCIES, _, _, _, IMPORTANCE, REFERENCE_INTERNAL_NOISE_SPECTRUM, STANDARD_SPEECH_SPECTRUM_NORMAL = _get_third_octave_band_data()
     elif method == 'octave':
-        CENTER_FREQUENCIES, _, _, BANDWIDTH_ADJUSTEMENT, IMPORTANCE, REFERENCE_INTERNAL_NOISE_SPECTRUM, STANDARD_SPEECH_SPECTRUM_NORMAL = _get_octave_band_data()
+        CENTER_FREQUENCIES, _, _, _, IMPORTANCE, REFERENCE_INTERNAL_NOISE_SPECTRUM, STANDARD_SPEECH_SPECTRUM_NORMAL = _get_octave_band_data()
     nbands = len(CENTER_FREQUENCIES)
     
     if threshold is None:
@@ -60,8 +60,6 @@ def _main_sii(method, speech_spectrum, noise_spectrum, threshold):
     # dB bandwidth adjustement
     if (method == 'critical_bands') or (method == 'equal_critical_bands'):
         noise_spectrum -= 10 * log10(UPPER_FREQUENCIES - LOWER_FREQUENCIES)
-    elif (method == 'octave_bands') or (method == 'third_octave_bands'):
-        noise_spectrum -= BANDWIDTH_ADJUSTEMENT
 
     # STEP 3
     if method == 'octave':
@@ -74,8 +72,8 @@ def _main_sii(method, speech_spectrum, noise_spectrum, threshold):
             Z = zeros((nbands))
             for i in range(nbands): 
                 s = 0
-                for k in range(i-1):
-                    s += 10**(0.1*B[k] + 3.32 * C[k] * log10(0.89 * CENTER_FREQUENCIES[i] / CENTER_FREQUENCIES[k]))
+                for k in range(i):
+                    s += 10**(0.1*(B[k] + 3.32 * C[k] * log10(0.89 * CENTER_FREQUENCIES[i] / CENTER_FREQUENCIES[k])))
                 Z[i] = 10 * log10(10**(0.1*noise_spectrum[i]) + s)
         else:
             C = -80 + 0.6 * (B + 10*log10(UPPER_FREQUENCIES - LOWER_FREQUENCIES))
@@ -83,8 +81,7 @@ def _main_sii(method, speech_spectrum, noise_spectrum, threshold):
             for i in range(nbands): 
                 s = 0
                 for k in range(i-1):
-                    s += 10**(0.1*B[k] + 3.32 * C[k] * log10(CENTER_FREQUENCIES[i] / UPPER_FREQUENCIES[k]))
-                    
+                    s += 10**(0.1*(B[k] + 3.32 * C[k] * log10(CENTER_FREQUENCIES[i] / CENTER_FREQUENCIES[k])))                    
                 Z[i] = 10 * log10(10**(0.1*noise_spectrum[i]) + s)
         # 4.3.2.4
         Z[0] = B[0]
