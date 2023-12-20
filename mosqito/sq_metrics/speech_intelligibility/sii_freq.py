@@ -87,33 +87,14 @@ def sii_freq(spectrum, freqs, method, speech_level, threshold=None):
         CENTER_FREQUENCIES, LOWER_FREQUENCIES, UPPER_FREQUENCIES, _, _, _, _, = _get_octave_band_data()
     nbands = len(speech_spectrum)
     
-    if (len(spectrum) != nbands) or (freqs != CENTER_FREQUENCIES):
+    if (len(spectrum) != nbands) or (freqs != CENTER_FREQUENCIES).any():
         noise_spectrum,_ = band_spectrum_synthesis(spectrum, freqs, LOWER_FREQUENCIES, UPPER_FREQUENCIES)
+    else:
+        noise_spectrum = spectrum
         
     SII, SII_specific, freq_axis = _main_sii(method, speech_spectrum, noise_spectrum, threshold)    
     
     return SII, SII_specific, freq_axis
 
-if __name__ == "__main__":
-    from mosqito.sound_level_meter.spectrum import spectrum
-    import matplotlib.pyplot as plt
-    import numpy as np
-    fs=48000
-    d=0.2
-    dB=60
-    time = np.arange(0, d, 1/fs)
-    f = 50
-    stimulus = np.sin(2 * np.pi * f * time) + np.sin(2 * np.pi * f * time) * np.sin(np.pi * f * time) + np.sin(10 * np.pi * f * time)
-    rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-    ampl = 0.00002 * np.power(10, dB / 20) / rms
-    stimulus = stimulus * ampl
-    spec, freqs = spectrum(stimulus, fs, db=False)
-    SII, SII_spec, freq_axis = sii_freq(spec, freqs, method='critical', speech_level='normal')
-    plt.plot(freq_axis, SII_spec)
-    plt.xlabel("Frequency band [Bark]")
-    plt.ylabel("Specific loudness [Sone/Bark]")
-    plt.title("Speech Intelligibility Index = " + f"{SII:.2f}")   
-    
-    plt.show(block=True)
 
 

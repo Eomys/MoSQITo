@@ -39,6 +39,26 @@ def sii_level(noise_level, method, speech_level, threshold=None):
     --------
     .. plot::
        :include-source:
+       
+        >>> import matplotlib.pyplot as plt
+        >>> import numpy as np
+        >>> from mosqito.sq_metrics.speech_intelligibility import sii_level
+        >>> fs=48000
+        >>> d=0.2
+        >>> dB=90
+        >>> time = np.arange(0, d, 1/fs)
+        >>> f = 50
+        >>> stimulus = np.sin(2 * np.pi * f * time) * np.sin(np.pi * f * time) + np.sin(10 * np.pi * f * time) + np.sin(100 * np.pi * f * time)
+        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+        >>> stimulus = stimulus * ampl
+        >>> speech_level = 'raised'
+        >>> SII, SII_spec, freq_axis = sii_level(60, method='critical', speech_level=speech_level, threshold='zwicker')
+        >>> plt.plot(freq_axis, SII_spec)
+        >>> plt.xlabel("Frequency [Hz]")
+        >>> plt.ylabel("Specific value ")
+        >>> plt.title("Speech Intelligibility Index = " + f"{SII:.2f} \n Speech level: " + speech_level)   
+
     """
     
     if (method!='critical') & (method!='equally_critical') & (method!='third_octave') & (method!='octave'):
@@ -66,25 +86,4 @@ def sii_level(noise_level, method, speech_level, threshold=None):
     SII, SII_specific, freq_axis = _main_sii(method, speech_spectrum, noise_spectrum, threshold)    
     
     return SII, SII_specific, freq_axis
-
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-    import numpy as np
-    fs=48000
-    d=0.2
-    dB=90
-    time = np.arange(0, d, 1/fs)
-    f = 50
-    stimulus = np.sin(2 * np.pi * f * time) * np.sin(np.pi * f * time) + np.sin(10 * np.pi * f * time) + np.sin(100 * np.pi * f * time)
-    rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-    ampl = 0.00002 * np.power(10, dB / 20) / rms
-    stimulus = stimulus * ampl
-    speech_level = 'raised'
-    SII, SII_spec, freq_axis = sii_level(60, method='critical', speech_level=speech_level, threshold='zwicker')
-    plt.plot(freq_axis, SII_spec)
-    plt.xlabel("Frequency [Hz]")
-    plt.ylabel("Specific value ")
-    plt.title("Speech Intelligibility Index = " + f"{SII:.2f} \n Speech level: " + speech_level)   
-    
-    plt.show(block=True)
 

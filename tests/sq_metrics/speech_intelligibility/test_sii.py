@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from scipy.fft import fft, fftfreq
+from numpy import array, interp, linspace, concatenate, flip
+
+from scipy.fft import fft, fftfreq, ifft
 
 # Optional package import
 try:
@@ -18,20 +20,30 @@ except ImportError:
 
 # Local application imports
 from mosqito.utils import load
-from mosqito.sq_metrics import sii, sii_freq, sii_level
+from mosqito import sii, sii_freq, sii_level
+from mosqito.sq_metrics.speech_intelligibility._main_sii import _main_sii
 
 
 @pytest.fixture
 def test_signal():
-    # Input signal from DIN 45692_2009E
-    sig, fs = load("tests/input/broadband_570.wav", wav_calib=1)
-    sig_dict = {
+    
+    spec = array([70, 65, 45, 25, 1, -15])
+    freqs = array([250, 500, 1000, 2000, 4000, 8000])
+    fs = 44100
+    n = int(44100 * 0.2)
+    f = linspace(0,fs//2,2*n)
+    sig = ifft(interp(f, freqs, spec, left=0, right=0)).real[4410:13230]
+    test_signal = {"noise_spectrum": spec,
+        "speech_spectrum": array([50, 40, 40, 30, 20, 0]),         
+        "freq_axis": freqs,
         "signal": sig,
         "fs": fs,
-        "S_din": 2.85,
-    }
-    return sig_dict
+        "method": "octave",
+        "SII": 0.504,
+        "SII_spec": array([0, 0, 0.08, 0.17, 0.21, 0.04]),
+        }
 
+    return test_signal
 
 @pytest.mark.sii  # to skip or run sharpness test
 def test_sii(test_signal):
@@ -51,16 +63,14 @@ def test_sii(test_signal):
     fs = test_signal["fs"]
 
     # Compute sharpness
-    SII, _, _ = sii(sig, fs, method, 'normal')
-    SII, _, _ = sii(sig, fs, method, 'raised')
-    SII, _, _ = sii(sig, fs, method, 'loud')
-    SII, _, _ = sii(sig, fs, method, 'shout')
+    SII, _, _ = sii(sig, fs, 'third_octave', 'raised')
+    SII, _, _ = sii(sig, fs, 'critical', 'loud')
+    SII, _, _ = sii(sig, fs, 'equally_critical', 'shout')
+    SII, _, _ = sii(sig, fs, 'octave', 'normal')
     
 
-
-
 @pytest.mark.sii # to skip or run sharpness test
-def test_sii_freq():
+def test_sii_freq(test_signal):
     """Test function for the sharpness calculation of an time-varying audio signal.
 
     Parameters
@@ -72,55 +82,56 @@ def test_sii_freq():
     """
 
     # Input signal
-    sig = test_spectrum
-    
+    spec = test_signal["noise_spectrum"]
+    freqs = test_signal["freq_axis"]    
     # Compute sharpness
-    SII, _, _ = sii(spec, freqs, method, 'normal')
-    SII, _, _ = sii(spec, freqs, method, 'raised')
-    SII, _, _ = sii(spec, freqs, method, 'loud')
-    SII, _, _ = sii(spec, freqs, method, 'shout')
-
-    # Check that the value is within the desired values +/- 1%
-    np.testing.assert_allclose(SII, test_signal["SII"], rtol=0.05)
-
-
-
+    SII, _, _ = sii_freq(spec, freqs, "critical", 'loud')
+    SII, _, _ = sii_freq(spec, freqs, "equally_critical", 'raised')
+    SII, _, _ = sii_freq(spec, freqs, "third_octave", 'shout')
+    SII, _, _ = sii_freq(spec, freqs, "octave", 'normal')
+    
 @pytest.mark.sii
-def test_sii_level(test_signal):
+def test_sii_level():
     
     # Compute sharpness
-    SII, _, _ = sii(60, method, 'normal')
-    SII, _, _ = sii(60, method, 'raised')
-    SII, _, _ = sii(60, method, 'loud')
-    SII, _, _ = sii(60, method, 'shout')
+    SII, _, _ = sii_level(60, 'critical', 'normal')
+    SII, _, _ = sii_level(60, 'equally_critical', 'raised')
+    SII, _, _ = sii_level(60, 'octave', 'loud')
+    SII, _, _ = sii_level(60, 'third_octave', 'shout')
+    
+    
+@pytest.mark.sii # to skip or run sharpness test
+def test_main_sii(test_signal):
+    """Test function for the sharpness calculation of an time-varying audio signal.
 
-def check_compliance(S, signal):
-    """Check the comppiance of loudness calc. to ISO 532-1
+    """
+    
+    SII, SII_spec, _ = _main_sii(test_signal["method"], test_signal["speech_spectrum"], test_signal["noise_spectrum"], threshold=None)
 
-    The compliance is assessed according to chapter 6 of the
-    standard DIN 45692_2009E.
+    assert check_compliance(SII, test_signal["SII"])
+
+def check_compliance(SII, reference):
+    """Check the compliance of SII with ANSI S3.5
+
+    The compliance is assessed according to ANSI S3.5 annex A
 
     Parameters
     ----------
-    S : float
+    SII : float
         computed sharpness value
-    signal : dict
-        {"data file" : <path to the standard file >
-         "S" : <sharpness reference value>
-         }
-
+    reference : float
+        reference value
+    
     Outputs
     -------
     tst : bool
         Compliance to the reference data
     """
 
-    # Load reference value
-    ref = signal["S"]
 
     # Test for DIN 45692_2009E comformance (chapter 6)
-    tst = (S >= np.amax([ref * 0.95, ref - 0.05], axis=0)).all() and (
-        S <= np.amin([ref * 1.05, ref + 0.05], axis=0)
+    tst = (SII >= np.amax([reference * 0.999, reference - 0.01], axis=0)).all() and (
+        SII <= np.amin([reference * 1.01, reference + 0.01], axis=0)
     ).all()
 
     return tst
@@ -128,16 +139,24 @@ def check_compliance(S, signal):
 
 # test de la fonction
 if __name__ == "__main__":
-    # Reproduce the code from the fixture
-    # Input signal from ANSI S3.5
-    sig, fs = load("tests/input/broadband_570.wav", wav_calib=1)
-    test_signal = {
+    
+    spec = array([70, 65, 45, 25, 1, -15])
+    freqs = array([250, 500, 1000, 2000, 4000, 8000])
+    fs = 44100
+    n = int(44100 * 0.2)
+    f = linspace(0,fs//2,2*n)
+    sig = ifft(interp(f, freqs, spec, left=0, right=0)).real[4410:13230]
+    sig = {"noise_spectrum": spec,
+        "speech_spectrum": array([50, 40, 40, 30, 20, 0]),         
+        "freq_axis": freqs,
         "signal": sig,
         "fs": fs,
-        "S_din": 2.85,
-    }
-    test_spectrum = []
+        "method": "octave",
+        "SII": 0.504,
+        "SII_spec": array([0, 0, 0.08, 0.17, 0.21, 0.04]),
+        }
     
-    test_sii(test_signal)
-    test_sii_freq(test_spectrum)
+    test_sii(sig)
+    test_sii_freq(sig)
     test_sii_level()
+    test_main_sii(sig)

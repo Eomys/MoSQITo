@@ -89,24 +89,3 @@ def sii(noise, fs, method, speech_level, threshold=None):
     SII, SII_specific, freq_axis = _main_sii(method, speech_spectrum, noise_spectrum, threshold)    
     
     return SII, SII_specific, freq_axis
-
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-    import numpy as np
-    fs=48000
-    d=0.2
-    dB=90
-    time = np.arange(0, d, 1/fs)
-    f = 50
-    stimulus = np.sin(2 * np.pi * f * time) * np.sin(np.pi * f * time) + np.sin(10 * np.pi * f * time) + np.sin(100 * np.pi * f * time)
-    rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-    ampl = 0.00002 * np.power(10, dB / 20) / rms
-    stimulus = stimulus * ampl
-    SII, SII_spec, freq_axis = sii(stimulus, fs, method='critical', speech_level='normal')
-    plt.plot(freq_axis, SII_spec)
-    plt.xlabel("Frequency [Hz]")
-    plt.ylabel("Specific value ")
-    plt.title("Speech Intelligibility Index = " + f"{SII:.2f}")   
-    
-    plt.show(block=True)
-
