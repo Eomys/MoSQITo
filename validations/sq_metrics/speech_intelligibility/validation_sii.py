@@ -10,12 +10,8 @@ except ImportError:
 # Third party imports
 from numpy import array, empty, amin, amax, zeros, log10, maximum, float64
 
-
-from mosqito.sq_metrics.speech_intelligibility._band_procedure_data import _get_critical_band_data, _get_equal_critical_band_data, _get_octave_band_data, _get_third_octave_band_data
-from mosqito.utils.LTQ import LTQ
-from mosqito.utils.conversion import freq2bark
-
 # Local application imports
+from mosqito.sq_metrics.speech_intelligibility._band_procedure_data import  _get_third_octave_band_data
 from mosqito.sq_metrics.speech_intelligibility._main_sii import _main_sii
 
 # Reference values from ANSI S3.5 standard
@@ -97,20 +93,13 @@ reference[1] = {"noise_spectrum": array([
 
 
 def validation_sii_octave(reference):
-    """Test function for the script sii_freq
+    """Test function for the script _main_sii with octave band procedure
 
-    Test function for the script sharpness_din with .wav filesas input.
-    The input files are provided by DIN 45692_2009E
-    The compliance is assessed according to chapter 6 of the standard.
+    Test function for the script sii_freq with reference arrays as input.
+    The input files are provided by ANSI S3.5-1997.
+    The compliance is assessed according with a 1% tolerance.
     One .png compliance plot is generated.
 
-    Parameters
-    ----------
-    None
-
-    Outputs
-    -------
-    None
     """
     # Compute SII
     SII, SII_spec, _ = _main_sii(reference["method"], reference["speech_spectrum"], reference["noise_spectrum"], threshold=None)
@@ -170,20 +159,13 @@ def validation_sii_octave(reference):
     plt.clf()
     
 def validation_sii_third_octave(reference):
-    """Test function for the script sii_freq
+    """Test function for the script _main_sii with third octave band procedure
 
-    Test function for the script sharpness_din with .wav filesas input.
-    The input files are provided by DIN 45692_2009E
-    The compliance is assessed according to chapter 6 of the standard.
+    Test function for the script sii_freq with reference arrays as input.
+    The input files are provided by ANSI S3.5-1997.
+    The compliance is assessed according with a 1% tolerance.
     One .png compliance plot is generated.
 
-    Parameters
-    ----------
-    None
-
-    Outputs
-    -------
-    None
     """
     
     noise_spectrum = reference["noise_spectrum"]
