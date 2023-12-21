@@ -94,6 +94,13 @@ def loudness_zwst_perseg(
        >>> plt.xlabel("Time [s]")
        >>> plt.ylabel("Loudness [Sone]")
     """    
+    if fs < 48000:
+        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+             )
+        from scipy.signal import resample
+        signal = resample(signal, int(48000 * len(signal) / fs))
+        fs = 48000
+    
 
     # Manage input type
     if DataTime is not None and isinstance(signal, DataTime):
@@ -149,3 +156,4 @@ def loudness_zwst_perseg(
             )
 
     return N, N_specific, bark_axis, time_axis
+

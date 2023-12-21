@@ -72,6 +72,12 @@ def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
        >>> plt.ylabel("Amplitude [Pa]")
        >>> plt.title("Sharpness = " + f"{S:.2f}" + " [Acum]")
     """
+    if fs < 48000:
+        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+             )
+        from scipy.signal import resample
+        signal = resample(signal, int(48000 * len(signal) / fs))
+        fs = 48000
 
     # Compute loudness
     N, N_specific, _ = loudness_zwst(signal, fs, field_type=field_type)
@@ -80,3 +86,4 @@ def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
     S = sharpness_din_from_loudness(N, N_specific, weighting=weighting)
 
     return S
+

@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # Local application imports
 from mosqito.sq_metrics import roughness_dw
 from tests.sq_metrics.roughness.signals_test_generation import signal_test
-
+from mosqito import COLORS as clr
 
 # Test signal parameters as input for roughness calculation
 # (reference values from 'ref' script)
@@ -227,17 +227,17 @@ def _check_compliance(R, signal):
     plt.plot(
         fc,
         tol_curve_min,
-        color="red",
+        color=clr[2],
         linestyle="solid",
         label="17% tolerance",
         linewidth=1,
     )
-    plt.plot(fc, tol_curve_max, color="red",
+    plt.plot(fc, tol_curve_max, color=clr[2],
              linestyle="solid", label="", linewidth=1)
     plt.legend()
 
     # Compliance plot
-    plt.plot(fc, R, label="MOSQITO")
+    plt.plot(fc, R, color=clr[0], label="MOSQITO")
     plt.text(
         0.5,
         0.05,
@@ -262,7 +262,7 @@ def _check_compliance(R, signal):
             horizontalalignment="center",
             verticalalignment="center",
             transform=plt.gca().transAxes,
-            bbox=dict(facecolor="green", alpha=0.3),
+            bbox=dict(facecolor=clr[5], alpha=0.3),
         )
     else:
         tst = 0
@@ -273,13 +273,13 @@ def _check_compliance(R, signal):
             horizontalalignment="center",
             verticalalignment="center",
             transform=plt.gca().transAxes,
-            bbox=dict(facecolor="red", alpha=0.3),
+            bbox=dict(facecolor=clr[2], alpha=0.3),
         )
 
     if tst:
-        clr = "green"
+        clr = clr[4]
     else:
-        clr = "red"
+        clr = clr[2]
     plt.title(
         "Roughness for modulation frequency = " + str(signal["fmod"]) + " Hz", color=clr
     )

@@ -6,7 +6,7 @@ Frequency spectrum
 .. toctree::
    :maxdepth: 2
 
-   /source/mosqito.sound_level_meter.spectrum
+   /source/reference/mosqito.sound_level_meter.spectrum
 
 N-octave spectrum
 =================
@@ -14,8 +14,8 @@ N-octave spectrum
 .. toctree::
    :maxdepth: 2
 
-   /source/mosqito.sound_level_meter.noct_spectrum.noct_spectrum
-   /source/mosqito.sound_level_meter.noct_spectrum.noct_synthesis
+   /source/reference/mosqito.sound_level_meter.noct_spectrum.noct_spectrum
+   /source/reference/mosqito.sound_level_meter.noct_spectrum.noct_synthesis
 
 """
 

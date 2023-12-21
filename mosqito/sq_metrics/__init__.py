@@ -1,22 +1,21 @@
 """This module includes functions to compute the main sound quality metrics :
 
+   
 Loudness
 ==========
 
 .. toctree::
    :maxdepth: 2
-
-   /source/mosqito.sq_metrics.loudness.loudness_ecma
-   /source/mosqito.sq_metrics.loudness.loudness_zwst
-   /source/mosqito.sq_metrics.loudness.loudness_zwtv
-
+   
+   Loudness </source/reference/mosqito.sq_metrics.loudness>
+   
 Sharpness
 ==========
 
 .. toctree::
    :maxdepth: 2
 
-   /source/mosqito.sq_metrics.sharpness.sharpness_din
+   Sharpness </source/reference/mosqito.sq_metrics.sharpness>
 
 Roughness
 ==========
@@ -24,7 +23,7 @@ Roughness
 .. toctree::
    :maxdepth: 2
 
-   /source/mosqito.sq_metrics.roughness.roughness_dw
+   Roughness </source/reference/mosqito.sq_metrics.roughness>
 
 Tonality
 ==========
@@ -32,8 +31,7 @@ Tonality
 .. toctree::
    :maxdepth: 2
 
-   /source/mosqito.sq_metrics.tonality.tone_to_noise_ecma
-   /source/mosqito.sq_metrics.tonality.prominence_ratio_ecma
+   Tonality </source/reference/mosqito.sq_metrics.tonality>
 
 """
 

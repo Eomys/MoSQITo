@@ -7,9 +7,9 @@
 
 
 {%- if is_namespace %}
-{{- [pkgname] | join(" ") | e | heading }}
+{{- pkgname | e | heading }}
 {% else %}
-{{- [pkgname] | join(" ") | e | heading }}
+{{- pkgname | e | heading }}
 {% endif %}
 
 {%- if is_namespace %}

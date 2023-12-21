@@ -4,48 +4,13 @@ MOSQITO documentation
 **Date**: |today| **Version**: 1.0.8
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :hidden:
-   :caption: 🦟 Installation
 
-   /installation/index
+   User guide </source/user_guide/index>
+   API reference </source/reference/index>
+   Contribution </source/contribution/index>
 
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: 📖 User guide
-
-   /user_guide/scope
-   /user_guide/architecture
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: 🔧 Functions
-
-   /source/mosqito.sound_level_meter
-   /source/mosqito.sq_metrics
-   /source/mosqito.utils
-
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: ✏️ Contribution
-
-   /contribution/index
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: 👩‍🏫 Tutorials
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: ✔️ Validation
-
-   
 
 The objective of :mod:`mosqito` is to provide a unified and modular development framework of key sound quality tools 
 (including key SQ metrics), favoring reproducible science and efficient shared scripting among engineers, teachers and researchers
@@ -77,8 +42,8 @@ You can contact us on Github by opening an issue (to request a feature, ask a qu
 https://github.com/Eomys/MoSQITo
 
 
-How to cite :mod:`mosqito`
--------------------
+How to cite MOSQITO
+---------------------
 
 If you are using :mod:`mosqito` in your research activities, please help our scientific visibility by citing our work! You can use the following citation in APA format:
 
@@ -88,7 +53,7 @@ If you need to cite the current release of :mod:`mosqito`, please use the "Cite 
 
 
 Packages using MOSQITO
-----------------------
+------------------------
 
 [Soundscapy](https://github.com/MitchellAcoustics/Soundscapy): A python library for analysing and visualising soundscape assessments.
 

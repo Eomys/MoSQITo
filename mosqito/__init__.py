@@ -42,10 +42,19 @@ from mosqito.utils.conversion.spectrum2dBA import spectrum2dBA
 
 
 # Colors and linestyles
+# 0 : main mosqito color   # To use for mosqito results
+# 1 : complementary    # To use for "Test not passed"
+# 2 : accentuation     # To use for tolerance lines
+# 3 : secondary
+# 4 : main mosqito color but darker
+# 5 : main mosqito color but lighter     # To use for "Test passed"
+
 COLORS = [
     "#69c3c5",
-    "#9969c4",
-    "#c46b69",
-    "#95c469",
-    "#2a6c6e",
+    "#ffd788",
+    "#ff8b88",
+    "#7894cf",
+    "#228080",
+    "#a8e2e2"
 ]
+

@@ -14,7 +14,7 @@ def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=Tru
     Parameters
     ----------
     signal : array
-        A time signal [nperseg x nseg].
+        A time signal (nperseg x nseg).
     fs : integer
         Sampling frequency.
     db : boolean, optional
@@ -23,7 +23,7 @@ def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=Tru
     Returns
     -------
     spectrum : array
-        Spectrum [freq_axis x nseg].
+        Spectrum (freq_axis x nseg).
     freq_axis : array
         Frequency axis.
         

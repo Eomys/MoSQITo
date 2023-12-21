@@ -6,59 +6,51 @@ Conversion
 .. toctree::
    :maxdepth: 2
    
-   /source/mosqito.utils.conversion.amp2db
-   /source/mosqito.utils.conversion.db2amp
-   /source/mosqito.utils.conversion.bark2freq
-   /source/mosqito.utils.conversion.freq2bark
-   /source/mosqito.utils.conversion.spectrum2dBA
+   /source/reference/mosqito.utils.conversion.amp2db
+   /source/reference/mosqito.utils.conversion.db2amp
+   /source/reference/mosqito.utils.conversion.bark2freq
+   /source/reference/mosqito.utils.conversion.freq2bark
+   /source/reference/mosqito.utils.conversion.spectrum2dBA
    
 Sine wave generator
 ===================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   /source/mosqito.utils.sine_wave_generator
+   /source/reference/mosqito.utils.sine_wave_generator
    
    
 Time segmentation
 ===================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   /source/mosqito.utils.time_segmentation
+   /source/reference/mosqito.utils.time_segmentation
    
 Threshold of quiet
 ===================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    
-   /source/mosqito.utils.LTQ
+   /source/reference/mosqito.utils.LTQ
    
-Check compliance with ISO
-===================
-
-.. toctree::
-   :maxdepth: 1
-   
-   /source/mosqito.utils.isoclose
    
 Signal loading
 ===================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    
-   /source/mosqito.utils.load
+   /source/reference/mosqito.utils.load
 
 """
 
 __all__ = ['utils']
 
 
-from mosqito.utils.isoclose import isoclose
 from mosqito.utils.load import load
 from mosqito.utils.sine_wave_generator import sine_wave_generator
 from mosqito.utils.time_segmentation import time_segmentation
