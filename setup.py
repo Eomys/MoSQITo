@@ -1,7 +1,7 @@
 import setuptools
 
 # /!\ update before a release
-MoSQITo_VERSION = "1.0.8"
+MoSQITo_VERSION = "1.1.0"
 
 # MoSQITo description
 with open("README.md", "r", encoding="utf-8") as fh:

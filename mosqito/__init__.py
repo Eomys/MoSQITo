@@ -1,4 +1,6 @@
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import noct_spectrum
+from mosqito.sound_level_meter.noct_spectrum.noct_synthesis import noct_synthesis
+from mosqito.sound_level_meter.spectrum import spectrum
 
 from mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma import loudness_ecma
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst
@@ -26,6 +28,10 @@ from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv import sharpnes
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg import sharpness_din_perseg
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq import sharpness_din_freq
+
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi import sii_ansi
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_freq import sii_ansi_freq
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_level import sii_ansi_level
 
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon
 from mosqito.utils.isoclose import isoclose
