@@ -1,7 +1,8 @@
 from numpy import array
 
 def _get_critical_band_speech_data(speech_level):
-
+    """ See § 3.4 of the standard ANSI S3.5. """
+    
     if speech_level == "normal":
         SPEECH_SPECTRUM = array(
         [

@@ -11,8 +11,8 @@ except ImportError:
 from numpy import array, empty, amin, amax, zeros, log10, maximum, float64
 
 # Local application imports
-from mosqito.sq_metrics.speech_intelligibility._band_procedure_data import  _get_third_octave_band_data
-from mosqito.sq_metrics.speech_intelligibility._main_sii import _main_sii
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi._band_procedure_data import  _get_third_octave_band_data
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi._main_sii import _main_sii
 
 # Reference values from ANSI S3.5 standard
 reference = empty(2, dtype=dict)

@@ -1,31 +1,33 @@
 # -*- coding: utf-8 -*-
 
-from numpy import ones, log10, power
+from numpy import array, zeros
 
-from mosqito.sq_metrics.speech_intelligibility._band_procedure_data import _get_critical_band_data, _get_equal_critical_band_data, _get_octave_band_data, _get_third_octave_band_data
-from mosqito.sq_metrics.speech_intelligibility._speech_data import _get_critical_band_speech_data, _get_equal_critical_band_speech_data, _get_octave_band_speech_data, _get_third_octave_band_speech_data
-from mosqito.sq_metrics.speech_intelligibility._main_sii import _main_sii
-from mosqito.utils.LTQ import LTQ
-from mosqito.utils.conversion import freq2bark
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi._band_procedure_data import _get_critical_band_data, _get_equal_critical_band_data, _get_octave_band_data, _get_third_octave_band_data
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi._speech_data import _get_critical_band_speech_data, _get_equal_critical_band_speech_data, _get_octave_band_speech_data, _get_third_octave_band_speech_data
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi._main_sii import _main_sii
+from mosqito.sound_level_meter.spectrum import spectrum
+from mosqito.sound_level_meter.freq_band_synthesis import freq_band_synthesis
 
 
-def sii_level(noise_level, method, speech_level, threshold=None):
+def sii_ansi(noise, fs, method, speech_level, threshold=None):
     """Calculate speech intelligibility index
 
-    This function computes SII values for an overall noise level in dB according to ANSI S3.5 standard.
+    This function computes SII values for a noise time signal according to ANSI S3.5 standard.
 
     Parameters
     ----------
-    noise_level : float
-        Overall noise level in [dB ref. 2e-5 Pa]. This value is used to create a uniform noise spectrum. 
+    noise : array_like
+        Noise time signal in [Pa].
+    fs: float
+        Sampling frequency of the input noise signal.
     method: {"critical", "equally_critical", "third_octave", "octave"}
-        Type of frequency band to be used for the calculation.
+        Type of frequency band to be used for the calculation. See § 3.4 of the standard.
     speech_level : {'normal', 'raised', 'loud', 'shout'}
         Speech level to assess, the corresponding speech spectrum defined in the standard is used for calculation.
     threshold : array_like or 'zwicker'
         Threshold of hearing [dB ref. 2e-5 Pa] with same size as the chosen method frequency axis, or 'zwicker' to use the standard threshold.
         Default to None sets the threshold to zeros on each frequency band.
-                
+        
     Returns
     -------
     sii: numpy.ndarray
@@ -39,10 +41,10 @@ def sii_level(noise_level, method, speech_level, threshold=None):
     --------
     .. plot::
        :include-source:
-       
+
+        >>> from mosqito.sq_metrics.speech_intelligibility import sii
         >>> import matplotlib.pyplot as plt
         >>> import numpy as np
-        >>> from mosqito.sq_metrics.speech_intelligibility import sii_level
         >>> fs=48000
         >>> d=0.2
         >>> dB=90
@@ -52,13 +54,12 @@ def sii_level(noise_level, method, speech_level, threshold=None):
         >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
-        >>> speech_level = 'raised'
-        >>> SII, SII_spec, freq_axis = sii_level(60, method='critical', speech_level=speech_level, threshold='zwicker')
+        >>> SII, SII_spec, freq_axis = sii(stimulus, fs, method='critical', speech_level='normal')
         >>> plt.plot(freq_axis, SII_spec)
         >>> plt.xlabel("Frequency [Hz]")
         >>> plt.ylabel("Specific value ")
-        >>> plt.title("Speech Intelligibility Index = " + f"{SII:.2f} \n Speech level: " + speech_level)   
-
+        >>> plt.title("Speech Intelligibility Index = " + f"{SII:.2f}")   
+        
     """
     
     if (method!='critical') & (method!='equally_critical') & (method!='third_octave') & (method!='octave'):
@@ -70,20 +71,21 @@ def sii_level(noise_level, method, speech_level, threshold=None):
     # Get standard speech spectrum
     if method == 'critical':
         speech_spectrum, speech_level = _get_critical_band_speech_data(speech_level)
+        CENTER_FREQUENCIES, LOWER_FREQUENCIES, UPPER_FREQUENCIES, _, _, _ = _get_critical_band_data()
     elif method == 'equally_critical':
         speech_spectrum, speech_level = _get_equal_critical_band_speech_data(speech_level)
+        CENTER_FREQUENCIES, LOWER_FREQUENCIES, UPPER_FREQUENCIES, _, _, _ = _get_equal_critical_band_data()
     elif method == 'third_octave':
         speech_spectrum, speech_level = _get_third_octave_band_speech_data(speech_level)
+        CENTER_FREQUENCIES, LOWER_FREQUENCIES, UPPER_FREQUENCIES, _, _, _, _ = _get_third_octave_band_data()
     elif method == 'octave':
         speech_spectrum, speech_level = _get_octave_band_speech_data(speech_level)
-    nbands = len(speech_spectrum)
+        CENTER_FREQUENCIES, LOWER_FREQUENCIES, UPPER_FREQUENCIES, _, _, _, _, = _get_octave_band_data()
     
-    # Create noise spectrum as uniform spectrum from overall level
-    band_level = 10 * log10(power(10, noise_level/10)/nbands)
-    noise_spectrum = ones((nbands)) * band_level
-        
-    # Compute SII
+    # Compute noise spectrum in dB
+    spec, freqs = spectrum(noise, fs, nfft="default", window="blackman", db=True)
+    noise_spectrum, _ = freq_band_synthesis(spec, freqs, LOWER_FREQUENCIES, UPPER_FREQUENCIES)
+                
     SII, SII_specific, freq_axis = _main_sii(method, speech_spectrum, noise_spectrum, threshold)    
     
     return SII, SII_specific, freq_axis
-

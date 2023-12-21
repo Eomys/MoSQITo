@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from numpy import array, interp, linspace, concatenate, flip
+from numpy import array, interp, linspace
 
-from scipy.fft import fft, fftfreq, ifft
+from scipy.fft import ifft
 
 # Optional package import
 try:
@@ -11,17 +11,10 @@ try:
 except ImportError:
     raise RuntimeError(
         "In order to perform the tests you need the 'pytest' package.")
-try:
-    from SciDataTool import DataLinspace, DataTime
-except ImportError:
-    raise RuntimeError(
-        "In order to handle Data objects you need the 'SciDataTool' package."
-    )
 
 # Local application imports
-from mosqito.utils import load
-from mosqito import sii, sii_freq, sii_level
-from mosqito.sq_metrics.speech_intelligibility._main_sii import _main_sii
+from mosqito import sii_ansi, sii_ansi_freq, sii_ansi_level
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi._main_sii import _main_sii
 
 
 @pytest.fixture
@@ -45,7 +38,7 @@ def test_signal():
 
     return test_signal
 
-@pytest.mark.sii  # to skip or run sharpness test
+@pytest.mark.sii_ansi  # to skip or run sharpness test
 def test_sii(test_signal):
     """Test function for the sharpness calculation of an audio signal
     The input signals come from DIN 45692_2009E. The compliance is assessed
@@ -63,13 +56,13 @@ def test_sii(test_signal):
     fs = test_signal["fs"]
 
     # Compute sharpness
-    SII, _, _ = sii(sig, fs, 'third_octave', 'raised')
-    SII, _, _ = sii(sig, fs, 'critical', 'loud')
-    SII, _, _ = sii(sig, fs, 'equally_critical', 'shout')
-    SII, _, _ = sii(sig, fs, 'octave', 'normal')
+    SII, _, _ = sii_ansi(sig, fs, 'third_octave', 'raised')
+    SII, _, _ = sii_ansi(sig, fs, 'critical', 'loud')
+    SII, _, _ = sii_ansi(sig, fs, 'equally_critical', 'shout')
+    SII, _, _ = sii_ansi(sig, fs, 'octave', 'normal')
     
 
-@pytest.mark.sii # to skip or run sharpness test
+@pytest.mark.sii_ansi # to skip or run sharpness test
 def test_sii_freq(test_signal):
     """Test function for the sharpness calculation of an time-varying audio signal.
 
@@ -85,28 +78,28 @@ def test_sii_freq(test_signal):
     spec = test_signal["noise_spectrum"]
     freqs = test_signal["freq_axis"]    
     # Compute sharpness
-    SII, _, _ = sii_freq(spec, freqs, "critical", 'loud')
-    SII, _, _ = sii_freq(spec, freqs, "equally_critical", 'raised')
-    SII, _, _ = sii_freq(spec, freqs, "third_octave", 'shout')
-    SII, _, _ = sii_freq(spec, freqs, "octave", 'normal')
+    SII, _, _ = sii_ansi_freq(spec, freqs, "critical", 'loud')
+    SII, _, _ = sii_ansi_freq(spec, freqs, "equally_critical", 'raised')
+    SII, _, _ = sii_ansi_freq(spec, freqs, "third_octave", 'shout')
+    SII, _, _ = sii_ansi_freq(spec, freqs, "octave", 'normal')
     
-@pytest.mark.sii
+@pytest.mark.sii_ansi
 def test_sii_level():
     
     # Compute sharpness
-    SII, _, _ = sii_level(60, 'critical', 'normal')
-    SII, _, _ = sii_level(60, 'equally_critical', 'raised')
-    SII, _, _ = sii_level(60, 'octave', 'loud')
-    SII, _, _ = sii_level(60, 'third_octave', 'shout')
+    SII, _, _ = sii_ansi_level(60, 'critical', 'normal')
+    SII, _, _ = sii_ansi_level(60, 'equally_critical', 'raised')
+    SII, _, _ = sii_ansi_level(60, 'octave', 'loud')
+    SII, _, _ = sii_ansi_level(60, 'third_octave', 'shout')
     
     
-@pytest.mark.sii # to skip or run sharpness test
+@pytest.mark.sii_ansi # to skip or run sharpness test
 def test_main_sii(test_signal):
     """Test function for the sharpness calculation of an time-varying audio signal.
 
     """
     
-    SII, SII_spec, _ = _main_sii(test_signal["method"], test_signal["speech_spectrum"], test_signal["noise_spectrum"], threshold=None)
+    SII, _, _ = _main_sii(test_signal["method"], test_signal["speech_spectrum"], test_signal["noise_spectrum"], threshold=None)
 
     assert check_compliance(SII, test_signal["SII"])
 

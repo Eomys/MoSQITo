@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 # Standard library import
-from numpy import array, concatenate, zeros, log10, power, argmin, split
+from numpy import array, concatenate, zeros, log10, power, argmin, split, arange, interp, iscomplex
 
-def band_spectrum_synthesis(spectrum, freqs, fmin, fmax):
+def freq_band_synthesis(spectrum, freqs, fmin, fmax):
     """Adapt input spectrum to frequency band levels
     
     Convert the input spectrum to frequency band spectrum
@@ -12,7 +12,7 @@ def band_spectrum_synthesis(spectrum, freqs, fmin, fmax):
     Parameters
     ----------
     spectrum : numpy.ndarray
-        amplitude rms of the one-sided spectrum of the signal, size (nperseg, nseg).
+        One-sided spectrum of the signal in [dB], size (nperseg, nseg).
     freqs : list
         List of input frequency , size (nperseg) or (nperseg, nseg).
     fmin : float
@@ -35,6 +35,20 @@ def band_spectrum_synthesis(spectrum, freqs, fmin, fmax):
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies, size (nbands).
     """
+    if iscomplex(spectrum).any():
+        raise ValueError('Input spectrum must be in dB, no complex value allowed.')
+    
+    if (fmin.min() < freqs.min()):
+        print("[WARNING] Input spectrum minimum frequency if higher than fmin. Empty values will be filled with 0.")
+        df = freqs[1] - freqs[0]
+        spectrum = interp(arange(fmin.min(),fmax.max()+df, df), freqs, spectrum)
+        freqs = arange(fmin.min(),fmax.max()+df, df)
+
+    if (fmax.max() > freqs.max()):
+        print("[WARNING] Input spectrum maximum frequency if lower than fmax. Empty values will be filled with 0.")
+        df = freqs[1] - freqs[0]
+        spectrum = interp(arange(fmin.min(),fmax.max()+df, df), freqs, spectrum)
+        freqs = arange(fmin.min(),fmax.max()+df, df)
     
     # Find the lower and upper index of each band
     idx_low = argmin(abs(freqs[:,None] - fmin), axis=0)

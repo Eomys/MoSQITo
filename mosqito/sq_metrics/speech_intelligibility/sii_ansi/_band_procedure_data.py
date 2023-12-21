@@ -1,6 +1,7 @@
 from numpy import array
 
 def _get_critical_band_data():
+    """ See § 3.4 of the standard ANSI S3.5. """
     CENTER_FREQUENCIES = array(
         [
             150,

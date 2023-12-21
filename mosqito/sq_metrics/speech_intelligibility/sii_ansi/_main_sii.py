@@ -3,8 +3,8 @@
 
 from numpy import array, zeros, log10, maximum, where, sum
 
-from mosqito.sq_metrics.speech_intelligibility._band_procedure_data import _get_critical_band_data, _get_equal_critical_band_data, _get_octave_band_data, _get_third_octave_band_data
-from mosqito.sq_metrics.speech_intelligibility._speech_data import _get_critical_band_speech_data, _get_equal_critical_band_speech_data, _get_octave_band_speech_data, _get_third_octave_band_speech_data
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi._band_procedure_data import _get_critical_band_data, _get_equal_critical_band_data, _get_octave_band_data, _get_third_octave_band_data
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi._speech_data import _get_critical_band_speech_data, _get_equal_critical_band_speech_data, _get_octave_band_speech_data, _get_third_octave_band_speech_data
 from mosqito.utils.LTQ import LTQ
 from mosqito.utils.conversion import freq2bark
 
