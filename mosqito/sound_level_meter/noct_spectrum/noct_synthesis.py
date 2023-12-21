@@ -11,6 +11,7 @@ from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import _n_oct_fr
 
 def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     """Adapt input spectrum to nth-octave band spectrum
+    
     Convert the input spectrum to third-octave band spectrum
     between "fc_min" and "fc_max".
     Parameters
