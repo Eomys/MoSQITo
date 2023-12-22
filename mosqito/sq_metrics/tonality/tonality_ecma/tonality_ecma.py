@@ -35,7 +35,7 @@ def tonality_ecma(signal, sb=2048, sh=1024):
     # Sampling frequency
     fs = 48000
 
-    delta_f dans _gammatone pour déterminer les sb et sh en fonction de la largeur de chaque bande
+    # delta_f dans _gammatone pour déterminer les sb et sh en fonction de la largeur de chaque bande
 
     # sb and sh for Tonality
     z = np.linspace(0.5, 26.5, num=53, endpoint=True)
