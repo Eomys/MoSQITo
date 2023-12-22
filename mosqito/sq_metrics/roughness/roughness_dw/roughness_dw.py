@@ -5,7 +5,7 @@ from numpy import arange, empty
 
 # Local imports
 from mosqito.utils.time_segmentation import time_segmentation
-from mosqito.sound_level_meter.spectrum import spectrum
+from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
 from mosqito.sq_metrics.roughness.roughness_dw._roughness_dw_main_calc import (
     _roughness_dw_main_calc,
 )
@@ -113,7 +113,7 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     else:
         nseg = sig.shape[1]
 
-    spec, _ = spectrum(sig, fs, nfft="default", window="blackman", db=False)
+    spec, _ = comp_spectrum(sig, fs, nfft="default", window="blackman", db=False)
 
     # Frequency axis in Hertz
     freq_axis = arange(1, nperseg // 2 + 1, 1) * (fs / nperseg)

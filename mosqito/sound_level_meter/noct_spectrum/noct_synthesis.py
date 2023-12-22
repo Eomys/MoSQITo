@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library import
-from numpy import asarray, mean, delete, array, where
+from numpy import asarray, delete, array, where
 
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
@@ -43,15 +43,15 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
         
     See Also
     --------
-    spectrum : spectrum computation from a time signal
-    noct_spectrum : n-th octave band spectrum computation from a time signal
+    comp_spectrum : Spectrum computation from a time signal
+    noct_spectrum : N-th octave band spectrum computation from a time signal
             
     Examples
     --------
     .. plot::
        :include-source:
 
-        >>> from mosqito.sound_level_meter import spectrum, noct_synthesis
+        >>> from mosqito.sound_level_meter import comp_spectrum, noct_synthesis
         >>> from mosqito.utils import amp2db
         >>> import matplotlib.pyplot as plt
         >>> import numpy as np
@@ -64,7 +64,7 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
         >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
-        >>> spec, freqs = spectrum(stimulus, fs, db=False)
+        >>> spec, freqs = comp_spectrum(stimulus, fs, db=False)
         >>> spec_3, freq_axis = noct_synthesis(spec, freqs, fmin=90, fmax=14000)
         >>> spec_3db = amp2db(spec_3, ref=2e-5)
         >>> plt.step(freq_axis, spec_3db)

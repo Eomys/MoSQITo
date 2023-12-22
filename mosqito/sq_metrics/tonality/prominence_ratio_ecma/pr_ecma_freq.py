@@ -60,7 +60,7 @@ def pr_ecma_freq(spectrum, freqs, prominence=True):
        
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
-        >>> from mosqito.sound_level_meter.spectrum import spectrum
+        >>> from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
         >>> fs = 48000
         >>> d = 2
         >>> f = 1000
@@ -70,7 +70,7 @@ def pr_ecma_freq(spectrum, freqs, prominence=True):
         >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
-        >>> spectrum_db, freq_axis = spectrum(stimulus, fs, db=True)
+        >>> spectrum_db, freq_axis = comp_spectrum(stimulus, fs, db=True)
         >>> plt.plot(freq_axis, spectrum_db)
         >>> plt.ylim(0,60)
         >>> plt.xlabel("Frequency [Hz]")
@@ -82,7 +82,7 @@ def pr_ecma_freq(spectrum, freqs, prominence=True):
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
         >>> from mosqito.sq_metrics import pr_ecma_freq
-        >>> from mosqito.sound_level_meter.spectrum import spectrum
+        >>> from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
         >>> fs = 48000
         >>> d = 2
         >>> f = 1000
@@ -92,7 +92,7 @@ def pr_ecma_freq(spectrum, freqs, prominence=True):
         >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
-        >>> spec, freq_axis = spectrum(stimulus, fs, db=False)
+        >>> spec, freq_axis = comp_spectrum(stimulus, fs, db=False)
         >>> t_pr, pr, prom, tones_freqs = pr_ecma_freq(spec.T, freq_axis.T)
         >>> plt.bar(tones_freqs, pr, width=50)  
         >>> plt.grid(axis='y')

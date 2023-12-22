@@ -5,7 +5,7 @@ from numpy import linspace, log10, empty, nan, logspace, argmin, ravel, abs
 
 # Local functions imports
 from mosqito.utils.time_segmentation import time_segmentation
-from mosqito.sound_level_meter.spectrum import spectrum
+from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._tnr_main_calc import _tnr_main_calc
 
 
@@ -98,14 +98,14 @@ def tnr_ecma_tv(signal, fs, prominence=False, overlap=0):
         # Number of segments
         nseg = sig.shape[1] 
         # Spectrum computation
-        spectrum_db, freq_axis = spectrum(sig, fs, db=True)
+        spectrum_db, freq_axis = comp_spectrum(sig, fs, db=True)
       
     else:
         nseg = signal.shape[1]
         time = linspace(0, signal.shape[0]/fs, num=nseg)
         
         # Compute spectrum
-        spectrum_db, freq_axis = spectrum(sig, fs, db=True)
+        spectrum_db, freq_axis = comp_spectrum(sig, fs, db=True)
             
             
     # compute tnr values

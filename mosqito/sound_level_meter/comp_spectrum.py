@@ -7,7 +7,7 @@ from numpy.fft import fft
 from mosqito.utils import amp2db
 
 
-def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=True):
+def comp_spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=True):
     """
     Compute one-sided spectrum from a time signal in Pa.
 
@@ -29,16 +29,16 @@ def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=Tru
         
     See also
     --------
-    noct_synthesis : conversion of a spectrum to n-th octave band levels
-    noct_spectrum : n-th octave band spectrum computation from a time signal
-    spectrum2dBA : conversion of a spectrum from dB to dBA
+    noct_synthesis : Conversion of a spectrum to n-th octave band levels
+    noct_spectrum : N-th octave band spectrum computation from a time signal
+    spectrum2dBA : Conversion of a spectrum from dB to dBA
         
     Examples
     --------
     .. plot::
        :include-source:
        
-        >>> from mosqito.sound_level_meter import spectrum
+        >>> from mosqito.sound_level_meter import comp_spectrum
         >>> import matplotlib.pyplot as plt
         >>> import numpy as np
         >>> fs=48000
@@ -50,7 +50,7 @@ def spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, db=Tru
         >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
-        >>> spec_db, freq_axis = spectrum(stimulus, fs, db=True)
+        >>> spec_db, freq_axis = comp_spectrum(stimulus, fs, db=True)
         >>> plt.step(freq_axis, spec_db)
         >>> plt.xlabel("Center frequency [Hz]")
         >>> plt.ylabel("Amplitude [dB]")

@@ -45,7 +45,7 @@ def sii_ansi_freq(spectrum, freqs, method, speech_level, threshold=None):
        :include-source:
 
         >>> from mosqito.sq_metrics import sii_ansi_freq
-        >>> from mosqito.sound_level_meter.spectrum import spectrum
+        >>> from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
         >>> import matplotlib.pyplot as plt
         >>> import numpy as np
         >>> fs=48000
@@ -57,7 +57,7 @@ def sii_ansi_freq(spectrum, freqs, method, speech_level, threshold=None):
         >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
-        >>> spec, freqs = spectrum(stimulus, fs, db=True)
+        >>> spec, freqs = comp_spectrum(stimulus, fs, db=True)
         >>> SII, SII_spec, freq_axis = sii_freq(spec, freqs, method='critical', speech_level='normal')
         >>> plt.plot(freq_axis, SII_spec)
         >>> plt.xlabel("Frequency [Hz]")

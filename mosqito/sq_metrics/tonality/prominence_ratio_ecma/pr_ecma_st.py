@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Local imports
-from mosqito.sound_level_meter.spectrum import spectrum
+from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
 from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import _pr_main_calc
 
 
@@ -57,7 +57,7 @@ def pr_ecma_st(signal, fs, prominence=True):
        
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
-        >>> from mosqito.sound_level_meter.spectrum import spectrum
+        >>> from mosqito.sound_level_meter import comp_spectrum
         >>> fs = 48000
         >>> d = 2
         >>> f = 1000
@@ -67,7 +67,7 @@ def pr_ecma_st(signal, fs, prominence=True):
         >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
-        >>> spectrum_db, freq_axis = spectrum(stimulus, fs, db=True)
+        >>> spectrum_db, freq_axis = comp_spectrum(stimulus, fs, db=True)
         >>> plt.plot(freq_axis, spectrum_db)
         >>> plt.ylim(0,60)
         >>> plt.xlabel("Frequency [Hz]")
@@ -102,7 +102,7 @@ def pr_ecma_st(signal, fs, prominence=True):
     """    
     
     # Compute db spectrum
-    spectrum_db, freq_axis = spectrum(signal, fs, db=True)
+    spectrum_db, freq_axis = comp_spectrum(signal, fs, db=True)
                   
     # Compute PR values
     tones_freqs, pr, prom, t_pr = _pr_main_calc(spectrum_db, freq_axis)

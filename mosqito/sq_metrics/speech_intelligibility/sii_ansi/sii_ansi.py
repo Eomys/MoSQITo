@@ -5,7 +5,7 @@ from numpy import array, zeros
 from mosqito.sq_metrics.speech_intelligibility.sii_ansi._band_procedure_data import _get_critical_band_data, _get_equal_critical_band_data, _get_octave_band_data, _get_third_octave_band_data
 from mosqito.sq_metrics.speech_intelligibility.sii_ansi._speech_data import _get_critical_band_speech_data, _get_equal_critical_band_speech_data, _get_octave_band_speech_data, _get_third_octave_band_speech_data
 from mosqito.sq_metrics.speech_intelligibility.sii_ansi._main_sii import _main_sii
-from mosqito.sound_level_meter.spectrum import spectrum
+from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
 from mosqito.sound_level_meter.freq_band_synthesis import freq_band_synthesis
 
 
@@ -83,7 +83,7 @@ def sii_ansi(noise, fs, method, speech_level, threshold=None):
         CENTER_FREQUENCIES, LOWER_FREQUENCIES, UPPER_FREQUENCIES, _, _, _, _, = _get_octave_band_data()
     
     # Compute noise spectrum in dB
-    spec, freqs = spectrum(noise, fs, nfft="default", window="blackman", db=True)
+    spec, freqs = comp_spectrum(noise, fs, nfft="default", window="blackman", db=True)
     noise_spectrum, _ = freq_band_synthesis(spec, freqs, LOWER_FREQUENCIES, UPPER_FREQUENCIES)
                 
     SII, SII_specific, freq_axis = _main_sii(method, speech_spectrum, noise_spectrum, threshold)    

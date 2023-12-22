@@ -57,7 +57,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
        :include-source:
 
        >>> from mosqito.sq_metrics import sharpness_din_freq 
-       >>> from mosqito.sound_level_meter import spectrum
+       >>> from mosqito.sound_level_meter import comp_spectrum
        >>> import matplotlib.pyplot as plt
        >>> import numpy as np
        >>> fs=48000
@@ -69,7 +69,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
        >>> stimulus = stimulus * ampl
-       >>> spec, freqs = spectrum(stimulus, fs, db=False)
+       >>> spec, freqs = comp_spectrum(stimulus, fs, db=False)
        >>> S = sharpness_din_freq(spec, freqs)
        >>> plt.plot(time, stimulus)
        >>> plt.xlim(0, 0.05)

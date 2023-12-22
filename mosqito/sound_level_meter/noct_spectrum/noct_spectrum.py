@@ -44,8 +44,8 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
         
     See Also
     --------
-    spectrum : spectrum computation from a time signal
-    noct_synthesis : conversion of a spectrum to n-th octave band levels
+    comp_spectrum : Spectrum computation from a time signal
+    noct_synthesis : Conversion of a spectrum to n-th octave band levels
             
     Examples
     --------
