@@ -54,9 +54,9 @@ def loudness_zwst_perseg(
 
     See Also
     ---------
-    loudness_zwst : loudness computation for a stationary time signal
-    loudness_zwst_freq : loudness computation from a sound spectrum
-    loudness_zwtv : loudness computation for a non-stationary time signal
+    loudness_zwst : Loudness computation for a stationary time signal
+    loudness_zwst_freq : Loudness computation from a sound spectrum
+    loudness_zwtv : Loudness computation for a non-stationary time signal
 
     Notes
     ------

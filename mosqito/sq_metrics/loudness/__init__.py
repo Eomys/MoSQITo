@@ -1,30 +1,31 @@
 """ This module includes functions to compute loudness :
 
-Loudness (ECMA 418)
-==================================
+
+Loudness ECMA
+====================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    
    /source/reference/mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma
    
-   
-Stationnary loudness (ISO 532B)
-==================================
+Stationnary loudness ISO 532B
+============================
 
 .. toctree::
-   :maxdepth: 1
-   
+   :maxdepth: 2
+
    /source/reference/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst
    /source/reference/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq
    /source/reference/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_perseg
    
-Time-varying loudness (ISO 532B)
-==================================
+
+Time-varying loudness ISO 532B
+==============================
 
 .. toctree::
-   :maxdepth: 1
-   
+   :maxdepth: 2
+
    /source/reference/mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv
 """
 

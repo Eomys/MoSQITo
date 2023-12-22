@@ -36,8 +36,8 @@ def sii_ansi_freq(spectrum, freqs, method, speech_level, threshold=None):
         
     See also
     --------
-    sii : speech intelligibility with a time signal as background noise
-    sii_level : speech intelligibility with an overall SPL level as background noise
+    sii : Speech intelligibility with a time signal as background noise
+    sii_level : Speech intelligibility with an overall SPL level as background noise
     
     Examples
     --------

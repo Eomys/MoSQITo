@@ -25,7 +25,7 @@ def spectrum2dBA(spectrum, fs):
 
     See Also
     --------
-    noct_spectrum : n-th octave band spectrum computation from a time signal
+    noct_spectrum : N-th octave band spectrum computation from a time signal
             
     Examples
     --------

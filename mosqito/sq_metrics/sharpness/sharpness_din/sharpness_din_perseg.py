@@ -59,10 +59,10 @@ def sharpness_din_perseg(
 
     See Also
     --------
-    sharpness_din_from_loudness : sharpness computation from loudness values
-    sharpness_din_tv : sharpness computation for a non-stationary time signal
-    sharpness_din_st : sharpness computation for a stationary time signal
-    sharpness_din_freq : sharpness computation from a sound spectrum
+    sharpness_din_from_loudness : Sharpness computation from loudness values
+    sharpness_din_tv : Sharpness computation for a non-stationary time signal
+    sharpness_din_st : Sharpness computation for a stationary time signal
+    sharpness_din_freq : Sharpness computation from a sound spectrum
 
 
     Notes

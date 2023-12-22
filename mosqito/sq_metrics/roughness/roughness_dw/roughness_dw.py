@@ -56,7 +56,7 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
 
     See Also
     --------
-    roughness_dw_freq : roughness computation from a sound spectrum
+    roughness_dw_freq : Roughness computation from a sound spectrum
 
     Notes
     -----

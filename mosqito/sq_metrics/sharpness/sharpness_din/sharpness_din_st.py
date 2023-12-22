@@ -30,11 +30,29 @@ def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
 
     See Also
     --------
-    sharpness_din_from_loudness : sharpness computation from loudness values
-    sharpness_din_tv : sharpness computation for a non-stationary time signal
-    sharpness_din_perseg : sharpness computation by time-segment
-    sharpness_din_freq : sharpness computation from a sound spectrum
-
+    
+    .. seealso:: Sharpness computation from a sound spectrum :py:func:`sharpness_din_freq`
+    .. seealso:: Sharpness computation from a sound spectrum :func:`sharpness_din_freq`
+    
+    .. seealso::Sharpness computation from a sound spectrum 
+        :mod:`thyter <source/reference/mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq>`
+    .. seealso::`sharpness_din_freq`
+        Sharpness computation
+    .. seealso::`sharpness_din_freq`
+        Sharpness computation
+    .. seealso:::mod:`sharpness_din_freq`
+        Sharpness computation from a sound spectrum 
+    .. seealso:: sharpness_din_freq :mod:`sharpness_din_freq`
+        Sharpness computation from a sound spectrum 
+    .. seealso:: sharpness_din_freq :py:mod:`sharpness_din_freq`
+        Sharpness computation from a sound spectrum 
+    
+    
+    .. seealso::    
+        :func:`sharpness_din_from_loudness` : Sharpness computation from loudness values
+        :mod:`sharpness_din_tv` : Sharpness computation for a non-stationary time signal
+        :py:mod:`sharpness_din_perseg` : Sharpness computation by time-segment
+        sharpness_din_freq : Sharpness computation from a sound spectrum
 
     Notes
     -----
