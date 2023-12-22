@@ -20,7 +20,7 @@ from scipy.fft import fft
 # Local application imports
 from mosqito.sq_metrics import roughness_dw, roughness_dw_freq
 from tests.sq_metrics.roughness.signals_test_generation import signal_test
-from mosqito.sound_level_meter.spectrum import spectrum
+from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
 
 @pytest.mark.roughness_dw  # to skip or run only Daniel and Weber roughness tests
 def test_roughness_dw():
@@ -141,7 +141,7 @@ def test_roughness_dw_freq():
 
     # conversion into frequency domain
     n = len(stimulus)
-    spec, freqs = spectrum(stimulus, fs, nfft="default", window="blackman", db=False)
+    spec, freqs = comp_spectrum(stimulus, fs, nfft="default", window="blackman", db=False)
 
     # Roughness calculation
     roughness, _, _ = roughness_dw_freq(spec, freqs)

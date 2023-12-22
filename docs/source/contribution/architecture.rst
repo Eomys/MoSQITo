@@ -3,7 +3,7 @@
 Architecture of the package
 ===========================
 
-:mod:`mosqito` functions are sorted by modules.Each subfolder contains one main function that is intended to be called by the user. The subfunctions are identified by a trailing underscore. Each main function is accompanied by a documentation (in the [docs](.) folder), a tutorial (in the [tutorials](../tutorials) folder) and a detailed validation of the implementation in the [validations](../validations) folder. 
+:mod:`mosqito` functions are sorted by modules.Each subfolder contains one main function that is intended to be called by the user. The subfunctions are identified by a trailing underscore. Each main function is accompanied by a documentation (in its docstring), a tutorial (in the *tutorials* folder) and a detailed validation of the implementation in the *validations* folder. 
 
 For example, considering the function to compute the acoustic loudness according to the Zwicker method for stationary signals, the following elements can be found in :mod:`mosqito`:
  * source code of the function and subfunctions in the metric folder: ::

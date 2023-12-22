@@ -44,10 +44,10 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="mosqito.sq_metrics.loudness" href="mosqito.sq_metrics.loudness.html" />
-    <link rel="prev" title="mosqito.sound_level_meter.noct_spectrum.noct_synthesis module" href="mosqito.sound_level_meter.noct_spectrum.noct_synthesis.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="mosqito.sound_level_meter.noct_spectrum.noct_synthesis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 21, 2023"/>
+    <meta name="docbuild:last-update" content="Dec 22, 2023"/>
   </head>
   
   
@@ -236,10 +236,6 @@ document.write(`
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
-      <span class="fa-solid fa-outdent"></span>
-    </label>
-  
 </div>
 
     </nav>
@@ -339,6 +335,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.sharpness.html">Sharpness</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.roughness.html">Roughness</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.tonality.html">Tonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.speech_intelligibility.html">Speech Intelligibility</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.utils.html">utils</a></li>
@@ -402,53 +399,70 @@ document.write(`
   <section id="module-mosqito.sq_metrics">
 <span id="mosqito-sq-metrics"></span><h1>mosqito.sq_metrics<a class="headerlink" href="#module-mosqito.sq_metrics" title="Permalink to this heading">#</a></h1>
 <p>This module includes functions to compute the main sound quality metrics :</p>
-<section id="loudness">
-<h2>Loudness<a class="headerlink" href="#loudness" title="Permalink to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.loudness.html">Loudness</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.loudness.html#loudness-ecma-418">Loudness (ECMA 418)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.loudness.html#stationnary-loudness-iso-532b">Stationnary loudness (ISO 532B)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.loudness.html#time-varying-loudness-iso-532b">Time-varying loudness (ISO 532B)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.loudness.html#loudness-ecma">Loudness ECMA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.html"><code class="docutils literal notranslate"><span class="pre">loudness_ecma()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.loudness.html#stationnary-loudness-iso-532b">Stationnary loudness ISO 532B</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.html"><code class="docutils literal notranslate"><span class="pre">loudness_zwst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq.html"><code class="docutils literal notranslate"><span class="pre">loudness_zwst_freq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_perseg.html"><code class="docutils literal notranslate"><span class="pre">loudness_zwst_perseg()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.loudness.html#time-varying-loudness-iso-532b">Time-varying loudness ISO 532B</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv.html"><code class="docutils literal notranslate"><span class="pre">loudness_zwtv()</span></code></a></li>
 </ul>
 </li>
 </ul>
-</div>
-</section>
-<section id="sharpness">
-<h2>Sharpness<a class="headerlink" href="#sharpness" title="Permalink to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.sharpness.html">Sharpness</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.sharpness.html#sharpness-din-45692">Sharpness DIN 45692</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.sharpness.html#sharpness-din-45692">Sharpness DIN 45692</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st.html"><code class="docutils literal notranslate"><span class="pre">sharpness_din_st()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.html"><code class="docutils literal notranslate"><span class="pre">sharpness_din_tv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq.html"><code class="docutils literal notranslate"><span class="pre">sharpness_din_freq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.html"><code class="docutils literal notranslate"><span class="pre">sharpness_din_perseg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness.html"><code class="docutils literal notranslate"><span class="pre">sharpness_din_from_loudness()</span></code></a></li>
 </ul>
 </li>
 </ul>
-</div>
-</section>
-<section id="roughness">
-<h2>Roughness<a class="headerlink" href="#roughness" title="Permalink to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.roughness.html">Roughness</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.roughness.html#roughness-daniel-and-weber">Roughness (Daniel and Weber)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.roughness.html#roughness-daniel-and-weber">Roughness (Daniel and Weber)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.html"><code class="docutils literal notranslate"><span class="pre">roughness_dw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.html"><code class="docutils literal notranslate"><span class="pre">roughness_dw_freq()</span></code></a></li>
 </ul>
 </li>
 </ul>
-</div>
-</section>
-<section id="tonality">
-<h2>Tonality<a class="headerlink" href="#tonality" title="Permalink to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.tonality.html">Tonality</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.tonality.html#prominence-ratio-ecma-418">Prominence Ratio (ECMA 418)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.tonality.html#tone-to-noise-ratio-iso-532b">Tone-to-noise Ratio (ISO 532B)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.tonality.html#prominence-ratio-ecma-418">Prominence Ratio (ECMA 418)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.html"><code class="docutils literal notranslate"><span class="pre">pr_ecma_st()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq.html"><code class="docutils literal notranslate"><span class="pre">pr_ecma_freq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv.html"><code class="docutils literal notranslate"><span class="pre">pr_ecma_tv()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.tonality.html#tone-to-noise-ratio-iso-532b">Tone-to-noise Ratio (ISO 532B)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st.html"><code class="docutils literal notranslate"><span class="pre">tnr_ecma_st()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq.html"><code class="docutils literal notranslate"><span class="pre">tnr_ecma_freq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_tv.html"><code class="docutils literal notranslate"><span class="pre">tnr_ecma_tv()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.speech_intelligibility.html">Speech Intelligibility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.speech_intelligibility.html#speech-intelligibility-index-ansi-s3-5">Speech Intelligibility Index (ANSI S3.5)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi.html"><code class="docutils literal notranslate"><span class="pre">sii_ansi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_freq.html"><code class="docutils literal notranslate"><span class="pre">sii_ansi_freq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_level.html"><code class="docutils literal notranslate"><span class="pre">sii_ansi_level()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
-</section>
 </section>
 
 
@@ -467,7 +481,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">mosqito.sound_level_meter.noct_spectrum.noct_synthesis module</p>
+        <p class="prev-next-title">&lt;no title&gt;</p>
       </div>
     </a>
     <a class="right-next"
@@ -485,24 +499,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loudness">Loudness</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sharpness">Sharpness</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#roughness">Roughness</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tonality">Tonality</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

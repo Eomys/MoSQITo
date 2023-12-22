@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq module &#8212; MOSQITO manual</title>
+    <title>&lt;no title&gt; &#8212; MOSQITO manual</title>
   
   
   
@@ -44,10 +44,10 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="mosqito.sq_metrics.tonality" href="mosqito.sq_metrics.tonality.html" />
-    <link rel="prev" title="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw module" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 21, 2023"/>
+    <meta name="docbuild:last-update" content="Dec 22, 2023"/>
   </head>
   
   
@@ -236,10 +236,6 @@ document.write(`
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
-      <span class="fa-solid fa-outdent"></span>
-    </label>
-  
 </div>
 
     </nav>
@@ -338,11 +334,12 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.loudness.html">Loudness</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.sharpness.html">Sharpness</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="mosqito.sq_metrics.roughness.html">Roughness</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.html">mosqito.sq_metrics.roughness.roughness_dw.roughness_dw module</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.html"><code class="docutils literal notranslate"><span class="pre">roughness_dw()</span></code></a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">roughness_dw_freq()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.tonality.html">Tonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.speech_intelligibility.html">Speech Intelligibility</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.utils.html">utils</a></li>
@@ -394,7 +391,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="mosqito.sq_metrics.roughness.html" class="nav-link">mosqito.sq_metrics.roughness</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">mosqito.sq_m...</li>
+    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
   </ul>
 </nav>
 </div>
@@ -411,9 +408,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq">
-<span id="mosqito-sq-metrics-roughness-roughness-dw-roughness-dw-freq-module"></span><h1>mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq module<a class="headerlink" href="#module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq" title="Permalink to this heading">#</a></h1>
-<dl class="py function">
+  <span class="target" id="module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq"></span><dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.roughness_dw_freq">
 <span class="sig-name descname"><span class="pre">roughness_dw_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/roughness/roughness_dw/roughness_dw_freq.html#roughness_dw_freq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.roughness_dw_freq" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the roughness according to Daniel and Weber method.</p>
@@ -488,13 +483,9 @@ implementation of an optimized model”, 1997</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Roughness = &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">R</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot; [Asper]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../../source/reference/mosqito-sq_metrics-roughness-roughness_dw-roughness_dw_freq-1.py">Source code</a>, <a class="reference external" href="../../source/reference/mosqito-sq_metrics-roughness-roughness_dw-roughness_dw_freq-1.png">png</a>, <a class="reference external" href="../../source/reference/mosqito-sq_metrics-roughness-roughness_dw-roughness_dw_freq-1.hires.png">hires.png</a>, <a class="reference external" href="../../source/reference/mosqito-sq_metrics-roughness-roughness_dw-roughness_dw_freq-1.pdf">pdf</a>)</p>
-<figure class="align-default">
-<img alt="../../_images/mosqito-sq_metrics-roughness-roughness_dw-roughness_dw_freq-1.png" src="../../_images/mosqito-sq_metrics-roughness-roughness_dw-roughness_dw_freq-1.png" />
-</figure>
+<p>(<a class="reference external" href="../../source/reference/mosqito-sq_metrics-roughness-roughness_dw-roughness_dw_freq-1.py">Source code</a>)</p>
 </dd></dl>
 
-</section>
 
 
                 </article>
@@ -512,7 +503,7 @@ implementation of an optimized model”, 1997</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">mosqito.sq_metrics.roughness.roughness_dw.roughness_dw module</p>
+        <p class="prev-next-title">&lt;no title&gt;</p>
       </div>
     </a>
     <a class="right-next"
@@ -530,21 +521,6 @@ implementation of an optimized model”, 1997</p>
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.roughness_dw_freq"><code class="docutils literal notranslate"><span class="pre">roughness_dw_freq()</span></code></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

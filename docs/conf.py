@@ -29,10 +29,12 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
+    'sphinxcontrib.bibtex'
 ]
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+bibtex_bibfiles = ['ref.bib']
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -74,4 +76,21 @@ autodoc_default_options = {
     'inherited-members': True,
     'no-special-members': True,
 }
+
+# Monkey-patch autosummary template context
+from sphinx.ext.autosummary.generate import AutosummaryRenderer
+
+
+def smart_fullname(fullname):
+    parts = fullname.split(".")
+    return ".".join(parts[1:])
+
+
+def fixed_init(self, app, template_dir=None):
+    AutosummaryRenderer.__old_init__(self, app, template_dir)
+    self.env.filters["smart_fullname"] = smart_fullname
+
+
+AutosummaryRenderer.__old_init__ = AutosummaryRenderer.__init__
+AutosummaryRenderer.__init__ = fixed_init
 

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mosqito.sound_level_meter.spectrum &#8212; MOSQITO manual</title>
+    <title>mosqito.sound_level_meter.freq_band_synthesis &#8212; MOSQITO manual</title>
   
   
   
@@ -38,13 +38,13 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=af026a1d"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/mosqito/sound_level_meter/spectrum';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/mosqito/sound_level_meter/freq_band_synthesis';</script>
     <link rel="icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 21, 2023"/>
+    <meta name="docbuild:last-update" content="Dec 22, 2023"/>
   </head>
   
   
@@ -372,102 +372,81 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <h1>Source code for mosqito.sound_level_meter.spectrum</h1><div class="highlight"><pre>
+  <h1>Source code for mosqito.sound_level_meter.freq_band_synthesis</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">tile</span><span class="p">,</span> <span class="n">hanning</span><span class="p">,</span> <span class="n">blackman</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">arange</span><span class="p">,</span> <span class="nb">abs</span>
-<span class="kn">from</span> <span class="nn">numpy.fft</span> <span class="kn">import</span> <span class="n">fft</span>
+<span class="c1"># Standard library import</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">log10</span><span class="p">,</span> <span class="n">power</span><span class="p">,</span> <span class="n">argmin</span><span class="p">,</span> <span class="n">split</span><span class="p">,</span> <span class="n">arange</span><span class="p">,</span> <span class="n">interp</span><span class="p">,</span> <span class="n">iscomplex</span>
 
-<span class="c1"># local function import</span>
-<span class="kn">from</span> <span class="nn">mosqito.utils</span> <span class="kn">import</span> <span class="n">amp2db</span>
-
-
-<div class="viewcode-block" id="spectrum"><a class="viewcode-back" href="../../../source/reference/mosqito.sound_level_meter.spectrum.html#mosqito.sound_level_meter.spectrum.spectrum">[docs]</a><span class="k">def</span> <span class="nf">spectrum</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span><span class="n">fs</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="s1">&#39;hanning&#39;</span><span class="p">,</span> <span class="n">one_sided</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute one-sided spectrum from a time signal in Pa.</span>
-
+<div class="viewcode-block" id="freq_band_synthesis"><a class="viewcode-back" href="../../../source/reference/mosqito.sound_level_meter.freq_band_synthesis.html#mosqito.sound_level_meter.freq_band_synthesis.freq_band_synthesis">[docs]</a><span class="k">def</span> <span class="nf">freq_band_synthesis</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adapt input spectrum to frequency band levels</span>
+<span class="sd">    </span>
+<span class="sd">    Convert the input spectrum to frequency band spectrum</span>
+<span class="sd">    between &quot;fmin&quot; and &quot;fmax&quot;.</span>
+<span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    signal : array</span>
-<span class="sd">        A time signal (nperseg x nseg).</span>
-<span class="sd">    fs : integer</span>
-<span class="sd">        Sampling frequency.</span>
-<span class="sd">    db : boolean, optional</span>
-<span class="sd">        Indicates if the spectrum is in dB values. Default is True.</span>
-
-<span class="sd">    Returns</span>
+<span class="sd">    spectrum : numpy.ndarray</span>
+<span class="sd">        One-sided spectrum of the signal in [dB], size (nperseg, nseg).</span>
+<span class="sd">    freqs : list</span>
+<span class="sd">        List of input frequency , size (nperseg) or (nperseg, nseg).</span>
+<span class="sd">    fmin : float</span>
+<span class="sd">        Min frequency band [Hz].</span>
+<span class="sd">    fmax : float</span>
+<span class="sd">        Max frequency band [Hz].</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Number of bands pr octave.</span>
+<span class="sd">    G : int</span>
+<span class="sd">        System for specifying the exact geometric mean frequencies.</span>
+<span class="sd">        Can be base 2 or base 10.</span>
+<span class="sd">    fr : int</span>
+<span class="sd">        Reference frequency. Shall be set to 1 kHz for audible frequency</span>
+<span class="sd">        range, to 1 Hz for infrasonic range (f &lt; 20 Hz) and to 1 MHz for</span>
+<span class="sd">        ultrasonic range (f &gt; 31.5 kHz).</span>
+<span class="sd">    Outputs</span>
 <span class="sd">    -------</span>
-<span class="sd">    spectrum : array</span>
-<span class="sd">        Spectrum (freq_axis x nseg).</span>
-<span class="sd">    freq_axis : array</span>
-<span class="sd">        Frequency axis.</span>
-<span class="sd">        </span>
-<span class="sd">    See also</span>
-<span class="sd">    --------</span>
-<span class="sd">    noct_synthesis : conversion of a spectrum to n-th octave band levels</span>
-<span class="sd">    noct_spectrum : n-th octave band spectrum computation from a time signal</span>
-<span class="sd">    spectrum2dBA : conversion of a spectrum from dB to dBA</span>
-<span class="sd">        </span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    .. plot::</span>
-<span class="sd">       :include-source:</span>
-<span class="sd">       </span>
-<span class="sd">        &gt;&gt;&gt; from mosqito.sound_level_meter import spectrum</span>
-<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; fs=48000</span>
-<span class="sd">        &gt;&gt;&gt; d=0.2</span>
-<span class="sd">        &gt;&gt;&gt; dB=60</span>
-<span class="sd">        &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
-<span class="sd">        &gt;&gt;&gt; f = 1000</span>
-<span class="sd">        &gt;&gt;&gt; stimulus = 1 + 0.5*np.sin(2 * np.pi * f * time) + 0.1*np.sin(20 * np.pi * f * time)</span>
-<span class="sd">        &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
-<span class="sd">        &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
-<span class="sd">        &gt;&gt;&gt; stimulus = stimulus * ampl</span>
-<span class="sd">        &gt;&gt;&gt; spec_db, freq_axis = spectrum(stimulus, fs, db=True)</span>
-<span class="sd">        &gt;&gt;&gt; plt.step(freq_axis, spec_db)</span>
-<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Center frequency [Hz]&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Amplitude [dB]&quot;)</span>
+<span class="sd">    spec : numpy.ndarray</span>
+<span class="sd">        Third octave band spectrum of signal sig [dB re.2e-5 Pa], size (nbands, nseg).</span>
+<span class="sd">    fpref : numpy.ndarray</span>
+<span class="sd">        Corresponding preferred third octave band center frequencies, size (nbands).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">nseg</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">nseg</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">iscomplex</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input spectrum must be in dB, no complex value allowed.&#39;</span><span class="p">)</span>
     
-    <span class="c1"># Number of points for the fft</span>
-    <span class="k">if</span> <span class="n">nfft</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">nfft</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
-        <span class="k">else</span> <span class="p">:</span>
-            <span class="n">nfft</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fmin</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">freqs</span><span class="o">.</span><span class="n">min</span><span class="p">()):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[WARNING] Input spectrum minimum frequency if higher than fmin. Empty values will be filled with 0.&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">spectrum</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="n">fmin</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">fmax</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">),</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+        <span class="n">freqs</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="n">fmin</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">fmax</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 
-    <span class="c1"># Window definition</span>
-    <span class="k">if</span> <span class="n">window</span> <span class="o">==</span> <span class="s1">&#39;hanning&#39;</span><span class="p">:</span>
-        <span class="n">window</span> <span class="o">=</span> <span class="n">hanning</span><span class="p">(</span><span class="n">nfft</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">window</span> <span class="o">==</span> <span class="s1">&#39;blackman&#39;</span><span class="p">:</span>
-        <span class="n">window</span> <span class="o">=</span> <span class="n">blackman</span><span class="p">(</span><span class="n">nfft</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fmax</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">freqs</span><span class="o">.</span><span class="n">max</span><span class="p">()):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[WARNING] Input spectrum maximum frequency if lower than fmax. Empty values will be filled with 0.&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">spectrum</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="n">fmin</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">fmax</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">),</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+        <span class="n">freqs</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="n">fmin</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">fmax</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+    
+    <span class="c1"># Find the lower and upper index of each band</span>
+    <span class="n">idx_low</span> <span class="o">=</span> <span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">freqs</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">fmin</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">idx_up</span> <span class="o">=</span> <span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">freqs</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">fmax</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">idx_low</span><span class="p">,</span> <span class="p">[</span><span class="n">idx_up</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]))</span>
+    
+    <span class="c1"># Split the given spectrum in several bands</span>
+    <span class="n">bands</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">split</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">idx</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="c1"># Compute the bands level</span>
+    <span class="n">band_spectrum</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)))</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
+        <span class="n">band_spectrum</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">log10</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="n">s</span><span class="o">/</span><span class="mi">10</span><span class="p">)))</span>      
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">band_spectrum</span><span class="p">,</span> <span class="p">(</span><span class="n">fmin</span><span class="o">+</span><span class="n">fmax</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span></div>
+
+
         
-    <span class="c1"># Amplitude correction</span>
-    <span class="n">window</span> <span class="o">=</span> <span class="n">window</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">window</span> <span class="o">=</span> <span class="n">tile</span><span class="p">(</span><span class="n">window</span><span class="p">,(</span><span class="n">nseg</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
-    
-    <span class="c1"># Creation of the spectrum by FFT</span>
-    <span class="k">if</span> <span class="n">one_sided</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">spectrum</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">signal</span> <span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">nfft</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="n">nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.42</span>
-        <span class="n">freq_axis</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nfft</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">fs</span> <span class="o">/</span> <span class="n">nfft</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">spectrum</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">signal</span> <span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">nfft</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.42</span>
-        <span class="n">freq_axis</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nfft</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">fs</span> <span class="o">/</span> <span class="n">nfft</span><span class="p">),</span> <span class="n">arange</span><span class="p">(</span><span class="n">nfft</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">fs</span> <span class="o">/</span> <span class="n">nfft</span><span class="p">)))</span>
 
-    <span class="k">if</span> <span class="n">db</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="c1"># Conversion into dB level</span>
-        <span class="n">module</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
-        <span class="n">spectrum</span> <span class="o">=</span> <span class="n">amp2db</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="mf">0.00002</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_axis</span></div>
+
+
 </pre></div>
 
                 </article>

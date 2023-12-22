@@ -44,7 +44,7 @@
     <link rel="search" title="Search" href="../../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 21, 2023"/>
+    <meta name="docbuild:last-update" content="Dec 22, 2023"/>
   </head>
   
   
@@ -408,10 +408,10 @@ document.write(`
 
 <span class="sd">    See Also</span>
 <span class="sd">    ---------</span>
-<span class="sd">    sharpness_din_from_loudness : sharpness computation from loudness values</span>
-<span class="sd">    sharpness_din_st : sharpness computation for a stationary time signal</span>
-<span class="sd">    sharpness_din_tv : sharpness computation for a non-stationary time signal</span>
-<span class="sd">    sharpness_din_perseg : sharpness computation by time-segment</span>
+<span class="sd">    sharpness_din_from_loudness : Sharpness computation from loudness values</span>
+<span class="sd">    sharpness_din_st : Sharpness computation for a stationary time signal</span>
+<span class="sd">    sharpness_din_tv : Sharpness computation for a non-stationary time signal</span>
+<span class="sd">    sharpness_din_perseg : Sharpness computation by time-segment</span>
 
 
 <span class="sd">    Notes</span>
@@ -432,7 +432,7 @@ document.write(`
 <span class="sd">       :include-source:</span>
 
 <span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import sharpness_din_freq </span>
-<span class="sd">       &gt;&gt;&gt; from mosqito.sound_level_meter import spectrum</span>
+<span class="sd">       &gt;&gt;&gt; from mosqito.sound_level_meter import comp_spectrum</span>
 <span class="sd">       &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">       &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">       &gt;&gt;&gt; fs=48000</span>
@@ -444,7 +444,7 @@ document.write(`
 <span class="sd">       &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
 <span class="sd">       &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
 <span class="sd">       &gt;&gt;&gt; stimulus = stimulus * ampl</span>
-<span class="sd">       &gt;&gt;&gt; spec, freqs = spectrum(stimulus, fs, db=False)</span>
+<span class="sd">       &gt;&gt;&gt; spec, freqs = comp_spectrum(stimulus, fs, db=False)</span>
 <span class="sd">       &gt;&gt;&gt; S = sharpness_din_freq(spec, freqs)</span>
 <span class="sd">       &gt;&gt;&gt; plt.plot(time, stimulus)</span>
 <span class="sd">       &gt;&gt;&gt; plt.xlim(0, 0.05)</span>

@@ -47,7 +47,7 @@ How to cite MOSQITO
 
 If you are using :mod:`mosqito` in your research activities, please help our scientific visibility by citing our work! You can use the following citation in APA format:
 
-Green Forge Coop. MOSQITO [Computer software]. https://doi.org/10.5281/zenodo.5284054
+Green Forge Coop. MOSQITO `Computer software <https://doi.org/10.5281/zenodo.5284054>`_.
 
 If you need to cite the current release of :mod:`mosqito`, please use the "Cite this repository" feature in the "About" section of this Github repository.
 
@@ -55,27 +55,25 @@ If you need to cite the current release of :mod:`mosqito`, please use the "Cite 
 Packages using MOSQITO
 ------------------------
 
-[Soundscapy](https://github.com/MitchellAcoustics/Soundscapy): A python library for analysing and visualising soundscape assessments.
+`Soundscapy <https://github.com/MitchellAcoustics/Soundscapy>`_: A python library for analysing and visualising soundscape assessments.
+
+`miniDSP <https://www.minidsp.com/applications/acoustic-measurements/psychoacoustic-measurements-with-mosqito>`_: An acquisition tool with psychoacoustic parameters estimation.
 
 Publications citing MOSQITO
 ----------------------------
 
-San Millán-Castillo, R., Latorre-Iglesias, E., Glesser, M., *“Engagement capstone projects: A collaborative approach to a case study in psychoacoustics”*, The Journal of the Acoustical Society of America **152**, 2183 (2022) https://doi.org/10.1121/10.0014693
+:cite:empty:`FA2023` 
+:cite:empty:`JASA23` 
+:cite:empty:`internoise23` 
+:cite:empty:`IEEE2022` 
+:cite:empty:`ICASSP2023` 
+:cite:empty:`AIAA2022` 
+:cite:empty:`menegatt`
+:cite:empty:`AAC2021`
+:cite:empty:`SIA2021` 
+:cite:empty:`internoise21`
 
-Kenneth Ooi, Zhen-Ting Ong, Karn N. Watcharasupat, Bhan Lam, Joo Young Hong, Woon-Seng Gan, *“ARAUS: A Large-Scale Dataset and Baseline Models of Affective Responses to Augmented Urban Soundscapes”*, SUBMITTED TO IEEE TRANSACTIONS ON AFFECTIVE COMPUTING, [arXiv:2207.01078](https://arxiv.org/abs/2207.01078), 2022
-
-Wißbrock, P., Richter, Y., Pelkmann, D., Ren, Z. and Palmer, G., *“Cutting Through the Noise: An Empirical Comparison of Psychoacoustic and Envelope-based Features for Machinery Fault Detection”*, [arXiv:2211.01704](https://arxiv.org/abs/2211.01704), 2022
-
-Erica Gallo, Guillaume Beaulieu and Christophe F. Schram, *“Annoyance factors of a maneuvering multicopter drone”*, 28th AIAA/CEAS Aeroacoustics 2022 Conference,  June 14-17, 2022, Southampton, UK. https://doi.org/10.2514/6.2022-2837
-
-Menegatt, W. F., *“Desempenho de métodos de avaliação subjetiva online para quantificar a irritabilidade do ruído de refrigeradores”*, Dissertação (mestrado) - Universidade Federal de Santa Catarina, , Programa de Pós-Graduação em , Florianópolis, 2022. [Available online](https://repositorio.ufsc.br/handle/123456789/241023)
-
-M. Glesser, S. Wanty, K. Degrendele, J. Le Besnerais, and S. Ni, *“Perceived sound quality analysis of Electric Drive Units under different switching control strategies,”* in 12th Aachen Acoustic Colloquium, Aachen, Nov. 2021.
-
-M. Glesser, S. Ni, K. Degrendele, S. Wanty, and J. Le Besnerais, *“Sound quality analysis of Electric Drive Units under different switching control strategies,”* in SIA Automotive NVH comfort, Le Mans, 2021.
-
-San Millán-Castillo, R., Latorre-Iglesias, E., Glesser, M., Wanty, S., Jiménez-Caminero, D., & Álvarez-Jimeno, J.M. (2021). MOSQITO: an open-source and free toolbox for sound quality metrics in the industry and education. *INTER-NOISE and NOISE-CON Congress and Conference Proceedings*, 12, 1164-1175. https://doi.org/10.3397/IN-2021-1767
-
+.. bibliography::
 
 Indices and tables
 ------------------

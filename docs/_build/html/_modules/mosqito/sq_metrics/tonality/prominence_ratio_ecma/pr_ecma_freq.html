@@ -44,7 +44,7 @@
     <link rel="search" title="Search" href="../../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 21, 2023"/>
+    <meta name="docbuild:last-update" content="Dec 22, 2023"/>
   </head>
   
   
@@ -435,7 +435,7 @@ document.write(`
 <span class="sd">       </span>
 <span class="sd">        &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
-<span class="sd">        &gt;&gt;&gt; from mosqito.sound_level_meter.spectrum import spectrum</span>
+<span class="sd">        &gt;&gt;&gt; from mosqito.sound_level_meter.comp_spectrum import comp_spectrum</span>
 <span class="sd">        &gt;&gt;&gt; fs = 48000</span>
 <span class="sd">        &gt;&gt;&gt; d = 2</span>
 <span class="sd">        &gt;&gt;&gt; f = 1000</span>
@@ -445,7 +445,7 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
 <span class="sd">        &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
 <span class="sd">        &gt;&gt;&gt; stimulus = stimulus * ampl</span>
-<span class="sd">        &gt;&gt;&gt; spectrum_db, freq_axis = spectrum(stimulus, fs, db=True)</span>
+<span class="sd">        &gt;&gt;&gt; spectrum_db, freq_axis = comp_spectrum(stimulus, fs, db=True)</span>
 <span class="sd">        &gt;&gt;&gt; plt.plot(freq_axis, spectrum_db)</span>
 <span class="sd">        &gt;&gt;&gt; plt.ylim(0,60)</span>
 <span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Frequency [Hz]&quot;)</span>
@@ -457,7 +457,7 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; from mosqito.sq_metrics import pr_ecma_freq</span>
-<span class="sd">        &gt;&gt;&gt; from mosqito.sound_level_meter.spectrum import spectrum</span>
+<span class="sd">        &gt;&gt;&gt; from mosqito.sound_level_meter.comp_spectrum import comp_spectrum</span>
 <span class="sd">        &gt;&gt;&gt; fs = 48000</span>
 <span class="sd">        &gt;&gt;&gt; d = 2</span>
 <span class="sd">        &gt;&gt;&gt; f = 1000</span>
@@ -467,7 +467,7 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
 <span class="sd">        &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
 <span class="sd">        &gt;&gt;&gt; stimulus = stimulus * ampl</span>
-<span class="sd">        &gt;&gt;&gt; spec, freq_axis = spectrum(stimulus, fs, db=False)</span>
+<span class="sd">        &gt;&gt;&gt; spec, freq_axis = comp_spectrum(stimulus, fs, db=False)</span>
 <span class="sd">        &gt;&gt;&gt; t_pr, pr, prom, tones_freqs = pr_ecma_freq(spec.T, freq_axis.T)</span>
 <span class="sd">        &gt;&gt;&gt; plt.bar(tones_freqs, pr, width=50)  </span>
 <span class="sd">        &gt;&gt;&gt; plt.grid(axis=&#39;y&#39;)</span>

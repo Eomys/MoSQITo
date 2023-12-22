@@ -12,7 +12,7 @@ import numpy as np
 
 # Local application imports
 from mosqito.utils import load
-from mosqito.sound_level_meter.spectrum import spectrum
+from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
 from mosqito.sq_metrics import pr_ecma_freq
 
 @pytest.mark.pr_freq  # to skip or run PR test
@@ -43,7 +43,7 @@ def test_pr_ecma_freq():
     # Load signal
     audio, fs = load(signal["data_file"], wav_calib=0.01)
     # convert to frequency domain
-    spec, freqs = spectrum(audio, fs, window='hanning', db=False)
+    spec, freqs = comp_spectrum(audio, fs, window='hanning', db=False)
 
     # Compute tone-to-noise ratio
     # 1D input

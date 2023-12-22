@@ -16,40 +16,40 @@ The scope of the project is to implement the following first set of metrics:
      - Under dev.
      - To do
    * - Loudness for steady signals (Zwicker method)
-     - ISO 532B:1975 
-       | DIN 45631:1991
-       | ISO 532-1:2017 §5 
+     - :footcite:t:`ISO.532B:1975` 
+       | :footcite:t:`DIN.45631:1991`
+       | :footcite:t:`ISO.532B-1:2017`
      - X 
      - X 
      - 
      - 
    * - Loudness for non-stationary (Zwicker method)
-     - DIN 45631/A1:2010
-       | ISO 532-1:2017 §6
+     - :footcite:t:`DIN.45631/A1:2010-03`
+       | :footcite:t:`ISO.532B-1:2017`
      - X 
      - X 
      - 
      - 
    * - Loudness for non-stationary (ECMA method)
-     - ECMA 418-2:2019 section 5, Sottek, 2016
+     - :footcite:t:`ECMA 418-2:2022`
      - X 
      - X 
      - 
      - 
    * - Sharpness 
-     - DIN 45692:2009
+     - :footcite:t:`DIN.45692:2009`
      - X 
      - X 
      - 
      - 
    * - Roughness (Daniel and Weber)
-     - Daniel and Weber, 1997
+     - :footcite:t:`roughnessDW`
      - X 
      - X 
      - 
      - 
    * - Roughness (ECMA method)
-     - ECMA-418-2:2020
+     - :footcite:t:`ECMA 418-2:2022`
      -  
      -  
      - X
@@ -62,7 +62,7 @@ The scope of the project is to implement the following first set of metrics:
      - 
      - X
    * - Tonality (Hearing model)
-     - ECMA-74:2019 annex G
+     - :footcite:t:`ECMA-74`
      -  
      -  
      - X
@@ -80,50 +80,50 @@ As a second priority, the project could address the following metrics:
      - Under dev.
      - To do
    * - Loudness for steady signals (Moore/Glasberg method)
-     - ISO 532-2:2017
+     - :footcite:t:`ISO.532B-1:2017`
      -  
      -  
      - 
      - X 
    * - Loudness for non-stationary (Moore/Glasberg method)
-     - Moore, 2014
+     - :footcite:t:`loudnessMoore`
      -   
      -   
      - 
      - X
    * - Sharpness (using Moore/Glasberg loudness)
-     - Hales-Swift and Gee, 2017
-     -  
+     - :footcite:t:`sharpnessSG`
+     - 
      -  
      - 
      - X 
    * - Tone-to-noise ratio / Prominence ratio (occupational noise, discrete tones)
-     - ECMA-74:2019 annex D ISO 7719:2018
+     - :footcite:t:`ECMA-74`
      -  
      - X 
      - 
      - 
    * - Tone-to-noise ratio (environmental noise, automatic tone detection)
-     - DIN 45681
+     - :footcite:t:`DIN.45681:2005-03`
      -  
      -  
      - 
      - X
 
    * - Audibility of tone in noise (Engineering method)
-     - ISO 1996-2 annex J
+     - :footcite:t:`ISO.1996-2:2017`
      -  
      -  
      - 
      - X
    * - Audibility of tone in noise (Survey method)    
-     - ISO 1996-2 annex K
+     - :footcite:t:`ISO.1996-2:2017`
      -  
      -  
      - X
      - 
    * - Tone-to-noise ratio (environmental noise) 
-     - ANSI S1.13:2005
+     - :footcite:t:`ANSI.S1.13-2005`
      -  
      -  
      - 
@@ -143,14 +143,5 @@ wants to contribute is welcome.
 
 References
 --------------
+.. footbibliography::
 
-Daniel, P., and Weber, R. (1997). “Psychoacoustical Roughness: Implementation 
-of an Optimized Model”, Acta Acustica, Vol. 83: 113-123
-
-Hales Swift, S., and Gee, K. L. (2017). “Extending sharpness calculation
-for an alternative loudness metric input,” J. Acoust. Soc. Am.142,
-EL549. 
-
-Moore, B. C. J. et al. (2016) ‘A Loudness Model for Time-Varying Sounds Incorporating Binaural Inhibition’, Trends in Hearing. [doi: 10.1177/2331216516682698](https://doi.org/10.1177/2331216516682698).
-
-Sottek, R. (2016) A Hearing Model Approach to Time-Varying Loudness, Acta Acustica united with Acustica, vol. 102, no. 4, pp. 725-744.

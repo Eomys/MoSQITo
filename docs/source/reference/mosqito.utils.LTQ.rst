@@ -1,5 +1,4 @@
-mosqito.utils.LTQ module
-========================
+
 
 .. automodule:: mosqito.utils.LTQ
    :members:

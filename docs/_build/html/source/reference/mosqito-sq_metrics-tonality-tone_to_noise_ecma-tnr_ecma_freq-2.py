@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mosqito.sq_metrics import tnr_ecma_freq
-from mosqito.sound_level_meter.spectrum import spectrum
+from mosqito.sound_level_meter import comp_spectrum
 fs = 48000
 d = 2
 f = 1000
@@ -11,7 +11,7 @@ stimulus = np.sin(2 * np.pi * f * time) + 0.5 * np.sin(2 * np.pi * 3 * f * time)
 rms = np.sqrt(np.mean(np.power(stimulus, 2)))
 ampl = 0.00002 * np.power(10, dB / 20) / rms
 stimulus = stimulus * ampl
-spec, freq_axis = spectrum(stimulus, fs, db=False)
+spec, freq_axis = comp_spectrum(stimulus, fs, db=False)
 t_tnr, tnr, prom, tones_freqs = tnr_ecma_freq(spec.T, freq_axis.T)
 plt.bar(tones_freqs, tnr, width=50)
 plt.grid(axis='y')

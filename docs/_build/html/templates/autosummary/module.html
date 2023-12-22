@@ -45,7 +45,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 21, 2023"/>
+    <meta name="docbuild:last-update" content="Dec 22, 2023"/>
   </head>
   
   
@@ -374,47 +374,18 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <p>{% extends “!autosummary/module.rst” %}</p>
-<dl class="simple">
-<dt>{# This file is almost the same as the default, but adds :toctree: to the autosummary directives.</dt><dd><p>The original can be found at <cite>sphinx/ext/autosummary/templates/autosummary/module.rst</cite>. #}</p>
-</dd>
-</dl>
-<p>{% block attributes %}
-{% if attributes %}</p>
+  <p>{%- if show_headings %}
+{{- heading }}</p>
+<p>{% endif -%}
+.. automodule:: {{ qualname }}
+{%- for option in automodule_options %}</p>
 <blockquote>
-<div><p class="rubric">Module Attributes</p>
-<dl class="simple">
-<dt>{% for item in attributes %}</dt><dd><p>{{ item }}</p>
-</dd>
+<div><dl class="field-list simple">
+<dt class="field-odd">{{ option }}<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
 </dl>
-<p>{%- endfor %}</p>
 </div></blockquote>
-<p>{% endif %}
-{% endblock %}</p>
-<p>{% block functions %}
-{% if functions %}</p>
-<blockquote>
-<div><p class="rubric">Functions</p>
-<dl class="simple">
-<dt>{% for item in functions %}</dt><dd><p>{{ item }}</p>
-</dd>
-</dl>
 <p>{%- endfor %}</p>
-</div></blockquote>
-<p>{% endif %}
-{% endblock %}</p>
-<p>{% block classes %}
-{% if classes %}</p>
-<blockquote>
-<div><p class="rubric">Classes</p>
-<dl class="simple">
-<dt>{% for item in classes %}</dt><dd><p>{{ item }}</p>
-</dd>
-</dl>
-<p>{%- endfor %}</p>
-</div></blockquote>
-<p>{% endif %}
-{% endblock %}</p>
 
 
                 </article>
