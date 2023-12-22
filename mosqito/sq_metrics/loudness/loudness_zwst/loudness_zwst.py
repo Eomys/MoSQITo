@@ -63,6 +63,13 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
         time = signal.get_along("time")["time"]
         fs = 1 / (time[1] - time[0])
         signal = signal.get_along("time")[signal.symbol]
+        
+    if fs < 48000:
+        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+             )
+        from scipy.signal import resample
+        signal = resample(signal, int(48000 * len(signal) / fs))
+        fs = 48000
 
     # Compute third octave band spectrum
     spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600)

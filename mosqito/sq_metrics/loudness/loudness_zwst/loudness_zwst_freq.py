@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Third party imports
-import numpy as np
+from numpy import linspace, interp, arange
 
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum.noct_synthesis import noct_synthesis
@@ -45,8 +45,17 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     bark_axis : numpy.array
         Frequency axis in bark, size (Nbark,).
     """
+    # Check the inputs
     if len(spectrum) != len(freqs):
-        raise ValueError('Input spectrum and frequency axis must have the same shape')
+        raise ValueError(
+            'Input spectrum and frequency axis must have the same shape')
+    
+    if (freqs.max() < 24000) or (freqs.min() > 24):
+        print("[WARNING] freqs argument is not wide enough to cover the full audio range. Missing frequency bands will be filled with 0. To fulfill the standard requirements, the frequency axis should go from 24Hz up to 24 kHz."
+        )
+        df = freqs[1] - freqs[0]
+        spectrum = interp(arange(0,24000+df, df), freqs, spectrum)
+        freqs = arange(0,24000+df, df)
 
     # Compute third octave band spectrum
     spec_third, _ = noct_synthesis(spectrum, freqs, fmin=24, fmax=12600)
@@ -62,6 +71,6 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     N, N_specific = _calc_slopes(Nm)
 
     # Define Bark axis
-    bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
+    bark_axis = linspace(0.1, 24, int(24 / 0.1))
 
     return N, N_specific, bark_axis
