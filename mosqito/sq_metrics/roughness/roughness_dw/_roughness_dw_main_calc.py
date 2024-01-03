@@ -7,10 +7,12 @@ import math
 
 # Local imports
 from mosqito.utils.LTQ import LTQ
+from mosqito.utils import hearing_threshold
 from mosqito.sq_metrics.roughness.roughness_dw._ear_filter_coeff import (
     _ear_filter_coeff,
 )
 from mosqito.utils.conversion import freq2bark, db2amp, amp2db, bark2freq
+
 
 def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     """
@@ -41,13 +43,13 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
         )
 
     # convert spectrum to 2-sided
-    spec = np.concatenate((spec, spec[len(spec)::-1]))
+    spec = np.concatenate((spec, spec[len(spec) :: -1]))
 
     n = len(spec)
     # Frequency axis in Bark
     bark_axis = freq2bark(freq_axis)
     # Highest frequency
-    nZ = np.arange(1, n//2 + 1, 1)
+    nZ = np.arange(1, n // 2 + 1, 1)
 
     # Calculate Zwicker a0 factor (transfer characteristic of the outer and inner ear)
     a0 = np.zeros((n))
@@ -55,10 +57,11 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     spec = a0 * spec
 
     # Conversion of the spec into dB
-    module = np.abs(spec[0:n//2])
+    module = np.abs(spec[0 : n // 2])
     spec_dB = amp2db(module, ref=2e-5)
-    
+
     # Find the audible components within the spec
+    # threshold = hearing_threshold(freq_axis, method="DW_1997")
     threshold = LTQ(bark_axis, reference="roughness")
     audible_index = np.where(spec_dB > threshold)[0]
     # Number of audible frequencies
@@ -74,7 +77,9 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     # upper slope [dB/Bark]
     for k in np.arange(0, n_aud, 1):
         s2[k] = min(
-            -24 - (230 / freq_axis[audible_index[k]]) + (0.2 * spec_dB[audible_index[k]]),
+            -24
+            - (230 / freq_axis[audible_index[k]])
+            + (0.2 * spec_dB[audible_index[k]]),
             0,
         )
 
@@ -86,7 +91,7 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     zb = bark2freq(zi) * n / fs
     # Minimum excitation level
     minExcitDB = np.interp(zb, nZ, threshold)
-    
+
     ch_low = np.zeros((n_aud))
     ch_high = np.zeros((n_aud))
     for i in np.arange(0, n_aud):
@@ -188,6 +193,3 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     R = 0.25 * sum(R_spec)
 
     return R, R_spec, zi
-
-
-

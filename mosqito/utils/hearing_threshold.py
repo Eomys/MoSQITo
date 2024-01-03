@@ -1,6 +1,7 @@
 from numpy import interp, nan
 
-from mosqito.utils._hearing_threshold_data import f_iso226, ht_iso226
+from mosqito.utils.conversion import freq2bark, bark2freq
+from mosqito.utils._hearing_threshold_data import f_iso226, ht_iso226, bark_dw, ht_dw
 
 
 def hearing_threshold(axis, axis_type="freq", method="ISO_226:2003"):
@@ -28,15 +29,14 @@ def hearing_threshold(axis, axis_type="freq", method="ISO_226:2003"):
     Method for the hearing threshold computation:
     ISO_226:2003 :
         Linear interpolation from the data provided in Table 1 of [ISO226]
-    Zwicker :
-        Linear interpolation from the data given in [ZF] (figure 2.1)
-        SPL is given for a free-field condition relative to 2 × 10−5 Pa
-        (Threshold for roughness is slightly different)
+    DW_1997 :
+        Hearing threshold defined in [DW]
 
     References
     ----------
     .. [ISO226] ISO 226:2003 Normal equal-loudness-level contours
-    .. [ZF] E. Zwicker, H. Fastl: Psychoacoustics. Springer, Berlin, Heidelberg, 1990.
+    .. [DW] "Psychoacoustical roughness: implementation of an optimized model" by Daniel and Weber in 1997
+
 
     Examples
     --------
@@ -44,6 +44,13 @@ def hearing_threshold(axis, axis_type="freq", method="ISO_226:2003"):
     """
 
     if method == "ISO_226:2003":
+        if axis_type == "bark":
+            axis = bark2freq(axis)
         ht = interp(axis, f_iso226, ht_iso226, left=nan, right=nan)
+
+    elif method == "DW_1997":
+        if axis_type == "freq":
+            axis = freq2bark(axis)
+        ht = interp(axis, bark_dw, ht_dw)
 
     return ht
