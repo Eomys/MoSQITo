@@ -39,8 +39,8 @@ def sii_ansi(noise, fs, method, speech_level, threshold=None):
         
     See also
     --------
-    sii_level : Speech intelligibility with an overall SPL level as background noise
-    sii_freq : Speech intelligibility with a frequency spectrum as background noise
+    sii_ansi_level : Speech intelligibility with an overall SPL level as background noise
+    sii_ansi_freq : Speech intelligibility with a frequency spectrum as background noise
         
     References
     ----------
@@ -55,7 +55,7 @@ def sii_ansi(noise, fs, method, speech_level, threshold=None):
     .. plot::
        :include-source:
 
-        >>> from mosqito.sq_metrics.speech_intelligibility import sii
+        >>> from mosqito.sq_metrics.speech_intelligibility import sii_ansi
         >>> import matplotlib.pyplot as plt
         >>> import numpy as np
         >>> fs=48000
@@ -67,7 +67,7 @@ def sii_ansi(noise, fs, method, speech_level, threshold=None):
         >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
-        >>> SII, SII_spec, freq_axis = sii(stimulus, fs, method='critical', speech_level='normal')
+        >>> SII, SII_spec, freq_axis = sii_ansi(stimulus, fs, method='critical', speech_level='normal')
         >>> plt.plot(freq_axis, SII_spec)
         >>> plt.xlabel("Frequency [Hz]")
         >>> plt.ylabel("Specific value ")
@@ -102,3 +102,4 @@ def sii_ansi(noise, fs, method, speech_level, threshold=None):
     SII, SII_specific, freq_axis = _main_sii(method, speech_spectrum, noise_spectrum, threshold)    
     
     return SII, SII_specific, freq_axis
+

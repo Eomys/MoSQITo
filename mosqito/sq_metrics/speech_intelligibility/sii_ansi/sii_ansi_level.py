@@ -36,8 +36,8 @@ def sii_ansi_level(noise_level, method, speech_level, threshold=None):
         
     See also
     --------
-    sii : Speech intelligibility with a time signal as background noise
-    sii_freq : Speech intelligibility with a frequency spectrum as background noise
+    sii_ansi : Speech intelligibility with a time signal as background noise
+    sii_ansi_freq : Speech intelligibility with a frequency spectrum as background noise
         
     References
     ----------
@@ -54,7 +54,7 @@ def sii_ansi_level(noise_level, method, speech_level, threshold=None):
        
         >>> import matplotlib.pyplot as plt
         >>> import numpy as np
-        >>> from mosqito.sq_metrics.speech_intelligibility import sii_level
+        >>> from mosqito.sq_metrics.speech_intelligibility import sii_ansi_level
         >>> fs=48000
         >>> d=0.2
         >>> dB=90
@@ -65,11 +65,11 @@ def sii_ansi_level(noise_level, method, speech_level, threshold=None):
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
         >>> speech_level = 'raised'
-        >>> SII, SII_spec, freq_axis = sii_level(60, method='critical', speech_level=speech_level, threshold='zwicker')
+        >>> SII, SII_spec, freq_axis = sii_ansi_level(60, method='critical', speech_level=speech_level, threshold='zwicker')
         >>> plt.plot(freq_axis, SII_spec)
         >>> plt.xlabel("Frequency [Hz]")
         >>> plt.ylabel("Specific value ")
-        >>> plt.title("Speech Intelligibility Index = " + f"{SII:.2f}" + "\n Speech level: " + speech_level + " dB")   
+        >>> plt.title("Speech Intelligibility Index = " + f"{SII:.2f}")   
 
     """
     
@@ -98,4 +98,3 @@ def sii_ansi_level(noise_level, method, speech_level, threshold=None):
     SII, SII_specific, freq_axis = _main_sii(method, speech_spectrum, noise_spectrum, threshold)    
     
     return SII, SII_specific, freq_axis
-

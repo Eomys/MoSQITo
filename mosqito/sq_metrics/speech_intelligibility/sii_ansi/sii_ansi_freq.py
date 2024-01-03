@@ -36,8 +36,8 @@ def sii_ansi_freq(spectrum, freqs, method, speech_level, threshold=None):
         
     See also
     --------
-    sii : Speech intelligibility with a time signal as background noise
-    sii_level : Speech intelligibility with an overall SPL level as background noise
+    sii_ansi : Speech intelligibility with a time signal as background noise
+    sii_ansi_level : Speech intelligibility with an overall SPL level as background noise
     
     References
     ----------
@@ -65,7 +65,7 @@ def sii_ansi_freq(spectrum, freqs, method, speech_level, threshold=None):
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
         >>> spec, freqs = comp_spectrum(stimulus, fs, db=True)
-        >>> SII, SII_spec, freq_axis = sii_freq(spec, freqs, method='critical', speech_level='normal')
+        >>> SII, SII_spec, freq_axis = sii_ansi_freq(spec, freqs, method='critical', speech_level='normal')
         >>> plt.plot(freq_axis, SII_spec)
         >>> plt.xlabel("Frequency [Hz]")
         >>> plt.ylabel("Specific value ")
@@ -102,4 +102,3 @@ def sii_ansi_freq(spectrum, freqs, method, speech_level, threshold=None):
     SII, SII_specific, freq_axis = _main_sii(method, speech_spectrum, noise_spectrum, threshold)    
     
     return SII, SII_specific, freq_axis
-
