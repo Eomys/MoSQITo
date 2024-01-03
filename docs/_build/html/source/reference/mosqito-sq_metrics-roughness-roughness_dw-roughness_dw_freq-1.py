@@ -1,5 +1,5 @@
 from mosqito.sq_metrics import roughness_dw_freq
-from mosqito.sound_level_meter import spectrum
+from mosqito.sound_level_meter import comp_spectrum
 import matplotlib.pyplot as plt
 import numpy as np
 fc=1000
@@ -16,7 +16,7 @@ rms = np.sqrt(np.mean(np.power(stimulus, 2)))
 ampl = 0.00002 * np.power(10, dB / 20) / rms
 stimulus = stimulus * ampl
 n = len(stimulus)
-spec, freqs = spectrum(stimulus, fs, db=False)
+spec, freqs = comp_spectrum(stimulus, fs, db=False)
 R, R_specific, bark = roughness_dw_freq(spec, freqs)
 plt.plot(bark, R_specific)
 plt.xlabel("Bark axis [Bark]")

@@ -395,10 +395,12 @@ document.write(`
 </pre></div>
 </div>
 <p>This command line should download and install MOSQITO on your computer, along with the dependencies needed to compute SQ metrics.</p>
-<p>If you need to import .uff or .unv files, you will need the pyuff package dependency. Note that ‘pyuff’ is released under the GPL
-license which prevents MOSQITO from being used in other software that must be under a more permissive license. To include the ‘pyuff’
-dependancy anyway, type the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">mosqito</span><span class="p">[</span><span class="n">uff</span><span class="p">]</span>
+<p>All SQ metrics computation functions are accessible via the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mosqito</span> <span class="kn">import</span> <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mosqito.</span><span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span> <span class="kn">import</span> <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </section>

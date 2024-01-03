@@ -19,7 +19,7 @@ html[data-theme="light"] {
 }
 
 html[data-theme="dark"] {
-    --pst-color-secondary: rgb(100, 53, 53);
+    --pst-color-accent: rgb(100, 53, 53);
 }
 
 html[data-theme="light"] {

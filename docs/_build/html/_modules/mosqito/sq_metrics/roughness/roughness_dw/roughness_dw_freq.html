@@ -438,7 +438,7 @@ document.write(`
 <span class="sd">       :include-source:</span>
 
 <span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import roughness_dw_freq</span>
-<span class="sd">       &gt;&gt;&gt; from mosqito.sound_level_meter import spectrum</span>
+<span class="sd">       &gt;&gt;&gt; from mosqito.sound_level_meter import comp_spectrum</span>
 <span class="sd">       &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">       &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">       &gt;&gt;&gt; fc=1000</span>
@@ -455,7 +455,7 @@ document.write(`
 <span class="sd">       &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
 <span class="sd">       &gt;&gt;&gt; stimulus = stimulus * ampl</span>
 <span class="sd">       &gt;&gt;&gt; n = len(stimulus)</span>
-<span class="sd">       &gt;&gt;&gt; spec, freqs = spectrum(stimulus, fs, db=False)</span>
+<span class="sd">       &gt;&gt;&gt; spec, freqs = comp_spectrum(stimulus, fs, db=False)</span>
 <span class="sd">       &gt;&gt;&gt; R, R_specific, bark = roughness_dw_freq(spec, freqs)</span>
 <span class="sd">       &gt;&gt;&gt; plt.plot(bark, R_specific)</span>
 <span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Bark axis [Bark]&quot;)</span>
@@ -510,6 +510,32 @@ document.write(`
     <span class="k">return</span> <span class="n">R</span><span class="p">,</span> <span class="n">R_spec</span><span class="p">,</span> <span class="n">bark_axis</span></div>
 
 
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">mosqito.sq_metrics</span> <span class="kn">import</span> <span class="n">roughness_dw_freq</span>
+    <span class="kn">from</span> <span class="nn">mosqito.sound_level_meter</span> <span class="kn">import</span> <span class="n">comp_spectrum</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="n">fc</span><span class="o">=</span><span class="mi">1000</span>
+    <span class="n">fmod</span><span class="o">=</span><span class="mi">70</span>
+    <span class="n">fs</span><span class="o">=</span><span class="mi">44100</span>
+    <span class="n">d</span><span class="o">=</span><span class="mf">0.2</span>
+    <span class="n">dB</span><span class="o">=</span><span class="mi">60</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">fs</span><span class="p">)</span>
+    <span class="n">stimulus</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mf">0.5</span>
+    <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">fmod</span> <span class="o">*</span> <span class="n">time</span><span class="p">))</span>
+    <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">fc</span> <span class="o">*</span> <span class="n">time</span><span class="p">))</span>   
+    <span class="n">rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">stimulus</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">ampl</span> <span class="o">=</span> <span class="mf">0.00002</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dB</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span> <span class="o">/</span> <span class="n">rms</span>
+    <span class="n">stimulus</span> <span class="o">=</span> <span class="n">stimulus</span> <span class="o">*</span> <span class="n">ampl</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stimulus</span><span class="p">)</span>
+    <span class="n">spec</span><span class="p">,</span> <span class="n">freqs</span> <span class="o">=</span> <span class="n">comp_spectrum</span><span class="p">(</span><span class="n">stimulus</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">,</span> <span class="n">R_specific</span><span class="p">,</span> <span class="n">bark</span> <span class="o">=</span> <span class="n">roughness_dw_freq</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">freqs</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bark</span><span class="p">,</span> <span class="n">R_specific</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bark axis [Bark]&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Specific roughness, [Asper/Bark]&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Roughness = &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">R</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot; [Asper]&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
                 </article>
