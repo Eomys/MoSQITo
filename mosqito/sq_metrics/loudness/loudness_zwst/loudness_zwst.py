@@ -9,16 +9,8 @@ from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudn
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
 from mosqito.utils.conversion import amp2db
 
-# Optional package import
-try:
-    from SciDataTool import DataTime, DataLinspace, DataFreq
-except ImportError:
-    DataTime = None
-    DataLinspace = None
-    DataFreq = None
 
-
-def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
+def loudness_zwst(signal, fs, field_type="free"):
     """Zwicker-loudness calculation for stationary signals
 
     Calculates the acoustic loudness according to Zwicker method for
@@ -36,38 +28,30 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
 
     Parameters
     ----------
-    signal : numpy.array or DataTime object
+    signal : numpy.array
         Signal time values [Pa]
-    fs : float, optional
-        Sampling frequency, can be omitted if the input is a DataTime
-        object. Default to None
+    fs : float
+        Sampling frequency [Hz]
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
-    is_sdt_output : Bool, optional
-        If True, the outputs are returned as SciDataTool objects.
-        Default to False
 
     Outputs
     -------
     N : float or numpy.array
         The overall loudness array [sones], size (Ntime,).
-    N_specific : numpy.ndarray or DataFreq object
+    N_specific : numpy.ndarray
         The specific loudness array [sones/bark], size (Nbark, Ntime).
     bark_axis: numpy.array
         The Bark axis array, size (Nbark,).
     """
 
-    # Manage SciDataTool input type
-    if DataTime is not None and isinstance(signal, DataTime):
-        time = signal.get_along("time")["time"]
-        fs = 1 / (time[1] - time[0])
-        signal = signal.get_along("time")[signal.symbol]
-        
     if fs < 48000:
-        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
-             )
+        print(
+            "[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+        )
         from scipy.signal import resample
+
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
 
@@ -86,28 +70,5 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
 
     # Define Bark axis
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
-
-    # Manage SciDataTool output type
-    if is_sdt_output:
-        if DataLinspace is None:
-            raise RuntimeError(
-                "In order to handle Data objects you need the 'SciDataTool' package."
-            )
-        else:
-            bark_data = DataLinspace(
-                name="Critical band rate",
-                unit="Bark",
-                initial=0,
-                final=24,
-                number=int(24 / 0.1),
-                include_endpoint=True,
-            )
-            N_specific = DataFreq(
-                name="Specific loudness (Zwicker method for stationnary signal)",
-                symbol="N'_{zwst}",
-                axes=[bark_data],
-                values=N_specific,
-                unit="sone/Bark",
-            )
 
     return N, N_specific, bark_axis

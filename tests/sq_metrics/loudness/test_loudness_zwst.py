@@ -5,13 +5,6 @@ try:
     import pytest
 except ImportError:
     raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
-try:
-    from SciDataTool import DataLinspace, DataTime
-except ImportError:
-    raise RuntimeError(
-        "In order to handle Data objects you need the 'SciDataTool' package."
-    )
-
 
 import numpy as np
 from numpy.fft import fft, fftfreq
@@ -27,7 +20,7 @@ from tests.input.Test_signal_1 import test_signal_1
 @pytest.fixture
 def test_signal():
     sig, fs = load(
-        "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2 ** 0.5
+        "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2**0.5
     )
     N_specif_iso = np.genfromtxt("tests/input/test_signal_5.csv", skip_header=1)
     sig_dict = {
@@ -113,7 +106,7 @@ def test_loudness_zwst_44100Hz():
     # Test signal as input for stationary loudness
     # (from ISO 532-1 annex B3) resampled
     sig, fs = load(
-        "tests/input/Test signal 3 (1 kHz 60 dB)_44100Hz.wav", wav_calib=2 * 2 ** 0.5
+        "tests/input/Test signal 3 (1 kHz 60 dB)_44100Hz.wav", wav_calib=2 * 2**0.5
     )
 
     # Target values
@@ -138,65 +131,6 @@ def test_loudness_zwst_perseg(test_signal):
     N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
         sig, fs, nperseg=8192 * 2, noverlap=4096
     )
-
-    # Check that all values are within the desired values +/- 5%
-    np.testing.assert_allclose(N, 10.498, rtol=0.05)
-
-
-@pytest.mark.loudness_zwst
-def test_loudness_zwst_sdt(test_signal):
-    sig = test_signal["signal"]
-    fs = test_signal["fs"]
-    time = DataLinspace(
-        name="time",
-        unit="s",
-        initial=0,
-        final=(len(sig) - 1) / fs,
-        number=len(sig),
-        include_endpoint=True,
-    )
-    sig_data = DataTime(
-        name="Test signal 5 (pinknoise 60 dB)",
-        symbol="p",
-        unit="Pa",
-        axes=[time],
-        values=sig,
-    )
-    N, N_specific, _ = loudness_zwst(sig_data, fs, is_sdt_output=True)
-    N_specific = N_specific.get_along("Critical band rate")[N_specific.symbol]
-
-    # Assert compliance
-    is_isoclose_N = isoclose(N, test_signal["N_iso"], rtol=5 / 100, atol=0.1)
-    is_isoclose_N_specific = isoclose(
-        N_specific, test_signal["N_specif_iso"], rtol=5 / 100, atol=0.1
-    )
-    assert is_isoclose_N and is_isoclose_N_specific
-
-
-@pytest.mark.loudness_zwst
-def test_loudness_zwst_perseg_sdt(test_signal):
-    sig = test_signal["signal"]
-    fs = test_signal["fs"]
-    time = DataLinspace(
-        name="time",
-        unit="s",
-        initial=0,
-        final=(len(sig) - 1) / fs,
-        number=len(sig),
-        include_endpoint=True,
-    )
-    sig_data = DataTime(
-        name="Test signal 5 (pinknoise 60 dB)",
-        symbol="p",
-        unit="Pa",
-        axes=[time],
-        values=sig,
-    )
-    # Compute Loudness
-    N, N_specific, bark_axis, time_axis = loudness_zwst_perseg(
-        sig_data, fs, nperseg=8192 * 2, noverlap=4096, is_sdt_output=True
-    )
-    N = N.get_along("time")[N.symbol]
 
     # Check that all values are within the desired values +/- 5%
     np.testing.assert_allclose(N, 10.498, rtol=0.05)
@@ -264,7 +198,7 @@ def test_loudness_zwst_gi0():
 if __name__ == "__main__":
     # Reproduce the code from the fixture
     sig, fs = load(
-        "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2 ** 0.5
+        "tests/input/Test signal 5 (pinknoise 60 dB).wav", wav_calib=2 * 2**0.5
     )
     N_specif_iso = np.genfromtxt("tests/input/test_signal_5.csv", skip_header=1)
     test_signal = {
@@ -278,7 +212,5 @@ if __name__ == "__main__":
     # test_loudness_zwst_wav(test_signal)
     # test_loudness_zwst_44100Hz()
     # test_loudness_zwst_perseg(test_signal)
-    # test_loudness_zwst_sdt(test_signal)
-    # test_loudness_zwst_perseg_sdt(test_signal)
     # test_loudness_zwst_freq(test_signal)
     test_loudness_zwst_gi0()

@@ -4,18 +4,8 @@
 from mosqito.utils import time_segmentation
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst
 
-# Optional package import
-try:
-    from SciDataTool import DataTime, DataLinspace, DataFreq, Norm_func
-except ImportError:
-    DataTime = None
-    DataLinspace = None
-    DataFreq = None
 
-
-def loudness_zwst_perseg(
-    signal, fs=None, nperseg=4096, noverlap=None, field_type="free", is_sdt_output=False
-):
+def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="free"):
     """Zwicker-loudness calculation for stationary signals
 
     Calculates the acoustic loudness according to Zwicker method for
@@ -33,10 +23,10 @@ def loudness_zwst_perseg(
 
     Parameters
     ----------
-    signal : numpy.array or DataTime object
+    signal : numpy.array
         Time signal values [Pa].
-    fs : float, optional
-        Sampling frequency, can be omitted if the input is a DataTime
+    fs : float
+        Sampling frequency [Hz]
         object. Default to None
     nperseg: int, optional
         Length of each segment. Defaults to 4096.
@@ -46,80 +36,32 @@ def loudness_zwst_perseg(
     field_type : str
         Type of soundfield corresponding to spec_third ("free" by
         default or "diffuse").
-    is_sdt_output : Bool, optional
-        If True, the outputs are returned as SciDataTool objects.
-        Default to False
 
     Outputs
     -------
-    N : numpy.array or DataTime object
+    N : numpy.array
         The overall loudness array [sones], size (Ntime,).
-    N_specific : numpy.ndarray or DataFreq object
+    N_specific : numpy.ndarray
         The specific loudness array [sones/bark], size (Nbark, Ntime).
     bark_axis: numpy.array
         The Bark axis array, size (Nbark,).
     time_axis: numpy.array
-        The time axis array, size (Ntime,) or None.
+        The time axis array, size (Ntime,).
 
     """
     if fs < 48000:
-        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
-             )
+        print(
+            "[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+        )
         from scipy.signal import resample
+
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
-
-    # Manage input type
-    if DataTime is not None and isinstance(signal, DataTime):
-        time = signal.get_along("time")["time"]
-        fs = 1 / (time[1] - time[0])
-        signal = signal.get_along("time")[signal.symbol]
 
     # Time signal segmentation
     signal, time_axis = time_segmentation(signal, fs, nperseg, noverlap)
 
     # Compute loudness
     N, N_specific, bark_axis = loudness_zwst(signal, fs, field_type=field_type)
-
-    # Manage SciDataTool output type
-    if is_sdt_output:
-        if DataLinspace is None:
-            raise RuntimeError(
-                "In order to handle Data objects you need the 'SciDataTool' package."
-            )
-        else:
-            bark_data = DataLinspace(
-                name="Critical band rate",
-                unit="Bark",
-                initial=0,
-                final=24,
-                number=int(24 / 0.1),
-                include_endpoint=True,
-                normalizations={
-                    "Hz": Norm_func(function=lambda x: 1960 * (x + 0.53) / (26.28 - x))
-                },
-            )
-            time = DataLinspace(
-                name="time",
-                unit="s",
-                initial=time_axis[0],
-                final=time_axis[-1],
-                number=len(time_axis),
-                include_endpoint=True,
-            )
-            N_specific = DataFreq(
-                name="Specific loudness (Zwicker method for stationnary signal)",
-                symbol="N'_{zwst}",
-                axes=[bark_data, time],
-                values=N_specific,
-                unit="sone/Bark",
-            )
-            N = DataTime(
-                name="Loudness (Zwicker method for stationnary signal)",
-                symbol="N_{zwst}",
-                axes=[time],
-                values=N,
-                unit="sone",
-            )
 
     return N, N_specific, bark_axis, time_axis
