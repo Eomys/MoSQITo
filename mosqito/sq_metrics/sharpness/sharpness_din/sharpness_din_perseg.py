@@ -29,7 +29,7 @@ def sharpness_din_perseg(
 
     This function computes the sharpness value according to different methods.
 
-    Parameters:
+    Parameters
     ----------
     signal: array_like
         Input time signal in [Pa]
@@ -59,10 +59,10 @@ def sharpness_din_perseg(
 
     See Also
     --------
-    sharpness_din_from_loudness : Sharpness computation from loudness values
-    sharpness_din_tv : Sharpness computation for a non-stationary time signal
-    sharpness_din_st : Sharpness computation for a stationary time signal
-    sharpness_din_freq : Sharpness computation from a sound spectrum
+    .sharpness_din_from_loudness : Sharpness computation from loudness values
+    .sharpness_din_tv : Sharpness computation for a non-stationary time signal
+    .sharpness_din_st : Sharpness computation for a stationary time signal
+    .sharpness_din_freq : Sharpness computation from a sound spectrum
 
 
     Notes

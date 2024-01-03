@@ -38,9 +38,9 @@ def pr_ecma_freq(spectrum, freqs, prominence=True):
 
     See Also
     --------
-    tnr_ecma_freq : TNR computation for a sound spectrum
-    pr_ecma_st : Prominence ratio for a stationary signal
-    pr_ecma_tv : PR computation for a non-stationary signal
+    .tnr_ecma_freq : TNR computation for a sound spectrum
+    .pr_ecma_st : Prominence ratio for a stationary signal
+    .pr_ecma_tv : PR computation for a non-stationary signal
     
     Notes
     -----

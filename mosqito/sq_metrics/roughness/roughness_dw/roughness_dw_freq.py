@@ -42,7 +42,7 @@ def roughness_dw_freq(spectrum, freqs):
 
     See Also
     --------
-    roughness_dw : roughness computation from a time signal
+    .roughness_dw : roughness computation from a time signal
 
     Notes
     -----

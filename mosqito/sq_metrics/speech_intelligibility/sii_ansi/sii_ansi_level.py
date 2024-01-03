@@ -2,7 +2,6 @@
 
 from numpy import ones, log10, power
 
-from mosqito.sq_metrics.speech_intelligibility.sii_ansi._band_procedure_data import _get_critical_band_data, _get_equal_critical_band_data, _get_octave_band_data, _get_third_octave_band_data
 from mosqito.sq_metrics.speech_intelligibility.sii_ansi._speech_data import _get_critical_band_speech_data, _get_equal_critical_band_speech_data, _get_octave_band_speech_data, _get_third_octave_band_speech_data
 from mosqito.sq_metrics.speech_intelligibility.sii_ansi._main_sii import _main_sii
 
@@ -36,8 +35,8 @@ def sii_ansi_level(noise_level, method, speech_level, threshold=None):
         
     See also
     --------
-    sii_ansi : Speech intelligibility with a time signal as background noise
-    sii_ansi_freq : Speech intelligibility with a frequency spectrum as background noise
+    .sii_ansi : Speech intelligibility with a time signal as background noise
+    .sii_ansi_freq : Speech intelligibility with a frequency spectrum as background noise
         
     References
     ----------

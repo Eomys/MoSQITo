@@ -33,10 +33,10 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
 
     See Also
     ---------
-    sharpness_din_from_loudness : Sharpness computation from loudness values
-    sharpness_din_st : Sharpness computation for a stationary time signal
-    sharpness_din_tv : Sharpness computation for a non-stationary time signal
-    sharpness_din_perseg : Sharpness computation by time-segment
+    .sharpness_din_from_loudness : Sharpness computation from loudness values
+    .sharpness_din_st : Sharpness computation for a stationary time signal
+    .sharpness_din_tv : Sharpness computation for a non-stationary time signal
+    .sharpness_din_perseg : Sharpness computation by time-segment
 
 
     Notes

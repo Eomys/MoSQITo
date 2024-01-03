@@ -36,8 +36,8 @@ def loudness_ecma(signal, sb=2048, sh=1024):
         
     See Also
     --------
-    loudness_zwst : Zwicker and Fastl loudness computation for a stationary time signal
-    loudness_zwtv : Zwicker and Fastl loudness computation for a non-stationary time signal
+    .loudness_zwst : Zwicker and Fastl loudness computation for a stationary time signal
+    .loudness_zwtv : Zwicker and Fastl loudness computation for a non-stationary time signal
 
     Notes
     -----

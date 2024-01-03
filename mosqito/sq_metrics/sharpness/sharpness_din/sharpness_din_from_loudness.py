@@ -8,7 +8,7 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
     """Acoustic sharpness calculation according to different methods
         (Aures, Von Bismarck, DIN 45692, Fastl) from time varying loudness.
 
-    Parameters:
+    Parameters
     ----------
     N : float or array_like
         Overall loudness [sones], size (Ntime,).
@@ -29,10 +29,10 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
 
     See Also
     --------
-    sharpness_din_tv : Sharpness computation for a non-stationary time signal
-    sharpness_din_st : Sharpness computation for a stationary time signal
-    sharpness_din_freq : Sharpness computation from a sound spectrum
-    sharpness_din_perseg : Sharpness computation by time-segment
+    .sharpness_din_tv : Sharpness computation for a non-stationary time signal
+    .sharpness_din_st : Sharpness computation for a stationary time signal
+    .sharpness_din_freq : Sharpness computation from a sound spectrum
+    .sharpness_din_perseg : Sharpness computation by time-segment
 
     Notes
     -----

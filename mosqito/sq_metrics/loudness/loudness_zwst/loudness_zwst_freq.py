@@ -38,9 +38,9 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
 
     See Also
     --------
-    loudness_zwst : Loudness computation for a stationary time signal
-    loudness_zwst_perseg : Loudness computation by time-segment
-    loudness_zwtv : Loudness computation for a non-stationary time signal
+    .loudness_zwst : Loudness computation for a stationary time signal
+    .loudness_zwst_perseg : Loudness computation by time-segment
+    .loudness_zwtv : Loudness computation for a non-stationary time signal
 
     Notes
     -----

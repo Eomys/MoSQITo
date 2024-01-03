@@ -22,7 +22,7 @@ def loudness_zwst_perseg(
     This function computes the acoustic loudness according to Zwicker method by segmentation
     of a stationary signal.
 
-    Parameters:
+    Parameters
     ------------
     signal: array_like
         Input time signal in [Pa].
@@ -54,9 +54,9 @@ def loudness_zwst_perseg(
 
     See Also
     ---------
-    loudness_zwst : Loudness computation for a stationary time signal
-    loudness_zwst_freq : Loudness computation from a sound spectrum
-    loudness_zwtv : Loudness computation for a non-stationary time signal
+    .loudness_zwst : Loudness computation for a stationary time signal
+    .loudness_zwst_freq : Loudness computation from a sound spectrum
+    .loudness_zwtv : Loudness computation for a non-stationary time signal
 
     Notes
     ------

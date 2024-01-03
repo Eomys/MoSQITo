@@ -39,8 +39,8 @@ def sii_ansi(noise, fs, method, speech_level, threshold=None):
         
     See also
     --------
-    sii_ansi_level : Speech intelligibility with an overall SPL level as background noise
-    sii_ansi_freq : Speech intelligibility with a frequency spectrum as background noise
+    .sii_ansi_level : Speech intelligibility with an overall SPL level as background noise
+    .sii_ansi_freq : Speech intelligibility with a frequency spectrum as background noise
         
     References
     ----------

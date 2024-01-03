@@ -29,9 +29,9 @@ def comp_spectrum(signal,fs, nfft='default', window='hanning', one_sided=True, d
         
     See also
     --------
-    noct_synthesis : Conversion of a spectrum to n-th octave band levels
-    noct_spectrum : N-th octave band spectrum computation from a time signal
-    spectrum2dBA : Conversion of a spectrum from dB to dBA
+    .noct_synthesis : Conversion of a spectrum to n-th octave band levels
+    .noct_spectrum : N-th octave band spectrum computation from a time signal
+    .spectrum2dBA : Conversion of a spectrum from dB to dBA
         
     Examples
     --------
