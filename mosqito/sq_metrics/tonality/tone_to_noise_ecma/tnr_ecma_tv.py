@@ -55,7 +55,10 @@ def tnr_ecma_tv(signal, fs, prominence=False, overlap=0):
     
     References
     ----------
-    .. [ECMA-418-2] Psychoacoustic metrics for ITT equipment — Part 2 (models based on human perception), 2022.
+    :cite:empty:`TNR-ECMA-418-2`
+    
+    .. bibliography::
+        :keyprefix: TNR-
             
     Examples
     --------

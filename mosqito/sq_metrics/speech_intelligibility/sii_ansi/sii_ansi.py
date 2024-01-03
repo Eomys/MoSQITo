@@ -37,6 +37,19 @@ def sii_ansi(noise, fs, method, speech_level, threshold=None):
     freq_axis: numpy.ndarray
         Frequency axis corresponding to the chosen method.
         
+    See also
+    --------
+    sii_level : Speech intelligibility with an overall SPL level as background noise
+    sii_freq : Speech intelligibility with a frequency spectrum as background noise
+        
+    References
+    ----------
+    :cite:empty:`a-ANSI.S3.5:2017`
+    
+    .. bibliography::
+        :labelprefix: A
+        :keyprefix: a-
+    
     Examples
     --------
     .. plot::

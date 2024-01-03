@@ -52,8 +52,10 @@ def roughness_dw_freq(spectrum, freqs):
 
     References
     ----------
-    .. [DW] P. Daniel and R. Weber, "Psychoacoustical roughness: 
-            implementation of an optimized model", 1997
+    :cite:empty:`R-roughnessDW`
+    
+    .. bibliography::
+        :keyprefix: R-
 
     Examples
     --------

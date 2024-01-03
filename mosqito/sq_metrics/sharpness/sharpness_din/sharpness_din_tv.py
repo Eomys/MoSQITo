@@ -56,11 +56,12 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
 
     References
     ----------
-    .. [DIN45692] Measurement technique for the simulation of the auditory sensation of sharpness, 2009
-    .. [Aures] W. Aures, "Sensory pleasantness as a function of psychoacoustic sensations", Acustica 58, 1985
-    .. [Bismarck] G. Von Bismarck, "Sharpness as an attribute of the timbre of steady sounds", Acustica 30, 1974
-    .. [Fastl] E. Zwicker and H. Fastl, "Psychoacoustics", 1999
-
+    :cite:empty:`S-DIN.45692:2009`
+    :cite:empty:`S-ZF:9`
+    :cite:empty:`S-B74`
+    
+    .. bibliography::
+        :keyprefix: S-
 
     Examples
     --------

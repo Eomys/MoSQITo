@@ -57,8 +57,10 @@ def loudness_zwtv(signal, fs, field_type='free'):
     
     References
     ----------
-    .. [ZF] E.Zwicker and H.Fastl, "Program for calculating loudness according to DIN 45631 (ISO 532B)", 
-            J.A.S.J (E) 12, 1 (1991).
+    :cite:empty:`L_zw-ZF91`
+
+    .. bibliography::
+        :keyprefix: L_zw-
             
     Examples
     --------

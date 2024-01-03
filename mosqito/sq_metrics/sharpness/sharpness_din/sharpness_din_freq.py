@@ -49,7 +49,12 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
 
     References
     -----------
-    .. [DIN45692] Measurement technique for the simulation of the auditory sensation of sharpness, 2009
+    :cite:empty:`S-DIN.45692:2009`
+    :cite:empty:`S-ZF:9`
+    :cite:empty:`S-B74`
+    
+    .. bibliography::
+        :keyprefix: S-
 
     Examples
     ---------

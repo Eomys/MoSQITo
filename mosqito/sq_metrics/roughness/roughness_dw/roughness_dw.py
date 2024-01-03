@@ -66,8 +66,10 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
 
     References
     ----------
-    .. [DW] P. Daniel and R. Weber, "Psychoacoustical roughness: 
-            implementation of an optimized model", 1997
+    :cite:empty:`R-roughnessDW`
+    
+    .. bibliography::
+        :keyprefix: R-
 
     Examples
     --------

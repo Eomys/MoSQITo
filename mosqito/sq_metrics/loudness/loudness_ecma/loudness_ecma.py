@@ -41,18 +41,20 @@ def loudness_ecma(signal, sb=2048, sh=1024):
 
     Notes
     -----
-    Normative reference:
-        ISO 532:1975 (method B)
-        DIN 45631:1991
-        ISO 532-1:2017 (method 1)
-    Due to normative continuity, as defined in the preceeding standards, the method is in accordance with
-    ISO 226:1987 equal loudness contours (instead of ISO 226:2003).
+    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours instead of ISO 226:2003,
+    as defined in the following standards.
+
+        * ISO 532:1975 (method B)
+        * DIN 45631:1991
+        * ISO 532-1:2017 (method 1)
     
     References
     ----------
-    .. [ZF] E.Zwicker and H.Fastl, "Program for calculating loudness according to DIN 45631 (ISO 532B)", 
-            J.A.S.J (E) 12, 1 (1991).
-            
+    :cite:empty:`L_ecma-ECMA-418-2`
+
+    .. bibliography::
+        :keyprefix: L_ecma-
+
     Warning
     -------
     The sampling frequency of the signal must be 48000 Hz.

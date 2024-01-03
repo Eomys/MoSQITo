@@ -56,7 +56,10 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
     
     References
     ----------
-    .. [ECMA-418-2] Psychoacoustic metrics for ITT equipment — Part 2 (models based on human perception), 2022.
+    :cite:empty:`PR-ECMA-418-2`
+    
+    .. bibliography::
+        :keyprefix: PR-
             
     Examples
     --------
