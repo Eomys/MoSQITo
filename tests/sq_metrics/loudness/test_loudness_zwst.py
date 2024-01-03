@@ -212,5 +212,5 @@ if __name__ == "__main__":
     # test_loudness_zwst_wav(test_signal)
     # test_loudness_zwst_44100Hz()
     # test_loudness_zwst_perseg(test_signal)
-    # test_loudness_zwst_freq(test_signal)
-    test_loudness_zwst_gi0()
+    test_loudness_zwst_freq(test_signal)
+    # test_loudness_zwst_gi0()
