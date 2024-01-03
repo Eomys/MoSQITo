@@ -67,6 +67,12 @@ The scope of the project is to implement the following first set of metrics:
      -  
      - X
      - 
+   * - Speech Intelligibility index
+     - :footcite:t:`ANSI.S3.5:2017`  
+     - X
+     - X
+     -
+     -
 
 As a second priority, the project could address the following metrics:
 
