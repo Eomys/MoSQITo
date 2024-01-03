@@ -1,4 +1,4 @@
-from mosqito.sq_metrics.speech_intelligibility import sii
+from mosqito.sq_metrics.speech_intelligibility import sii_ansi
 import matplotlib.pyplot as plt
 import numpy as np
 fs=48000
@@ -10,7 +10,7 @@ stimulus = np.sin(2 * np.pi * f * time) * np.sin(np.pi * f * time) + np.sin(10 *
 rms = np.sqrt(np.mean(np.power(stimulus, 2)))
 ampl = 0.00002 * np.power(10, dB / 20) / rms
 stimulus = stimulus * ampl
-SII, SII_spec, freq_axis = sii(stimulus, fs, method='critical', speech_level='normal')
+SII, SII_spec, freq_axis = sii_ansi(stimulus, fs, method='critical', speech_level='normal')
 plt.plot(freq_axis, SII_spec)
 plt.xlabel("Frequency [Hz]")
 plt.ylabel("Specific value ")

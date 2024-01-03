@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Parameters: &#8212; MOSQITO manual</title>
+    <title>&lt;no title&gt; &#8212; MOSQITO manual</title>
   
   
   
@@ -44,10 +44,10 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="mosqito.sq_metrics.roughness" href="mosqito.sq_metrics.roughness.html" />
-    <link rel="prev" title="Parameters:" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 22, 2023"/>
+    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
   </head>
   
   
@@ -394,7 +394,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="mosqito.sq_metrics.sharpness.html" class="nav-link">mosqito.sq_metrics.sharpness</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Parameters:</li>
+    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
   </ul>
 </nav>
 </div>
@@ -418,38 +418,35 @@ document.write(`
 <dt>Acoustic sharpness calculation according to different methods</dt><dd><p>(Aures, Von Bismarck, DIN 45692, Fastl) from time varying loudness.</p>
 </dd>
 </dl>
-<section id="parameters">
-<h1>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h1>
-<dl class="simple">
-<dt>N<span class="classifier">float or array_like</span></dt><dd><p>Overall loudness [sones], size (Ntime,).</p>
-</dd>
-<dt>N_specific<span class="classifier">numpy.ndarray</span></dt><dd><p>Specific loudness array [sones/bark], size (Nbark, Ntime).</p>
-</dd>
-<dt>weighting<span class="classifier">{‘din’, ‘aures’, ‘bismarck’, ‘fastl’}</span></dt><dd><p>Weighting function used for the sharpness computation.
-Default is ‘din’</p>
-</dd>
-<dt>skip<span class="classifier">float</span></dt><dd><p>Duration to be cut at the beginning of the analysis in seconds.
-Default is 0</p>
-</dd>
-</dl>
 <dl class="field-list simple">
-<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>float</em><em> or </em><em>array_like</em>) – Overall loudness [sones], size (Ntime,).</p></li>
+<li><p><strong>N_specific</strong> (<em>numpy.ndarray</em>) – Specific loudness array [sones/bark], size (Nbark, Ntime).</p></li>
+<li><p><strong>weighting</strong> (<em>{'din'</em><em>, </em><em>'aures'</em><em>, </em><em>'bismarck'</em><em>, </em><em>'fastl'}</em>) – Weighting function used for the sharpness computation.
+Default is ‘din’</p></li>
+<li><p><strong>skip</strong> (<em>float</em>) – Duration to be cut at the beginning of the analysis in seconds.
+Default is 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><strong>S</strong> (<em>float or numpy.ndarray</em>) – Sharpness value in [acum], dim (nseg)</p></li>
 <li><p><strong>time_axis</strong> (<em>numpy.array</em>) – Time axis cut according to skip argument, size (Ntime,).</p></li>
 </ul>
+</p>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_tv</span></code></dt><dd><p>Sharpness computation for a non-stationary time signal</p>
+<dt><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.html#module-mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv" title="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_tv</span></code></a></dt><dd><p>Sharpness computation for a non-stationary time signal</p>
 </dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_st</span></code></dt><dd><p>Sharpness computation for a stationary time signal</p>
+<dt><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st.html#module-mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st" title="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_st</span></code></a></dt><dd><p>Sharpness computation for a stationary time signal</p>
 </dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_freq</span></code></dt><dd><p>Sharpness computation from a sound spectrum</p>
+<dt><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq.html#module-mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq" title="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_freq</span></code></a></dt><dd><p>Sharpness computation from a sound spectrum</p>
 </dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_perseg</span></code></dt><dd><p>Sharpness computation by time-segment</p>
+<dt><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.html#module-mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg" title="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharpness_din_perseg</span></code></a></dt><dd><p>Sharpness computation by time-segment</p>
 </dd>
 </dl>
 </div>
@@ -464,10 +461,23 @@ Default is 0</p>
 </dd>
 </dl>
 <p class="rubric">References</p>
+<p><span id="id1"></span>
+<span id="id2"></span>
+<span id="id3"></span></p>
+<div class="docutils container" id="id4">
 <div role="list" class="citation-list">
-<div class="citation" id="din45692" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>DIN45692<span class="fn-bracket">]</span></span>
-<p>Measurement technique for the simulation of the auditory sensation of sharpness, 2009</p>
+<div class="citation" id="id23" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">DIN45692200909</a><span class="fn-bracket">]</span></span>
+<p>DIN.45692:2009. <em>Measurement technique for the simulation of the auditory sensation of sharpness</em>. Deutsches Institut fur Normung, 2009. URL: <a class="reference external" href="https://www.normadoc.com/english/din-45692-2009-08.html?___from_store=french">https://www.normadoc.com/english/din-45692-2009-08.html?___from_store=french</a>.</p>
+</div>
+<div class="citation" id="id18" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">EZwickerHFastl07</a><span class="fn-bracket">]</span></span>
+<p>E.Zwicker and H.Fastl. <em>Psychoacoustics</em>. Springer Berlin, 2007. URL: <a class="reference external" href="https://link.springer.com/book/10.1007/978-3-540-68888-4">https://link.springer.com/book/10.1007/978-3-540-68888-4</a>.</p>
+</div>
+<div class="citation" id="id19" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">vB74</a><span class="fn-bracket">]</span></span>
+<p>E. von Bismarck. Sharpness as an attribute of the timbre of steady sounds. <em>Acta Acustica</em>, 1974. URL: <a class="reference external" href="https://www.ingentaconnect.com/contentone/dav/aaua/1974/00000030/00000003/art00006">https://www.ingentaconnect.com/contentone/dav/aaua/1974/00000030/00000003/art00006</a>.</p>
+</div>
 </div>
 </div>
 <p class="rubric">Examples</p>
@@ -499,7 +509,6 @@ Default is 0</p>
 <p class="admonition-title">Warning</p>
 <p>Note the transient effect at the beginning of the signal.</p>
 </div>
-</section>
 </dd></dl>
 
 
@@ -509,30 +518,6 @@ Default is 0</p>
               
               
               
-              
-                <footer class="prev-next-footer">
-                  
-<div class="prev-next-area">
-    <a class="left-prev"
-       href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Parameters:</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="mosqito.sq_metrics.roughness.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">mosqito.sq_metrics.roughness</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
-</div>
-                </footer>
               
             </div>
             

@@ -12,7 +12,7 @@ rms = np.sqrt(np.mean(np.power(stimulus, 2)))
 ampl = 0.00002 * np.power(10, dB / 20) / rms
 stimulus = stimulus * ampl
 spec, freqs = comp_spectrum(stimulus, fs, db=True)
-SII, SII_spec, freq_axis = sii_freq(spec, freqs, method='critical', speech_level='normal')
+SII, SII_spec, freq_axis = sii_ansi_freq(spec, freqs, method='critical', speech_level='normal')
 plt.plot(freq_axis, SII_spec)
 plt.xlabel("Frequency [Hz]")
 plt.ylabel("Specific value ")

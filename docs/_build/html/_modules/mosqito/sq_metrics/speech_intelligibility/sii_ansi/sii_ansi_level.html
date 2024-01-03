@@ -44,7 +44,7 @@
     <link rel="search" title="Search" href="../../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 22, 2023"/>
+    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
   </head>
   
   
@@ -377,7 +377,6 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ones</span><span class="p">,</span> <span class="n">log10</span><span class="p">,</span> <span class="n">power</span>
 
-<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.speech_intelligibility.sii_ansi._band_procedure_data</span> <span class="kn">import</span> <span class="n">_get_critical_band_data</span><span class="p">,</span> <span class="n">_get_equal_critical_band_data</span><span class="p">,</span> <span class="n">_get_octave_band_data</span><span class="p">,</span> <span class="n">_get_third_octave_band_data</span>
 <span class="kn">from</span> <span class="nn">mosqito.sq_metrics.speech_intelligibility.sii_ansi._speech_data</span> <span class="kn">import</span> <span class="n">_get_critical_band_speech_data</span><span class="p">,</span> <span class="n">_get_equal_critical_band_speech_data</span><span class="p">,</span> <span class="n">_get_octave_band_speech_data</span><span class="p">,</span> <span class="n">_get_third_octave_band_speech_data</span>
 <span class="kn">from</span> <span class="nn">mosqito.sq_metrics.speech_intelligibility.sii_ansi._main_sii</span> <span class="kn">import</span> <span class="n">_main_sii</span>
 
@@ -409,6 +408,19 @@ document.write(`
 <span class="sd">    freq_axis: numpy.ndarray</span>
 <span class="sd">        Frequency axis corresponding to the chosen method.</span>
 <span class="sd">        </span>
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    .sii_ansi : Speech intelligibility with a time signal as background noise</span>
+<span class="sd">    .sii_ansi_freq : Speech intelligibility with a frequency spectrum as background noise</span>
+<span class="sd">        </span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :cite:empty:&#39;a-ANSI.S3.5:2017&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    .. bibliography::</span>
+<span class="sd">        :labelprefix: A</span>
+<span class="sd">        :keyprefix: a-</span>
+<span class="sd">        </span>
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    .. plot::</span>
@@ -416,7 +428,7 @@ document.write(`
 <span class="sd">       </span>
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; from mosqito.sq_metrics.speech_intelligibility import sii_level</span>
+<span class="sd">        &gt;&gt;&gt; from mosqito.sq_metrics.speech_intelligibility import sii_ansi_level</span>
 <span class="sd">        &gt;&gt;&gt; fs=48000</span>
 <span class="sd">        &gt;&gt;&gt; d=0.2</span>
 <span class="sd">        &gt;&gt;&gt; dB=90</span>
@@ -427,11 +439,11 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
 <span class="sd">        &gt;&gt;&gt; stimulus = stimulus * ampl</span>
 <span class="sd">        &gt;&gt;&gt; speech_level = &#39;raised&#39;</span>
-<span class="sd">        &gt;&gt;&gt; SII, SII_spec, freq_axis = sii_level(60, method=&#39;critical&#39;, speech_level=speech_level, threshold=&#39;zwicker&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; SII, SII_spec, freq_axis = sii_ansi_level(60, method=&#39;critical&#39;, speech_level=speech_level, threshold=&#39;zwicker&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; plt.plot(freq_axis, SII_spec)</span>
 <span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Frequency [Hz]&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Specific value &quot;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.title(&quot;Speech Intelligibility Index = &quot; + f&quot;{SII:.2f} \n Speech level: &quot; + speech_level)   </span>
+<span class="sd">        &gt;&gt;&gt; plt.title(&quot;Speech Intelligibility Index = &quot; + f&quot;{SII:.2f}&quot;)   </span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -460,7 +472,6 @@ document.write(`
     <span class="n">SII</span><span class="p">,</span> <span class="n">SII_specific</span><span class="p">,</span> <span class="n">freq_axis</span> <span class="o">=</span> <span class="n">_main_sii</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">speech_spectrum</span><span class="p">,</span> <span class="n">noise_spectrum</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span>    
     
     <span class="k">return</span> <span class="n">SII</span><span class="p">,</span> <span class="n">SII_specific</span><span class="p">,</span> <span class="n">freq_axis</span></div>
-
 </pre></div>
 
                 </article>
@@ -468,12 +479,6 @@ document.write(`
               
               
               
-              
-                <footer class="prev-next-footer">
-                  
-<div class="prev-next-area">
-</div>
-                </footer>
               
             </div>
             
