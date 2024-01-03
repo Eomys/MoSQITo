@@ -46,10 +46,6 @@ If you need to import .uff or .unv files, you will need the pyuff package depend
 
     pip install mosqito[uff]
 
-If you want to use MOSQITO coupled with SciDataTool, you will need SDT package dependency. To install it along with MOSQITO, use the following command:
-
-    pip install mosqito[SciDataTool]
-
 Note that all the depencies can be installed at once using:
 
     pip install mosqito[all]

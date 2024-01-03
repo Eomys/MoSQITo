@@ -16,9 +16,8 @@ with open("requirements.txt", "r") as file:
         requirements
     ).splitlines()  # remove endline in each element
 
-tests_require = ["pytest>=5.4.1", "pandas", "openpyxl", "SciDataTool", "matplotlib"]
+tests_require = ["pytest>=5.4.1", "pandas", "openpyxl", "matplotlib"]
 uff_require = ["pyuff"]
-scidatatool_require = ["SciDataTool"]
 all_require = tests_require + uff_require
 
 setuptools.setup(
@@ -53,7 +52,6 @@ setuptools.setup(
     extras_require={
         "testing": tests_require,
         "uff": uff_require,
-        "SciDataTool": scidatatool_require,
         "all": all_require,
     },
 )
