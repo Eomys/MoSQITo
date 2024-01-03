@@ -39,7 +39,6 @@ bibtex_bibfiles = ['ref.bib']
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
 html_favicon = 'source/_static/favicon.ico'
 html_theme = 'pydata_sphinx_theme'
 html_title = "MOSQITO manual"
@@ -61,8 +60,8 @@ html_theme_options = {
   },
   "github_url": "https://github.com/Eomys/MoSQITo",
   "collapse_navigation": True,
+  "show_prev_next": False,
 }
-
 
 autosummary_generate = True
 add_module_names = False
