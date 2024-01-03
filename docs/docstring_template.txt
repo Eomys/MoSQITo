@@ -18,11 +18,11 @@
     -------
     M : float
         Global metric value in [unit]
-    M_spec : numpy.array
+    M_spec : numpy.ndarray
         Specific metric value over frequency axis
-    freq_axis : numpy.array
+    freq_axis : numpy.ndarray
         Frequency axis in [unit]
-    time_axis : numpy.array
+    time_axis : numpy.ndarray
         Time axis in [s]
 
     Raises
@@ -32,7 +32,7 @@
 
     See Also
     --------
-    metric_freq : metric computation from a sound spectrum
+    .metric_freq : metric computation from a sound spectrum
 
     Notes
     -----
@@ -43,8 +43,10 @@
 
     References
     ----------
-    .. [MB] Machin, Bidule, title, date
-    .. [ISO123] norme
+    :cite:empty:'a-STANDARD'
+    
+    .. bibliography::
+        :keyprefix: a-
 
     Examples
     --------
