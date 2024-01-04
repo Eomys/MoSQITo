@@ -1,8 +1,6 @@
 📖 User guide
 ===================================
 
-**Date**: |today| **Version**: mosqito.__version__
-
 .. toctree::
    :maxdepth: 2
 

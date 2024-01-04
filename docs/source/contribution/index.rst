@@ -1,7 +1,5 @@
 ✏️ Contribution
 ===================================
-
-**Date**: |today| **Version**: 1.0.8 
  
 .. toctree::
    :maxdepth: 2

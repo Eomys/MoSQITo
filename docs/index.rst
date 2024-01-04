@@ -1,7 +1,7 @@
 MOSQITO documentation
 ===================================
 
-**Date**: |today| **Version**: 1.0.8
+**Version**: |version|
 
 .. toctree::
    :maxdepth: 1

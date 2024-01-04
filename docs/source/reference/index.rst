@@ -1,7 +1,7 @@
 🔧 API reference
 ===================================
 
-**Date**: |today| **Version**: 1.0.8
+**Date**: |today| **Version**: |version|
 
 This reference manual details all functions included in mosqito, describing what they are and what they do. 
 
