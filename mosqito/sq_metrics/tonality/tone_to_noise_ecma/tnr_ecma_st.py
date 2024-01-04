@@ -43,4 +43,3 @@ def tnr_ecma_st(signal, fs, prominence=True):
         return t_tnr, tnr, prom, tones_freqs
     else:
         return t_tnr, tnr[prom], prom[prom], tones_freqs[prom]
-    
