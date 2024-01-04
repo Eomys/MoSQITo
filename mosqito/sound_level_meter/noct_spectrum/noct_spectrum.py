@@ -40,7 +40,15 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     Outputs
     -------
     spec : numpy.ndarray
+<<<<<<< HEAD
+<<<<<<< HEAD
+        Third octave band spectrum of signal sig (units: Pascals [Pa]).
+=======
         The third octave band spectrum of signal sig with size (nfreq, nseg)
+>>>>>>> ad054c17c80ccea5874344f38a135c8fe1315a12
+=======
+        The third octave band spectrum of signal sig with size (nfreq, nseg)
+>>>>>>> ad054c17c80ccea5874344f38a135c8fe1315a12
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies
     """

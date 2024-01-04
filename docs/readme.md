@@ -18,3 +18,4 @@ In this folder, you will find the documentation and validation of the different 
 - [Sharpness according to DIN standard](./sharpness_din.md)
 - [Roughness (Daniel and Weber method)](./roughness_dw.md)
 - [Tone-to-noise ratio and Prominence ratio of stationary and time-varying signals](./tone-to-noise-prominence-ratio.md)
+- [Third octave band tonality according to ISO 1996 annex K](./tonality_ISO1996K.md)
