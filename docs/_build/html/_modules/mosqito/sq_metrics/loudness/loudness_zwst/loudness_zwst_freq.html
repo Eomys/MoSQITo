@@ -44,7 +44,7 @@
     <link rel="search" title="Search" href="../../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
+    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
   </head>
   
   
@@ -417,14 +417,24 @@ document.write(`
 <span class="sd">    .loudness_zwst_perseg : Loudness computation by time-segment</span>
 <span class="sd">    .loudness_zwtv : Loudness computation for a non-stationary time signal</span>
 
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.</span>
+<span class="sd">    If the provided signal doesn&#39;t meet the requirements, it will be resampled.</span>
+
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    Normative reference:</span>
-<span class="sd">        ISO 532:1975 (method B)</span>
-<span class="sd">        DIN 45631:1991</span>
-<span class="sd">        ISO 532-1:2017 (method 1)</span>
-<span class="sd">    Due to normative continuity, as defined in the preceeding standards, the method is in accordance with</span>
-<span class="sd">    ISO 226:1987 equal loudness contours (instead of ISO 226:2003).</span>
+<span class="sd">    The total loudness :math:`N` is computed as the integral of the specific loudness :math:`N&#39;` measured in sone/bark, over the Bark scale. </span>
+<span class="sd">    The values of specific loudness are evaluated from third octave band levels as function of critical band rate :math:`z` in Bark.</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        N=\\int_{0}^{24Bark}N&#39;(z)\\textup{dz}</span>
+<span class="sd">    </span>
+<span class="sd">    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours </span>
+<span class="sd">    instead of ISO 226:2003, as defined in the following standards:</span>
+<span class="sd">        * ISO 532:1975 (method B)</span>
+<span class="sd">        * DIN 45631:1991</span>
+<span class="sd">        * ISO 532-1:2017 (method 1)</span>
 <span class="sd">    </span>
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -432,6 +442,11 @@ document.write(`
 
 <span class="sd">    .. bibliography::</span>
 <span class="sd">        :keyprefix: L_zw-</span>
+<span class="sd">        </span>
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.</span>
+<span class="sd">    If the provided signal doesn&#39;t meet the requirements, it will be resampled.</span>
 <span class="sd">        </span>
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>

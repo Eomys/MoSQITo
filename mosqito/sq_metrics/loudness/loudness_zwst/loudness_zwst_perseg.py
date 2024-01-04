@@ -58,14 +58,24 @@ def loudness_zwst_perseg(
     .loudness_zwst_freq : Loudness computation from a sound spectrum
     .loudness_zwtv : Loudness computation for a non-stationary time signal
 
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
+
     Notes
     ------
-    Normative reference:
-        ISO 532:1975 (method B)
-        DIN 45631:1991
-        ISO 532-1:2017 (method 1)
-    Due to normative continuity, as defined in the preceeding standards, the method is in accordance with
-    ISO 226:1987 equal loudness contours (instead of ISO 226:2003).
+    For each considered segment, the total loudness :math:`N` is computed as the integral of the specific loudness :math:`N'` measured in sone/bark, over the Bark scale. 
+    The values of specific loudness are evaluated from third octave band levels as function of critical band rate :math:`z` in Bark.
+    
+    .. math::
+        N=\\int_{0}^{24Bark}N'(z)\\textup{dz}
+    
+    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours 
+    instead of ISO 226:2003, as defined in the following standards:
+        * ISO 532:1975 (method B)
+        * DIN 45631:1991
+        * ISO 532-1:2017 (method 1)
     
     References
     -----------
@@ -73,7 +83,7 @@ def loudness_zwst_perseg(
 
     .. bibliography::
         :keyprefix: L_zw-
-                    
+                            
     Examples
     ---------
     .. plot::

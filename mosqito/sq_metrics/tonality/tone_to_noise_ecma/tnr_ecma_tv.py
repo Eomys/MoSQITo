@@ -50,7 +50,22 @@ def tnr_ecma_tv(signal, fs, prominence=False, overlap=0):
     
     Notes
     -----
-    The algorithm automatically detects the frequency of the tonal components according to Sottek method.
+    The computation is realised over successive time windows of 500ms.
+    For each time window, the computation is based on a spectrum analysis detecting peaks to be compared with the overall smoothed spectrum.  
+    The algorithm automatically detects the frequency of the tonal components according to Sottek's method.
+
+    .. math::
+        \\Delta L_{TNR} = L_{peak} - 10\\log_{10}\\left (10^{0.1L_{peakband}} -10^{0.1L_{peak}}\\right ) 
+        
+    .. math::
+        \\Delta L_{PR} = 10\\log_{10}\\left ( 10^{0.1L_{peakband}} \\right ) - 10\\log_{10}\\left [0.5\\left (10^{0.1L_{lowerband}} -10^{0.1L_{upperband}}\\right )\\right]
+
+    The difference between PR and TNR lies in the comparison process between the peak level and the background noise amplitude. 
+    TNR compares the peak level to the level of its critical band, while PR compares the level of the peak's critical band to its two neighbor bands. 
+    According to ECMA 74 standard, TNR can then prove to be more accurate for multiple tones in adjacent critical bands, for example when strong harmonics exist. 
+    PR can be more effective for multiple tones within the same critical band and is more readily automated to handle such cases. 
+
+    Along with the TNR/PR value comes a prominence indicator, a tone being considered as prominent if its dB level is sufficiently higher than the smoothed spectrum, depending on its frequency.
 
     
     References

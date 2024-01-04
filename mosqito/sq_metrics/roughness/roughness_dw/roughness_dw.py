@@ -49,20 +49,18 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     time : numpy.array
         Time axis in [s]
 
-    Raises
-    ------
-    IndexError
-        If `axis` is not a valid axis of `a`.
-
     See Also
     --------
     .roughness_dw_freq : Roughness computation from a sound spectrum
 
     Notes
     -----
-    The model consists of a parallel processing structure that is made up
-    of successive stages and calculates intermediate specific roughnesses R_spec,
-    which are summed up to determine the total roughness R.
+    The model consists of a parallel processing structure made up
+    of successive stages to calculate intermediate specific roughnesses :math:`R'`,
+    which are summed up to determine the total roughness :math:`R`:
+    
+    .. math::
+        R=0.25\\sum_{i=1}^{47}R'_{i}
 
     References
     ----------

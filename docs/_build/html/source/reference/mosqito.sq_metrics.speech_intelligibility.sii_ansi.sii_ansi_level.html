@@ -39,6 +39,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/reference/mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_level';</script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -47,7 +48,7 @@
     <link rel="prev" title="&lt;no title&gt;" href="mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_freq.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
+    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
   </head>
   
   
@@ -443,12 +444,29 @@ Default to None sets the threshold to zeros on each frequency band.</p></li>
 </dd>
 </dl>
 </div>
+<p class="rubric">Notes</p>
+<p>The input dB level corresponds to the overall sound pressure level. It is used to create a full uniform spectrum with the following sound level on each of the N bands:</p>
+<div class="math notranslate nohighlight">
+\[L_{band}=10\log_{10}\left( \frac{10^{\frac{L_{overall}}{10}}}{N} \right)\]</div>
+<p>The Speech Intelligibility Index <span class="math notranslate nohighlight">\(SII\)</span> of the signal is computed as the sum of the speech-to-noise ratio <span class="math notranslate nohighlight">\(A\)</span> weighted by an importance function <span class="math notranslate nohighlight">\(I\)</span>,
+over the <span class="math notranslate nohighlight">\(n\)</span> frequency bands.</p>
+<div class="math notranslate nohighlight">
+\[SII=\sum_{i=1}^{n}A_{i}I_{i}\]</div>
+<dl class="simple">
+<dt>The number of frequency bands considered depends on the chosen method:</dt><dd><ul class="simple">
+<li><p>“critical”: 21 critical bands corresponding to the Bark scale</p></li>
+<li><p>“equally_critical”: 17 equally contributing critical bands</p></li>
+<li><p>“third-octave”: 18 third-octave bands</p></li>
+<li><p>“octave”: 6 octave bands</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">References</p>
-<p>:cite:empty:’a-ANSI.S3.5:2017’</p>
-<div class="docutils container" id="id1">
+<p><span id="id1"></span></p>
+<div class="docutils container" id="id2">
 <div role="list" class="citation-list">
-<div class="citation" id="id25" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>AANSIS35201717<span class="fn-bracket">]</span></span>
+<div class="citation" id="id26" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">ANSIS35201717</a><span class="fn-bracket">]</span></span>
 <p>ANSI.S3.5:2017. <em>Methods for calculation of the Speech Intelligibility Index</em>. American National Standards Institute, 2017. URL: <a class="reference external" href="https://webstore.ansi.org/standards/asa/ansiasas31997r2017">https://webstore.ansi.org/standards/asa/ansiasas31997r2017</a>.</p>
 </div>
 </div>

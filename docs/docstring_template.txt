@@ -25,14 +25,13 @@
     time_axis : numpy.ndarray
         Time axis in [s]
 
-    Raises
-    ------
-    IndexError
-        If `axis` is not a valid axis of `a`.
-
     See Also
     --------
     .metric_freq : metric computation from a sound spectrum
+
+    Warning
+    --------
+    Spectrum should be provided in dB.
 
     Notes
     -----

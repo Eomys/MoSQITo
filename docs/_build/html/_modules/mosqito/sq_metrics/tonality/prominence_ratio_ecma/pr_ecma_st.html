@@ -44,7 +44,7 @@
     <link rel="search" title="Search" href="../../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
+    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
   </head>
   
   
@@ -416,8 +416,21 @@ document.write(`
 <span class="sd">    </span>
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    The algorithm automatically detects the frequency of the tonal components according to Sottek method.</span>
+<span class="sd">    The computation is based on a spectrum analysis detecting peaks to be compared with the overall smoothed spectrum.  </span>
+<span class="sd">    The algorithm automatically detects the frequency of the tonal components according to Sottek&#39;s method.</span>
 
+<span class="sd">    .. math::</span>
+<span class="sd">        \\Delta L_{TNR} = L_{peak} - 10\\log_{10}\\left (10^{0.1L_{peakband}} -10^{0.1L_{peak}}\\right ) </span>
+<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        \\Delta L_{PR} = 10\\log_{10}\\left ( 10^{0.1L_{peakband}} \\right ) - 10\\log_{10}\\left [0.5\\left (10^{0.1L_{lowerband}} -10^{0.1L_{upperband}}\\right )\\right]</span>
+
+<span class="sd">    The difference between PR and TNR lies in the comparison process between the peak level and the background noise amplitude. </span>
+<span class="sd">    TNR compares the peak level to the level of its critical band, while PR compares the level of the peak&#39;s critical band to its two neighbor bands. </span>
+<span class="sd">    According to ECMA 74 standard, TNR can then prove to be more accurate for multiple tones in adjacent critical bands, for example when strong harmonics exist. </span>
+<span class="sd">    PR can be more effective for multiple tones within the same critical band and is more readily automated to handle such cases. </span>
+
+<span class="sd">    Along with the TNR/PR value comes a prominence indicator, a tone being considered as prominent if its dB level is sufficiently higher than the smoothed spectrum, depending on its frequency.</span>
 <span class="sd">    </span>
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>

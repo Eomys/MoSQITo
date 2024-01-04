@@ -1,6 +1,7 @@
+mosqito
+=======
 
-
-.. automodule:: mosqito.sound_level_meter.spectrum
+.. automodule:: mosqito
    :members:
    :undoc-members:
    :show-inheritance:

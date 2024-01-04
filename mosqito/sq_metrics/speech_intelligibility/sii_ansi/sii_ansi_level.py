@@ -37,14 +37,33 @@ def sii_ansi_level(noise_level, method, speech_level, threshold=None):
     --------
     .sii_ansi : Speech intelligibility with a time signal as background noise
     .sii_ansi_freq : Speech intelligibility with a frequency spectrum as background noise
+    
+    Notes
+    ------
+    The input dB level corresponds to the overall sound pressure level. It is used to create a full uniform spectrum with the following sound level on each of the N bands: 
+    
+    .. math::
+            L_{band}=10\\log_{10}\\left( \\frac{10^{\\frac{L_{overall}}{10}}}{N} \\right)
+        
+    The Speech Intelligibility Index :math:`SII` of the signal is computed as the sum of the speech-to-noise ratio :math:`A` weighted by an importance function :math:`I`, 
+    over the :math:`n` frequency bands. 
+    
+    .. math::
+        SII=\\sum_{i=1}^{n}A_{i}I_{i}
+    
+    The number of frequency bands considered depends on the chosen method:
+      * "critical": 21 critical bands corresponding to the Bark scale
+      * "equally_critical": 17 equally contributing critical bands
+      * "third-octave": 18 third-octave bands
+      * "octave": 6 octave bands
+        
         
     References
     ----------
-    :cite:empty:'a-ANSI.S3.5:2017'
+    :cite:empty:`SII-ANSI.S3.5:2017`
     
     .. bibliography::
-        :labelprefix: A
-        :keyprefix: a-
+        :keyprefix: SII-
         
     Examples
     --------

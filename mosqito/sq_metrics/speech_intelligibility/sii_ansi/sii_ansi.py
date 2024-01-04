@@ -42,13 +42,27 @@ def sii_ansi(noise, fs, method, speech_level, threshold=None):
     .sii_ansi_level : Speech intelligibility with an overall SPL level as background noise
     .sii_ansi_freq : Speech intelligibility with a frequency spectrum as background noise
         
+    Notes
+    -----
+    The Speech Intelligibility Index :math:`SII` of the signal is computed as the sum of the speech-to-noise ratio :math:`A` weighted by an importance function :math:`I`, 
+    over the :math:`n` frequency bands. 
+    
+    .. math::
+        SII=\\sum_{i=1}^{n}A_{i}I_{i}
+    
+    The number of frequency bands considered depends on the chosen method:
+      * "critical": 21 critical bands corresponding to the Bark scale
+      * "equally_critical": 17 equally contributing critical bands
+      * "third-octave": 18 third-octave bands
+      * "octave": 6 octave bands
+    
+        
     References
     ----------
-    :cite:empty:`a-ANSI.S3.5:2017`
+    :cite:empty:`SII-ANSI.S3.5:2017`
     
     .. bibliography::
-        :labelprefix: A
-        :keyprefix: a-
+        :keyprefix: SII-
     
     Examples
     --------

@@ -39,6 +39,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/reference/mosqito.sq_metrics.roughness.roughness_dw.roughness_dw';</script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -47,7 +48,7 @@
     <link rel="prev" title="mosqito.sq_metrics.roughness" href="mosqito.sq_metrics.roughness.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
+    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
   </head>
   
   
@@ -432,9 +433,6 @@ object. Default to None</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>IndexError</strong> – If <cite>axis</cite> is not a valid axis of <cite>a</cite>.</p>
-</dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -444,9 +442,11 @@ object. Default to None</p></li>
 </dl>
 </div>
 <p class="rubric">Notes</p>
-<p>The model consists of a parallel processing structure that is made up
-of successive stages and calculates intermediate specific roughnesses R_spec,
-which are summed up to determine the total roughness R.</p>
+<p>The model consists of a parallel processing structure made up
+of successive stages to calculate intermediate specific roughnesses <span class="math notranslate nohighlight">\(R'\)</span>,
+which are summed up to determine the total roughness <span class="math notranslate nohighlight">\(R\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[R=0.25\sum_{i=1}^{47}R'_{i}\]</div>
 <p class="rubric">References</p>
 <p><span id="id1"></span></p>
 <div class="docutils container" id="id2">

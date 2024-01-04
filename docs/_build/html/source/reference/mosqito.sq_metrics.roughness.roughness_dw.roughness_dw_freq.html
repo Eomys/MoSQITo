@@ -39,6 +39,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/reference/mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq';</script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -47,7 +48,7 @@
     <link rel="prev" title="&lt;no title&gt;" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
+    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
   </head>
   
   
@@ -430,24 +431,24 @@ else (nperseg x nseg).</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ValueError</strong> – If len(spectrum) != len(freqs)</p></li>
-<li><p><strong>ValueError</strong> – If spectrum.any() &lt; 0</p></li>
-</ul>
-</dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="mosqito.sq_metrics.roughness.roughness_dw.html#module-mosqito.sq_metrics.roughness.roughness_dw" title="mosqito.sq_metrics.roughness.roughness_dw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roughness_dw</span></code></a></dt><dd><p>roughness computation from a time signal</p>
+<dt><a class="reference internal" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.html#module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw" title="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roughness_dw</span></code></a></dt><dd><p>roughness computation from a time signal</p>
 </dd>
 </dl>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The input spectrum must be an amplitude spectrum (use abs() or complex spectrum).</p>
+</div>
 <p class="rubric">Notes</p>
-<p>The model consists of a parallel processing structure that is made up
-of successive stages and calculates intermediate specific roughnesses R_spec,
-which are summed up to determine the total roughness R.</p>
+<p>The model consists of a parallel processing structure made up
+of successive stages to calculate intermediate specific roughnesses <span class="math notranslate nohighlight">\(R'\)</span>,
+which are summed up to determine the total roughness <span class="math notranslate nohighlight">\(R\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[R=0.25\sum_{i=1}^{47}R'_{i}\]</div>
 <p class="rubric">References</p>
 <p><span id="id1"></span></p>
 <div class="docutils container" id="id2">

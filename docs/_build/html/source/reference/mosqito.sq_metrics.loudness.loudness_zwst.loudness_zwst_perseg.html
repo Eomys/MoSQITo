@@ -39,6 +39,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/reference/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_perseg';</script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -47,7 +48,7 @@
     <link rel="prev" title="&lt;no title&gt;" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
+    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
   </head>
   
   
@@ -445,23 +446,33 @@ Default to False</p></li>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.html#module-mosqito.sq_metrics.loudness.loudness_zwst" title="mosqito.sq_metrics.loudness.loudness_zwst"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loudness_zwst</span></code></a></dt><dd><p>Loudness computation for a stationary time signal</p>
+<dt><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.html#module-mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst" title="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loudness_zwst</span></code></a></dt><dd><p>Loudness computation for a stationary time signal</p>
 </dd>
 <dt><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq.html#module-mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq" title="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loudness_zwst_freq</span></code></a></dt><dd><p>Loudness computation from a sound spectrum</p>
 </dd>
-<dt><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwtv.html#module-mosqito.sq_metrics.loudness.loudness_zwtv" title="mosqito.sq_metrics.loudness.loudness_zwtv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loudness_zwtv</span></code></a></dt><dd><p>Loudness computation for a non-stationary time signal</p>
+<dt><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv.html#module-mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv" title="mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loudness_zwtv</span></code></a></dt><dd><p>Loudness computation for a non-stationary time signal</p>
 </dd>
 </dl>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.
+If the provided signal doesn’t meet the requirements, it will be resampled.</p>
+</div>
 <p class="rubric">Notes</p>
-<dl class="simple">
-<dt>Normative reference:</dt><dd><p>ISO 532:1975 (method B)
-DIN 45631:1991
-ISO 532-1:2017 (method 1)</p>
-</dd>
-</dl>
-<p>Due to normative continuity, as defined in the preceeding standards, the method is in accordance with
-ISO 226:1987 equal loudness contours (instead of ISO 226:2003).</p>
+<p>For each considered segment, the total loudness <span class="math notranslate nohighlight">\(N\)</span> is computed as the integral of the specific loudness <span class="math notranslate nohighlight">\(N'\)</span> measured in sone/bark, over the Bark scale.
+The values of specific loudness are evaluated from third octave band levels as function of critical band rate <span class="math notranslate nohighlight">\(z\)</span> in Bark.</p>
+<div class="math notranslate nohighlight">
+\[N=\int_{0}^{24Bark}N'(z)\textup{dz}\]</div>
+<p>Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours
+instead of ISO 226:2003, as defined in the following standards:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>ISO 532:1975 (method B)</p></li>
+<li><p>DIN 45631:1991</p></li>
+<li><p>ISO 532-1:2017 (method 1)</p></li>
+</ul>
+</div></blockquote>
 <p class="rubric">References</p>
 <p><span id="id1"></span></p>
 <div class="docutils container" id="id2">

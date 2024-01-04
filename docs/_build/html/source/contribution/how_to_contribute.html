@@ -47,7 +47,7 @@
     <link rel="prev" title="✏️ Contribution" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
+    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
   </head>
   
   
@@ -397,7 +397,7 @@ document.write(`
 <section id="become-part-of-the-mosqito-community">
 <h2>Become part of the MOSQITO community<a class="headerlink" href="#become-part-of-the-mosqito-community" title="Permalink to this heading">#</a></h2>
 <dl class="simple">
-<dt>There are several ways to contribute to <a class="reference internal" href="../mosqito.html#module-mosqito" title="mosqito"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mosqito</span></code></a>. You can:</dt><dd><ul class="simple">
+<dt>There are several ways to contribute to <a class="reference internal" href="../reference/mosqito.html#module-mosqito" title="mosqito"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mosqito</span></code></a>. You can:</dt><dd><ul class="simple">
 <li><p>Use it and report the bugs or missing informations.</p></li>
 <li><p>Share any idea you would have to improve the documentation, if you are familiar with psychoacoustic.</p></li>
 <li><p>Share any sound quality related implementation you could have developed (even in another programing language).</p></li>
@@ -413,7 +413,7 @@ or by sending an email at <a class="reference external" href="mailto:mosqito&#37
 <h2>Developer guideline<a class="headerlink" href="#developer-guideline" title="Permalink to this heading">#</a></h2>
 <dl class="simple">
 <dt>This section is under construction. However you can find below some useful tips to understand the MOSQITO’s coding philosophy.</dt><dd><ul class="simple">
-<li><p>Functions that are not supposed to be called by a simple user of the toolbox shall be prefixed with “_” (<code class="docutils literal notranslate"><span class="pre">_calc_slopes.py</span> <span class="pre">for</span> <span class="pre">instance</span></code>)</p></li>
+<li><p>Functions that are not supposed to be called by a simple user of the toolbox shall be prefixed with “_” (<code class="docutils literal notranslate"><span class="pre">_calc_slopes.py</span></code> for instance)</p></li>
 <li><p>The call to the implementatin of a metric using a certain method shall be explicit (for example <code class="docutils literal notranslate"><span class="pre">loudness_zwicker()</span></code> instead of <code class="docutils literal notranslate"><span class="pre">loudness(method='zwicker')</span></code>)</p></li>
 <li><p>In order to make the content of the toolbox meaningful, it is recomanded to follow a 1 function = 1 .py file philosophy.</p></li>
 </ul>
@@ -427,7 +427,7 @@ or by sending an email at <a class="reference external" href="mailto:mosqito&#37
 <p class="admonition-title">Warning</p>
 <dl class="simple">
 <dt>Each function in the function library shall come with:</dt><dd><ul class="simple">
-<li><p>a complete docstring including the parameters definition and an example</p></li>
+<li><p>a complete docstring including the parameters definition and an example (see <code class="docutils literal notranslate"><span class="pre">docstring_template.txt</span></code> in the docs folder )</p></li>
 <li><p>a documentation presenting the sources used for the implementation and showing how the implementation is validated (in the <em>documentation</em> folder)</p></li>
 <li><p>a unit test (in the <em>tests</em> folder)</p></li>
 <li><p>validation script(s) (in the <em>validations</em> folder)</p></li>

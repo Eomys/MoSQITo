@@ -15,6 +15,10 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(".."))
 
+# Remove rst files of the folder having the name than some functions
+os.remove('source/reference/mosqito.sq_metrics.loudness.loudness_zwst.rst')
+os.remove('source/reference/mosqito.sq_metrics.loudness.loudness_zwtv.rst')
+os.remove('source/reference/mosqito.sq_metrics.roughness.roughness_dw.rst')
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -92,4 +96,5 @@ def fixed_init(self, app, template_dir=None):
 
 AutosummaryRenderer.__old_init__ = AutosummaryRenderer.__init__
 AutosummaryRenderer.__init__ = fixed_init
+
 

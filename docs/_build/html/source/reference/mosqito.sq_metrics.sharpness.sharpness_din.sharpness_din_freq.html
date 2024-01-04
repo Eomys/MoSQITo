@@ -39,6 +39,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/reference/mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq';</script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -47,7 +48,7 @@
     <link rel="prev" title="&lt;no title&gt;" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
+    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
   </head>
   
   
@@ -447,9 +448,18 @@ Default is ‘free’</p></li>
 </dd>
 </dl>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.
+If the provided signal doesn’t meet the requirements, it will be resampled.</p>
+</div>
 <p class="rubric">Notes</p>
+<p>The computation consists of a specific loudness weighting employing a weighting function <span class="math notranslate nohighlight">\(g(z)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[S=0.11\frac{\int_{0}^{24Bark}N'(z)g(z)\textup{dz}}{N}\]</div>
+<p>with <span class="math notranslate nohighlight">\(N'\)</span> the specific loudness and <span class="math notranslate nohighlight">\(N\)</span> the global loudness.</p>
 <dl class="simple">
-<dt>The different methods account for the weighting function applied on the specific loudness values:</dt><dd><ul class="simple">
+<dt>The different methods available with the function account for the weighting function applied:</dt><dd><ul class="simple">
 <li><p>DIN 45692 : weighting defined in the standard</p></li>
 <li><p>Aures</p></li>
 <li><p>Bismarck</p></li>

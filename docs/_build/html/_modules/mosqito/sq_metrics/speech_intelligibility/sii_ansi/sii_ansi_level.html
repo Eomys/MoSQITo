@@ -44,7 +44,7 @@
     <link rel="search" title="Search" href="../../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 03, 2024"/>
+    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
   </head>
   
   
@@ -412,14 +412,33 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    .sii_ansi : Speech intelligibility with a time signal as background noise</span>
 <span class="sd">    .sii_ansi_freq : Speech intelligibility with a frequency spectrum as background noise</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    ------</span>
+<span class="sd">    The input dB level corresponds to the overall sound pressure level. It is used to create a full uniform spectrum with the following sound level on each of the N bands: </span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">            L_{band}=10\\log_{10}\\left( \\frac{10^{\\frac{L_{overall}}{10}}}{N} \\right)</span>
+<span class="sd">        </span>
+<span class="sd">    The Speech Intelligibility Index :math:`SII` of the signal is computed as the sum of the speech-to-noise ratio :math:`A` weighted by an importance function :math:`I`, </span>
+<span class="sd">    over the :math:`n` frequency bands. </span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        SII=\\sum_{i=1}^{n}A_{i}I_{i}</span>
+<span class="sd">    </span>
+<span class="sd">    The number of frequency bands considered depends on the chosen method:</span>
+<span class="sd">      * &quot;critical&quot;: 21 critical bands corresponding to the Bark scale</span>
+<span class="sd">      * &quot;equally_critical&quot;: 17 equally contributing critical bands</span>
+<span class="sd">      * &quot;third-octave&quot;: 18 third-octave bands</span>
+<span class="sd">      * &quot;octave&quot;: 6 octave bands</span>
+<span class="sd">        </span>
 <span class="sd">        </span>
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    :cite:empty:&#39;a-ANSI.S3.5:2017&#39;</span>
+<span class="sd">    :cite:empty:`SII-ANSI.S3.5:2017`</span>
 <span class="sd">    </span>
 <span class="sd">    .. bibliography::</span>
-<span class="sd">        :labelprefix: A</span>
-<span class="sd">        :keyprefix: a-</span>
+<span class="sd">        :keyprefix: SII-</span>
 <span class="sd">        </span>
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>

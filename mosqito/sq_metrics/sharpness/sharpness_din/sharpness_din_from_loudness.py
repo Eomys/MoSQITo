@@ -34,9 +34,21 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
     .sharpness_din_freq : Sharpness computation from a sound spectrum
     .sharpness_din_perseg : Sharpness computation by time-segment
 
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
+
     Notes
     -----
-    The different methods account for the weighting function applied on the specific loudness values:
+    The computation consists of a specific loudness weighting employing a weighting function :math:`g(z)`:
+    
+    .. math::
+        S=0.11\\frac{\\int_{0}^{24Bark}N'(z)g(z)\\textup{dz}}{N}
+        
+    with :math:`N'` the specific loudness and :math:`N` the global loudness.
+    
+    The different methods available with the function account for the weighting function applied:
      * DIN 45692 : weighting defined in the standard
      * Aures
      * Bismarck
