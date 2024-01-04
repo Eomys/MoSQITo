@@ -17,7 +17,7 @@ from mosqito.sq_metrics import (
     sharpness_din_freq,
     sharpness_din_perseg,
 )
-
+from mosqito.sound_level_meter.spectrum import spectrum
 
 @pytest.fixture
 def test_signal():
@@ -191,9 +191,7 @@ def test_sharpness_din_freq(test_signal):
     sig = test_signal["signal"]
     fs = test_signal["fs"]
     # Compute corresponding spectrum
-    n = len(sig)
-    spec = 2 / np.sqrt(2) / n * fft(sig)[0 : n // 2]
-    freqs = fftfreq(n, 1 / fs)[0 : n // 2]
+    spec, freqs = spectrum(sig, fs, nfft="default", window="blackman", db=False)
 
     # Compute sharpness
     sharpness = sharpness_din_freq(spec, freqs, weighting="din")
@@ -243,7 +241,7 @@ if __name__ == "__main__":
         "fs": fs,
         "S_din": 2.85,
     }
-    # test_sharpness_din_st(test_signal)
-    # test_sharpness_din_tv()
-    # test_sharpness_din_freq(test_signal)
+    test_sharpness_din_st(test_signal)
+    test_sharpness_din_tv()
+    test_sharpness_din_freq(test_signal)
     test_sharpness_din_perseg(test_signal)
