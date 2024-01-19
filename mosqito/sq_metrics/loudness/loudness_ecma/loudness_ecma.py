@@ -1,18 +1,26 @@
 # -*- coding: utf-8 -*-
 """
 @author: Daniel Jiménez-Caminero Costa
+
+[Jan 2024] Updated to ECMA-418-2, 2nd Ed (2022)
 """
 import numpy as np
 
 # Project Imports
-from mosqito.sq_metrics.loudness.loudness_ecma._rectified_band_pass_signals import (
-    _rectified_band_pass_signals,
+from mosqito.sq_metrics.loudness.loudness_ecma._band_pass_signals import (
+    _band_pass_signals,
 )
+
+from mosqito.sq_metrics.loudness.loudness_ecma._ecma_time_segmentation import (
+    _ecma_time_segmentation,
+)
+
 from mosqito.sq_metrics.loudness.loudness_ecma._nonlinearity import _nonlinearity
 
 # Data import
 # Threshold in quiet
 from mosqito.sq_metrics.loudness.loudness_ecma._loudness_ecma_data import ltq_z
+
 
 
 def loudness_ecma(signal, sb=2048, sh=1024):
@@ -37,13 +45,59 @@ def loudness_ecma(signal, sb=2048, sh=1024):
         Bark axis
 
     """
+    
+    n_samples = signal.shape[0]
+    
+    # ************************************************************************
+    # Section 5.1.2 of ECMA-418-2, 2nd Ed (2022)
+    
+    # -----------------------------------------------------------------------    
+    # Apply windowing function to first 5 ms (240 samples)
+    n_fadein = 240
+    
+    # Eq. (1)
+    w_fadein = 0.5 - 0.5*np.cos(np.pi*np.arange(n_fadein)/n_fadein)
+    
+    signal[:240] *= w_fadein
+    
+    # -----------------------------------------------------------------------    
+    # Calculate zero padding at start and end of signal
+    sb_max = np.max(sb)
+    sh_max = np.max(sh)
+    
+    n_zeros_start = sb_max
+    
+    # Eqs. (2), (3) 
+    n_new = sh_max * (np.ceil((n_samples + sh_max + sb_max)/(sh_max)) - 1)
+    
+    n_zeros_end = int(n_new) - n_samples
+    
+    signal = np.concatenate( (np.zeros(n_zeros_start),
+                              signal,
+                              np.zeros(n_zeros_end)))
+    
+    # ************************************************************************
+    # Sections 5.1.3 to 5.1.4 of ECMA-418-2, 2nd Ed. (2022)
+    
+    # Computaton of band-pass signals
+    bandpass_signals = _band_pass_signals(signal)
 
-    # TODO: return time axis (list or list of list)
+    # ************************************************************************
+    # Section 5.1.5 of ECMA-418-2, 2nd Ed. (2022)
+    
+    # segmentation into blocks
+    block_array, time_array = _ecma_time_segmentation(bandpass_signals, sb, sh,
+                                                      n_new)
+    
+    # ************************************************************************
+    # Section 5.1.6 of ECMA-418-2, 2nd Ed. (2022)
+    # Rectification (Eq. 21)
+    
+    block_array_rect = np.clip(block_array, a_min=0.00, a_max=None)
 
-    # Computaton of rectified band-pass signals
-    # (section 5.1.2 to 5.1.5 of the standard)
-    block_array_rect = _rectified_band_pass_signals(signal, sb, sh)
-
+    # ************************************************************************
+    # Copied from old version
+    
     # # sb and sh for Tonality
     # z = np.linspace(0.5, 26.5, num=53, endpoint=True)
     # sb = np.ones(53, dtype="int")
@@ -57,22 +111,25 @@ def loudness_ecma(signal, sb=2048, sh=1024):
     # sb[z >= 13] = 1024
     # sh[z >= 13] = 256
 
+    # ************************************************************************
+    # Sections 5.1.7 to 5.1.9 of ECMA-418-2, 2nd Ed. (2022)
+    
     n_specific = []
     for band_number in range(53):
-        # ROOT-MEAN-SQUARE (section 5.1.6)
+        # ROOT-MEAN-SQUARE (section 5.1.7)
         # After the segmentation of the signal into blocks, root-mean square values of each block are calculated
-        # according to Formula 17.
+        # according to Formula 22.
         rms_block_value = np.sqrt(
             2 * np.mean(np.array(block_array_rect[band_number]) ** 2, axis=1)
         )
 
-        # NON-LINEARITY (section 5.1.7)
+        # NON-LINEARITY (section 5.1.8)
         # This section covers the other part of the calculations needed to consider the non-linear transformation
         # of sound pressure to specific loudness that does the the auditory system. After this point, the
         # computation is done equally to every block in which we have divided our signal.
         a_prime = _nonlinearity(rms_block_value)
 
-        # SPECIFIC LOUDNESS CONSIDERING THE THRESHOLD IN QUIET (section 5.1.8)
+        # SPECIFIC LOUDNESS CONSIDERING THE THRESHOLD IN QUIET (section 5.1.9)
         # The next calculation helps us obtain the result for the specific loudness - specific loudness with
         # consideration of the lower threshold of hearing.
         a_prime[a_prime < ltq_z[band_number]] = ltq_z[band_number]
@@ -80,4 +137,5 @@ def loudness_ecma(signal, sb=2048, sh=1024):
         n_specific.append(N_prime)
 
     bark_axis = np.linspace(0.5, 26.5, num=53, endpoint=True)
+    
     return n_specific, bark_axis
