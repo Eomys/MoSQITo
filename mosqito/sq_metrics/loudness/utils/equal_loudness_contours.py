@@ -6,7 +6,7 @@
 import numpy as np
 
 
-def equal_loudness_contours2(phones):
+def equal_loudness_contours(phones):
     """ "This function will return a 29-point equal loudness contour for your desired phon level. The frequencies
     evaluated in this function only span from 20Hz - 12.5kHz, and only 29 selective frequencies are covered. This is
     the limitation of the ISO standard".
