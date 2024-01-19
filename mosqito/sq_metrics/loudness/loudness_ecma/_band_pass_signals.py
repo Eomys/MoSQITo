@@ -3,13 +3,13 @@
 import numpy as np
 import scipy.signal as sp_signal
 
-from mosqito.sq_metrics.fluctuation_strength.fluctuation_strength._ear_filter_design import (
+from mosqito.sq_metrics.loudness.loudness_ecma._ear_filter_design import (
     _ear_filter_design,
 )
-from mosqito.sq_metrics.fluctuation_strength.fluctuation_strength._auditory_filters_centre_freq import (
+from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq import (
     _auditory_filters_centre_freq,
 )
-from mosqito.sq_metrics.fluctuation_strength.fluctuation_strength._gammatone import _gammatone
+from mosqito.sq_metrics.loudness.loudness_ecma._gammatone import _gammatone
 from mosqito.utils import time_segmentation
 
 
