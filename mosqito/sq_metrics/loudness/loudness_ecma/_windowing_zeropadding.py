@@ -1,13 +1,31 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jan 26 14:19:44 2024
+Performs windowing and zero-padding as described in Section 5.1.2 of
+ECMA-418-2 (2nd Ed, 2022) standard for calculating Loudness. 
 
-@author: HironoASUS
+Author:
+    Fabio Casagrande Hirono
+    Jan 2024
 """
 
 import numpy as np
 
 def _windowing_zeropadding(signal, sb, sh):
+    """
+    Performs windowing and zero-padding as described in Section 5.1.2 of
+    ECMA-418-2 (2nd Ed, 2022) standard for calculating Loudness. 
+    
+    Parameters
+    ----------
+    signal : (n_samples,)-shaped numpy.array
+        Array containing the sound signal samples, at sampling frequency 48 kHz
+    
+    sb : int
+        Block size, in samples
+    
+    sh : int
+        Hop size, in samples
+    """
     
     n_samples = signal.shape[0]
     
