@@ -17,6 +17,10 @@ from mosqito.sq_metrics.loudness.loudness_ecma._ecma_time_segmentation import (
 
 from mosqito.sq_metrics.loudness.loudness_ecma._nonlinearity import _nonlinearity
 
+from mosqito.sq_metrics.loudness.loudness_ecma._windowing_zeropadding import (
+    _windowing_zeropadding,
+)
+
 # Data import
 # Threshold in quiet
 from mosqito.sq_metrics.loudness.loudness_ecma._loudness_ecma_data import ltq_z
@@ -24,7 +28,8 @@ from mosqito.sq_metrics.loudness.loudness_ecma._loudness_ecma_data import ltq_z
 
 
 def loudness_ecma(signal, sb=2048, sh=1024):
-    """Calculation of the specific and total loudness according to ECMA-418-2 section 5
+    """Calculation of the specific and total loudness according to ECMA-418-2
+    (2nd Ed, 2022), Section 5.
 
     Parameters
     ----------
@@ -46,53 +51,18 @@ def loudness_ecma(signal, sb=2048, sh=1024):
 
     """
     
-    n_samples = signal.shape[0]
+    # 5.1.2 Windowing and zero-padding
+    signal, n_new = _windowing_zeropadding(signal, sb, sh)
     
-    # ************************************************************************
-    # Section 5.1.2 of ECMA-418-2, 2nd Ed (2022)
     
-    # -----------------------------------------------------------------------    
-    # Apply windowing function to first 5 ms (240 samples)
-    n_fadein = 240
-    
-    # Eq. (1)
-    w_fadein = 0.5 - 0.5*np.cos(np.pi*np.arange(n_fadein)/n_fadein)
-    
-    signal[:240] *= w_fadein
-    
-    # -----------------------------------------------------------------------    
-    # Calculate zero padding at start and end of signal
-    sb_max = np.max(sb)
-    sh_max = np.max(sh)
-    
-    n_zeros_start = sb_max
-    
-    # Eqs. (2), (3) 
-    n_new = sh_max * (np.ceil((n_samples + sh_max + sb_max)/(sh_max)) - 1)
-    
-    n_zeros_end = int(n_new) - n_samples
-    
-    signal = np.concatenate( (np.zeros(n_zeros_start),
-                              signal,
-                              np.zeros(n_zeros_end)))
-    
-    # ************************************************************************
-    # Sections 5.1.3 to 5.1.4 of ECMA-418-2, 2nd Ed. (2022)
-    
-    # Computaton of band-pass signals
+    # 5.1.3 to 5.1.4 - Computaton of band-pass signals
     bandpass_signals = _band_pass_signals(signal)
 
-    # ************************************************************************
-    # Section 5.1.5 of ECMA-418-2, 2nd Ed. (2022)
-    
-    # segmentation into blocks
+    # 5.1.5 Segmentation into blocks
     block_array, time_array = _ecma_time_segmentation(bandpass_signals, sb, sh,
                                                       n_new)
     
-    # ************************************************************************
-    # Section 5.1.6 of ECMA-418-2, 2nd Ed. (2022)
-    # Rectification (Eq. 21)
-    
+    # 5.1.6 Rectification (Eq. 21)
     block_array_rect = np.clip(block_array, a_min=0.00, a_max=None)
 
     # ************************************************************************
@@ -112,7 +82,7 @@ def loudness_ecma(signal, sb=2048, sh=1024):
     # sh[z >= 13] = 256
 
     # ************************************************************************
-    # Sections 5.1.7 to 5.1.9 of ECMA-418-2, 2nd Ed. (2022)
+    # Sections 5.1.7 to 5.1.9 
     
     n_specific = []
     for band_number in range(53):
