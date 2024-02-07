@@ -33,16 +33,16 @@ def _comp_prominence(Phi_E, maxima):
     
     else :
         T_right = triu(tile(Phi_E[maxima], (len(maxima),1))-Phi_E[maxima,None])
-        right_limit = array(apply_along_axis(find_right_limit, axis=1, arr=where((T_right>0), T_right, 0), maxima=maxima), dtype=object)
+        right_limit = array(apply_along_axis(find_right_limit, axis=1, arr=where((T_right>0), T_right, 0), maxima=maxima)) #, dtype=object)
 
         T_left = tril(tile(Phi_E[maxima], (len(maxima),1))-Phi_E[maxima,None])
-        left_limit = array(apply_along_axis(find_left_limit, axis=1, arr=where((T_left>0), T_left, 0), maxima=maxima), dtype=object)
+        left_limit = array(apply_along_axis(find_left_limit, axis=1, arr=where((T_left>0), T_left, 0), maxima=maxima)) #, dtype=object)
 
         # plt.figure()
         # plt.plot(Phi_E)
         # plt.plot(maxima, Phi_E[maxima], 'o')
         # plt.plot([left_limit, right_limit], [Phi_E[left_limit],Phi_E[right_limit]], 's')
-        # plt.show() 
+        # plt.show(block=True) 
 
 
         # the limits of the interval are the closest neighbour peaks that are higher to the peak studied or the signal's

@@ -38,7 +38,7 @@ def _high_mod_rate_weighting(mod_rate, amp, fmax, rmax, q2_high):
     else:
         G = 1/((1+((mod_rate/fmax-fmax/mod_rate)*1.2822)**2)**q2_high)
         weighted_amp = G * amp * rmax
-
+        
     return weighted_amp
 
 def _low_mod_rate_weighting(mod_rate, amp, fmax, q2_low):
