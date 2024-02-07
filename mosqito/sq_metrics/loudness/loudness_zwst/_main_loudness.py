@@ -226,7 +226,7 @@ def _main_loudness(spec_third, field_type):
     # taking into account the dependance of absolute threshold
     # within this critical band
     korry = 0.4 + 0.32 * nm[0] ** 0.2
-    nm[0, korry <= 1] *= korry
+    nm[0, korry <= 1] *= korry[korry <= 1]
     # nm[:, -1] = 0
     # if spec_third.ndim == 1 or spec_third.shape[1] == 1:
     #     # This is only for test_loudness_zwicker_3oct because only one array of one col is given and this routine needs 2 or more
