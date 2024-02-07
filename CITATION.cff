@@ -4,9 +4,9 @@ authors:
   - family-names: Green Forge Coop
     given-names:
 title: MOSQITO
-version: 1.1.0
+version: 1.1.1
 doi: 10.5281/zenodo.10418152
-date-released: 2023-12-21
+date-released: 2024-02-07
 keywords:
   - audio
   - python
@@ -15,4 +15,5 @@ keywords:
   - acoustic
   - sound-quality
   - sq-metrics
+  - psychoacoustic
 license: Apache-2.0
