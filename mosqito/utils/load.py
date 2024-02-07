@@ -9,12 +9,7 @@ Created on Mon Nov 16 08:59:34 2020
 import numpy as np
 from scipy.io import wavfile, loadmat
 from scipy.signal import resample
-
-# Optional package import
-try:
-    import pyuff
-except ImportError:
-    pyuff = None
+import pyuff
 
 
 def load(file, wav_calib=None, mat_signal="", mat_fs=""):
@@ -57,15 +52,16 @@ def load(file, wav_calib=None, mat_signal="", mat_fs=""):
             wav_calib = 1
             print("[Info] A calibration of 1 Pa/FS is considered")
         if isinstance(signal[0], np.int16):
-            signal = wav_calib * signal / (2 ** 15 - 1)
+            signal = wav_calib * signal / (2**15 - 1)
         elif isinstance(signal[0], np.int32):
-            signal = wav_calib * signal / (2 ** 31 - 1)
+            signal = wav_calib * signal / (2**31 - 1)
         elif isinstance(signal[0], np.float):
             signal = wav_calib * signal
 
     # load the .uff file content
     elif file[-3:].lower() == "uff" or file[-3:].lower() == "unv":
-        data = _uff_load(file)
+        uff_file = pyuff.UFF(file)
+        data = uff_file.read_sets()
 
         # extract the signal values
         signal = data["data"]
@@ -92,13 +88,3 @@ def load(file, wav_calib=None, mat_signal="", mat_fs=""):
         print("[Info] Signal resampled to 48 kHz to allow calculation.")
 
     return signal, fs
-
-
-def _uff_load(file):
-    if pyuff is None:
-        raise RuntimeError(
-            "In order to load UFF files you need the 'pyuff' " "package."
-        )
-    uff_file = pyuff.UFF(file)
-    data = uff_file.read_sets()
-    return data

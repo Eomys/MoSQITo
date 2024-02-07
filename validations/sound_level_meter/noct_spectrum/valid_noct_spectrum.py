@@ -1,10 +1,4 @@
 try:
-    import pyuff
-except ImportError:
-    raise RuntimeError(
-        "In order to perform this validation you need the 'pyuff' package."
-    )
-try:
     import matplotlib.pyplot as plt
 except ImportError:
     raise RuntimeError(
@@ -12,6 +6,7 @@ except ImportError:
     )
 
 import numpy as np
+import pyuff
 
 from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import (
     noct_spectrum,
@@ -19,11 +14,8 @@ from mosqito.sound_level_meter.noct_spectrum.noct_spectrum import (
 
 
 def valid_nthoctave(is_gen_txt=False):
-
     # Load signal
-    uff_file = pyuff.UFF(
-        "./input/electric_motor_vibration_signal.uff"
-    )
+    uff_file = pyuff.UFF("./input/electric_motor_vibration_signal.uff")
     dataset = uff_file.read_sets()
     sig = dataset["data"]
     # save as txt file
@@ -38,9 +30,7 @@ def valid_nthoctave(is_gen_txt=False):
     oct1, freq1 = noct_spectrum(sig, fs=52000, fmin=25, fmax=20000, n=1)
 
     # Load DEWESOFT post-processing
-    uff_file = pyuff.UFF(
-        "./input/electric_motor_vibration_noct_dewe.uff"
-    )
+    uff_file = pyuff.UFF("./input/electric_motor_vibration_noct_dewe.uff")
     datasets = uff_file.read_sets()
     oct3_dewe = datasets[0]["data"]
     oct1_dewe = datasets[1]["data"]
@@ -67,8 +57,7 @@ def valid_nthoctave(is_gen_txt=False):
     plt.xlabel("Frequency")
     plt.ylabel("Vibration acceleration [dB]")
     plt.savefig(
-        "./output/"
-        + "validation_3oct_spectrum.png",
+        "./output/" + "validation_3oct_spectrum.png",
         format="png",
     )
     plt.clf()
@@ -80,8 +69,7 @@ def valid_nthoctave(is_gen_txt=False):
     plt.xlabel("Frequency")
     plt.ylabel("Vibration acceleration [dB]")
     plt.savefig(
-        "./output/"
-        + "validation_1oct_spectrum.png",
+        "./output/" + "validation_1oct_spectrum.png",
         format="png",
     )
     plt.clf()
