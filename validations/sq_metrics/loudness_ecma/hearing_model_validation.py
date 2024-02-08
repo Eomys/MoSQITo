@@ -17,39 +17,6 @@ from mosqito.utils.sine_wave_generator import (
 )
 
 
-
-def comp_time_dependent_loudness_ecma(n_specific_per_seg):
-    """
-    Computes time-dependent loudness N(L) over time by integrating the
-    time-dependent specific loudness N'(z, L) returned by the
-    'loudness_ecma' function over the critical bands.
-    
-    This is described by Eq. 116 in ECMA-418-2, 2nd Ed (2022).
-    """
-    
-    delta_z = 0.5
-    
-    n_time = np.sum(n_specific_per_seg, axis=0)*delta_z
-    
-    return n_time
-
-
-def comp_single_value_loudness_ecma(n_specific_per_seg):
-    """
-    Computes a single-value loudness N by taking a power average of the
-    time-dependent loudness N(L).
-    
-    This is described by Eq. 117 in ECMA-418-2, 2nd Ed (2022).
-    """
-    
-    n_time = comp_time_dependent_loudness_ecma(n_specific_per_seg)
-    
-    e = 1/np.log10(2)
-    n =  (np.mean(n_time**e))**(1/e)
-    
-    return n
-
-
 def comp_loudness_wrapper(spl, freq, phon_1kHz):
     """Return the difference between the loudness of a tone at <freq> Hz
     and <spl> dB SPL and a reference tone at 1 KHz and <phon_1kHz> dB SPL.
@@ -78,22 +45,18 @@ def comp_loudness_wrapper(spl, freq, phon_1kHz):
     fs = 48000.0
     
     signal, _ = sine_wave_generator(fs, duration, spl, freq)    
-    signal_1kHz, _ = sine_wave_generator(fs, duration,
-                                         spl_value=phon_1kHz,
-                                         freq=1000)
+    signal_1kHz, _ = sine_wave_generator(fs, duration, spl_value=phon_1kHz, freq=1000)
     
     # compute loudness for the test signal
-    n_specific, _ = loudness_ecma(signal)
-    n_specific = np.array(n_specific)
-    n_freq = comp_single_value_loudness_ecma(n_specific)
+    N, _, N_spec, _, _= loudness_ecma(signal_1kHz, fs)
+    N_spec = np.array(N_spec)
+    
     
     # Compute loudness for 1 kHz tone at 'phon_1kHz' dB SPL
-    n_specific_1khz, _ = loudness_ecma(signal_1kHz)
-    n_specific_1khz = np.array(n_specific_1khz)
-    n_1kHz = comp_single_value_loudness_ecma(n_specific_1khz)
+    N_1kHz, _, N_spec_1kHz, _, _= loudness_ecma(signal, fs)
+    N_spec_1kHz = np.array(N_spec_1kHz)
 
-    # Return n_freq - n_1kHz
-    return n_freq - n_1kHz
+    return N - N_1kHz
 
 
 def hearing_model_validation():
