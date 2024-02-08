@@ -56,17 +56,17 @@ def _ecma_time_segmentation(signal_block, sb, sh, n_new):
     
     for z in range(53):
             
-            signal = signal_block[z]
-            
-            # build time vector for signal
-            time = linspace(0, (signal.shape[0] - 1) / fs, signal.shape[0])
-                    
-            # Eq. (18)
-            L = arange(L_last[z])
-            idx = linspace(L*sh[z] + i_start[z], L*sh[z] + i_start[z] + sb[z], sb[z]).astype(int32).T
-                            
-            block_array.append(signal[idx])
-            time_array.append(mean(time[idx], axis=1)) 
+        signal = signal_block[z]
+        
+        # build time vector for signal
+        time = linspace(0, (signal.shape[0] - 1) / fs, signal.shape[0])
+                
+        # Eq. (18)
+        L = arange(L_last[z])
+        idx = linspace(L*sh[z] + i_start[z], L*sh[z] + i_start[z] + sb[z], sb[z]).astype(int32).T
+                        
+        block_array.append(signal[idx])
+        time_array.append(time[idx]) 
                  
     return block_array, time_array
 
