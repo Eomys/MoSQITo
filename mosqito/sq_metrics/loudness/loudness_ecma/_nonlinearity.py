@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import array, ones
 
 
 def _nonlinearity(p):
@@ -24,17 +24,15 @@ def _nonlinearity(p):
     
     alpha = 1.50
     
-    v_i = np.array([1.0, 0.6602, 0.0864, 0.6384, 0.0328,
+    v_i = array([1.0, 0.6602, 0.0864, 0.6384, 0.0328,
                     0.4068, 0.2082, 0.3994, 0.6434])
     
-    thresh = np.array([0., 15.0, 25.0, 35.0, 45.0,
+    thresh = array([0., 15.0, 25.0, 35.0, 45.0,
                        55.0, 65.0, 75.0, 85.0])
     
     p_ti = p_0 * 10 ** (thresh / 20)
 
-    a_prime = np.ones(p.shape)
-    
-    # calculation goes from i=1 to i=8
+    a_prime = ones(p.shape)
     for i in range(1, 9):
         a_prime *= (1 + (p / p_ti[i]) ** alpha) ** ((v_i[i] - v_i[i-1]) / alpha)
     
