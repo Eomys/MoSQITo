@@ -4,7 +4,7 @@ try:
 except ImportError:
     raise RuntimeError(
         "In order to perform this validation you need the 'matplotlib' package."
-        )
+    )
 
 from scipy.signal import sos2tf, sosfreqz, sosfilt
 from numpy import (
@@ -53,8 +53,7 @@ while f < 20000:
     # Filter
     signal_filtered = sosfilt(sos_ear, signal, axis=0)
     level.append(
-        20 * log10(sqrt(mean(signal_filtered ** 2)))
-        - 20 * log10(sqrt(mean(signal ** 2)))
+        20 * log10(sqrt(mean(signal_filtered**2))) - 20 * log10(sqrt(mean(signal**2)))
     )
     freq.append(f)
     f *= 2

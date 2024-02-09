@@ -2,7 +2,9 @@
 
 # Local imports
 from mosqito.sound_level_meter.spectrum import spectrum
-from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import _pr_main_calc
+from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import (
+    _pr_main_calc,
+)
 
 
 def pr_ecma_st(signal, fs, prominence=True):
@@ -31,14 +33,14 @@ def pr_ecma_st(signal, fs, prominence=True):
     tones_freqs : array of float
         Frequency list of the detected tones.
     """
-    
+
     # Compute db spectrum
     spectrum_db, freq_axis = spectrum(signal, fs, db=True)
-                  
+
     # Compute PR values
     tones_freqs, pr, prom, t_pr = _pr_main_calc(spectrum_db, freq_axis)
     prom = prom.astype(bool)
-    
+
     if prominence == False:
         return t_pr, pr, prom, tones_freqs
     else:

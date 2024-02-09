@@ -3,7 +3,7 @@ try:
 except ImportError:
     raise RuntimeError(
         "In order to perform this validation you need the 'matplotlib' package."
-        )
+    )
 
 
 from scipy.special import comb
@@ -51,7 +51,7 @@ def _gammatone(freq, k=5, fs=48000, is_plot=False):
     c = 0.1618
 
     # Bandwidth (ECMA 418-2:2022 equation 10)
-    delta_f = sqrt((af_f0 ** 2) + ((c * freq) ** 2))
+    delta_f = sqrt((af_f0**2) + ((c * freq) ** 2))
 
     # Time constant, delay (ECMA 418-2:2022 equation 8)
     binom = comb(2 * k - 2, k - 1, exact=True)
@@ -68,9 +68,9 @@ def _gammatone(freq, k=5, fs=48000, is_plot=False):
     # coeff bm (ECMA 418-2 equation 15 - index 'm' goes from 0 to k-1)
     em = np_array([0, 1, 11, 11, 1])
     i = arange(4) + 1
-    denom = np_sum(em[i] * d ** i)
+    denom = np_sum(em[i] * d**i)
     m = arange(5)
-    bm = ((1 - d) ** k) / denom * (d ** m) * em[m]
+    bm = ((1 - d) ** k) / denom * (d**m) * em[m]
 
     # band pass filter coefficients (ECMA 418-2:2022 equation 16 & 17)
     # [by modifying the filter cofficients with a positive exponential,
@@ -80,7 +80,6 @@ def _gammatone(freq, k=5, fs=48000, is_plot=False):
     exponential = exp(+1j * 2 * pi * freq * m / fs)
     am_prim_ecma = am * exponential
     bm_prim_ecma = bm * exponential[:-1]
-
 
     if is_plot:
         w, h = freqz(bm, am, worN=round(fs / 2), fs=fs)

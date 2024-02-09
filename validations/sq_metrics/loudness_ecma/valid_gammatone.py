@@ -4,7 +4,7 @@ try:
 except ImportError:
     raise RuntimeError(
         "In order to perform this validation you need the 'matplotlib' package."
-        )
+    )
 
 
 from scipy.signal import gammatone as scipy_gamma, freqz

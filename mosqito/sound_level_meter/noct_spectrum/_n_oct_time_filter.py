@@ -59,13 +59,13 @@ def _n_oct_time_filter(sig, fs, fc, alpha, N=3):
     w2 = fc / (fs / 2) * alpha
 
     # define filter coefficient
-    sos = butter(int(N), (w1, w2), "bandpass", analog=False, output='sos')
+    sos = butter(int(N), (w1, w2), "bandpass", analog=False, output="sos")
 
     # filter signal
     sig_filt = sosfilt(sos, sig, axis=0)
 
     # Compute overall rms level
-    level = np.sqrt(np.mean(sig_filt ** 2, axis=0))
+    level = np.sqrt(np.mean(sig_filt**2, axis=0))
 
     return level
 

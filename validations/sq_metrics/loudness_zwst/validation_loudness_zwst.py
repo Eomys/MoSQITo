@@ -48,9 +48,7 @@ def validation_loudness_zwst_3oct():
     # Load ISO reference outputs
     file_path = "input/ISO_532_1/test_signal_1.csv"
     N_iso = 83.296
-    N_specif_iso = np.genfromtxt(
-        file_path, skip_header=1
-    )
+    N_specif_iso = np.genfromtxt(file_path, skip_header=1)
 
     # Compute loudness
     Nm = _main_loudness(test_signal_1, field_type="free")
@@ -59,14 +57,27 @@ def validation_loudness_zwst_3oct():
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
 
     # Test
-    is_isoclose_N = isoclose(N, N_iso, rtol=5/100,
-                             atol=0.1, is_plot=False, xaxis=None)
+    is_isoclose_N = isoclose(
+        N, N_iso, rtol=5 / 100, atol=0.1, is_plot=False, xaxis=None
+    )
     is_isoclose_N_specific = isoclose(
-        N_specific, N_specif_iso, rtol=5/100, atol=0.1, is_plot=True, tol_label='ISO 532-1 tolerance', xaxis=bark_axis)
+        N_specific,
+        N_specif_iso,
+        rtol=5 / 100,
+        atol=0.1,
+        is_plot=True,
+        tol_label="ISO 532-1 tolerance",
+        xaxis=bark_axis,
+    )
 
     # Format and save validation plot
-    _format_plot(is_isoclose_N, is_isoclose_N_specific, N,
-                 N_iso, splitext(basename(file_path))[0])
+    _format_plot(
+        is_isoclose_N,
+        is_isoclose_N_specific,
+        N,
+        N_iso,
+        splitext(basename(file_path))[0],
+    )
 
 
 def validation_loudness_zwst():
@@ -115,7 +126,7 @@ def validation_loudness_zwst():
 
     for signal in signals:
         # Load signal and compute third octave band spectrum
-        sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
+        sig, fs = load(signal["data_file"], wav_calib=2 * 2**0.5)
 
         # Compute Loudness
         N, N_specific, bark_axis = loudness_zwst(sig, fs)
@@ -125,34 +136,51 @@ def validation_loudness_zwst():
         N_specif_iso = np.genfromtxt(signal["N_specif_file"], skip_header=1)
 
         # Test
-        is_isoclose_N = isoclose(N, N_iso, rtol=5/100,
-                                 atol=0.1, is_plot=False, xaxis=None)
+        is_isoclose_N = isoclose(
+            N, N_iso, rtol=5 / 100, atol=0.1, is_plot=False, xaxis=None
+        )
         is_isoclose_N_specific = isoclose(
-            N_specific, N_specif_iso, rtol=5/100, atol=0.1, is_plot=True, tol_label='ISO 532-1 tolerance', xaxis=bark_axis)
+            N_specific,
+            N_specif_iso,
+            rtol=5 / 100,
+            atol=0.1,
+            is_plot=True,
+            tol_label="ISO 532-1 tolerance",
+            xaxis=bark_axis,
+        )
 
         # Format and save validation plot
-        _format_plot(is_isoclose_N, is_isoclose_N_specific, N,
-                     N_iso, splitext(basename(signal["data_file"]))[0])
+        _format_plot(
+            is_isoclose_N,
+            is_isoclose_N_specific,
+            N,
+            N_iso,
+            splitext(basename(signal["data_file"]))[0],
+        )
 
 
 def _format_plot(is_isoclose_N, is_isoclose_N_specific, N, N_iso, filename):
     # Format plot
-    plt.xlabel('Critical band rate [Bark]')
-    plt.ylabel('N\'_zwst [sone/Bark]')
-    color = 'tab:green'
+    plt.xlabel("Critical band rate [Bark]")
+    plt.ylabel("N'_zwst [sone/Bark]")
+    color = "tab:green"
     if is_isoclose_N:
         txt_label = "N within tolerance (%.1f sone for an ISO value of %.1f sone)" % (
-            N, N_iso)
+            N,
+            N_iso,
+        )
     else:
         txt_label = "N without tolerance (%.1f sone for an ISO value of %.1f sone)" % (
-            N, N_iso)
-        color = 'tab:red'
+            N,
+            N_iso,
+        )
+        color = "tab:red"
     if is_isoclose_N_specific:
-        txt_label += '\n N\' within tolerance'
+        txt_label += "\n N' within tolerance"
     else:
-        txt_label += '\n N\' without tolerance'
-        color = 'tab:red'
-    props = dict(boxstyle='round', facecolor=color, alpha=0.3)
+        txt_label += "\n N' without tolerance"
+        color = "tab:red"
+    props = dict(boxstyle="round", facecolor=color, alpha=0.3)
     plt.text(
         0.5,
         0.05,
@@ -164,8 +192,7 @@ def _format_plot(is_isoclose_N, is_isoclose_N_specific, N, N_iso, filename):
     )
     out_dir = "output/"
     plt.savefig(
-        out_dir + 'validation_loudness_zwst_' +
-        "_".join(filename.split(" ")) + ".png",
+        out_dir + "validation_loudness_zwst_" + "_".join(filename.split(" ")) + ".png",
         format="png",
     )
     plt.close()

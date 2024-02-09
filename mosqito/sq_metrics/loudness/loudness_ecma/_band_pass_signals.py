@@ -22,7 +22,7 @@ def _band_pass_signals(sig):
     ----------
     signal: numpy.array
         'Pa', time signal values. The sampling frequency of the signal must be 48000 Hz.
-    
+
     Returns
     -------
     block_bandpass_signals: list of numpy.array
@@ -38,21 +38,16 @@ def _band_pass_signals(sig):
     filter_order_k = 5
     # Sampling frequency
     fs = 48000
-    
+
     # Auditory filters centre frequencies
     centre_freq = _auditory_filters_centre_freq()
 
     block_bandpass_signals = []
     for band_number in range(53):
-        
-        bm_mod, am_mod = _gammatone(centre_freq[band_number],
-                                    k=filter_order_k,
-                                    fs=fs)
+
+        bm_mod, am_mod = _gammatone(centre_freq[band_number], k=filter_order_k, fs=fs)
         # Eq. (12)
-        band_pass_signal = 2.0 * lfilter(bm_mod,
-                                                 am_mod, 
-                                                 signal_filtered,
-                                                 axis=0).real
+        band_pass_signal = 2.0 * lfilter(bm_mod, am_mod, signal_filtered, axis=0).real
         block_bandpass_signals.append(band_pass_signal)
-        
+
     return block_bandpass_signals

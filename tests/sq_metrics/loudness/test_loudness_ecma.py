@@ -42,7 +42,6 @@ def test_loudness_ecma():
     assert np.isclose(n_1kHz, n_5kHz)
     
 
-
 # test de la fonction
 if __name__ == "__main__":
     test_loudness_ecma()

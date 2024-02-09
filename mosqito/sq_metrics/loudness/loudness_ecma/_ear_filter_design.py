@@ -18,7 +18,6 @@ def _ear_filter_design():
 
     """
 
-
     # Filer coefficients (ECMA-418-2, 2nd Ed (2022) Table 1)
     filter_a = [
         [1.0, -1.925299, 0.938014],
@@ -30,7 +29,7 @@ def _ear_filter_design():
         [1.0, -1.912434, 0.914161],
         [1.0, 0.162320, 0.284244],
     ]
-    
+
     filter_b = [
         [1.015896, -1.925299, 0.922118],
         [0.958943, -1.806088, 0.876439],
@@ -41,7 +40,7 @@ def _ear_filter_design():
         [0.988029, -1.912434, 0.926132],
         [1.952238, 0.162320, -0.667994],
     ]
-    
+
     sos_ear = column_stack((filter_b, filter_a))
 
     return sos_ear

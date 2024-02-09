@@ -22,7 +22,6 @@ from mosqito.sq_metrics.loudness.loudness_ecma._preprocessing import (
 from mosqito.sq_metrics.loudness.loudness_ecma._loudness_ecma_data import ltq_z
 
 
-
 def loudness_ecma(signal, fs, sb=2048, sh=1024):
     """Calculation of the specific and total loudness according to ECMA-418-2
     (2nd Ed, 2022), Section 5.
@@ -37,8 +36,8 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
         Hop size.
 
     Returns
-    -------      
-    N : float   
+    -------
+    N : float
         Overall loudness representative value [sone_HMS].
     N_time : numpy.ndarray
         Loudness over time [sone_HMS], size (Ntime,).
@@ -58,19 +57,16 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
 
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
-    
-    
+
     # Windowing and zero-padding (5.1.2)
     signal, n_new = _preprocessing(signal, sb, sh)
-    
+
     # Computaton of band-pass signals (5.1.3 to 5.1.4)
     bandpass_signals = _band_pass_signals(signal)
 
     # Segmentation into blocks (5.1.5)
     block_array, time_array = _ecma_time_segmentation(bandpass_signals, sb, sh, n_new)
-    
-    
-    
+
     # Rectification (5.1.6)
     block_array_rect = clip(block_array, a_min=0.00, a_max=None)
 
@@ -90,13 +86,13 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
 
     # Time dependent values (eq. 116)
     delta_z = 0.5
-    N_time = sum(N_spec, axis=0)*delta_z
+    N_time = sum(N_spec, axis=0) * delta_z
 
-    # Single-value loudness (eq. 117)    
-    e = 1/log10(2)
-    N =  (mean(N_time**e))**(1/e)
-    
+    # Single-value loudness (eq. 117)
+    e = 1 / log10(2)
+    N = (mean(N_time**e)) ** (1 / e)
+
     bark_axis = linspace(0.5, 26.5, num=53, endpoint=True)
-    time_axis = time_array[0][:,0]
-    
+    time_axis = time_array[0][:, 0]
+
     return N, N_time, N_spec, bark_axis, time_axis

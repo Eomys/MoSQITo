@@ -11,14 +11,17 @@ except ImportError:
 from numpy import array, empty, amin, amax, zeros, log10, maximum, float64
 
 # Local application imports
-from mosqito.sq_metrics.speech_intelligibility.sii_ansi._band_procedure_data import  _get_third_octave_band_data
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi._band_procedure_data import (
+    _get_third_octave_band_data,
+)
 from mosqito.sq_metrics.speech_intelligibility.sii_ansi._main_sii import _main_sii
 
 # Reference values from ANSI S3.5 standard
 reference = empty(2, dtype=dict)
 
-reference[0] = {"noise_spectrum": array([70, 65, 45, 25, 1, -15]),
-    "speech_spectrum": array([50, 40, 40, 30, 20, 0]),         
+reference[0] = {
+    "noise_spectrum": array([70, 65, 45, 25, 1, -15]),
+    "speech_spectrum": array([50, 40, 40, 30, 20, 0]),
     "freq_axis": array([250, 500, 1000, 2000, 4000, 8000]),
     "method": "octave",
     "SII": 0.504,
@@ -26,69 +29,33 @@ reference[0] = {"noise_spectrum": array([70, 65, 45, 25, 1, -15]),
 }
 
 
-reference[1] = {"noise_spectrum": array([
-        40,
-        30,
-        20,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0    ]
-), 
-    "speech_spectrum": array([
-        54,
-        54,
-        54,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0    ]
-),         
-    "freq_axis": array(        [
-        160,
-        200,
-        250,
-        315,
-        400,
-        500,
-        630,
-        800,
-        1000,
-        1250,
-        1600,
-        2000,
-        2500,
-        3150,
-        4000,
-        5000,
-        6300,
-        8000
+reference[1] = {
+    "noise_spectrum": array([40, 30, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    "speech_spectrum": array([54, 54, 54, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    "freq_axis": array(
+        [
+            160,
+            200,
+            250,
+            315,
+            400,
+            500,
+            630,
+            800,
+            1000,
+            1250,
+            1600,
+            2000,
+            2500,
+            3150,
+            4000,
+            5000,
+            6300,
+            8000,
         ]
-),
+    ),
     "method": "third_octave",
-    "SII_spec": array([40,34.66,25.04]),
+    "SII_spec": array([40, 34.66, 25.04]),
 }
 
 
@@ -102,20 +69,31 @@ def validation_sii_octave(reference):
 
     """
     # Compute SII
-    SII, SII_spec, _ = _main_sii(reference["method"], reference["speech_spectrum"], reference["noise_spectrum"], threshold=None)
+    SII, SII_spec, _ = _main_sii(
+        reference["method"],
+        reference["speech_spectrum"],
+        reference["noise_spectrum"],
+        threshold=None,
+    )
 
     plt.figure()
 
     # Frequency bark axis
     freqs = reference["freq_axis"]
 
-    tstS = (SII_spec >= amin([reference["SII_spec"] * 0.99, reference["SII_spec"] - 0.01], axis=0)).all() and (
-        SII_spec <= amax([reference["SII_spec"] * 1.01, reference["SII_spec"] + 0.01], axis=0)
+    tstS = (
+        SII_spec
+        >= amin([reference["SII_spec"] * 0.99, reference["SII_spec"] - 0.01], axis=0)
+    ).all() and (
+        SII_spec
+        <= amax([reference["SII_spec"] * 1.01, reference["SII_spec"] + 0.01], axis=0)
     ).all()
 
     # Tolerance curves definition
     tol_low = amin([reference["SII_spec"] * 0.99, reference["SII_spec"] - 0.01], axis=0)
-    tol_high = amax([reference["SII_spec"] * 1.01, reference["SII_spec"] + 0.01], axis=0)
+    tol_high = amax(
+        [reference["SII_spec"] * 1.01, reference["SII_spec"] + 0.01], axis=0
+    )
 
     # Plot tolerance curves
     plt.plot(
@@ -147,17 +125,20 @@ def validation_sii_octave(reference):
 
     # Plot the calculated sharpness
     plt.plot(freqs, SII_spec, label="MOSQITO")
-    plt.title("Speech intelligibility index = "+f"{SII:.3f}"+"\n Octave band procedure", fontsize=10)
+    plt.title(
+        "Speech intelligibility index = " + f"{SII:.3f}" + "\n Octave band procedure",
+        fontsize=10,
+    )
     plt.legend()
     plt.xlabel("Center frequency [Hz]")
     plt.ylabel("Specific SII")
     plt.savefig(
-        "validations/sq_metrics/speech_intelligibility/output/"
-        + "validation_sii.png",
+        "validations/sq_metrics/speech_intelligibility/output/" + "validation_sii.png",
         format="png",
     )
     plt.clf()
-    
+
+
 def validation_sii_third_octave(reference):
     """Test function for the script _main_sii with third octave band procedure
 
@@ -167,45 +148,66 @@ def validation_sii_third_octave(reference):
     One .png compliance plot is generated.
 
     """
-    
+
     noise_spectrum = reference["noise_spectrum"]
     speech_spectrum = reference["speech_spectrum"]
-    
+
     # Get band data for third-octave procedure
-    CENTER_FREQUENCIES, _, _, BANDWIDTH_ADJUSTEMENT, _, _, _ = _get_third_octave_band_data()
+    CENTER_FREQUENCIES, _, _, BANDWIDTH_ADJUSTEMENT, _, _, _ = (
+        _get_third_octave_band_data()
+    )
     nbands = len(CENTER_FREQUENCIES)
-    
+
     T = zeros((nbands))
-        
+
     # STEP 3
     V = speech_spectrum - 24
     B = maximum(noise_spectrum, V)
-    C = -80 + 0.6 * (B + 10*log10(CENTER_FREQUENCIES)-6.353)
+    C = -80 + 0.6 * (B + 10 * log10(CENTER_FREQUENCIES) - 6.353)
     Z = zeros((nbands))
-    for i in range(nbands): 
+    for i in range(nbands):
         s = 0
         for k in range(i):
-            s += 10**(0.1*(B[k] + 3.32 * C[k] * log10(0.89 * CENTER_FREQUENCIES[i] / CENTER_FREQUENCIES[k])))
-        Z[i] = 10 * log10(10**(0.1*noise_spectrum[i]) + s)
+            s += 10 ** (
+                0.1
+                * (
+                    B[k]
+                    + 3.32
+                    * C[k]
+                    * log10(0.89 * CENTER_FREQUENCIES[i] / CENTER_FREQUENCIES[k])
+                )
+            )
+        Z[i] = 10 * log10(10 ** (0.1 * noise_spectrum[i]) + s)
     # 4.3.2.4
     Z[0] = B[0]
-    
+
     plt.figure()
-    
+
     # Frequency bark axis
     freqs = reference["freq_axis"]
 
-    tstS = (Z[:3] >= amin([reference["SII_spec"] * 0.99, reference["SII_spec"] - 0.01], axis=0)).all() and (
-       Z[:3] <= amax([reference["SII_spec"] * 1.01, reference["SII_spec"] + 0.01], axis=0)
+    tstS = (
+        Z[:3]
+        >= amin([reference["SII_spec"] * 0.99, reference["SII_spec"] - 0.01], axis=0)
+    ).all() and (
+        Z[:3]
+        <= amax([reference["SII_spec"] * 1.01, reference["SII_spec"] + 0.01], axis=0)
     ).all()
 
     # Tolerance curves definition
     tol_low = amin([reference["SII_spec"] * 0.99, reference["SII_spec"] - 0.01], axis=0)
-    tol_high = amax([reference["SII_spec"] * 1.01, reference["SII_spec"] + 0.01], axis=0)
+    tol_high = amax(
+        [reference["SII_spec"] * 1.01, reference["SII_spec"] + 0.01], axis=0
+    )
 
     # Plot tolerance curves
     plt.plot(
-        freqs[:3], tol_low, color="red", linestyle="solid", label="tolerance", linewidth=1
+        freqs[:3],
+        tol_low,
+        color="red",
+        linestyle="solid",
+        label="tolerance",
+        linewidth=1,
     )
     plt.plot(freqs[:3], tol_high, color="red", linestyle="solid", linewidth=1)
 
@@ -247,6 +249,6 @@ def validation_sii_third_octave(reference):
 
 # test de la fonction
 if __name__ == "__main__":
-    # generate compliance plot 
+    # generate compliance plot
     validation_sii_octave(reference[0])
     validation_sii_third_octave(reference[1])
