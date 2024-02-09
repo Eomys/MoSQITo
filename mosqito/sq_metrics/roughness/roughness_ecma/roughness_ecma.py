@@ -1,8 +1,9 @@
 from numpy import(abs,arange,cos,pi,append,power,zeros,empty, sum, array,clip,  exp, median,where,argmax,argmin,argsort,
-                  delete, exp, round, squeeze, sqrt, tanh, diff, percentile, int32, transpose, mean, vstack,
+                  delete, exp, round, squeeze, sqrt, tanh, diff, percentile, int32, transpose, mean, vstack, linspace,
                   apply_along_axis)
 from numpy.fft import rfft
 from scipy.signal import hilbert, resample, find_peaks, peak_prominences
+import matplotlib.pyplot as plt
 
 # Project Imports
 from mosqito.sq_metrics.loudness.loudness_ecma._band_pass_signals import _band_pass_signals
@@ -10,8 +11,8 @@ from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq imp
 
 # Data import
 from mosqito.sq_metrics.loudness.loudness_ecma._loudness_from_bandpass import _loudness_from_bandpass
-from _weighting import f_max, r_max, Q2_high, Q2_low, _high_mod_rate_weighting, _low_mod_rate_weighting
-from _refinement import _refinement
+from mosqito.sq_metrics.roughness.roughness_ecma._weighting import f_max, r_max, Q2_high, Q2_low, _high_mod_rate_weighting, _low_mod_rate_weighting
+from mosqito.sq_metrics.roughness.roughness_ecma._refinement import _refinement
 
 def roughness_ecma(signal, fs):
     """Calculation of the roughness according to ECMA-418-2 section 7
@@ -29,7 +30,12 @@ def roughness_ecma(signal, fs):
     bark_axis: numpy.array
         Bark axis
     """
-    #TODO: if fs!= 48000 then resample
+    if fs != 48000:
+        print(
+            "[Warning] Signal resampled to 48 kHz fulfill the standard requirements and allow calculation."
+        )
+        signal = resample(signal, int(48000 * len(signal) / fs))
+        fs = 48000
     
     # INITIALIZE COMPUTATION PARAMETERS
     # Number of critical bands and their center frequency
@@ -49,11 +55,18 @@ def roughness_ecma(signal, fs):
     # ENVELOPPE CALCULATION AND DOWNSAMPLING (7.1.2)
     #envelopes = abs(block_array_rect + 1j * hilbert(block_array_rect))  
     envelopes = abs(hilbert(block_array_rect))
+    
     # Downsampling to 1500 Hz
     sbb = 512 # new block size
     K = sbb//2 
-    envelopes = transpose(resample(envelopes, sbb, axis=2),(1,0,2))  # transpose is used to stick to the standard index order l,z,k
-
+    envelopes = resample(envelopes, sbb, axis=2)  
+    envelopes = transpose(envelopes,(1,0,2)) # transpose is used to stick to the standard index order l,z,k
+    
+    # plt.figure()
+    # plt.plot(block_array_rect[3,5,:])
+    # plt.plot(linspace(0,16384, 512), envelopes[5,3,:])
+    # plt.title('Envelopes')
+    
     # CALCULATION OF SCALED POWER SPECTRUM (7.1.3)
     spectrum = zeros((L,CBF,K))
     N_specific_max = array(N_specific).max(axis=1)
@@ -75,6 +88,14 @@ def roughness_ecma(signal, fs):
     av_spectrum[:,1:-1] = (spectrum[:,:-2] + spectrum[:,1:-1] + spectrum[:,2:])/3
     S = av_spectrum.sum(axis=1)
     SS = median(S[:,2:], axis=1)
+    
+    # plt.figure()
+    # freqs = linspace(0, 1500//2, 256)
+    # plt.plot(freqs, spectrum[3,5,:])
+    # plt.plot(freqs, spectrum[3,4,:])
+    # plt.plot(freqs, spectrum[3,6,:])
+    # plt.plot(freqs, av_spectrum[3,5,:], 'k')
+    # plt.title('Average spectrum')
 
     # Weighting 
     noise_suppression_weighting = zeros((L,K))
@@ -82,6 +103,11 @@ def roughness_ecma(signal, fs):
     idx = where((w_wave>=0.05 * w_wave[:,2:].max()))
     noise_suppression_weighting[idx] = clip(w_wave[idx]-0.1407,0,1)
     Phi_E = av_spectrum * noise_suppression_weighting[:,None,:]
+    # plt.figure()
+    # plt.plot(av_spectrum[5,:,:].T, 'b')
+    # plt.plot(Phi_E[5,:,:].T, 'k')
+    # plt.plot(noise_suppression_weighting[5,:], 'r')
+    # plt.title("Noise suppression")
 
     # Critical bands characteristics for the weightings to come
     fmax = f_max(center_freq) # center_freq = fréquence centrale de la bande z (eq 86 clause 7.1.5.2)
@@ -91,6 +117,12 @@ def roughness_ecma(signal, fs):
 
     # Peak picking
     maxima = apply_along_axis(find_peaks, axis=2, arr=Phi_E)[...,0]
+    
+    # plt.figure()
+    # plt.plot(Phi_E[5,10,:])
+    # plt.plot(maxima[5,10], Phi_E[5,10,maxima[5,10]], 'o')
+    # plt.title("Peak picking")
+
     amplitude = zeros((L,CBF))
     for l in range(L):       
         for z in range(CBF):
@@ -197,7 +229,7 @@ def roughness_ecma(signal, fs):
     # single value
     R = percentile(R_time, 90)
     
-    return R_spec, R_time, R
+    return R_time, R_spec, R_time, R
 
 
 
