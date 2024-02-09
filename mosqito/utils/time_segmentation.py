@@ -55,3 +55,4 @@ def time_segmentation(sig, fs, nperseg=2048, noverlap=None, is_ecma=False):
         l += 1
 
     return np.array(block_array).T, np.array(time_array)
+

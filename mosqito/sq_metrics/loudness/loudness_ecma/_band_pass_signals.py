@@ -83,7 +83,7 @@ def _band_pass_signals(sig, sb, sh):
         # block.
 
         block, _ = time_segmentation(
-            band_pass_signal, fs, sb[band_number], sh[band_number])#, is_ecma=True)
+            band_pass_signal, fs, sb[band_number], sh[band_number], is_ecma=True)
         
         block_array.append(block.T)
 

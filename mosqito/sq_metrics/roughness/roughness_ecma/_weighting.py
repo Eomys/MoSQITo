@@ -45,6 +45,15 @@ def _low_mod_rate_weighting(mod_rate, amp, fmax, q2_low):
 
     if mod_rate < fmax:
         G = 1/((1+((mod_rate/fmax-fmax/mod_rate)*0.7066)**2)**q2_low)
+        
+        # import numpy as np
+        # mod_rate = np.linspace(20,400,20)
+        # G = 1/((1+((mod_rate[None,:]/fmax[:,None]-fmax[:,None]/mod_rate[None,:])*0.7066)**2)**q2_low[:,None])
+        # import matplotlib.pyplot as plt
+        # plt.plot(mod_rate, G.T)
+        # plt.show(block=True)
+        
+        
         weighted_amp = sum(G * amp)
     else:
         weighted_amp = sum(amp)

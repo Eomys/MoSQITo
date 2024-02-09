@@ -39,16 +39,14 @@ def _refinement(kpi, Phi_E):
         Phi = array([Phi_E[kpi-1], Phi_E[kpi], Phi_E[kpi+1]])
         amp = Phi_E[kpi-1] + Phi_E[kpi] + Phi_E[kpi+1] 
 
-    C = dot(inv(Km), Phi)
-    F = -C[1]/(2*C[0])*delta_f
-    mod_rate = F + _rho(F, delta_f) # modulation rate
     
 
     c0 = 1/2*(Phi_E[kpi+1] + Phi_E[kpi-1] - 2*Phi_E[kpi])
     c1 = Phi_E[kpi] - Phi_E[kpi-1] - (2*kpi-1) * c0
 
     F = -c1/(2*c0)*delta_f
-    #mod_rate = F + _rho(F, delta_f) # modulation rate
+    mod_rate = F + _rho(F, delta_f) # modulation rate
     #mod_rate = mean([F , kpi * delta_f])
-    mod_rate = kpi * delta_f
+    #mod_rate = kpi * delta_f
+    
     return mod_rate, amp
