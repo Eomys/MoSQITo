@@ -12,16 +12,8 @@ from mosqito.sq_metrics.roughness.roughness_dw._roughness_dw_main_calc import (
 from mosqito.sq_metrics.roughness.roughness_dw._gzi_weighting import _gzi_weighting
 from mosqito.sq_metrics.roughness.roughness_dw._H_weighting import _H_weighting
 
-# Optional package import
-try:
-    from SciDataTool import DataTime, DataLinspace, DataFreq, Norm_func
-except ImportError:
-    DataTime = None
-    DataLinspace = None
-    DataFreq = None
 
-
-def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
+def roughness_dw(signal, fs, overlap=0.5):
     """Roughness calculation of a signal sampled at 48kHz.
 
     The code is based on the algorithm described in "Psychoacoustical roughness:
@@ -32,32 +24,25 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
 
     Parameters
     ----------
-    signal :numpy.array  or DataTime object
-        A time signal in Pa
-    fs : float, optional
-        Sampling frequency, can be omitted if the input is a DataTime
-        object. Default to None
+    signal :numpy.array
+        A time signal [Pa]
+    fs : float
+        Sampling frequency [Hz]
     overlap : float
         Overlapping coefficient for the time windows of 200ms
 
     Outputs
     -------
     R : numpy.array
-        Roughness in [asper].
+        Roughness [asper].
     R_spec : numpy.array
         Specific roughness over bark axis.
     bark_axis : numpy.array
-        Frequency axis in [bark].
+        Frequency axis [bark].
     time : numpy.array
-        Time axis in [s].
+        Time axis [s].
 
     """
-
-    # Manage input type
-    if DataTime is not None and isinstance(signal, DataTime):
-        time = signal.get_along("time")["time"]
-        fs = 1 / (time[1] - time[0])
-        signal = signal.get_along("time")[signal.symbol]
 
     # Number of points within each frame according to the time resolution of 200ms
     nperseg = int(0.2 * fs)
@@ -93,48 +78,5 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
         R, R_spec, bark_axis = _roughness_dw_main_calc(
             spec, freq_axis, fs, gzi, hWeight
         )
-
-    # print(np.mean(R,axis=0))
-
-    # Manage SciDataTool output type
-    if is_sdt_output:
-        if DataLinspace is None:
-            raise RuntimeError(
-                "In order to handle Data objects you need the 'SciDataTool' package."
-            )
-        else:
-            bark_data = DataLinspace(
-                name="Critical band rate",
-                unit="Bark",
-                initial=bark_axis[0],
-                final=bark_axis[-1],
-                number=len(bark_axis),
-                include_endpoint=True,
-                normalizations={
-                    "Hz": Norm_func(function=lambda x: 1960 * (x + 0.53) / (26.28 - x))
-                },
-            )
-            time = DataLinspace(
-                name="time",
-                unit="s",
-                initial=time[0],
-                final=time[-1],
-                number=len(time),
-                include_endpoint=True,
-            )
-            R_spec = DataFreq(
-                name="Specific roughness (Daniel & Weber method)",
-                symbol="R'_{dw}",
-                axes=[bark_data, time],
-                values=R_spec,
-                unit="asper/Bark",
-            )
-            R = DataTime(
-                name="Roughness (Daniel & Weber method)",
-                symbol="R_{dw}",
-                axes=[time],
-                values=R,
-                unit="asper",
-            )
 
     return R, R_spec, bark_axis, time

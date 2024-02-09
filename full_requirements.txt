@@ -2,5 +2,6 @@ numpy
 scipy
 matplotlib
 pyuff
-pytest
-scidatatool
+pytest>=5.4.1
+pandas
+openpyxl
