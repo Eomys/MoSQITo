@@ -5,8 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Local application imports
-from mosqito.sq_metrics import roughness_ecma
-
+from mosqito.sq_metrics import roughness_dw, roughness_ecma
+from input.references import ref_zf, ref_ecma
 
 def signal_test(fc, fmod, mdepth, fs, d, dB):
     """Creation of stationary amplitude modulated signals for the roughness
@@ -48,103 +48,9 @@ def signal_test(fc, fmod, mdepth, fs, d, dB):
 
 
 
-# Test signal parameters as input for roughness calculation
-# (reference values from 'ref' script)
-signal = np.zeros((20), dtype=dict)
-
-signal[0] = {
-    "fmod": 20,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 20 Hz",
-    "R": np.array([0.234, 0.211, 0.197, 0.234, 0.186, 0.184, 0.0909]),
-}
-signal[1] = {
-    "fmod": 30,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 30 Hz",
-    "R": np.array([0.305, 0.38, 0.375, 0.46, 0.348, 0.327, 0.168]),
-}
-signal[2] = {
-    "fmod": 40,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 40 Hz",
-    "R": np.array([0.285, 0.471, 0.536, 0.701, 0.52, 0.477, 0.248]),
-}
-signal[3] = {
-    "fmod": 50,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 50 Hz",
-    "R": np.array([0.232, 0.461, 0.636, 0.898, 0.668, 0.605, 0.319]),
-}
-signal[4] = {
-    "fmod": 60,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 60 Hz",
-    "R": np.array([0.174, 0.384, 0.633, 0.977, 0.744, 0.675, 0.359]),
-}
-signal[5] = {
-    "fmod": 70,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 70 Hz",
-    "R": np.array([0.138, 0.321, 0.594, 1, 0.787, 0.721, 0.386]),
-}
-signal[6] = {
-    "fmod": 80,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 80 Hz",
-    "R": np.array([0.105, 0.258, 0.514, 0.92, 0.754, 0.698, 0.372]),
-}
-signal[7] = {
-    "fmod": 90,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 90 Hz",
-    "R": np.array([0.0808, 0.209, 0.434, 0.801, 0.678, 0.629, 0.324]),
-}
-signal[8] = {
-    "fmod": 100,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 100 Hz",
-    "R": np.array([0.0631, 0.172, 0.366, 0.685, 0.599, 0.551, 0.272]),
-}
-signal[9] = {
-    "fmod": 120,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 120 Hz",
-    "R": np.array([0.0406, 0.12, 0.27, 0.501, 0.464, 0.426, 0.193]),
-}
-signal[10] = {
-    "fmod": 140,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 140 Hz",
-    "R": np.array([0.0325, 0.0802, 0.208, 0.376, 0.371, 0.342, 0.145]),
-}
-signal[11] = {
-    "fmod": 160,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 160 Hz",
-    "R": np.array([0.0297, 0.0573, 0.155, 0.289, 0.302, 0.28, 0.112]),
-}
-signal[12] = {
-    "fmod": 200,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 200 Hz",
-    "R": np.array([0.0469, 0.0365, 0.0925, 0.196, 0.212, 0.207, 0.0771]),
-}
-signal[13] = {
-    "fmod": 300,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 300 Hz",
-    "R": np.array([0.174, 0.0296, 0.0305, 0.0912, 0.103, 0.111, 0.0383]),
-}
-signal[14] = {
-    "fmod": 400,
-    "fc": [125, 250, 500, 1000, 2000, 4000, 8000],
-    "tab": "Test for modulation frequency = 400 Hz",
-    "R": np.array([0.0437, 0.0527, 0.0147, 0.0419, 0.0536, 0.0648, 0.021]),
-}
 
 
-def validation_roughness(signal):
+def validation_roughness(fc):
     """Validation function for the roughness calculation of an audio signal
 
     Validation function for the Audio_signal class "comp_roughness" method with signal array
@@ -163,30 +69,38 @@ def validation_roughness(signal):
     None
     """
     # Stimulus parameters
-    duration = 0.2
+    duration = 1
     fs = 48000
-    level = 70
+    level = 60
     mdepth = 1
 
-
+    fm_vector = np.array([20,30,40,50,60,70,80,90,100,120,140,160,200])
+    n = len(fm_vector)
+    
     # Roughness calculation for each carrier frequency
-    R = np.zeros((len(signal["fc"])), dtype=dict)
-    for ind_fc in range(len(signal["fc"])):
-        f_c = signal["fc"][ind_fc]
-        f_mod = signal["fmod"]
+    R_ecma = np.zeros((n), dtype=dict)
+    R_dw = np.zeros((n), dtype=dict)
+    R_refzf = np.zeros((n), dtype=dict)
+    R_refecma = np.zeros((n), dtype=dict)
+    
+    for i in range(len(fm_vector)):
         stimulus, _ = signal_test(
-            f_c, f_mod, mdepth, fs, duration, level
+            fc, fm_vector[i], mdepth, fs, duration, level
         )
-        _, _, roughness = roughness_ecma(stimulus, fs)
-        R[ind_fc] = roughness
-
-    # Check compliance
-    tst = _check_compliance(R, signal)
+        _, _, _, roughness = roughness_ecma(stimulus, fs)
+        R_ecma[i] = roughness
+        roughness, _, _, _ = roughness_dw(stimulus, fs, overlap=0.5)
+        R_dw[i] = np.mean(roughness)
+        R_refzf[i] = ref_zf(fc, fm_vector[i])
+        R_refecma[i] = ref_ecma(fc, fm_vector[i])
+        
+    # # Check compliance
+    tst = _check_compliance(fc, fm_vector, R_ecma, R_dw, R_refzf, R_refecma)
 
     return tst
 
 
-def _check_compliance(R, signal):
+def _check_compliance(fc, fm_vector, R_ecma, R_dw, R_refzf, R_refecma):
     """Check the compliance of roughness calc. to Daniel and Weber article
     "Psychoacoustical roughness: implementation of an optimized model", 1997.
 
@@ -204,104 +118,73 @@ def _check_compliance(R, signal):
         Compliance to the reference data
     """
 
-    ref = signal["R"]
-
-    # Test for comformance (17% tolerance)
-
-    tst = (R >= ref * 0.83).all() and (R <= ref * 1.17).all()
+    # Test for comformance (0.1 absolute tolerance with zwicker and fastl and 10% relative tolerance with ecma
+    tst = ((R_ecma < R_refzf + 0.1).all()
+                and (R_ecma > R_refzf - 0.1).all())
+    
 
     # Find the highest difference
     diff = 0
     ind = 0
-    for i in range(R.size):
-        d = (np.abs(R[i] - ref[i]) / ref[i]) * 100
+    for i in range(R_ecma.size):
+        d = (np.abs(R_ecma[i] - R_refecma[i]) / R_refecma[i]) * 100
         if d > diff:
             diff = d
         if d <= 30:
             ind += 1
 
-    # Give indication about the difference
 
-    prop = round(ind / len(ref) * 100)
+    # Plot
+    
+    plt.loglog(fm_vector, R_refecma, 'P', linewidth=2, color='k',
+               label='Artemis [ECMA 418-2]')
 
-    # Define and plot the tolerance curves
-    fc = signal["fc"]
-    tol_curve_min = ref * 0.83
-    tol_curve_max = ref * 1.17
-    plt.plot(
-        fc,
-        tol_curve_min,
-        color="red",
-        linestyle="solid",
-        label="17% tolerance",
-        linewidth=1,
-    )
-    plt.plot(fc, tol_curve_max, color="red",
-             linestyle="solid", label="", linewidth=1)
+    plt.loglog(fm_vector, R_ecma, 'o', color='#69c3c5', 
+               label='MoSQITo [ECMA-418-2]')
+    
+    plt.loglog(fm_vector, R_dw, 's', fillstyle='none', linewidth=1.5, color='C1',
+               label='MoSQITo [Daniel & Weber]')
+    
+    
+    plt.loglog(fm_vector, R_refzf, '--', linewidth=2, color='0.45',
+               label='Fastl & Zwicker [interp]')
+    plt.loglog(fm_vector, R_refzf+0.1, ':', linewidth=1, color='0.25',
+               label='0.1 asper tolerance')
+    plt.loglog(fm_vector, R_refzf-0.1, ':', linewidth=1, color='0.25')
+    
+    
+    
     plt.legend()
-
-    # Compliance plot
-    plt.plot(fc, R, label="MOSQITO")
-    plt.text(
-        0.5,
-        0.05,
-        "Maximum difference: " + str(round(diff)) + " %",
-        horizontalalignment="center",
-        verticalalignment="center",
-        transform=plt.gca().transAxes,
-    )
-    plt.text(
-        0.5,
-        0.15,
-        "Difference under 30 % in " + str(prop) + " % of cases",
-        horizontalalignment="center",
-        verticalalignment="center",
-        transform=plt.gca().transAxes,
-    )
+    plt.grid(which='both')
+    
+    plt.yticks(ticks=[0.1, 0.2, 0.5, 1.],
+               labels=['0.1', '0.2', '0.5', '1'])
+    plt.xticks(ticks=[10, 20, 50, 100, 200, 300],
+               labels=['10', '20', '50', '100', '200', '300'])
+    
+    plt.xlim([10, 400])
+    plt.ylim([0.07, 2])
+    plt.xlabel(r'Modulation Frequency $f_m$ [Hz]', fontsize=13)
+    plt.ylabel('Roughness [asper]', fontsize=13)
+    plt.title(rf'Roughness for AM sine wave, $f_c$={fc} Hz', fontsize=14)
+    
     if tst:
-        plt.text(
-            0.5,
-            0.5,
-            "Test passed (17% tolerance not exceeded)",
-            horizontalalignment="center",
-            verticalalignment="center",
-            transform=plt.gca().transAxes,
-            bbox=dict(facecolor="green", alpha=0.3),
-        )
+        plt.text( 0.5, 0.5, "Test passed (0.1 asper tolerance not exceeded)", fontsize=13,
+            horizontalalignment="center", verticalalignment="center",
+            transform=plt.gca().transAxes, bbox=dict(facecolor="green", alpha=0.3))
     else:
-        tst = 0
-        plt.text(
-            0.5,
-            0.5,
-            "Test not passed",
-            horizontalalignment="center",
-            verticalalignment="center",
-            transform=plt.gca().transAxes,
-            bbox=dict(facecolor="red", alpha=0.3),
-        )
-
-    if tst:
-        clr = "green"
-    else:
-        clr = "red"
-    plt.title(
-        "Roughness for modulation frequency = " + str(signal["fmod"]) + " Hz", color=clr
-    )
-    plt.xlabel("Carrier frequency [Hertz]")
-    plt.ylabel("Roughness, [Asper]")
-    plt.savefig(
-        "./validations/sq_metrics/roughness_ecma/output/"
-        + "validation_roughness_ecma_fmod"
-        + str(signal["fmod"])
-        + "Hz"
-        + ".png",
-        format="png",
-    )
+        plt.text(0.5, 0.5, "Test not passed", fontsize=13,
+                 horizontalalignment="center", verticalalignment="center",
+                 transform=plt.gca().transAxes, bbox=dict(facecolor="red", alpha=0.3))
+    
+    plt.tight_layout()
+    plt.savefig('validation_roughness_ecma_fc' + f'{fc}' + 'Hz.png')
     plt.clf()
     return tst
 
 
 # test de la fonction
 if __name__ == "__main__":
-    for i in range(15):
-        validation_roughness(signal[i])
+    fc_vector = np.array([125, 250, 500, 1000, 2000, 4000, 8000])
+    for fc in fc_vector:
+        validation_roughness(fc)
