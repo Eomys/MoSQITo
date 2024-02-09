@@ -1,13 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-@author: Daniel Jiménez-Caminero Costa
-"""
 import numpy as np
 
 # Project Imports
-from mosqito.sq_metrics.loudness.loudness_ecma._rectified_band_pass_signals import (
-    _rectified_band_pass_signals,
-)
+from mosqito.sq_metrics.loudness.loudness_ecma._band_pass_signals import _rectified_band_pass_signals
 from mosqito.sq_metrics.loudness.loudness_ecma._nonlinearity import _nonlinearity
 
 # Data import
@@ -43,20 +38,7 @@ def loudness_ecma(signal, sb=2048, sh=1024):
     # Computaton of rectified band-pass signals
     # (section 5.1.2 to 5.1.5 of the standard)
     block_array_rect = _rectified_band_pass_signals(signal, sb, sh)
-
-    # # sb and sh for Tonality
-    # z = np.linspace(0.5, 26.5, num=53, endpoint=True)
-    # sb = np.ones(53, dtype="int")
-    # sh = np.ones(53, dtype="int")
-    # sb[z <= 1.5] = 8192
-    # sh[z <= 1.5] = 2048
-    # sb[np.all([z >= 2, z <= 8], axis=0)] = 4096
-    # sh[np.all([z >= 2, z <= 8], axis=0)] = 1024
-    # sb[np.all([z >= 8.5, z <= 12.5], axis=0)] = 2048
-    # sh[np.all([z >= 8.5, z <= 12.5], axis=0)] = 512
-    # sb[z >= 13] = 1024
-    # sh[z >= 13] = 256
-
+    
     n_specific = []
     for band_number in range(53):
         # ROOT-MEAN-SQUARE (section 5.1.6)
