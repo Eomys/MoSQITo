@@ -25,7 +25,6 @@ def _refinement(kpi, Phi_E):
     Phi_E: Phi_E[l,z,:]
         
     """
-    delta_f = 1500/512
 
     # Refinement step
     Km = array([[kpi**2, kpi-1, 1],[kpi**2, kpi, 1],[(kpi+1)**2, kpi+1, 1]])
@@ -43,8 +42,10 @@ def _refinement(kpi, Phi_E):
 
     c0 = 1/2*(Phi_E[kpi+1] + Phi_E[kpi-1] - 2*Phi_E[kpi])
     c1 = Phi_E[kpi] - Phi_E[kpi-1] - (2*kpi-1) * c0
-
+    
+    delta_f = 1500/512
     F = -c1/(2*c0)*delta_f
+    
     mod_rate = F + _rho(F, delta_f) # modulation rate
     #mod_rate = mean([F , kpi * delta_f])
     #mod_rate = kpi * delta_f

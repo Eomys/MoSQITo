@@ -12,7 +12,45 @@ import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.sq_metrics import roughness_dw
-from tests.sq_metrics.roughness.signals_test_generation import signal_test
+
+
+def signal_test(fc, fmod, mdepth, fs, d, dB):
+    """Creation of stationary amplitude modulated signals for the roughness
+    validation procedure (signal created according to equation 1 in
+    "Psychoacoustical roughness:implementation of an optimized model"
+    by Daniel and Weber in 1997.
+
+    Parameters
+    ----------
+    fc: integer
+        carrier frequency
+    fmod: integer
+        modulation frequency
+    mdepth: float
+        modulation depth
+    fs: integer
+        sampling frequency
+    d: float
+        signal duration [s]
+    dB: integer
+        SPL dB level of the carrier signal
+    """
+
+    # time axis definition
+    dt = 1 / fs
+    time = np.arange(0, d, dt)
+
+    signal = (
+        0.5
+        * (1 + mdepth * (np.sin(2 * np.pi * fmod * time)))
+        * np.sin(2 * np.pi * fc * time)
+    )
+    rms = np.sqrt(np.mean(np.power(signal, 2)))
+    ampl = 0.00002 * np.power(10, dB / 20) / rms
+    signal = signal * ampl
+
+    return signal, time
+
 
 
 # Test signal parameters as input for roughness calculation
@@ -167,14 +205,17 @@ def validation_roughness(signal):
 
     # Overlapping definition for roughness calculation
     overlap = 0
-
+    from scipy.io.wavfile import write
     # Roughness calculation for each carrier frequency
     R = np.zeros((len(signal["fc"])), dtype=dict)
     for ind_fc in range(len(signal["fc"])):
-        stimulus = signal_test(
-            signal["fc"][ind_fc], signal["fmod"], mdepth, fs, duration, level
+        f_c = signal["fc"][ind_fc]
+        f_mod = signal["fmod"]
+        stimulus, _ = signal_test(
+            f_c, f_mod, mdepth, fs, duration, level
         )
-        roughness, time = roughness_dw(stimulus, fs, overlap)
+        write("roughness_fc_"+f"{f_c}"+"_f_mod_"+f"{f_mod}"+".wav", fs, stimulus/stimulus.max())
+        roughness, _, _, time = roughness_dw(stimulus, fs, overlap)
         # roughness_dict = {
         #     "name": "Roughness",
         #     "values": roughness,
