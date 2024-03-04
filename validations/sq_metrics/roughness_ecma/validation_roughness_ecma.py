@@ -168,14 +168,14 @@ def _check_compliance(fc, fm_vector, R_ecma, R_dw, R_refzf, R_refecma):
     plt.ylabel('Roughness [asper]', fontsize=13)
     plt.title(rf'Roughness for AM sine wave, $f_c$={fc} Hz', fontsize=14)
     
-    if tst:
-        plt.text( 0.5, 0.5, "Test passed (0.1 asper tolerance not exceeded)", fontsize=13,
-            horizontalalignment="center", verticalalignment="center",
-            transform=plt.gca().transAxes, bbox=dict(facecolor="green", alpha=0.3))
-    else:
-        plt.text(0.5, 0.5, "Test not passed", fontsize=13,
-                 horizontalalignment="center", verticalalignment="center",
-                 transform=plt.gca().transAxes, bbox=dict(facecolor="red", alpha=0.3))
+    # if tst:
+    #     plt.text( 0.5, 0.5, "Test passed (0.1 asper tolerance not exceeded)", fontsize=13,
+    #         horizontalalignment="center", verticalalignment="center",
+    #         transform=plt.gca().transAxes, bbox=dict(facecolor="green", alpha=0.3))
+    # else:
+    #     plt.text(0.5, 0.5, "Test not passed", fontsize=13,
+    #              horizontalalignment="center", verticalalignment="center",
+    #              transform=plt.gca().transAxes, bbox=dict(facecolor="red", alpha=0.3))
     
     plt.tight_layout()
     plt.savefig('validation_roughness_ecma_fc' + f'{fc}' + 'Hz.png')
