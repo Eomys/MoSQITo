@@ -27,17 +27,20 @@ def _refinement(kpi, Phi_E):
     """
 
     # Refinement step
-    Km = array([[kpi**2, kpi-1, 1],[kpi**2, kpi, 1],[(kpi+1)**2, kpi+1, 1]])
+    #Km = array([[kpi**2, kpi-1, 1],[kpi**2, kpi, 1],[(kpi+1)**2, kpi+1, 1]])
     if kpi == 0:
-        Phi = array([0, Phi_E[kpi], Phi_E[kpi+1]])
+        #Phi = array([0, Phi_E[kpi], Phi_E[kpi+1]])
         amp = Phi_E[kpi] + Phi_E[kpi+1] 
     elif kpi == 255:
-        Phi = array([Phi_E[kpi-1], Phi_E[kpi], 0])
+        #Phi = array([Phi_E[kpi-1], Phi_E[kpi], 0])
         amp = Phi_E[kpi-1] + Phi_E[kpi]
     else:
-        Phi = array([Phi_E[kpi-1], Phi_E[kpi], Phi_E[kpi+1]])
+        #Phi = array([Phi_E[kpi-1], Phi_E[kpi], Phi_E[kpi+1]])
         amp = Phi_E[kpi-1] + Phi_E[kpi] + Phi_E[kpi+1] 
 
+    # C = dot(inv(Km), Phi)
+    # F = -C[1]/(2*C[0])*delta_f
+    # mod_rate = F + _rho(F, delta_f) # modulation rate
     
 
     c0 = 1/2*(Phi_E[kpi+1] + Phi_E[kpi-1] - 2*Phi_E[kpi])
@@ -46,8 +49,9 @@ def _refinement(kpi, Phi_E):
     delta_f = 1500/512
     F = -c1/(2*c0)*delta_f
     
+    f_p = F + _rho(F, delta_f) # modulation rate
     mod_rate = F + _rho(F, delta_f) # modulation rate
     #mod_rate = mean([F , kpi * delta_f])
     #mod_rate = kpi * delta_f
     
-    return mod_rate, amp
+    return f_p, amp
