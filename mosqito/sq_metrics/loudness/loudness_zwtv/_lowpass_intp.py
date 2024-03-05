@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-@date Created on Fri May 22 2020
-@author martin_g for Eomys
-"""
 
 # Standard library imports
 import math
 import numpy as np
-#Needed for the loudness_zwicker_lowpass_intp_ea function
+
+# Needed for the loudness_zwicker_lowpass_intp_ea function
 from scipy import signal
 
 
@@ -39,23 +36,23 @@ def _lowpass_intp(loudness, tau, sample_rate):
     y1 = 0
 
     delta = np.copy(loudness)
-    delta = np.roll(delta,-1)
-    delta [-1] = 0
-    delta = (delta - loudness) /  lp_iter
-    ui_delta = np.zeros(loudness.shape[0]*lp_iter).reshape(loudness.shape[0],lp_iter)
-    ui_delta [:,0] = loudness  
-    
-    #Create the array complete of deltas to apply the filter.
+    delta = np.roll(delta, -1)
+    delta[-1] = 0
+    delta = (delta - loudness) / lp_iter
+    ui_delta = np.zeros(loudness.shape[0] * lp_iter).reshape(loudness.shape[0], lp_iter)
+    ui_delta[:, 0] = loudness
+
+    # Create the array complete of deltas to apply the filter.
     for i_in in np.arange(1, lp_iter):
-        ui_delta [:,i_in] = delta + ui_delta [:,i_in-1]  
-    
+        ui_delta[:, i_in] = delta + ui_delta[:, i_in - 1]
+
     # Rechape into a vector.
-    ui_delta = ui_delta.reshape(lp_iter*num_samples)
+    ui_delta = ui_delta.reshape(lp_iter * num_samples)
 
     # Apply the filter.
-    ui_delta = signal.lfilter([b0], [1,-a1], ui_delta, axis=- 1, zi=None)
-    
+    ui_delta = signal.lfilter([b0], [1, -a1], ui_delta, axis=-1, zi=None)
+
     # Reshape again to recover the first col.
-    ui_delta = ui_delta.reshape(loudness.shape[0],lp_iter)
-    filt_loudness = ui_delta[:,0]
+    ui_delta = ui_delta.reshape(loudness.shape[0], lp_iter)
+    filt_loudness = ui_delta[:, 0]
     return filt_loudness

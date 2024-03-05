@@ -150,7 +150,7 @@ if __name__ == "__main__":
     fmod = [20,30,40,50,60,70,80,90,100,120,140,160,200,300,400]
     for i in range(len(fc)):
         for j in range(len(fmod)):
-            wav_test_roughness(fc[i], fmod[j], mdepth=1, fs=48000, d=2, dB=60, folder=r"C:\Users\Salom√©Wanty\Documents\Mosqito_roughness")
+            wav_test_roughness(fc[i], fmod[j], mdepth=1, fs=48000, d=2, dB=60, folder=r"C:\Users\SalomÈWanty\Documents\Mosqito_roughness")
             
     # f = [[100,200,1000],[100,120,250,300,314,400,4000], [1000,1118],[442,4420,4620]]
     # L = [[0.5,0.2,0.1],[0.43,0.54,0.6,0.8,0.1,0.34,0.72], [0.3,0.7],[0.3,0.5,0.6]]

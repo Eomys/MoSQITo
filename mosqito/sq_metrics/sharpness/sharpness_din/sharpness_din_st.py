@@ -2,7 +2,9 @@
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwst
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
+    sharpness_din_from_loudness,
+)
 
 
 def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
@@ -30,9 +32,11 @@ def sharpness_din_st(signal, fs, weighting="din", field_type="free"):
     """
 
     if fs < 48000:
-        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
-             )
+        print(
+            "[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+        )
         from scipy.signal import resample
+
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
 

@@ -10,11 +10,13 @@ except ImportError:
 import numpy as np
 
 
-def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, xaxis=None):
+def isoclose(
+    actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, xaxis=None
+):
     """
     Check if two arrays are equal up to desired tolerance.
 
-    The test is inspired from section 5.1 of ISO 532-1. It compares 
+    The test is inspired from section 5.1 of ISO 532-1. It compares
     ``actual`` to ``desired +/- min(atol, rtol * abs(desired))``.
 
     Parameters
@@ -42,10 +44,8 @@ def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, 
     """
 
     # Tolerances
-    range_pos = np.amin(
-        [desired * (1 - abs(rtol)), desired - abs(atol)], axis=0)
-    range_neg = np.amax(
-        [desired * (1 + abs(rtol)), desired + abs(atol)], axis=0)
+    range_pos = np.amin([desired * (1 - abs(rtol)), desired - abs(atol)], axis=0)
+    range_neg = np.amax([desired * (1 + abs(rtol)), desired + abs(atol)], axis=0)
 
     # Test for ISO 532-1 comformance (section 5.1)
     is_isoclose = (actual >= range_pos).all() and (actual <= range_neg).all()

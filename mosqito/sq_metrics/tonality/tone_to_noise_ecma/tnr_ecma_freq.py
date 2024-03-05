@@ -2,11 +2,13 @@
 
 # External import
 import numpy as np
+
 # Local functions imports
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._tnr_main_calc import _tnr_main_calc
 from mosqito.utils.conversion import amp2db
 
-def tnr_ecma_freq(spectrum, freqs,  prominence=True):
+
+def tnr_ecma_freq(spectrum, freqs, prominence=True):
     """Computation of tone-to-noise ration according to ECMA-74, annex D.9
     for an amplitude or complex spectrum.
         The T-TNR value is calculated according to ECMA-TR/108
@@ -16,7 +18,7 @@ def tnr_ecma_freq(spectrum, freqs,  prominence=True):
     spectrum :numpy.array
         Amplitude or complex frequency spectrum [nperseg x nseg].
     freqs : np.array
-        Frequency axis [nperseg x nseg] or [nperseg]. 
+        Frequency axis [nperseg x nseg] or [nperseg].
     prominence : boolean
         If True, the algorithm only returns the prominent tones, if False it returns all tones detected.
         Default is True.
@@ -32,16 +34,16 @@ def tnr_ecma_freq(spectrum, freqs,  prominence=True):
     tones_freqs : array of float
         Frequency list of the detected tones.
     """
-             
-    if len(spectrum) != len(freqs) :
-        raise ValueError('Input spectrum and frequency axis must have the same size')
-    
+
+    if len(spectrum) != len(freqs):
+        raise ValueError("Input spectrum and frequency axis must have the same size")
+
     # Compute spectrum dB values
     spectrum_db = amp2db(np.abs(spectrum), ref=2e-5)
-            
+
     # compute TNR values
     tones_freqs, tnr, prom, t_tnr = _tnr_main_calc(spectrum_db, freqs)
-  
+
     if prominence == False:
         return t_tnr, tnr, prom, tones_freqs
     else:
