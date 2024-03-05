@@ -4,7 +4,9 @@
 import numpy as np
 
 # Local imports
-from mosqito.sq_metrics.roughness.roughness_dw._roughness_dw_main_calc import _roughness_dw_main_calc
+from mosqito.sq_metrics.roughness.roughness_dw._roughness_dw_main_calc import (
+    _roughness_dw_main_calc,
+)
 from mosqito.sq_metrics.roughness.roughness_dw._gzi_weighting import _gzi_weighting
 from mosqito.sq_metrics.roughness.roughness_dw._H_weighting import _H_weighting
 
@@ -38,12 +40,12 @@ def roughness_dw_freq(spectrum, freqs):
 
     # Check input size coherence
     if len(spectrum) != len(freqs):
-        raise ValueError(
-            'Input spectrum and frequency axis must have the same size !')
+        raise ValueError("Input spectrum and frequency axis must have the same size !")
 
     if spectrum.any() < 0:
         raise ValueError(
-            'Input must be an amplitude spectrum (use np.abs() or complex spectrum).')
+            "Input must be an amplitude spectrum (use np.abs() or complex spectrum)."
+        )
 
     # 1D spectrum
     if len(spectrum.shape) == 1:
@@ -64,7 +66,7 @@ def roughness_dw_freq(spectrum, freqs):
             freqs = np.tile(freqs, (nseg, 1)).T
 
     # Initialization of the weighting functions H and g
-    hWeight = _H_weighting(2*nperseg, fs)
+    hWeight = _H_weighting(2 * nperseg, fs)
     # Aures modulation depth weighting function
     gzi = _gzi_weighting(np.arange(1, 48, 1) / 2)
 
@@ -74,9 +76,11 @@ def roughness_dw_freq(spectrum, freqs):
     if len(spectrum.shape) > 1:
         for i in range(nseg):
             R[i], R_spec[:, i], bark_axis = _roughness_dw_main_calc(
-                spectrum[:, i], freqs[:, i], fs, gzi, hWeight)
+                spectrum[:, i], freqs[:, i], fs, gzi, hWeight
+            )
     else:
         R, R_spec, bark_axis = _roughness_dw_main_calc(
-            spectrum, freqs, fs, gzi, hWeight)
+            spectrum, freqs, fs, gzi, hWeight
+        )
 
     return R, R_spec, bark_axis

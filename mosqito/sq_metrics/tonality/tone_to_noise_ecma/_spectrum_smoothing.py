@@ -57,7 +57,9 @@ def _spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):
     # Each band is considered individually until all of them have been treated
     while nb_bands > 0:
         # Find the index of the spectral components within the frequency bin
-        bin_index = np.where((freqs_in >= filter_freqs[i, 0]) & (freqs_in <= filter_freqs[i, 2]))[0]
+        bin_index = np.where(
+            (freqs_in >= filter_freqs[i, 0]) & (freqs_in <= filter_freqs[i, 2])
+        )[0]
 
         # If the frequency bin is empty, it is deleted from the list
         if len(bin_index) == 0:
@@ -69,11 +71,31 @@ def _spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):
             # The spectral components within the frequency bin are averaged on an energy basis
             spec_sum = np.zeros((nseg))
             for j in range(nseg):
-                if len(bin_index[(bin_index < stop[j]) & (bin_index > (stop[j] - nperseg))])!= 0:
-                    spec_sum[j] = np.mean(10** (spec[bin_index[(bin_index < stop[j]) & (bin_index > (stop[j] - nperseg))]]/ 10))
+                if (
+                    len(
+                        bin_index[
+                            (bin_index < stop[j]) & (bin_index > (stop[j] - nperseg))
+                        ]
+                    )
+                    != 0
+                ):
+                    spec_sum[j] = np.mean(
+                        10
+                        ** (
+                            spec[
+                                bin_index[
+                                    (bin_index < stop[j])
+                                    & (bin_index > (stop[j] - nperseg))
+                                ]
+                            ]
+                            / 10
+                        )
+                    )
                 else:
                     spec_sum[j] = 1e-12
-            smoothed_spectrum[i, :] = 10 * np.log10(spec_sum)# / len(bin_index[(bin_index < stop[j]) & (bin_index > (stop[j] - m))]))
+            smoothed_spectrum[i, :] = 10 * np.log10(
+                spec_sum
+            )  # / len(bin_index[(bin_index < stop[j]) & (bin_index > (stop[j] - m))]))
         nb_bands -= 1
         i += 1
     # Pose of the smoothed spectrum on the frequency-axis
@@ -82,16 +104,16 @@ def _spectrum_smoothing(freqs_in, spec, noct, low_freq, high_freq, freqs_out):
 
     # Index of the lower and higher limit of each frequency bin into the original spectrum
     for i in range(len(filter_freqs)):
-        low[i,:] = np.argmin(np.abs(freqs_out - filter_freqs[i, 0]))
-        high[i,:] = np.argmin(np.abs(freqs_out - filter_freqs[i, 2]))
+        low[i, :] = np.argmin(np.abs(freqs_out - filter_freqs[i, 0]))
+        high[i, :] = np.argmin(np.abs(freqs_out - filter_freqs[i, 2]))
     low = low.astype(int)
     high = high.astype(int)
 
     smooth_spec = np.zeros((nperseg, nseg))
     for i in range(nseg):
         for j in range(filter_freqs.shape[0]):
-            smooth_spec[low[j,i] : high[j,i], i] = smoothed_spectrum[j,i]
-    
+            smooth_spec[low[j, i] : high[j, i], i] = smoothed_spectrum[j, i]
+
     if smooth_spec.shape[1] == 1:
         smooth_spec = np.squeeze(smooth_spec)
 

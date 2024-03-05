@@ -238,8 +238,7 @@ def _check_compliance(R, signal):
         label="17% tolerance",
         linewidth=1,
     )
-    plt.plot(fc, tol_curve_max, color="red",
-             linestyle="solid", label="", linewidth=1)
+    plt.plot(fc, tol_curve_max, color="red", linestyle="solid", label="", linewidth=1)
     plt.legend()
 
     # Compliance plot

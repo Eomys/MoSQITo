@@ -57,7 +57,7 @@ def _filter_bandwidth(fc, n=3, N=3):
     # Design bandwidth quotient
     qd = (np.pi / 2 / N) / (np.sin(np.pi / 2 / N)) * qr  # ANSI eq9
     # Ratio of the upper and lower band-edge frequencies to the mid-band frequency
-    alpha = (1 + np.sqrt(1 + 4 * qd ** 2)) / 2 / qd
+    alpha = (1 + np.sqrt(1 + 4 * qd**2)) / 2 / qd
 
     return alpha, f1, f2
 

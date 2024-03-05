@@ -9,7 +9,7 @@ import numpy as np
 
 
 def _gzi_weighting(center_freq):
-    """ Weighting function for the specific roughness given by Aures """
+    """Weighting function for the specific roughness given by Aures"""
 
     gr_x = np.arange(0, 25, 1)
     gr_y = np.array(

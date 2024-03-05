@@ -6,7 +6,9 @@ import numpy as np
 # Local imports
 from mosqito.utils.time_segmentation import time_segmentation
 from mosqito.sound_level_meter.spectrum import spectrum
-from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import _pr_main_calc
+from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import (
+    _pr_main_calc,
+)
 
 
 def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
@@ -37,41 +39,41 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
     tones_freqs : array of float
         Frequency list of the detected tones.
     time  : array of float
-        Time axis.   
-     """
-    
+        Time axis.
+    """
+
     if len(signal.shape) == 1:
-      
+
         # Number of points within each frame according to the time resolution of 500ms
         nperseg = int(0.5 * fs)
         # Overlappinf segment length
-        noverlap = int(overlap * nperseg)               
+        noverlap = int(overlap * nperseg)
         # Time segmentation of the signal
-        sig, time = time_segmentation(signal, fs, nperseg=nperseg, noverlap=noverlap, is_ecma=False)
+        sig, time = time_segmentation(
+            signal, fs, nperseg=nperseg, noverlap=noverlap, is_ecma=False
+        )
         # Number of segments
-        nseg = sig.shape[1]        
+        nseg = sig.shape[1]
         # Spectrum computation
         spectrum_db, freq_axis = spectrum(sig, fs, db=True)
-        
+
     else:
         nseg = signal.shape[1]
-        time = np.linspace(0, nseg/fs, num=nseg)
-        
+        time = np.linspace(0, nseg / fs, num=nseg)
+
         # Compute spectrum
         spectrum_db, freq_axis = spectrum(sig, fs, db=True)
-            
-            
+
     # compute tnr values
     tones_freqs, pr_, prom, t_pr = _pr_main_calc(spectrum_db, freq_axis)
- 
-            
+
     # Retore the results in a time vs frequency array
     freqs = np.logspace(np.log10(90), np.log10(11200), num=1000)
     pr = np.empty((len(freqs), nseg))
     pr.fill(np.nan)
     promi = np.empty((len(freqs), nseg), dtype=bool)
     promi.fill(False)
-    
+
     for t in range(nseg):
         for f in range(len(tones_freqs[t])):
             ind = np.argmin(np.abs(freqs - tones_freqs[t][f]))
@@ -85,5 +87,4 @@ def pr_ecma_tv(signal, fs, prominence=True, overlap=0):
 
     t_pr = np.ravel(t_pr)
 
-    return t_pr, pr, promi, freqs, time 
-    
+    return t_pr, pr, promi, freqs, time

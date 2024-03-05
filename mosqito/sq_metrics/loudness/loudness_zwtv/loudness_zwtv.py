@@ -7,11 +7,15 @@ import numpy as np
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
 from mosqito.sq_metrics.loudness.loudness_zwtv._nonlinear_decay import _nl_loudness
-from mosqito.sq_metrics.loudness.loudness_zwtv._temporal_weighting import _temporal_weighting
-from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import _third_octave_levels
+from mosqito.sq_metrics.loudness.loudness_zwtv._temporal_weighting import (
+    _temporal_weighting,
+)
+from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import (
+    _third_octave_levels,
+)
 
 
-def loudness_zwtv(signal, fs, field_type='free'):
+def loudness_zwtv(signal, fs, field_type="free"):
     """Calculate Zwicker-loudness for time-varying signals
     Calculate the acoustic loudness according to Zwicker method for
     time-varying signals.
@@ -31,7 +35,7 @@ def loudness_zwtv(signal, fs, field_type='free'):
         Sampling frequency.
     field_type : str
         Type of soundfield corresponding to signal ("free" by or "diffuse").
-        
+
     Outputs
     -------
     N : float
@@ -43,15 +47,16 @@ def loudness_zwtv(signal, fs, field_type='free'):
     time_axis : numpy.ndarray
         Time axis, size (Ntime,).
 
-    """        
+    """
 
     if fs < 48000:
-        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
-             )
+        print(
+            "[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+        )
         from scipy.signal import resample
+
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
-
 
     # Compute third octave band spectrum vs. time
     spec_third, time_axis, _ = _third_octave_levels(signal, fs)

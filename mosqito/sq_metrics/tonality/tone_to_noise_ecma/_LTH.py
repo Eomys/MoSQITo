@@ -52,6 +52,6 @@ def _LTH(freqs):
             a5 = 15.61552048
 
         ff = (f - fmean) / fstd
-        LTH[i] = a1 * ff ** 4 + a2 * ff ** 3 + a3 * ff ** 2 + a4 * ff + a5
+        LTH[i] = a1 * ff**4 + a2 * ff**3 + a3 * ff**2 + a4 * ff + a5
 
     return LTH

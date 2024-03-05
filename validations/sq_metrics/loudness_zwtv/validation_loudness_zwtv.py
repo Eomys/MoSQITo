@@ -10,7 +10,7 @@ try:
 except ImportError:
     raise RuntimeError(
         "In order to perform this validation you need the 'matplotlib' package."
-        )
+    )
 
 # Third party imports
 import numpy as np
@@ -193,16 +193,18 @@ def validation_loudness_zwtv(signal):
     """
 
     # Load signal and compute third octave band spectrum
-    sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
+    sig, fs = load(signal["data_file"], wav_calib=2 * 2**0.5)
 
     # Compute Loudness
 
     start = time.time()
     N, N_spec, bark_axis, _ = loudness_zwtv(sig, fs, signal["field"])
     end = time.time()
-    print("[Info] " + signal["tab"] +
-          " loudness_zwtv computation: {:2.2f} s".format(end - start)
-          )
+    print(
+        "[Info] "
+        + signal["tab"]
+        + " loudness_zwtv computation: {:2.2f} s".format(end - start)
+    )
 
     loudness = {
         "name": "Loudness",
@@ -212,9 +214,7 @@ def validation_loudness_zwtv(signal):
     }
 
     # Check ISO 532-1 compliance
-    _check_compliance(
-        loudness, signal, "output/"
-    )
+    _check_compliance(loudness, signal, "output/")
 
 
 def _check_compliance(loudness, signal, out_dir):
@@ -270,7 +270,9 @@ def _check_compliance(loudness, signal, out_dir):
             header=None,
             skiprows=10,
             usecols="B",
-        ).squeeze("columns").to_numpy()
+        )
+        .squeeze("columns")
+        .to_numpy()
     )
     N_iso = N_iso[~np.isnan(N_iso)]
     N_specif_iso = np.transpose(
@@ -280,7 +282,9 @@ def _check_compliance(loudness, signal, out_dir):
             header=None,
             skiprows=10,
             usecols="L",
-        ).squeeze("columns").to_numpy()
+        )
+        .squeeze("columns")
+        .to_numpy()
     )
     N_specif_iso = N_specif_iso[~np.isnan(N_specif_iso)]
 
@@ -336,8 +340,7 @@ def _check_compliance(loudness, signal, out_dir):
             # Data to plot
             Ni = [N, N_specific[i_bark, :]]
             Ni_ref = [N_iso, N_specif_iso]
-            Ni_label = ["Loudness",
-                        "Specific loudness at " + str(bark) + " Bark"]
+            Ni_label = ["Loudness", "Specific loudness at " + str(bark) + " Bark"]
         else:
             #
             # Data to plot
@@ -371,10 +374,8 @@ def _check_compliance(loudness, signal, out_dir):
                 )
             #
             # Check compliance
-            comp_10 = np.array([comp[0, i] and comp[3, i]
-                                for i in np.arange(N.size)])
-            comp_5 = np.array([comp[1, i] and comp[2, i]
-                               for i in np.arange(N.size)])
+            comp_10 = np.array([comp[0, i] and comp[3, i] for i in np.arange(N.size)])
+            comp_5 = np.array([comp[1, i] and comp[2, i] for i in np.arange(N.size)])
             ind_10 = np.nonzero(comp_10 == 0)[0]
             ind_5 = np.nonzero(comp_5 == 0)[0]
             if ind_5.size == 0:

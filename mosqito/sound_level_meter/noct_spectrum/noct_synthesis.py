@@ -6,12 +6,14 @@ import numpy as np
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
 from mosqito.sound_level_meter.noct_spectrum._filter_bandwidth import _filter_bandwidth
-from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import _n_oct_freq_filter
+from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import (
+    _n_oct_freq_filter,
+)
 
 
 def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     """Adapt input spectrum to nth-octave band spectrum
-    
+
     Convert the input spectrum to third-octave band spectrum
     between "fc_min" and "fc_max".
     Parameters
@@ -40,16 +42,16 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     fpref : numpy.ndarray
         Corresponding preferred third octave band center frequencies, size (nbands).
     """
-    
+
     # Deduce sampling frequency
     fs = np.mean(freqs[1:] - freqs[:-1]) * 2 * len(spectrum)
 
     # Get filters center frequencies
     fc_vec, fpref = _center_freq(fmin=fmin, fmax=fmax, n=n, G=G, fr=fr)
-    
+
     # Compute the filters bandwidth
     alpha_vec, f_low, f_high = _filter_bandwidth(fc_vec, n=n)
-    
+
     # Delete ends frequencies to prevent aliasing
     idx = np.asarray(np.where(f_high > fs / 2))
     if any(idx[0]):
@@ -59,7 +61,7 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
 
     # Number of nth bands
     nband = len(fc_vec)
-    
+
     # Results array initialization
     if len(spectrum.shape) > 1:
         nseg = spectrum.shape[1]

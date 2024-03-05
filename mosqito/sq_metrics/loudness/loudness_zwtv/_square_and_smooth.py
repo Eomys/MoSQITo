@@ -32,7 +32,7 @@ def _square_and_smooth(sig, center_freq, fs):
     else:
         tau = 2 / (3 * 1000)
     # Squaring
-    sig = sig ** 2
+    sig = sig**2
     # Three smoothing low-pass filters
     a1 = np.exp(-1 / (fs * tau))
     b0 = 1 - a1

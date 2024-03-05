@@ -64,10 +64,8 @@ def comparison_roughness():
     axs1.plot(
         fmod[0:12], r_dw[0, 0:12], marker="x", color="red", label="Daniel and Weber"
     )
-    axs1.plot(fmod[0:12], r_ps[0, 0:12], marker="o",
-              color="#0069a1", label="Psysound")
-    axs1.plot(fmod[0:12], R[0, 0:12], marker="s",
-              color="#69c3c5", label="mosqito")
+    axs1.plot(fmod[0:12], r_ps[0, 0:12], marker="o", color="#0069a1", label="Psysound")
+    axs1.plot(fmod[0:12], R[0, 0:12], marker="s", color="#69c3c5", label="mosqito")
     axs1.set(xlim=(0, 170), ylim=(0, 1.1))
     axs1.set_title("Carrier frequency of 250 Hz", fontsize=11)
     axs1.legend(loc="upper right", shadow=True)
