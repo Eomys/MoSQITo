@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import sqrt, mean, array, linspace
+import numpy as np
 
 # Project Imports
 from mosqito.sq_metrics.loudness.loudness_ecma._nonlinearity import _nonlinearity
@@ -14,12 +15,9 @@ def _loudness_from_bandpass(block_array):
 
     Parameters
     ----------
-    signal: numpy.array
+    block_array: numpy.array
         time signal values in 'Pa'. The sampling frequency of the signal must be 48000 Hz.
-    sb: int or list of int
-        block size.
-    sh: int or list of int
-        Hop size.
+        time-segmented + gammatone filtered
 
     Returns
     -------
@@ -31,7 +29,8 @@ def _loudness_from_bandpass(block_array):
         Bark axis
 
     """
-
+    # Rectification (5.1.6)
+    block_array_rect = np.clip(block_array, a_min=0.00, a_max=None)
     
     n_specific = []
     for band_number in range(53):
@@ -39,7 +38,7 @@ def _loudness_from_bandpass(block_array):
         # After the segmentation of the signal into blocks, root-mean square values of each block are calculated
         # according to Formula 17.
         rms_block_value = sqrt(
-            2 * mean(array(block_array[band_number]) ** 2, axis=1)
+            2 * mean(array(block_array_rect[band_number]) ** 2, axis=1)
         )
 
         # NON-LINEARITY (section 5.1.7)
