@@ -185,6 +185,7 @@ if __name__ == "__main__":
             R_time, R_spec, R = roughness_ecma(stimulus, fs, plot=False)
             Ro[i,j] = R
             ref_spec, ref_R = ref_artemis(file, carrier, mod)
+            Rref[i,j] = float(ref_R[:-6])
             
             plt.figure()
             plt.step(ref_spec[:,0], ref_spec[:,1], label="Artemis", color="k")
@@ -195,8 +196,8 @@ if __name__ == "__main__":
             plt.xlabel("Asper/Bark")
             plt.ylabel("Frequency [Hz]")
             # plt.show(block=True)
-            plt.savefig(r"C:\Users\SaloméWanty\Documents\Mosqito_roughness\validations\roughness\output\fc_" + f"{carrier}" +"_fmod_" + f"{mod}"+ ".png" )
-
+            plt.savefig(r"C:\Users\SaloméWanty\Documents\Mosqito_roughness\validations\sq_metrics\roughness_ecma\output\fc_" + f"{carrier}" +"_fmod_" + f"{mod}"+ ".png" )
+            plt.close()
     colors = plt.cm.rainbow(np.linspace(0,1,len(Ro)))
     plt.figure()
     for i in range(len((fc))):  
