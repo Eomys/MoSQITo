@@ -22,8 +22,8 @@ def Q2_high(center_freq):
 
 
     q2 = np.zeros((len(center_freq)))
-    q2[center_freq/1000 < 2**-3.4253] = 0.2471
-    q2[center_freq/1000 >= 2**-3.4253] = 0.2471+0.0129*(np.log2(center_freq[center_freq/1000 >= 2**-3.4253]/1000)+3.4253)**2
+    q2[center_freq/1000 < 2**(-3.4253)] = 0.2471
+    q2[center_freq/1000 >= (2**-3.4253)] = 0.2471+0.0129*(np.log2(center_freq[center_freq/1000 >= 2**-3.4253]/1000)+3.4253)**2
 
     return q2
 
