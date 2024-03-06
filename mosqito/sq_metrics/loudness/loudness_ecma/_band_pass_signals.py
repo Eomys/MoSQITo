@@ -57,7 +57,7 @@ def _band_pass_signals(sig, sb, sh):
     # Auditory filters centre frequencies
     centre_freq = _auditory_filters_centre_freq()
 
-    block_array = []
+    block_bandpass_signals = []
     for band_number in range(53):
         bm_mod, am_mod = _gammatone(centre_freq[band_number], k=filter_order_k, fs=fs)
 
@@ -72,22 +72,23 @@ def _band_pass_signals(sig, sb, sh):
                 )
             ).real
         )
+        block_bandpass_signals.append(band_pass_signal)
+    return block_bandpass_signals
+    #     # SEGMENTATION OF THE SIGNAL INTO BLOCKS (5.1.4)
 
-        # SEGMENTATION OF THE SIGNAL INTO BLOCKS (5.1.4)
+    #     # The segmentation of the signal is done in order to obtain results for intervals of time, not for the whole
+    #     # duration of the signal. The reason behind this decision resides in the fact that processing the signal in its
+    #     # full length at one time could end up in imprecise results. By using a "for loop", we are able to decompose the
+    #     # signal array "band_pass_signal_hr" into blocks. "sb_array" is the block size which changes depending on the
+    #     # "band_number" in which we are processing the signal. "sh_array" is the step size, the time shift to the next
+    #     # block.
 
-        # The segmentation of the signal is done in order to obtain results for intervals of time, not for the whole
-        # duration of the signal. The reason behind this decision resides in the fact that processing the signal in its
-        # full length at one time could end up in imprecise results. By using a "for loop", we are able to decompose the
-        # signal array "band_pass_signal_hr" into blocks. "sb_array" is the block size which changes depending on the
-        # "band_number" in which we are processing the signal. "sh_array" is the step size, the time shift to the next
-        # block.
-
-        block, _ = time_segmentation(
-            band_pass_signal, fs, sb[band_number], sh[band_number], is_ecma=True)
+    #     block, time_array = time_segmentation(
+    #         band_pass_signal, fs, sb[band_number], sh[band_number], is_ecma=True)
         
-        block_array.append(block.T)
+    #     block_array.append(block.T)
 
-    return block_array
+    # return np.squeeze(block_array), time_array
 
 def _rectified_band_pass_signals(sig, sb, sh):
     """Compute the band-pass signals as per Clause 5.1.2 to 5.1.5 of
