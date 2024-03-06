@@ -62,10 +62,13 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
     signal, n_new = _preprocessing(signal, sb, sh)
 
     # Computaton of band-pass signals (5.1.3 to 5.1.4)
-    bandpass_signals = _band_pass_signals(signal)
+    bandpass_signals = _band_pass_signals(signal, sb, sh)
 
-    # Segmentation into blocks (5.1.5)
+    # 5.1.5 Segmentation into blocks
     block_array, time_array = _ecma_time_segmentation(bandpass_signals, sb, sh, n_new)
+    
+    # Segmentation into blocks (5.1.5)
+    #block_array, time_array = _ecma_time_segmentation(bandpass_signals, sb, sh, n_new)
 
     # Rectification (5.1.6)
     block_array_rect = clip(block_array, a_min=0.00, a_max=None)
