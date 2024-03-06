@@ -20,18 +20,15 @@ def _peak_picking(Phi_E):
     """
     
     # Peak picking
-    maxima_idx, _ = find_peaks(Phi_E)
+    maxima_idx, maxima_dict = find_peaks(Phi_E[2:], prominence=[None, None])
+    maxima_idx += 2
+    prominence = maxima_dict['prominences']
                 
-    if len(maxima_idx) > 0:
-        # Eq 72
-        maxima_idx = np.delete(maxima_idx, np.where((Phi_E[maxima_idx]) <= 0.05*max(Phi_E[maxima_idx]))[0])
-
     if len(maxima_idx) == 0:
         f_p = np.array([])
         A = np.array([])
     else: 
         # Compute peaks prominence
-        prominence, _, _ = peak_prominences(Phi_E, maxima_idx) 
         
         # Only the 10 maxima with the highest prominence are considered
         if len(maxima_idx) > 10:
@@ -41,8 +38,18 @@ def _peak_picking(Phi_E):
         else:
             prominence_idx = maxima_idx
             
-        N_peak = len(prominence)
-        
+        # Eq 72
+        condition_not_met_idx = np.where((Phi_E[maxima_idx]) <= 0.05*max(Phi_E[maxima_idx]))[0]
+        maxima_idx = np.delete(maxima_idx, condition_not_met_idx)
+        prominence_idx = np.delete(prominence_idx, condition_not_met_idx)
+        prominence = np.delete(prominence, condition_not_met_idx)
+            
+            
+    N_peak = len(prominence)
+    if N_peak == 0:
+        f_p = np.array([])
+        A = np.array([])
+    else:
         f_p = np.empty(N_peak)
         A = np.empty(N_peak)
                 
