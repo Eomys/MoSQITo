@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from numpy import ones, ceil, linspace, arange, mean, int32
-
+import numpy as np
 
 def _ecma_time_segmentation(signal_block, sb, sh, n_new):
     """Function used for the segmentation of a time signal into
@@ -55,12 +55,9 @@ def _ecma_time_segmentation(signal_block, sb, sh, n_new):
     time_array = []
 
     for z in range(53):
-
         signal = signal_block[z]
-
         # build time vector for signal
         time = linspace(0, (signal.shape[0] - 1) / fs, signal.shape[0])
-
         # Eq. (18)
         L = arange(L_last[z])
         idx = (
@@ -68,8 +65,44 @@ def _ecma_time_segmentation(signal_block, sb, sh, n_new):
             .astype(int32)
             .T
         )
-
         block_array.append(signal[idx])
         time_array.append(time[idx])
+        
+    # block_array0 = []
+    # time_array0 = []
+    # for z in range(53):
+    #     signal = signal_block[z]
+    #     # build time vector for signal
+    #     time = np.linspace(0, (signal.shape[0] - 1) / fs, signal.shape[0])
+    #     signal_segmented = np.zeros((L_last[z], sb[z]))
+    #     time_segmented = np.zeros(L_last[z])
+    #     for L in np.arange(L_last[z]):
+    #         # Eq. (18)
+    #         indices = np.arange(L*sh[z] + i_start[z], L*sh[z] + i_start[z] + sb[z])
+    #         print(indices)
+    #         signal_segmented[L, :] = signal[indices]
+    #         # TODO: is 'mean' the best estimate for block time? Maybe should
+    #         # use block start time instead?
+    #         time_segmented[L] = np.mean(time[indices])
+    #     block_array0.append(signal_segmented)
+    #     time_array0.append(time_segmented)
+        
+    # import matplotlib.pyplot as plt
+    # plt.figure()
+    # plt.plot(np.asarray(block_array)[0,0,:])
+    # plt.plot(np.asarray(block_array0)[0,0,:])
+    
+    # plt.figure()
+    # plt.plot(np.asarray(block_array)[0,2,:])
+    # plt.plot(np.asarray(block_array0)[0,2,:])
+    # plt.figure()
+    # plt.plot(np.asarray(block_array)[0,10,:])
+    # plt.plot(np.asarray(block_array0)[0,10,:])
+    # plt.figure()
+    # plt.plot(np.asarray(block_array)[0,15,:])
+    # plt.plot(np.asarray(block_array0)[0,15,:])
+    # plt.show(block=True)
+    
+        
 
     return block_array, time_array
