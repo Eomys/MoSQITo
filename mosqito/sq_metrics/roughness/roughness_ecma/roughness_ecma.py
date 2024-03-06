@@ -3,67 +3,19 @@ from numpy import(abs,arange,cos,pi,append,power,zeros,empty, sum, array,clip,  
                   apply_along_axis)
 import numpy as np
 from numpy.fft import rfft, fft
-from scipy.signal import hilbert, resample, find_peaks, peak_prominences
+from scipy.signal import hilbert, resample, decimate
+from scipy.interpolate import pchip_interpolate
 import matplotlib.pyplot as plt
-import numpy as np
 # Project Imports
+from mosqito.sq_metrics.loudness.loudness_ecma._preprocessing import _preprocessing
 from mosqito.sq_metrics.loudness.loudness_ecma._band_pass_signals import _band_pass_signals
 from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq import _auditory_filters_centre_freq
-
-# Data import
 from mosqito.sq_metrics.loudness.loudness_ecma._loudness_from_bandpass import _loudness_from_bandpass
+from mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma import loudness_ecma
 from mosqito.sq_metrics.roughness.roughness_ecma._weighting import f_max, r_max, Q2_high, Q2_low, _high_mod_rate_weighting, _low_mod_rate_weighting
 from mosqito.sq_metrics.roughness.roughness_ecma._estimate_fund_mod_rate import _estimate_fund_mod_rate
 from mosqito.sq_metrics.roughness.roughness_ecma._peak_picking import _peak_picking
-
-def _preprocessing(signal, sb, sh):
-    """
-    Performs windowing and zero-padding as described in Section 5.1.2 of
-    ECMA-418-2 (2nd Ed, 2022) standard for calculating Loudness. 
-    
-    Parameters
-    ----------
-    signal : (n_samples,)-shaped numpy.array
-        Array containing the sound signal samples, at sampling frequency 48 kHz
-    
-    sb : int
-        Block size, in samples
-    
-    sh : int
-        Hop size, in samples
-    """
-    
-    n_samples = signal.shape[0]
-    
-    # -----------------------------------------------------------------------    
-    # Apply windowing function to first 5 ms (240 samples)
-    
-    n_fadein = 240
-    
-    # Eq. (1)
-    w_fadein = 0.5 - 0.5*np.cos(np.pi * np.arange(n_fadein) / n_fadein)
-    
-    signal[:240] *= w_fadein
-    
-    # -----------------------------------------------------------------------    
-    # Calculate zero padding at start and end of signal
-    
-    sb_max = np.max(sb)
-    sh_max = np.max(sh)
-    
-    n_zeros_start = sb_max
-    
-    # Eqs. (2), (3) 
-    n_new = sh_max * (np.ceil((n_samples + sh_max + sb_max)/(sh_max)) - 1)
-    
-    n_zeros_end = int(n_new) - n_samples
-    
-    signal = np.concatenate( (np.zeros(n_zeros_start),
-                              signal,
-                              np.zeros(n_zeros_end)))
-    
-    return signal, n_new
-
+from mosqito.sq_metrics.loudness.loudness_ecma._ecma_time_segmentation import _ecma_time_segmentation
 
 def roughness_ecma(signal, fs, plot=False):
     """Calculation of the roughness according to ECMA-418-2 section 7
@@ -96,18 +48,52 @@ def roughness_ecma(signal, fs, plot=False):
     sb=16384
     sh=4096
     duration =  len(signal) / fs
-
-    signal, _ = _preprocessing(signal, sb, sh)
+    
+    # _, _, N_specific, bark_axis, _ = loudness_ecma(signal, fs, sb, sh)
+    # N_specific = np.asarray(N_specific).T
+    # L = N_specific.shape[0]
+    
+    signal, n_new = _preprocessing(signal, sb, sh)
 
     # LOUDNESS COMPUTATION
-    block_array_rect = array(_band_pass_signals(signal, sb, sh))
-    L = block_array_rect.shape[1]
-    N_specific, bark_axis = _loudness_from_bandpass(block_array_rect)
-    N_specific = N_specific.T
+    bandpass_signals = _band_pass_signals(signal, sb, sh)
     
+    
+    
+    block_array, time = _ecma_time_segmentation(bandpass_signals, sb, sh, n_new)
+    time = time[0][:,0]
+    block_array = np.asarray(block_array)
+    
+    N_specific, bark_axis = _loudness_from_bandpass(block_array)
+    N_specific = N_specific.T
+    L = N_specific.shape[0]
+    
+    # if plot:
+        # plt.figure()
+        # plt.plot(signal)
+        # plt.title('Signal Salome')
+        
+        # plt.figure()
+        # plt.title('Bandpass signals Salome')
+        # plt.plot(np.asarray(bandpass_signals)[10:15,:].T)
+        
+        # plt.figure()
+        # plt.title('Block array Salome')
+        # plt.plot(block_array[10:15,4,:].T)
+        
+        # plt.figure()
+        # plt.title('Block array Salome')
+        # plt.plot(block_array[10,0:4,:].T)
+        
+        # plt.figure()
+        # plt.title('Loudness Salome')
+        # plt.plot(bark_axis, N_specific.T)
+        
+        # plt.show(block=True)
+            
     # ENVELOPPE CALCULATION AND DOWNSAMPLING (7.1.2)
-    #envelopes = abs(block_array_rect + 1j * hilbert(block_array_rect))  
-    envelopes = abs(hilbert(block_array_rect))
+    envelopes = abs(hilbert(block_array))
+    envelopes = np.transpose(np.asarray(envelopes),(1,0,2))
     
     # .........................................................................
     # plot envelope and bandpass signal for one segment
@@ -123,9 +109,9 @@ def roughness_ecma(signal, fs, plot=False):
         
         
         plt.figure()
-        plt.plot(t, envelopes[band_to_plot, timestep_to_plot, :],
+        plt.plot(t, envelopes[timestep_to_plot, band_to_plot, :],
                 label='Envelope')
-        plt.plot(t, block_array_rect[band_to_plot, timestep_to_plot, :], ':',
+        plt.plot(t, block_array[band_to_plot, timestep_to_plot, :], ':',
                 label='Bandpass Signal')
         plt.legend()
         plt.xlim([0, 0.03])
@@ -137,8 +123,13 @@ def roughness_ecma(signal, fs, plot=False):
     # Downsampling to 1500 Hz
     sbb = 512 # new block size
     K = sbb//2 
-    #envelopes_downsampled = resample(envelopes, sbb, axis=2)  
-    envelopes_downsampled = transpose(resample(envelopes, sbb, axis=2),(1,0,2)) # transpose is used to stick to the standard index order l,z,k
+    envelopes_downsampled = resample(envelopes, sbb, axis=2)  
+    
+    # downsampling_factor = 32
+    # envelopes_downsampled_ = decimate(envelopes, downsampling_factor//4, axis=2)
+    
+    # envelopes_downsampled = decimate(envelopes_downsampled_, 4, axis=2)
+
     
     # .........................................................................
     # compare original and downsampled envelope
@@ -152,7 +143,7 @@ def roughness_ecma(signal, fs, plot=False):
         t_ = np.linspace(0, (sbb-1)/1500, sbb)
         
         plt.figure()
-        plt.plot(t, envelopes[band_to_plot, timestep_to_plot, :], 'o-',
+        plt.plot(t, envelopes[timestep_to_plot, band_to_plot, :], 'o-',
                 label='Envelope [original]')
         
         # # plot every 32nd sample in p_env for visual reference
@@ -179,7 +170,7 @@ def roughness_ecma(signal, fs, plot=False):
     
     # Hann window is precisely defined in the standard (different from numpy version)
     hann_window = (0.5-0.5*cos(2*pi*arange(sbb)/sbb))/sqrt(0.375)
-    hann_window = hann_window / sum(hann_window)
+    hann_window = hann_window
         
     # phi_e0 = np.sum(power(envelopes * hann_window,2), axis=2)
     # den = transpose(N_specific_max * transpose(phi_e0))
@@ -190,35 +181,52 @@ def roughness_ecma(signal, fs, plot=False):
     den = transpose(N_specific_max * transpose(phi_e0))
     
     
-    dft = power(abs(rfft((envelopes_downsampled * hann_window), n=sbb-1, axis=2)),2)
+    dft = np.power(np.abs(rfft((envelopes_downsampled * hann_window), n=sbb-1, axis=2))/2,2)
+    #dft = np.abs(np.fft.fft((envelopes_downsampled * hann_window), axis=2)[:,:,:sbb//2])**2
     scaling = np.zeros((L, CBF))
     scaling[den!=0] = power(N_specific[den!=0],2) / den[den!=0]
     spectrum = scaling[:, :, np.newaxis] * dft
     
-    # plt.figure()
-    # plt.title('Phi_e 0')
-    # plt.plot(phi_e0)
-    # plt.figure()
-    # plt.title('Dénominateur')
-    # plt.plot(den)
     
     if plot is True:
         plt.figure()
-        plt.title('Scaling')
-        plt.plot(scaling)
-    
-    #spectrum = scaling[..., np.newaxis] * power(abs(rfft((envelopes * hann_window), n=sbb-1, axis=2)),2)
-    
-    # .........................................................................
-    # plot scaled power spectrum for one time segment
-    
-    if plot is True:
-        timestep_to_plot = 8
+        plt.title('env * hann')
+        plt.plot((envelopes_downsampled * hann_window)[:,4,:].T)
+        
+        plt.figure()
+        plt.title('Phi_e 0')
+        plt.plot(phi_e0)
+        
+        plt.figure()
+        plt.title('Dénominateur')
+        plt.plot(den)
         
         df_ = 1500/sbb
         f = np.linspace(0, 1500 - df_, sbb)[:sbb//2]
+        plt.figure()
+        plt.plot((envelopes_downsampled * hann_window)[10,10,].T)
+        plt.show(block=True)
+        plt.plot(f, (np.abs(fft((envelopes_downsampled * hann_window), axis=2)))[10,10,:sbb//2].T)
+        plt.show(block=True)
+        plt.plot(20*np.log10(dft[10,10,]).T)
+        plt.show(block=True)
+        
+        plt.figure()
+        plt.title('Scaling')
+        plt.plot(scaling)
+            
         
         Pspec = 10*np.log10(spectrum[timestep_to_plot, :,  :sbb//2+1]+0.00000000001)
+    
+    
+        plt.figure()
+        plt.title('Fabio')
+        plt.pcolormesh(f, bark_axis, dft[timestep_to_plot, :], vmin=0, vmax=1)
+        plt.title(f'Scaled power spectrum of envelopes')
+        plt.xlabel('Freq [Hz]')
+        plt.ylabel('Critical band [Bark]')
+        plt.colorbar()
+    
     
         plt.figure()
         plt.pcolormesh(f, bark_axis, Pspec, 
@@ -241,38 +249,45 @@ def roughness_ecma(signal, fs, plot=False):
     av_spectrum[:,-1] = (spectrum[:,-1] + spectrum[:,-2])/2
     av_spectrum[:,1:-1] = (spectrum[:,:-2] + spectrum[:,1:-1] + spectrum[:,2:])/3
     S = av_spectrum.sum(axis=1)
-    SS = median(S[:,2:], axis=1)
+    SS = np.median(S[:,2:], axis=1)
     
     # .........................................................................
     # plot averaged power spectrum for one time segment
+    if plot:
+        
+        
+        plt.figure()
+        plt.plot(av_spectrum[10,:,:])
+        
+        plt.plot(S[:,2:].T)
+        plt.plot(SS)
+        
+        bark_axis = np.linspace(0.5, 26.5, num=53, endpoint=True)
+        fs_ = 1500
+        df_ = fs_/sbb
+        f = np.linspace(0, fs_ - df_, sbb)[:sbb//2]
+        timestep_to_plot = 8
+        Pspec1 = 10*np.log10(spectrum[timestep_to_plot, :, :sbb//2+1])
+        
+        plt.figure()
+        plt.pcolormesh(f, bark_axis, Pspec1,
+                    vmax = np.max(Pspec1), vmin=np.max(Pspec1)-80)
+        plt.title('Original power spectrum of envelopes')
+        plt.xlabel('Freq [Hz]')
+        plt.ylabel('Critical band [Bark]')
+        plt.colorbar()
+        plt.tight_layout()
+        
+        plt.figure()
+        Pspec2 = 10*np.log10(av_spectrum[timestep_to_plot, :, :sbb//2+1])
+        plt.pcolormesh(f, bark_axis, Pspec2,
+                    vmax = np.max(Pspec2), vmin=np.max(Pspec2)-80)
+        plt.title('Averaged power spectrum of envelopes')
+        plt.xlabel('Freq [Hz]')
+        plt.ylabel('Critical band [Bark]')
+        plt.colorbar()
+        plt.tight_layout()
     
-    # bark_axis = np.linspace(0.5, 26.5, num=53, endpoint=True)
-    # fs_ = 1500
-    # df_ = fs_/sbb
-    # f = np.linspace(0, fs_ - df_, sbb)[:sbb//2+1]
-    # timestep_to_plot = 8
-    # Pspec1 = 10*np.log10(spectrum[timestep_to_plot, :, :sbb//2+1])
-    
-    # plt.figure()
-    # plt.pcolormesh(f, bark_axis, Pspec1,
-    #                vmax = np.max(Pspec1), vmin=np.max(Pspec1)-80)
-    # plt.title('Original power spectrum of envelopes')
-    # plt.xlabel('Freq [Hz]')
-    # plt.ylabel('Critical band [Bark]')
-    # plt.colorbar()
-    # plt.tight_layout()
-    
-    # plt.figure()
-    # Pspec2 = 10*np.log10(av_spectrum[timestep_to_plot, :, :sbb//2+1])
-    # plt.pcolormesh(f, bark_axis, Pspec2,
-    #                vmax = np.max(Pspec2), vmin=np.max(Pspec2)-80)
-    # plt.title('Averaged power spectrum of envelopes')
-    # plt.xlabel('Freq [Hz]')
-    # plt.ylabel('Critical band [Bark]')
-    # plt.colorbar()
-    # plt.tight_layout()
-    
-    if plot is True:
         plt.figure()
         freqs = linspace(0, 1500//2, 256)
         plt.plot(freqs, spectrum[3,5,:])
@@ -287,12 +302,18 @@ def roughness_ecma(signal, fs, plot=False):
 
     # Weighting 
     noise_suppression_weighting = zeros((L,K))
-    w_wave = 0.0856 * S/(SS[:,None]+10e-10) * clip(0.1891*exp(0.0120*arange(K)),0,1)
-    idx = where((w_wave>=0.05 * w_wave[:,2:].max()))
-    noise_suppression_weighting[idx] = clip(w_wave[idx]-0.1407,0,1)
+    w_tilde = 0.0856 * S/(SS[:,None]+10e-10) * clip(0.1891*exp(0.0120*arange(K)),0,1)
+    w_tilde_max = np.max( w_tilde[:, 2:], axis=-1)
+    idx = where((w_tilde>=0.05 * w_tilde_max[:, np.newaxis]))
+    noise_suppression_weighting[idx] = clip(w_tilde[idx]-0.1407,0,1)
     Phi_E = av_spectrum * noise_suppression_weighting[:,None,:]
     
+    
     if plot is True:
+        
+        plt.plot(w_tilde)
+        plt.plot(0.05 * w_tilde_max[:, np.newaxis], 'k', linewidth=3, linestyle=':')
+        
         plt.figure()
         plt.pcolormesh(f, np.arange(noise_suppression_weighting.shape[0]), noise_suppression_weighting[:, :sbb//2+1])
         plt.title(f"Weighting coefficient 'w' (Eq. 70)")
@@ -340,7 +361,6 @@ def roughness_ecma(signal, fs, plot=False):
                     Ai_tilde[i0] = _high_mod_rate_weighting(f_p[i0], Ai[i0], fmax[z], rmax[z], q2_high[z])
                                     
                 mod_rate, f_p_hat, A_hat = _estimate_fund_mod_rate(f_p, Ai_tilde)
-                print("Modulation at ", mod_rate, "Hz")
                 
                 # Weighting of low modulation rates
                 amplitude[l,z] = _low_mod_rate_weighting(mod_rate, A_hat, fmax[z], q2_low[z])
@@ -351,15 +371,27 @@ def roughness_ecma(signal, fs, plot=False):
 
     # CALCULATION OF TIME DEPENDENT SPECIFIC ROUGHNESS (7.1.7)
     
+    rs_50 = 50
+    N50 = int(duration*rs_50)
     
+    # N50 = int(duration*rs_50)
+    # amplitude_50 = resample(amplitude, N50, axis=0)
+    # amplitude_50 = amplitude_50[:N50,:] # delete zero-padding
     
-    N50 = int(duration*50)
-    amplitude_50 = resample(amplitude, N50, axis=0)
-    amplitude_50 = amplitude_50[:N50,:] # delete zero-padding
+    t_50 = np.arange(N50) / rs_50
+    amplitude_50 = pchip_interpolate(time, amplitude, t_50, axis=0)
+
+    R_est = np.clip(amplitude_50, 0, None)
     
-    R_est = amplitude_50
-    R_est[R_est<0] = 0
-    
+    if plot:
+        plt.figure()
+        plt.title('Amplitude')
+        plt.plot(time, amplitude)
+        
+        
+        plt.figure()
+        plt.title('Estimated roughness')
+        plt.plot(t_50, R_est)
 
     R_lin_mean = sum(R_est, axis=1)/53
     R_sq_mean = sqrt((sum(R_est, axis=1)**2)/53)
@@ -390,7 +422,7 @@ def roughness_ecma(signal, fs, plot=False):
     
     if plot is True:
         plt.figure()
-        plt.plot(0.6 * sum(R_time_spec, axis=1))
+        plt.plot(0.5 * sum(R_time_spec, axis=1))
     
     return R_time, R_spec, R
 
@@ -417,8 +449,7 @@ if __name__ == "__main__":
         
         rms = np.sqrt(np.mean(np.power(signal, 2)))
         ampl = 0.00002 * np.power(10, dB / 20) / rms
-        signal = signal * ampl
-        return signal
+        return signal * ampl
     
     
     file = r"C:\Users\SaloméWanty\Documents\Mosqito_roughness\validations\sq_metrics\roughness_ecma\validation_specific_roughness_ecma.xlsx"
@@ -438,7 +469,7 @@ if __name__ == "__main__":
             carrier = fc[i]
             mod = fmod[j]
             stimulus = signal_test(fs, d, carrier, mod, dB, mdepth)
-            R_time, R_spec, R = roughness_ecma(stimulus, fs, plot=False)
+            R_time, R_spec, R = roughness_ecma(stimulus, fs, plot=True)
             Ro[i,j] = R
             #ref_spec, ref_R = ref_artemis(file, carrier, mod)
             
