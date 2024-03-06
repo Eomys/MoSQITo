@@ -18,8 +18,6 @@ def _estimate_fund_mod_rate(f_p, Ai_tilde):
     I_i0 = np.empty((N_peak), dtype=object)
     E_i0 = np.empty((N_peak))
     
-    
-    
     # Estimation of fundamental modulation rate (7.1.5.3) (ne dépend pas de l et z)
     for i0 in range(N_peak):
         f_p_temp = f_p #[i0:]
@@ -35,7 +33,7 @@ def _estimate_fund_mod_rate(f_p, Ai_tilde):
             crit = np.abs( (f_p_temp[ic] / (R_i0[ic] * f_p[i0])) - 1)
             candidates_idx = np.append(candidates_idx, ic[np.argmin(crit)])
          
-        h_complex = np.abs(f_p_temp[candidates_idx]/(R_i0[candidates_idx]*f_p[i0])-1)
+        h_complex = np.abs(f_p_temp[candidates_idx]/(R_i0[candidates_idx]*f_p[i0]+10e-10)-1)
         I_i0[i0] = candidates_idx[h_complex < 0.04]    
         
         E_i0[i0] = np.sum(Ai_tilde[I_i0[i0]])
@@ -51,6 +49,4 @@ def _estimate_fund_mod_rate(f_p, Ai_tilde):
     w_peak = 1 + 0.1 * abs(sum(f_p[I_max]*Ai_tilde[I_max])/sum(Ai_tilde[I_max])-f_p[i_peak])**0.749
     A_hat = Ai_tilde[I_max] * w_peak    
     
-    f_p_hat = f_p[I_max]
-
-    return mod_rate, f_p_hat, A_hat
+    return mod_rate, A_hat
