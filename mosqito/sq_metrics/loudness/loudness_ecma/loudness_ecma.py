@@ -93,6 +93,5 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
     N = (mean(N_time**e)) ** (1 / e)
 
     bark_axis = linspace(0.5, 26.5, num=53, endpoint=True)
-    time_axis = time_array[0][:, 0]
 
-    return N, N_time, N_spec, bark_axis, time_axis
+    return N, N_time, N_spec, bark_axis, time_array
