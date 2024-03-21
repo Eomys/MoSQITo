@@ -96,3 +96,65 @@ def fm_sine_generator(spl_level, fc, xm, k, fs, return_aux_params=False,
         return y_fm, aux_params
     else:
         return y_fm
+
+
+# %% run example for FM sine generator
+
+if __name__ == "__main__":
+    
+    import matplotlib.pyplot as plt
+    
+    # preliminary definitions
+    fs = 48000  # [Hz]
+    dt = 1/fs
+    
+    T = 0.1     # [s]
+    t = np.linspace(0, T-dt, int(T*fs))
+    
+    spl = 60        # [dB SPL]
+    p_ref = 20e-5   # [Pa RMS]
+    
+    # sine carrier frequency
+    fc = 500
+    
+    # freq sensitivity
+    k = 400
+    
+    # modulating signal: low frequency sine wave
+    fm = 50
+    xm = np.sin(2*np.pi*t*fm)
+    
+    y_fm, aux_params = fm_sine_generator(spl, fc, xm, k, fs,
+                                         return_aux_params=True)
+
+    inst_freq = aux_params['inst_freq']
+
+    # plot signal
+    fig, plots = plt.subplots(3, 1)
+    
+    plots[0].set_title('Test signal - frequency-modulated sine wave')
+    
+    plots[0].plot(t, xm, 'C0', label='Modulating signal')
+    plots[0].legend(loc='upper right')
+    plots[0].grid()
+    plots[0].set_ylabel('Amplitude')
+    plots[0].set_xlim([0, T])
+    
+    plots[1].plot(t, y_fm, 'C1', label='FM signal')
+    plots[1].legend(loc='upper right')
+    plots[1].grid()
+    plots[1].set_ylabel('Amplitude')
+    plots[1].set_xlim([0, T])
+    
+    plots[2].plot(t, inst_freq, 'C2', label='Inst Frequency')
+    plots[2].legend(loc='upper right')
+    plots[2].grid()
+    plots[2].hlines(fc, -0.1, 1.2*T, color='k', linestyle='--')
+    plots[2].text(0.0025, fc*0.7, 'carrier freq $f_c$', fontsize=12)
+    plots[2].set_ylim([0, 1.1*(fc+k)])
+    plots[2].set_xlim([0, T])
+    plots[2].set_ylabel('Frequency')
+    plots[2].set_xlabel('Time [s]')
+    
+    fig.set_tight_layout('tight')
+    
