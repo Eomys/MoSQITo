@@ -10,7 +10,7 @@ from mosqito.sq_metrics.loudness.loudness_ecma._nonlinearity import _nonlinearit
 from mosqito.sq_metrics.loudness.loudness_ecma._loudness_ecma_data import ltq_z
 
 
-def _loudness_from_bandpass(block_array):
+def _loudness_from_bandpass(block_array, rectify=True):
     """Calculation of the specific and total loudness according to ECMA-418-2 section 5
 
     Parameters
@@ -30,8 +30,10 @@ def _loudness_from_bandpass(block_array):
 
     """
     # Rectification (5.1.6)
-    block_array_rect = np.clip(block_array, a_min=0.00, a_max=None)
-    
+    if rectify==True:
+        block_array_rect = np.clip(block_array, a_min=0.00, a_max=None)
+    else:
+        block_array_rect = block_array
     n_specific = []
     for band_number in range(53):
         # ROOT-MEAN-SQUARE (section 5.1.6)
@@ -56,4 +58,4 @@ def _loudness_from_bandpass(block_array):
 
     bark_axis = linspace(0.5, 26.5, num=53, endpoint=True)
     
-    return array(n_specific), bark_axis
+    return n_specific, bark_axis
