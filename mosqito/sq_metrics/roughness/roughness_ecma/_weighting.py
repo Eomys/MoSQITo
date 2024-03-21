@@ -1,10 +1,27 @@
 import numpy as np
 
 def f_max(center_freq):
+    """
+    Function to compute the modulation rate at which the weighting factor G reaches the maximum 
+    of one for all band center frequencies according to equation 86 of ECMA 418-2 (2022)
+    
+    Parameters
+    ----------
+    center_freq: array of float
+        band center frequencies in [Hz]        
+    """
     return 72.6937*(1-1.1739*np.exp(-5.4583*center_freq/1000))
 
 def r_max(center_freq):
-
+    """
+    Function to compute the scaling factor for all band center frequencies
+    according to equation 84 of ECMA 418-2 (2022)
+    
+    Parameters
+    ----------
+    center_freq: array of float
+        band center frequencies in [Hz]        
+    """
     r1 = np.zeros((len(center_freq)))
     r2 = np.zeros((len(center_freq)))
 
@@ -19,8 +36,18 @@ def r_max(center_freq):
     return r
 
 def Q2_high(center_freq):
+    """ Function to compute high modulation rate weighting parameter according to equation 87 of ECMA 418-2
 
+    Parameters
+    ----------
+    center_freq: float
+        center frequency of the current band z in [Hz]
 
+    Returns
+    -------
+    q2: float
+        q2 parameter for high modulation rates
+    """
     q2 = np.zeros((len(center_freq)))
     q2[center_freq/1000 < 2**(-3.4253)] = 0.2471
     q2[center_freq/1000 >= (2**-3.4253)] = 0.2471+0.0129*(np.log2(center_freq[center_freq/1000 >= 2**-3.4253]/1000)+3.4253)**2
@@ -28,10 +55,42 @@ def Q2_high(center_freq):
     return q2
 
 def Q2_low(center_freq):
+    """ Function to compute low modulation rate weighting parameter according to equation 96 of ECMA 418-2
+
+    Parameters
+    ----------
+    center_freq: float
+        center frequency of the current band z in [Hz]
+
+    Returns
+    -------
+    q2: float
+        q2 parameter for low modulation rates
+    """
     return 1.0967-0.0640*np.log2(center_freq/1000)
 
 def _high_mod_rate_weighting(mod_rate, amp, fmax, rmax, q2_high):
     """
+    Function to weight high modulation rates according to equation 83 of ECMA 418-2 (2022)
+    
+    Parameters
+    ----------
+    mod_rate : float
+        estimated modulation rate [Hz]
+    amp : float
+        amplitude of the envelope spectrum at the estimated modulation rate
+    fmax : float
+        modulation rate at which the weighting factor G reaches the maximum of one for the current band z
+    rmax : float
+        scaling factor for the current band z
+    q2_high : float
+        parameter for the weighting function calculation at the current band z
+        
+    Returns
+    -------
+    weighted_amp : float
+        the weighted amplitude
+    
     """
     if mod_rate<fmax:
         weighted_amp = amp * rmax
@@ -42,18 +101,28 @@ def _high_mod_rate_weighting(mod_rate, amp, fmax, rmax, q2_high):
     return weighted_amp
 
 def _low_mod_rate_weighting(mod_rate, amp, fmax, q2_low):
-
+    """
+    Function to weight low modulation rates according to equation 95 of ECMA 418-2 (2022)
+    
+    Parameters
+    ----------
+    mod_rate : float
+        estimated modulation rate [Hz]
+    amp : float
+        amplitude of the envelope spectrum at the estimated modulation rate
+    fmax : float
+        modulation rate at which the weighting factor G reaches the maximum of one for the current band z
+    q2_low : float
+        parameter for the weighting function calculation at the current band z
+        
+    Returns
+    -------
+    weighted_amp : float
+        the weighted amplitude
+    
+    """
     if mod_rate < fmax:
-        G = 1/((1+((mod_rate/fmax-fmax/mod_rate)*0.7066)**2)**q2_low)
-        
-        # import numpy as np
-        # mod_rate = np.linspace(20,400,20)
-        # G = 1/((1+((mod_rate[None,:]/fmax[:,None]-fmax[:,None]/mod_rate[None,:])*0.7066)**2)**q2_low[:,None])
-        # import matplotlib.pyplot as plt
-        # plt.plot(mod_rate, G.T)
-        # plt.show(block=True)
-        
-        
+        G = 1/((1+((mod_rate/fmax-fmax/mod_rate)*0.7066)**2)**q2_low)        
         weighted_amp = sum(G * amp)
     else:
         weighted_amp = sum(amp)
