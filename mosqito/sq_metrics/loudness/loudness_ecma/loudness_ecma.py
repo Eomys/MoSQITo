@@ -12,11 +12,11 @@ from mosqito.sq_metrics.loudness.loudness_ecma._loudness_ecma_data import ltq_z
 
 def loudness_ecma(signal, sb=2048, sh=1024):
     """
-    Returns the loudness value 
-    
+    Returns the loudness value
+
     This function computes the acoustic loudness according to ECMA-418-2 section 5 method for
     stationary signals.
-    
+
     Parameters
     ----------
     signal: numpy.array
@@ -33,20 +33,12 @@ def loudness_ecma(signal, sb=2048, sh=1024):
         specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.
     bark_axis: array_like
         Bark axis array, size (Nbark,).
-        
+
     See Also
     --------
     .loudness_zwst : Zwicker and Fastl loudness computation for a stationary time signal
     .loudness_zwtv : Zwicker and Fastl loudness computation for a non-stationary time signal
 
-    Notes
-    -----
-    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours 
-    instead of ISO 226:2003, as defined in the following standards:
-        * ISO 532:1975 (method B)
-        * DIN 45631:1991
-        * ISO 532-1:2017 (method 1)
-    
     References
     ----------
     :cite:empty:`L_ecma-ECMA-418-2`
@@ -57,7 +49,7 @@ def loudness_ecma(signal, sb=2048, sh=1024):
     Warning
     -------
     The sampling frequency of the signal must be 48 kHz.
-            
+
     Examples
     --------
     .. plot::
@@ -121,7 +113,7 @@ def loudness_ecma(signal, sb=2048, sh=1024):
         N_spec.append(N_prime)
 
     bark_axis = linspace(0.5, 26.5, num=53, endpoint=True)
-    time_axis = linspace(0, len(signal)/48000, len(N_spec[0]))
-    N = sum(array(N_spec)*0.5, axis=0)
-    
+    time_axis = linspace(0, len(signal) / 48000, len(N_spec[0]))
+    N = sum(array(N_spec) * 0.5, axis=0)
+
     return N, array(N_spec), bark_axis, time_axis

@@ -3,6 +3,8 @@
 Scope of the project
 ====================
 
+SQ metrics
+----------
 
 The scope of the project is to implement the following first set of metrics:
 

@@ -5,16 +5,18 @@ from numpy import newaxis, array, squeeze
 
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum._filter_bandwidth import _filter_bandwidth
-from mosqito.sound_level_meter.noct_spectrum._n_oct_time_filter import _n_oct_time_filter
+from mosqito.sound_level_meter.noct_spectrum._n_oct_time_filter import (
+    _n_oct_time_filter,
+)
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
 
 
 def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     """Compute nth-octave band spectrum
-    
+
     This function computes the rms level of a signal for each third octave band
     between the 2 limit frequencies.
-    
+
     Parameters
     ----------
     sig : array_like
@@ -38,15 +40,15 @@ def noct_spectrum(sig, fs, fmin, fmax, n=3, G=10, fr=1000):
     Returns
     -------
     spec : array_like
-        Third octave band spectrum of signal sig with size (nfreq, nseg)
+        nth-octave octave band spectrum of signal sig with size (nfreq, nseg)
     fpref : array_like
-        Corresponding prefered third octave band center frequencies
-        
+        Corresponding prefered nth-octave octave band center frequencies
+
     See Also
     --------
     .comp_spectrum : Spectrum computation from a time signal
     .noct_synthesis : Conversion of a spectrum to n-th octave band levels
-            
+
     Examples
     --------
     .. plot::

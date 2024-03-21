@@ -4,15 +4,14 @@ How to contribute
 Become part of the MOSQITO community
 --------------------------------------
 
-There are several ways to contribute to :mod:`mosqito`. You can:
+There are several ways to contribute to MOSQITO. You can:
  * Use it and report the bugs or missing informations. 
  * Share any idea you would have to improve the documentation, if you are familiar with psychoacoustic.
  * Share any sound quality related implementation you could have developed (even in another programing language). 
  * Start contributing by tackling one of the issues labeled with ``good first issue``
  * Implement one of the function listed in the :ref:`scope`.
 
-In any case, please let the community know about your future contribution ideally through a `GitHub issue <https://github.com/Eomys/MoSQITo/issues>`_ 
-or by sending an email at mosqito@framalistes.org that redirects to the maintainers. 
+In any case, please let the community know about your future contribution through a `GitHub issue <https://github.com/Eomys/MoSQITo/issues>`_. 
 
 Developer guideline
 --------------------
@@ -26,7 +25,7 @@ To respect the existing structure, see the :ref:`architecture`.
 Checklist for the development of a new metric
 -----------------------------------------------
 .. warning::
-    Each function in the function library shall come with:
+    Each function in the library shall come with:
      * a complete docstring including the parameters definition and an example (see ``docstring_template.txt`` in the docs folder )
      * a documentation presenting the sources used for the implementation and showing how the implementation is validated (in the *documentation* folder) 
      * a unit test (in the *tests* folder) 
