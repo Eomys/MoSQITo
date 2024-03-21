@@ -66,7 +66,7 @@ def _ecma_time_segmentation(signal_block, sb, sh, n_new):
             .T
         )
         block_array.append(signal[idx])
-        time_array.append(time[idx])
+        time_array.append(np.mean(time[idx], axis=1))
         
     # block_array0 = []
     # time_array0 = []
