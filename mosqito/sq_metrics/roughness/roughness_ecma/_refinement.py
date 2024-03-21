@@ -1,8 +1,14 @@
 from numpy import array, dot, arange, floor, argmin, mean, abs
-from numpy.linalg import inv
 
 def _rho(f, delta_f):
-
+    """
+    Function to compute the bias correction term defined in equation 78 of ECMA 418-2 (2022)
+    
+    Parameters
+    ----------
+    center_freq: array of float
+        band center frequencies in [Hz]        
+    """
     E = array([0,0.0457,0.0907,0.1346,0.1765,0.2157,0.2515,0.2828,0.3084,0.3269,0.3364,0.3348,0.3188,0.2844,0.2259,0.1351,0.0000,-0.1351,
                   -0.2259,-0.2844,-0.3188,-0.3348,-0.3364,-0.3269,-0.3084,-0.2828,-0.2515,-0.2157,-0.1765,-0.1346,-0.0907, -0.0457,0.000,0.000])
     theta = arange(0,34)
@@ -28,7 +34,7 @@ def _refinement(kpi, Phi_E):
     import numpy as np
 
     # Refinement step
-    Km = array([[kpi**2, kpi-1, 1],[kpi**2, kpi, 1],[(kpi+1)**2, kpi+1, 1]])
+    Km = array([[(kpi-1)**2, kpi-1, 1],[kpi**2, kpi, 1],[(kpi+1)**2, kpi+1, 1]])
     if kpi == 0:
         Phi = array([0, Phi_E[kpi], Phi_E[kpi+1]])
         amp = Phi_E[kpi] + Phi_E[kpi+1] 
