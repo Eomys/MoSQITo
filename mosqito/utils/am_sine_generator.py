@@ -19,7 +19,7 @@ def am_sine_generator(spl_level, fc, xm, fs, print_m=False):
     Parameters
     ----------
     spl_level: float
-        Sound Pressure Level [ref 20 uPa RMS] of the modulated signal.
+        Sound Pressure Level [dB ref 20 uPa RMS] of the modulated signal.
     
     fc: float
         Carrier frequency, in Hz. Must be less than 'fs/2'.
@@ -81,7 +81,58 @@ def am_sine_generator(spl_level, fc, xm, fs, print_m=False):
     A_rms = p_ref * 10**(spl_level/20)
     y_am *= A_rms/np.std(y_am)
 
-    # # signal power check - must be close to 'spl_level
-    # sig_power_dB = 10*np.log10(np.var(y_am)/(p_ref**2))
-
     return y_am
+
+
+# %% run example for AM sine generator
+
+if __name__ == "__main__":
+    
+    import matplotlib.pyplot as plt
+    
+    # preliminary definitions
+    fs = 48000      # [Hz]
+    dt = 1/fs
+    
+    T = 0.1         # [s]
+    t = np.linspace(0, T-dt, int(T*fs))
+    
+    spl = 60        # [dB SPL]
+    p_ref = 20e-6   # [Pa RMS]
+    
+    # sine carrier frequency
+    fc = 1000        # [Hz]
+    
+    # modulating signal: low frequency sine wave
+    fm = 100         # [Hz]
+    xm = np.sin(2*np.pi*t*fm)
+    
+    # frequency-modulated signal
+    y_am = am_sine_generator(spl, fc, xm, fs)
+    
+    # signal power check - must be close to 'spl_level'
+    sig_power_dB = 10*np.log10(np.var(y_am)/(p_ref**2))
+    print('AM sine generator example:')
+    print(f'\tTarget SPL: {spl:.1f} dB')
+    print(f'\tResulting SPL: {sig_power_dB:.1f} dB')
+    
+    # plot signal
+    fig, plots = plt.subplots(2, 1)
+    
+    plots[0].set_title('Test signal - amplitude-modulated sine wave')
+    
+    plots[0].plot(t, xm, 'C0', label='Modulating signal')
+    plots[0].legend(loc='upper right')
+    plots[0].grid()
+    plots[0].set_ylabel('Amplitude')
+    plots[0].set_xlim([0, T])
+    
+    plots[1].plot(t, y_am, 'C1', label='AM signal')
+    plots[1].legend(loc='upper right')
+    plots[1].grid()
+    plots[1].set_ylabel('Amplitude')
+    plots[1].set_xlim([0, T])
+    plots[1].set_xlabel('Time [s]')
+    
+    fig.set_tight_layout('tight')
+    
