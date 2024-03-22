@@ -165,3 +165,5 @@ if __name__ == "__main__":
     
     fig.set_tight_layout('tight')
     
+    # fig.savefig('FM_sine_generator.png')
+    
