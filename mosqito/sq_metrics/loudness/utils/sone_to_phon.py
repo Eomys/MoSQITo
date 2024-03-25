@@ -8,7 +8,7 @@ def sone_to_phon(sone):
     """Calculate Loudness level [phons] from Loudness [sones]
 
     The code is based on BASIC program published in "Program for
-    calculating loudness according to DIN 45631 (ISO 532B)", E.Zwicker
+    calculating loudness according to DIN 45631 (ISO 532-1:2017)", E.Zwicker
     and H.Fastl, J.A.S.J (E) 12, 1 (1991).
 
     Parameters

@@ -9,7 +9,7 @@ Loudness ECMA
    
    /source/reference/mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma
    
-Stationnary loudness ISO 532B
+Stationnary loudness ISO 532-1:2017
 ============================
 
 .. toctree::
@@ -20,7 +20,7 @@ Stationnary loudness ISO 532B
    /source/reference/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_perseg
    
 
-Time-varying loudness ISO 532B
+Time-varying loudness ISO 532-1:2017
 ==============================
 
 .. toctree::

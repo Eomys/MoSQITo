@@ -1,6 +1,6 @@
 """ This module includes functions to compute tonality :
 
-Prominence Ratio (ECMA 418)
+Prominence Ratio (ECMA 418-1)
 ==================================
 
 .. toctree::
@@ -10,7 +10,7 @@ Prominence Ratio (ECMA 418)
    /source/reference/mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq
    /source/reference/mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg
    
-Tone-to-noise Ratio (ISO 532B)
+Tone-to-noise Ratio (ECMA 418-1)
 ==================================
 
 .. toctree::

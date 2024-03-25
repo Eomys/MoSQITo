@@ -8,7 +8,7 @@ def _main_loudness(spec_third, field_type):
     """Calculate core loudness
 
     The code is based on BASIC program published in "Program for
-    calculating loudness according to DIN 45631 (ISO 532B)", E.Zwicker
+    calculating loudness according to DIN 45631 (ISO 532-1:2017)", E.Zwicker
     and H.Fastl, J.A.S.J (E) 12, 1 (1991).
     It also corresponds to the following functions of the C program
     published with ISO 532-1:2017:
