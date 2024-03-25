@@ -23,9 +23,10 @@ except ImportError:
 
 def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     """
-    Returns the roughness according to Daniel and Weber method.
+    Computes the roughness according to Daniel and Weber method
+    from a time signal
 
-    This function computes the global and specific roughness values 
+    This function computes the global and specific roughness values
     of a signal sampled at 48 kHz.
 
     Parameters
@@ -58,14 +59,14 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     The model consists of a parallel processing structure made up
     of successive stages to calculate intermediate specific roughnesses :math:`R'`,
     which are summed up to determine the total roughness :math:`R`:
-    
+
     .. math::
         R=0.25\\sum_{i=1}^{47}R'_{i}
 
     References
     ----------
     :cite:empty:`R-roughnessDW`
-    
+
     .. bibliography::
         :keyprefix: R-
 
@@ -74,7 +75,7 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
     .. plot::
        :include-source:
 
-       >>> from mosqito.sq_metrics import roughness_dw 
+       >>> from mosqito.sq_metrics import roughness_dw
        >>> import matplotlib.pyplot as plt
        >>> import numpy as np
        >>> fc=1000
@@ -83,7 +84,7 @@ def roughness_dw(signal, fs=None, overlap=0.5, is_sdt_output=False):
        >>> d=0.2
        >>> dB=60
        >>> time = np.arange(0, d, 1/fs)
-       >>> stimulus = (0.5 * (1 + np.sin(2 * np.pi * fmod * time))* np.sin(2 * np.pi * fc * time))   
+       >>> stimulus = (0.5 * (1 + np.sin(2 * np.pi * fmod * time))* np.sin(2 * np.pi * fc * time))
        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
        >>> stimulus = stimulus * ampl

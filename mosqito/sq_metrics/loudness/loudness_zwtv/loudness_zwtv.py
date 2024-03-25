@@ -7,28 +7,32 @@ from numpy import linspace
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
 from mosqito.sq_metrics.loudness.loudness_zwtv._nonlinear_decay import _nl_loudness
-from mosqito.sq_metrics.loudness.loudness_zwtv._temporal_weighting import _temporal_weighting
-from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import _third_octave_levels
+from mosqito.sq_metrics.loudness.loudness_zwtv._temporal_weighting import (
+    _temporal_weighting,
+)
+from mosqito.sq_metrics.loudness.loudness_zwtv._third_octave_levels import (
+    _third_octave_levels,
+)
 
 
-def loudness_zwtv(signal, fs, field_type='free'):
+def loudness_zwtv(signal, fs, field_type="free"):
     """
-    Returns the loudness value 
+    Returns the loudness value from a time signal
 
     This function computes the acoustic loudness according to Zwicker method for
-    time-varying signals.
-    
+    time-varying signals (ISO.532-1:2017).
+
     Parameters
     ----------
     signal: array_like or DataTime object
         Signal time values [Pa], dim (nperseg, nseg).
     fs : float, optional
-        Sampling frequency, can be omitted if the input is a DataTime object. 
+        Sampling frequency, can be omitted if the input is a DataTime object.
         Default to None
     field_type : {'free', 'diffuse'}
         Type of soundfield.
         Default is 'free'
-        
+
     Returns
     -------
     N : float
@@ -39,40 +43,40 @@ def loudness_zwtv(signal, fs, field_type='free'):
         Bark axis, size (Nbark,).
     time_axis : numpy.ndarray
         Time axis, size (Ntime,).
-    
-    See Also
-    --------
-    .loudness_zwst : Loudness computation for a stationary time signal
-    .loudness_zwst_perseg : Loudness computation by time-segment
-    .loudness_zwst_freq : Loudness computation from a sound spectrum
 
     Warning
     -------
     The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
     If the provided signal doesn't meet the requirements, it will be resampled.
 
+    See Also
+    --------
+    .loudness_zwst : Loudness computation for a stationary time signal
+    .loudness_zwst_perseg : Loudness computation by time-segment
+    .loudness_zwst_freq : Loudness computation from a sound spectrum
+
     Notes
     -----
-    For each time frame considered, the total loudness :math:`N` is computed as the integral of the specific loudness :math:`N'` measured in sone/bark, over the Bark scale. 
-    The values of specific loudness are evaluated from third octave band levels as function of critical band rate :math:`z` in Bark. The calculation includes the mutual 
+    For each time frame considered, the total loudness :math:`N` is computed as the integral of the specific loudness :math:`N'` measured in sone/bark, over the Bark scale.
+    The values of specific loudness are evaluated from third octave band levels as function of critical band rate :math:`z` in Bark. The calculation includes the mutual
     effects that a time window can have on its neighbors.
-    
+
     .. math::
         N=\\int_{0}^{24Bark}N'(z)\\textup{dz}
-    
-    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours 
+
+    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours
     instead of ISO 226:2003, as defined in the following standards:
         * ISO 532:1975 (method B)
         * DIN 45631:1991
         * ISO 532-1:2017 (method 1)
-    
+
     References
     ----------
     :cite:empty:`L_zw-ZF91`
 
     .. bibliography::
         :keyprefix: L_zw-
-            
+
     Examples
     --------
     .. plot::
@@ -96,12 +100,14 @@ def loudness_zwtv(signal, fs, field_type='free'):
        >>> plt.ylabel("Loudness [Sone]")
     """
     if fs < 48000:
-        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
-             )
+        print(
+            "[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+        )
         from scipy.signal import resample
+
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
-    
+
     # Compute third octave band spectrum vs. time
     spec_third, time_axis, _ = _third_octave_levels(signal, fs)
 
@@ -128,4 +134,3 @@ def loudness_zwtv(signal, fs, field_type='free'):
     bark_axis = linspace(0.1, 24, int(24 / 0.1))
 
     return N, N_spec, bark_axis, time_axis
-

@@ -1,12 +1,29 @@
 # -*- coding: utf-8 -*-
-from numpy import interp, newaxis, array, where, linspace, ndarray, exp, ones, log, squeeze, sum
+from numpy import (
+    interp,
+    newaxis,
+    array,
+    where,
+    linspace,
+    ndarray,
+    exp,
+    ones,
+    log,
+    squeeze,
+    sum,
+)
 
 from mosqito.sq_metrics.sharpness.sharpness_din._weighting_fastl import x, y
 
 
 def sharpness_din_from_loudness(N, N_specific, weighting="din"):
-    """Acoustic sharpness calculation according to different methods
-        (Aures, Von Bismarck, DIN 45692, Fastl) from time varying loudness.
+    """
+    Compute the sharpness value from loudness
+
+    This function computes the sharpness value according to different methods.
+
+    Acoustic sharpness calculation according to different methods
+        (Aures, Von Bismarck, DIN 45692, Fastl) from loudness.
 
     Parameters
     ----------
@@ -15,7 +32,7 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
     N_specific : numpy.ndarray
         Specific loudness array [sones/bark], size (Nbark, Ntime).
     weighting : {'din', 'aures', 'bismarck', 'fastl'}
-        Weighting function used for the sharpness computation. 
+        Weighting function used for the sharpness computation.
         Default is 'din'
     skip : float
         Duration to be cut at the beginning of the analysis in seconds.
@@ -27,6 +44,11 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
     time_axis : numpy.array
         Time axis cut according to skip argument, size (Ntime,).
 
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
+
     See Also
     --------
     .sharpness_din_tv : Sharpness computation for a non-stationary time signal
@@ -34,20 +56,15 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
     .sharpness_din_freq : Sharpness computation from a sound spectrum
     .sharpness_din_perseg : Sharpness computation by time-segment
 
-    Warning
-    -------
-    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
-    If the provided signal doesn't meet the requirements, it will be resampled.
-
     Notes
     -----
     The computation consists of a specific loudness weighting employing a weighting function :math:`g(z)`:
-    
+
     .. math::
         S=0.11\\frac{\\int_{0}^{24Bark}N'(z)g(z)\\textup{dz}}{N}
-        
+
     with :math:`N'` the specific loudness and :math:`N` the global loudness.
-    
+
     The different methods available with the function account for the weighting function applied:
      * DIN 45692 : weighting defined in the standard
      * Aures
@@ -59,7 +76,7 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
     :cite:empty:`S-DIN.45692:2009`
     :cite:empty:`S-ZF:9`
     :cite:empty:`S-B74`
-    
+
     .. bibliography::
         :keyprefix: S-
 
@@ -86,7 +103,7 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
         >>> plt.plot(time_axis, S)
         >>> plt.xlabel("Time [s]")
         >>> plt.ylabel("Sharpness [Acum]")
-       
+
     Warning
     -------
     Note the transient effect at the beginning of the signal.
@@ -117,18 +134,17 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
         g = interp(z, x, y)
     else:
         raise ValueError(
-            "ERROR: weighting must be 'din', 'aures', 'bismarck' or 'fastl'")
+            "ERROR: weighting must be 'din', 'aures', 'bismarck' or 'fastl'"
+        )
 
     # S = zeros(N.shape)
     # ind = where(N >= 0.1)[1]
-    S = 0.11 * sum(N_specific * g *
-                      z * 0.1, axis=0) / N
+    S = 0.11 * sum(N_specific * g * z * 0.1, axis=0) / N
 
     if S.size == 1:
         S = float(S)
     else:
         S = squeeze(S)
         S[ind] = 0
-        
-    return S
 
+    return S

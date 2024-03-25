@@ -5,12 +5,14 @@ from numpy import argmin, abs
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwtv
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
+    sharpness_din_from_loudness,
+)
 
 
 def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
-    """ 
-    Returns the sharpness value 
+    """
+    Compute the sharpness value from a time signal (optionally segmented)
 
     This function computes the sharpness value along time according to different methods.
 
@@ -21,7 +23,7 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
     fs: float
         Sampling frequency
     weighting : {'din', 'aures', 'bismarck', 'fastl'}
-        Weighting function used for the sharpness computation. 
+        Weighting function used for the sharpness computation.
         Default is 'din'
     field_type : {'free', 'diffuse'}
         Type of soundfield.
@@ -29,13 +31,18 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
     skip : float
         Number of second to be cut at the beginning of the analysis to skip the transient effect.
         Default is 0
-        
+
     Returns
     -------
     S : numpy.array
         Sharpness value in [acum], dim (nseg)
     time_axis : numpy.array
         Time axis in [s]
+
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
 
     See Also
     --------
@@ -44,20 +51,17 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
     .sharpness_din_perseg : Sharpness computation by time-segment
     .sharpness_din_freq : Sharpness computation from a sound spectrum
 
-    Warning
-    -------
-    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
-    If the provided signal doesn't meet the requirements, it will be resampled.
-
     Notes
     -----
-    For each time frame considered, the computation consists of a specific loudness weighting employing a weighting function :math:`g(z)`:
-    
+    For each time frame considered, the computation consists of a specific loudness weighting
+    employing a weighting function :math:`g(z)`:
+
     .. math::
         S=0.11\\frac{\\int_{0}^{24Bark}N'(z)g(z)\\textup{dz}}{N}
-        
-    with :math:`N'` the specific loudness and :math:`N` the global loudness.
-    
+
+    with :math:`N'` the specific loudness and :math:`N` the global loudness according to Zwicker
+    method for time-varying signals.
+
     The different methods available with the function account for the weighting function applied:
      * DIN 45692 : weighting defined in the standard
      * Aures
@@ -69,7 +73,7 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
     :cite:empty:`S-DIN.45692:2009`
     :cite:empty:`S-ZF:9`
     :cite:empty:`S-B74`
-    
+
     .. bibliography::
         :keyprefix: S-
 
@@ -78,7 +82,7 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
     .. plot::
        :include-source:
 
-       >>> from mosqito.sq_metrics import sharpness_din_tv 
+       >>> from mosqito.sq_metrics import sharpness_din_tv
        >>> import matplotlib.pyplot as plt
        >>> import numpy as np
        >>> fs=48000
@@ -96,21 +100,24 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
        >>> plt.ylabel("Sharpness [Acum]")
     """
     if fs < 48000:
-        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
-             )
+        print(
+            "[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+        )
         from scipy.signal import resample
+
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
-    
+
     if skip == 0:
-        print("[Warning] when computing sharpness from time-varying loudness, a transient effect appears on the first points. To cut it, use 'skip='")
+        print(
+            "[Warning] when computing sharpness from time-varying loudness, a transient effect appears on the first points. To cut it, use 'skip='"
+        )
 
     # Compute loudness
     N, N_specific, _, time_axis = loudness_zwtv(signal, fs, field_type)
 
     # Compute sharpness from loudness
-    S = sharpness_din_from_loudness(
-        N, N_specific, weighting=weighting)
+    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting)
 
     # Cut transient effect
     cut_index = argmin(abs(time_axis - skip))

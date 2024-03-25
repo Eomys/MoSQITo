@@ -12,7 +12,7 @@ from mosqito.sq_metrics.loudness.loudness_ecma._loudness_ecma_data import ltq_z
 
 def loudness_ecma(signal, sb=2048, sh=1024):
     """
-    Returns the loudness value
+    Compute the loudness value from a time signal
 
     This function computes the acoustic loudness according to ECMA-418-2 section 5 method for
     stationary signals.
@@ -34,6 +34,10 @@ def loudness_ecma(signal, sb=2048, sh=1024):
     bark_axis: array_like
         Bark axis array, size (Nbark,).
 
+    Warning
+    -------
+    The sampling frequency of the signal must be 48 kHz.
+
     See Also
     --------
     .loudness_zwst : Zwicker and Fastl loudness computation for a stationary time signal
@@ -45,10 +49,6 @@ def loudness_ecma(signal, sb=2048, sh=1024):
 
     .. bibliography::
         :keyprefix: L_ecma-
-
-    Warning
-    -------
-    The sampling frequency of the signal must be 48 kHz.
 
     Examples
     --------
