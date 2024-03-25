@@ -76,7 +76,8 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
     References
     ----------
     :cite:empty:`L_zw-ZF91`
-
+    :cite:empty:`L_zw-ISO.532-1:2017`
+    
     .. bibliography::
         :keyprefix: L_zw-
 

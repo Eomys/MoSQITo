@@ -80,7 +80,8 @@ def loudness_zwst_perseg(
     References
     -----------
     :cite:empty:`L_zw-ZF91`
-
+    :cite:empty:`L_zw-ISO.532-1:2017`
+    
     .. bibliography::
         :keyprefix: L_zw-
 
