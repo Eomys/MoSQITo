@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; MOSQITO manual</title>
+    <title>pr_ecma_st &#8212; MOSQITO manual</title>
   
   
   
@@ -44,11 +44,11 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq.html" />
+    <link rel="next" title="pr_ecma_freq" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq.html" />
     <link rel="prev" title="mosqito.sq_metrics.tonality" href="mosqito.sq_metrics.tonality.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
   </head>
   
   
@@ -237,6 +237,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </nav>
@@ -336,12 +340,12 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.sharpness.html">Sharpness</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.roughness.html">Roughness</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="mosqito.sq_metrics.tonality.html">Tonality</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">pr_ecma_st()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq.html"><code class="docutils literal notranslate"><span class="pre">pr_ecma_freq()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv.html"><code class="docutils literal notranslate"><span class="pre">pr_ecma_tv()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st.html"><code class="docutils literal notranslate"><span class="pre">tnr_ecma_st()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq.html"><code class="docutils literal notranslate"><span class="pre">tnr_ecma_freq()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_tv.html"><code class="docutils literal notranslate"><span class="pre">tnr_ecma_tv()</span></code></a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">pr_ecma_st</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq.html">pr_ecma_freq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg.html">pr_ecma_perseg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st.html">tnr_ecma_st</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq.html">tnr_ecma_freq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_perseg.html">tnr_ecma_perseg</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.speech_intelligibility.html">Speech Intelligibility</a></li>
@@ -396,7 +400,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="mosqito.sq_metrics.tonality.html" class="nav-link">mosqito.sq_metrics.tonality</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
+    <li class="breadcrumb-item active" aria-current="page">pr_ecma_st</li>
   </ul>
 </nav>
 </div>
@@ -413,11 +417,13 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <span class="target" id="module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st"></span><dl class="py function">
+  <section id="module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st">
+<span id="pr-ecma-st"></span><h1>pr_ecma_st<a class="headerlink" href="#module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.pr_ecma_st">
 <span class="sig-name descname"><span class="pre">pr_ecma_st</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prominence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/tonality/prominence_ratio_ecma/pr_ecma_st.html#pr_ecma_st"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.pr_ecma_st" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the tone-to-noise ratio value</p>
-<p>This function computes the prominence ratio according to ECMA-74, annex D.9
+<dd><p>Compute the tone-to-noise ratio value from a time signal</p>
+<p>This function computes the prominence ratio according to ECMA-418-1
 for a stationary signal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -443,7 +449,7 @@ Default to True</p></li>
 <dl class="simple">
 <dt><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq.html#module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq" title="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pr_ecma_freq</span></code></a></dt><dd><p>PR computation for a sound spectrum</p>
 </dd>
-<dt><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv.html#module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv" title="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pr_ecma_tv</span></code></a></dt><dd><p>PR computation for a non-stationary signal</p>
+<dt><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg.html#module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg" title="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pr_ecma_perseg</span></code></a></dt><dd><p>PR computation for a non-stationary signal</p>
 </dd>
 <dt><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st.html#module-mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st" title="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tnr_ecma_st</span></code></a></dt><dd><p>Tone-to-noise ratio for a stationary signal</p>
 </dd>
@@ -458,7 +464,7 @@ The algorithm automatically detects the frequency of the tonal components accord
 \[\Delta L_{PR} = 10\log_{10}\left ( 10^{0.1L_{peakband}} \right ) - 10\log_{10}\left [0.5\left (10^{0.1L_{lowerband}} -10^{0.1L_{upperband}}\right )\right]\]</div>
 <p>The difference between PR and TNR lies in the comparison process between the peak level and the background noise amplitude.
 TNR compares the peak level to the level of its critical band, while PR compares the level of the peak’s critical band to its two neighbor bands.
-According to ECMA 74 standard, TNR can then prove to be more accurate for multiple tones in adjacent critical bands, for example when strong harmonics exist.
+According to ECMA 418-1 standard, TNR can then prove to be more accurate for multiple tones in adjacent critical bands, for example when strong harmonics exist.
 PR can be more effective for multiple tones within the same critical band and is more readily automated to handle such cases.</p>
 <p>Along with the TNR/PR value comes a prominence indicator, a tone being considered as prominent if its dB level is sufficiently higher than the smoothed spectrum, depending on its frequency.</p>
 <p class="rubric">References</p>
@@ -466,7 +472,7 @@ PR can be more effective for multiple tones within the same critical band and is
 <div class="docutils container" id="id2">
 <div role="list" class="citation-list">
 <div class="citation" id="id20" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">ECMA4182202222</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>ECMA.418-2:2022. <em>Psychoacoustic metrics for ITT equipment — Part 2 (models based on human perception)</em>. European Computer Manufacturers Association, 2022. URL: <a class="reference external" href="https://www.ecma-international.org/wp-content/uploads/ECMA-418-2_2nd_edition_december_2022.pdf?trk=organization_guest_main-feed-card_reshare-text">https://www.ecma-international.org/wp-content/uploads/ECMA-418-2_2nd_edition_december_2022.pdf?trk=organization_guest_main-feed-card_reshare-text</a>.</p>
 </div>
 </div>
@@ -498,29 +504,27 @@ PR can be more effective for multiple tones within the same critical band and is
 </figure>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mosqito.sq_metrics</span> <span class="kn">import</span> <span class="n">pr_ecma_st</span>
-<span class="go"> &gt;&gt;&gt; fs = 48000</span>
-<span class="go"> &gt;&gt;&gt; d = 2</span>
-<span class="go"> &gt;&gt;&gt; f = 1000</span>
-<span class="go"> &gt;&gt;&gt; dB = 60</span>
-<span class="go"> &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
-<span class="go"> &gt;&gt;&gt; stimulus = np.sin(2 * np.pi * f * time) + 0.5 * np.sin(2 * np.pi * 3 * f * time)+ np.random.normal(0,0.5, len(time))</span>
-<span class="go"> &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
-<span class="go"> &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
-<span class="go"> &gt;&gt;&gt; stimulus = stimulus * ampl</span>
-<span class="go"> &gt;&gt;&gt; t_pr, pr, prom, tones_freqs = pr_ecma_st(stimulus, fs)</span>
-<span class="go"> &gt;&gt;&gt; plt.bar(tones_freqs, pr, width=50)</span>
-<span class="go"> &gt;&gt;&gt; plt.grid(axis=&#39;y&#39;)</span>
-<span class="go"> &gt;&gt;&gt; plt.ylabel(&quot;PR [dB]&quot;)</span>
-<span class="go"> &gt;&gt;&gt; plt.title(&quot;Total PR = &quot;+ f&quot;{t_pr[0]:.2f}&quot; + &quot; dB&quot;)</span>
-<span class="go"> &gt;&gt;&gt; plt.xscale(&#39;log&#39;)</span>
-<span class="go"> &gt;&gt;&gt; xticks_pos = list(tones_freqs) + [100,1000,10000]</span>
-<span class="go"> &gt;&gt;&gt; xticks_pos = np.sort(xticks_pos)</span>
-<span class="go"> &gt;&gt;&gt; xticks_label = [str(elem) for elem in xticks_pos]</span>
-<span class="go"> &gt;&gt;&gt; plt.xticks(xticks_pos, labels=xticks_label, rotation = 30)</span>
-<span class="go"> &gt;&gt;&gt; plt.xlabel(&quot;Frequency [Hz]&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mosqito.sq_metrics</span> <span class="kn">import</span> <span class="n">pr_ecma_st</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="mi">48000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dB</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">fs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stimulus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">f</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span><span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">stimulus</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ampl</span> <span class="o">=</span> <span class="mf">0.00002</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dB</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span> <span class="o">/</span> <span class="n">rms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stimulus</span> <span class="o">=</span> <span class="n">stimulus</span> <span class="o">*</span> <span class="n">ampl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t_pr</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">prom</span><span class="p">,</span> <span class="n">tones_freqs</span> <span class="o">=</span> <span class="n">pr_ecma_st</span><span class="p">(</span><span class="n">stimulus</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">tones_freqs</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;PR [dB]&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Total PR = &quot;</span><span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t_pr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot; dB&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xticks_pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tones_freqs</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">10000</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xticks_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">xticks_pos</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xticks_label</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">xticks_pos</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">xticks_pos</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">xticks_label</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [Hz]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>(<a class="reference external" href="../../source/reference/mosqito-sq_metrics-tonality-prominence_ratio_ecma-pr_ecma_st-2.py">Source code</a>, <a class="reference external" href="../../source/reference/mosqito-sq_metrics-tonality-prominence_ratio_ecma-pr_ecma_st-2.png">png</a>, <a class="reference external" href="../../source/reference/mosqito-sq_metrics-tonality-prominence_ratio_ecma-pr_ecma_st-2.hires.png">hires.png</a>, <a class="reference external" href="../../source/reference/mosqito-sq_metrics-tonality-prominence_ratio_ecma-pr_ecma_st-2.pdf">pdf</a>)</p>
@@ -529,6 +533,7 @@ PR can be more effective for multiple tones within the same critical band and is
 </figure>
 </dd></dl>
 
+</section>
 
 
                 </article>
@@ -540,6 +545,21 @@ PR can be more effective for multiple tones within the same critical band and is
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.pr_ecma_st"><code class="docutils literal notranslate"><span class="pre">pr_ecma_st()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -564,7 +584,7 @@ PR can be more effective for multiple tones within the same critical band and is
 
   <p class="copyright">
     
-      © Copyright 2023, Green Forge Coop.
+      © Copyright 2024, Green Forge Coop.
       <br/>
     
   </p>

@@ -44,7 +44,7 @@
     <link rel="search" title="Search" href="../../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
   </head>
   
   
@@ -387,11 +387,11 @@ document.write(`
 
 <div class="viewcode-block" id="loudness_ecma"><a class="viewcode-back" href="../../../../../source/reference/mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.html#mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.loudness_ecma">[docs]</a><span class="k">def</span> <span class="nf">loudness_ecma</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">sb</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">sh</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the loudness value </span>
-<span class="sd">    </span>
+<span class="sd">    Compute the loudness value from a time signal</span>
+
 <span class="sd">    This function computes the acoustic loudness according to ECMA-418-2 section 5 method for</span>
 <span class="sd">    stationary signals.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    signal: numpy.array</span>
@@ -408,20 +408,16 @@ document.write(`
 <span class="sd">        specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.</span>
 <span class="sd">    bark_axis: array_like</span>
 <span class="sd">        Bark axis array, size (Nbark,).</span>
-<span class="sd">        </span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    The sampling frequency of the signal must be 48 kHz.</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    .loudness_zwst : Zwicker and Fastl loudness computation for a stationary time signal</span>
 <span class="sd">    .loudness_zwtv : Zwicker and Fastl loudness computation for a non-stationary time signal</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours </span>
-<span class="sd">    instead of ISO 226:2003, as defined in the following standards:</span>
-<span class="sd">        * ISO 532:1975 (method B)</span>
-<span class="sd">        * DIN 45631:1991</span>
-<span class="sd">        * ISO 532-1:2017 (method 1)</span>
-<span class="sd">    </span>
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
 <span class="sd">    :cite:empty:`L_ecma-ECMA-418-2`</span>
@@ -429,10 +425,6 @@ document.write(`
 <span class="sd">    .. bibliography::</span>
 <span class="sd">        :keyprefix: L_ecma-</span>
 
-<span class="sd">    Warning</span>
-<span class="sd">    -------</span>
-<span class="sd">    The sampling frequency of the signal must be 48 kHz.</span>
-<span class="sd">            </span>
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    .. plot::</span>
@@ -496,9 +488,9 @@ document.write(`
         <span class="n">N_spec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N_prime</span><span class="p">)</span>
 
     <span class="n">bark_axis</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">26.5</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">time_axis</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span><span class="o">/</span><span class="mi">48000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">N_spec</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="n">N_spec</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    
+    <span class="n">time_axis</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">/</span> <span class="mi">48000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">N_spec</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="n">N_spec</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">N</span><span class="p">,</span> <span class="n">array</span><span class="p">(</span><span class="n">N_spec</span><span class="p">),</span> <span class="n">bark_axis</span><span class="p">,</span> <span class="n">time_axis</span></div>
 </pre></div>
 
@@ -535,7 +527,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2023, Green Forge Coop.
+      © Copyright 2024, Green Forge Coop.
       <br/>
     
   </p>

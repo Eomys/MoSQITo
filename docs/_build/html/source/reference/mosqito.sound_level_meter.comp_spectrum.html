@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; MOSQITO manual</title>
+    <title>comp_spectrum &#8212; MOSQITO manual</title>
   
   
   
@@ -43,11 +43,11 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="mosqito.sound_level_meter.noct_spectrum.noct_spectrum.html" />
+    <link rel="next" title="noct_spectrum" href="mosqito.sound_level_meter.noct_spectrum.noct_spectrum.html" />
     <link rel="prev" title="mosqito.sound_level_meter" href="mosqito.sound_level_meter.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
   </head>
   
   
@@ -236,6 +236,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </nav>
@@ -330,9 +334,9 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="mosqito.sound_level_meter.html">sound_level_meter</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">comp_spectrum()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.sound_level_meter.noct_spectrum.noct_spectrum.html"><code class="docutils literal notranslate"><span class="pre">noct_spectrum()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.sound_level_meter.noct_spectrum.noct_synthesis.html"><code class="docutils literal notranslate"><span class="pre">noct_synthesis()</span></code></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">comp_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sound_level_meter.noct_spectrum.noct_spectrum.html">noct_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.sound_level_meter.noct_spectrum.noct_synthesis.html">noct_synthesis</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.html">sq_metrics</a></li>
@@ -380,7 +384,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="mosqito.sound_level_meter.html" class="nav-link">mosqito.sound_level_meter</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
+    <li class="breadcrumb-item active" aria-current="page">comp_spectrum</li>
   </ul>
 </nav>
 </div>
@@ -397,7 +401,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <span class="target" id="module-mosqito.sound_level_meter.comp_spectrum"></span><dl class="py function">
+  <section id="module-mosqito.sound_level_meter.comp_spectrum">
+<span id="comp-spectrum"></span><h1>comp_spectrum<a class="headerlink" href="#module-mosqito.sound_level_meter.comp_spectrum" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sound_level_meter.comp_spectrum.comp_spectrum">
 <span class="sig-name descname"><span class="pre">comp_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hanning'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_sided</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sound_level_meter/comp_spectrum.html#comp_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sound_level_meter.comp_spectrum.comp_spectrum" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute one-sided spectrum from a time signal in Pa.</p>
@@ -453,6 +459,7 @@ document.write(`
 </figure>
 </dd></dl>
 
+</section>
 
 
                 </article>
@@ -464,6 +471,21 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mosqito.sound_level_meter.comp_spectrum.comp_spectrum"><code class="docutils literal notranslate"><span class="pre">comp_spectrum()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -488,7 +510,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2023, Green Forge Coop.
+      © Copyright 2024, Green Forge Coop.
       <br/>
     
   </p>

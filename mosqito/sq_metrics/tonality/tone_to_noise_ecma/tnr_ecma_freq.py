@@ -3,6 +3,7 @@
 # External import
 from numpy import asarray, float32, abs
 
+
 # Local functions imports
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma._tnr_main_calc import _tnr_main_calc
 from mosqito.utils import amp2db

@@ -6,23 +6,14 @@ from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness impo
     sharpness_din_from_loudness,
 )
 
-# Optional package import
-try:
-    from SciDataTool import DataTime, DataLinspace, DataFreq, Norm_func
-except ImportError:
-    DataTime = None
-    DataLinspace = None
-    DataFreq = None
-
 
 def sharpness_din_perseg(
     signal,
-    fs=None,
+    fs,
     weighting="din",
     nperseg=4096,
     noverlap=None,
     field_type="free",
-    is_sdt_output=False,
 ):
     """
     Compute the sharpness value per segments from a time signal
@@ -33,9 +24,8 @@ def sharpness_din_perseg(
     ----------
     signal: array_like
         Input time signal in [Pa]
-    fs : float, optional
-        Sampling frequency, can be omitted if the input is a DataTime
-        object. Default to None
+    fs : float
+        Sampling frequency [Hz]
     weighting : {'din', 'aures', 'bismarck', 'fastl'}
         Weighting function used for the sharpness computation.
         Default is 'din'
@@ -47,9 +37,6 @@ def sharpness_din_perseg(
     field_type : {'free', 'diffuse'}
         Type of soundfield.
         Default is 'free'
-    is_sdt_output : Bool, optional
-        If True, the outputs are returned as SciDataTool objects.
-        Default to False
     Returns
     -------
     S : numpy.array
@@ -125,12 +112,6 @@ def sharpness_din_perseg(
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
 
-    # Manage input type
-    if DataTime is not None and isinstance(signal, DataTime):
-        time = signal.get_along("time")["time"]
-        fs = 1 / (time[1] - time[0])
-        signal = signal.get_along("time")[signal.symbol]
-
     # Compute loudness
     N, N_specific, _, time_axis = loudness_zwst_perseg(
         signal, fs, nperseg=nperseg, noverlap=noverlap, field_type=field_type
@@ -138,28 +119,5 @@ def sharpness_din_perseg(
 
     # Compute sharpness from loudness
     S = sharpness_din_from_loudness(N, N_specific, weighting=weighting)
-
-    # Manage SciDataTool output type
-    if is_sdt_output:
-        if DataLinspace is None:
-            raise RuntimeError(
-                "In order to handle Data objects you need the 'SciDataTool' package."
-            )
-        else:
-            time = DataLinspace(
-                name="time",
-                unit="s",
-                initial=time_axis[0],
-                final=time_axis[-1],
-                number=len(time_axis),
-                include_endpoint=True,
-            )
-            S = DataTime(
-                name="Sharpness (DIN 45692)",
-                symbol="S_{DIN}",
-                axes=[time],
-                values=S,
-                unit="acum",
-            )
 
     return S, time_axis

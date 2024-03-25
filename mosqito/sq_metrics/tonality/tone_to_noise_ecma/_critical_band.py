@@ -41,7 +41,7 @@ def _lower_critical_band(f0):
         c1 = 0.806
         c2 = -8.2e-06
 
-    f1 = c0 + c1 * f0 + c2 * f0 ** 2
+    f1 = c0 + c1 * f0 + c2 * f0**2
 
     return f1, f2
 
@@ -62,6 +62,6 @@ def _upper_critical_band(f0):
         c1 = 1.215
         c2 = 2.16e-05
 
-    f2 = c0 + c1 * f0 + c2 * f0 ** 2
+    f2 = c0 + c1 * f0 + c2 * f0**2
 
     return f1, f2

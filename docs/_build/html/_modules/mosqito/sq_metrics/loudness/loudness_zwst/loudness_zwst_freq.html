@@ -44,7 +44,7 @@
     <link rel="search" title="Search" href="../../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
   </head>
   
   
@@ -387,11 +387,11 @@ document.write(`
 
 <div class="viewcode-block" id="loudness_zwst_freq"><a class="viewcode-back" href="../../../../../source/reference/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq.html#mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq.loudness_zwst_freq">[docs]</a><span class="k">def</span> <span class="nf">loudness_zwst_freq</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the loudness value </span>
+<span class="sd">    Compute the loudness value from a fine band spectrum</span>
 
 <span class="sd">    This function computes the acoustic loudness according to Zwicker method for</span>
-<span class="sd">    stationary signals.</span>
-<span class="sd">    </span>
+<span class="sd">    stationary signals (ISO.532-1:2017).</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    spectrum : array_like</span>
@@ -401,7 +401,7 @@ document.write(`
 <span class="sd">    field_type : {&#39;free&#39;, &#39;diffuse&#39;}</span>
 <span class="sd">        Type of soundfield.</span>
 <span class="sd">        Default is &#39;free&#39;</span>
-<span class="sd">                </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    N : float or array_like</span>
@@ -411,49 +411,45 @@ document.write(`
 <span class="sd">    bark_axis: array_like</span>
 <span class="sd">        Bark axis array, size (Nbark,).</span>
 
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.</span>
+<span class="sd">    If the provided signal doesn&#39;t meet the requirements, it will be resampled.</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    .loudness_zwst : Loudness computation for a stationary time signal</span>
 <span class="sd">    .loudness_zwst_perseg : Loudness computation by time-segment</span>
 <span class="sd">    .loudness_zwtv : Loudness computation for a non-stationary time signal</span>
 
-<span class="sd">    Warning</span>
-<span class="sd">    -------</span>
-<span class="sd">    The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.</span>
-<span class="sd">    If the provided signal doesn&#39;t meet the requirements, it will be resampled.</span>
-
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    The total loudness :math:`N` is computed as the integral of the specific loudness :math:`N&#39;` measured in sone/bark, over the Bark scale. </span>
+<span class="sd">    The total loudness :math:`N` is computed as the integral of the specific loudness :math:`N&#39;` measured in sone/bark, over the Bark scale.</span>
 <span class="sd">    The values of specific loudness are evaluated from third octave band levels as function of critical band rate :math:`z` in Bark.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. math::</span>
 <span class="sd">        N=\\int_{0}^{24Bark}N&#39;(z)\\textup{dz}</span>
-<span class="sd">    </span>
-<span class="sd">    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours </span>
+
+<span class="sd">    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours</span>
 <span class="sd">    instead of ISO 226:2003, as defined in the following standards:</span>
 <span class="sd">        * ISO 532:1975 (method B)</span>
 <span class="sd">        * DIN 45631:1991</span>
 <span class="sd">        * ISO 532-1:2017 (method 1)</span>
-<span class="sd">    </span>
+
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
 <span class="sd">    :cite:empty:`L_zw-ZF91`</span>
+<span class="sd">    :cite:empty:`L_zw-ISO.532-1:2017`</span>
 
 <span class="sd">    .. bibliography::</span>
 <span class="sd">        :keyprefix: L_zw-</span>
-<span class="sd">        </span>
-<span class="sd">    Warning</span>
-<span class="sd">    -------</span>
-<span class="sd">    The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.</span>
-<span class="sd">    If the provided signal doesn&#39;t meet the requirements, it will be resampled.</span>
-<span class="sd">        </span>
+
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    .. plot::</span>
 <span class="sd">       :include-source:</span>
 
-<span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import loudness_zwst_freq </span>
+<span class="sd">       &gt;&gt;&gt; from mosqito.sq_metrics import loudness_zwst_freq</span>
 <span class="sd">       &gt;&gt;&gt; from mosqito.sound_level_meter import comp_spectrum</span>
 <span class="sd">       &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">       &gt;&gt;&gt; import numpy as np</span>
@@ -471,21 +467,20 @@ document.write(`
 <span class="sd">       &gt;&gt;&gt; plt.plot(bark_axis, N_spec)</span>
 <span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Frequency band [Bark]&quot;)</span>
 <span class="sd">       &gt;&gt;&gt; plt.ylabel(&quot;Specific loudness [Sone/Bark]&quot;)</span>
-<span class="sd">       &gt;&gt;&gt; plt.title(&quot;Loudness = &quot; + f&quot;{N:.2f}&quot; + &quot; [Sone]&quot;)       </span>
+<span class="sd">       &gt;&gt;&gt; plt.title(&quot;Loudness = &quot; + f&quot;{N:.2f}&quot; + &quot; [Sone]&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="c1"># Check the inputs</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s1">&#39;Input spectrum and frequency axis must have the same shape&#39;</span><span class="p">)</span>
-    
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input spectrum and frequency axis must have the same shape&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="p">(</span><span class="n">freqs</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">24000</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">freqs</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">24</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[WARNING] freqs argument is not wide enough to cover the full audio range. Missing frequency bands will be filled with 0. To fulfill the standard requirements, the frequency axis should go from 24Hz up to 24 kHz.&quot;</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;[WARNING] freqs argument is not wide enough to cover the full audio range. Missing frequency bands will be filled with 0. To fulfill the standard requirements, the frequency axis should go from 24Hz up to 24 kHz.&quot;</span>
         <span class="p">)</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">spectrum</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">24000</span><span class="o">+</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">),</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
-        <span class="n">freqs</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">24000</span><span class="o">+</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
-
+        <span class="n">spectrum</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24000</span> <span class="o">+</span> <span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">),</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+        <span class="n">freqs</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24000</span> <span class="o">+</span> <span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 
     <span class="c1"># Compute third octave band spectrum</span>
     <span class="n">spec_third</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">noct_synthesis</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">fmin</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mi">12600</span><span class="p">)</span>
@@ -504,7 +499,6 @@ document.write(`
     <span class="n">bark_axis</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">24</span> <span class="o">/</span> <span class="mf">0.1</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">bark_axis</span></div>
-
 </pre></div>
 
                 </article>
@@ -540,7 +534,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2023, Green Forge Coop.
+      © Copyright 2024, Green Forge Coop.
       <br/>
     
   </p>

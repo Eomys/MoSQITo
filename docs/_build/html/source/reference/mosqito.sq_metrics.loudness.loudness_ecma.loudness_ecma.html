@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; MOSQITO manual</title>
+    <title>loudness_ecma &#8212; MOSQITO manual</title>
   
   
   
@@ -43,11 +43,11 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.html" />
+    <link rel="next" title="loudness_zwst" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.html" />
     <link rel="prev" title="mosqito.sq_metrics.loudness" href="mosqito.sq_metrics.loudness.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
   </head>
   
   
@@ -236,6 +236,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </nav>
@@ -332,11 +336,11 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sound_level_meter.html">sound_level_meter</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="mosqito.sq_metrics.html">sq_metrics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="mosqito.sq_metrics.loudness.html">Loudness</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">loudness_ecma()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.html"><code class="docutils literal notranslate"><span class="pre">loudness_zwst()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq.html"><code class="docutils literal notranslate"><span class="pre">loudness_zwst_freq()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_perseg.html"><code class="docutils literal notranslate"><span class="pre">loudness_zwst_perseg()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv.html"><code class="docutils literal notranslate"><span class="pre">loudness_zwtv()</span></code></a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">loudness_ecma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.html">loudness_zwst</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq.html">loudness_zwst_freq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_perseg.html">loudness_zwst_perseg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv.html">loudness_zwtv</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.sharpness.html">Sharpness</a></li>
@@ -394,7 +398,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="mosqito.sq_metrics.loudness.html" class="nav-link">mosqito.sq_metrics.loudness</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
+    <li class="breadcrumb-item active" aria-current="page">loudness_ecma</li>
   </ul>
 </nav>
 </div>
@@ -411,10 +415,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <span class="target" id="module-mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma"></span><dl class="py function">
+  <section id="module-mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma">
+<span id="loudness-ecma"></span><h1>loudness_ecma<a class="headerlink" href="#module-mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.loudness_ecma">
 <span class="sig-name descname"><span class="pre">loudness_ecma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/loudness/loudness_ecma/loudness_ecma.html#loudness_ecma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.loudness_ecma" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the loudness value</p>
+<dd><p>Compute the loudness value from a time signal</p>
 <p>This function computes the acoustic loudness according to ECMA-418-2 section 5 method for
 stationary signals.</p>
 <dl class="field-list simple">
@@ -434,6 +440,10 @@ specific loudness for a given bark band. Can be a ragged array if a different sb
 </p>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The sampling frequency of the signal must be 48 kHz.</p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
@@ -443,29 +453,15 @@ specific loudness for a given bark band. Can be a ragged array if a different sb
 </dd>
 </dl>
 </div>
-<p class="rubric">Notes</p>
-<p>Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours
-instead of ISO 226:2003, as defined in the following standards:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>ISO 532:1975 (method B)</p></li>
-<li><p>DIN 45631:1991</p></li>
-<li><p>ISO 532-1:2017 (method 1)</p></li>
-</ul>
-</div></blockquote>
 <p class="rubric">References</p>
 <p><span id="id1"></span></p>
 <div class="docutils container" id="id2">
 <div role="list" class="citation-list">
 <div class="citation" id="id20" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">ECMA4182202222</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>ECMA.418-2:2022. <em>Psychoacoustic metrics for ITT equipment — Part 2 (models based on human perception)</em>. European Computer Manufacturers Association, 2022. URL: <a class="reference external" href="https://www.ecma-international.org/wp-content/uploads/ECMA-418-2_2nd_edition_december_2022.pdf?trk=organization_guest_main-feed-card_reshare-text">https://www.ecma-international.org/wp-content/uploads/ECMA-418-2_2nd_edition_december_2022.pdf?trk=organization_guest_main-feed-card_reshare-text</a>.</p>
 </div>
 </div>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The sampling frequency of the signal must be 48 kHz.</p>
 </div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mosqito.sq_metrics</span> <span class="kn">import</span> <span class="n">loudness_ecma</span>
@@ -492,6 +488,7 @@ instead of ISO 226:2003, as defined in the following standards:</p>
 </figure>
 </dd></dl>
 
+</section>
 
 
                 </article>
@@ -503,6 +500,21 @@ instead of ISO 226:2003, as defined in the following standards:</p>
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.loudness_ecma"><code class="docutils literal notranslate"><span class="pre">loudness_ecma()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -527,7 +539,7 @@ instead of ISO 226:2003, as defined in the following standards:</p>
 
   <p class="copyright">
     
-      © Copyright 2023, Green Forge Coop.
+      © Copyright 2024, Green Forge Coop.
       <br/>
     
   </p>

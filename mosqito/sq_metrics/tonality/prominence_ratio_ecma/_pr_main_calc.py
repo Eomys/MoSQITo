@@ -9,8 +9,12 @@ from mosqito.sq_metrics.tonality.tone_to_noise_ecma._critical_band import (
     _lower_critical_band,
     _upper_critical_band,
 )
-from mosqito.sq_metrics.tonality.tone_to_noise_ecma._screening_for_tones import _screening_for_tones
-from mosqito.sq_metrics.tonality.tone_to_noise_ecma._find_highest_tone import _find_highest_tone
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._screening_for_tones import (
+    _screening_for_tones,
+)
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma._find_highest_tone import (
+    _find_highest_tone,
+)
 
 
 def _pr_main_calc(spectrum_db, freq_axis):
@@ -52,12 +56,13 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
     elif (len(spectrum_db.shape) > 1) & (len(freq_axis.shape) > 1):
         nseg = spectrum_db.shape[1]
-        freqs = [[]for i in range(nseg)]
-        spec_db = [[]for i in range(nseg)]
+        freqs = [[] for i in range(nseg)]
+        spec_db = [[] for i in range(nseg)]
         for i in range(nseg):
             # Frequency axis of interest
             freq_index_rows = where(
-                (freq_axis[:, i] > 89.1) & (freq_axis[:, i] < 11200))[0]
+                (freq_axis[:, i] > 89.1) & (freq_axis[:, i] < 11200)
+            )[0]
             freqs[i] = append(freqs[i], freq_axis[freq_index_rows, i])
             spec_db[i] = append(spec_db[i], spectrum_db[freq_index_rows, i])
         freqs = asarray(freqs)
@@ -88,10 +93,10 @@ def _pr_main_calc(spectrum_db, freq_axis):
         tones_freqs = []
         prominence = []
     else:
-        PR = [[]for i in range(nseg)]
-        t_pr = [[]for i in range(nseg)]
-        tones_freqs = [[]for i in range(nseg)]
-        prominence = [[]for i in range(nseg)]
+        PR = [[] for i in range(nseg)]
+        t_pr = [[] for i in range(nseg)]
+        tones_freqs = [[] for i in range(nseg)]
+        prominence = [[] for i in range(nseg)]
 
     for i in range(nseg):
 
@@ -210,8 +215,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
         if nseg > 1:
             if sum(power(10, (pr[prominence[i]] / 10))) != 0:
-                t_pr[i] = 10 * \
-                    log10(sum(power(10, (pr[prominence[i]] / 10))))
+                t_pr[i] = 10 * \ log10(sum(power(10, (pr[prominence[i]] / 10))))
             else:
                 t_pr[i] = 0
             PR[i] = append(PR[i], pr)

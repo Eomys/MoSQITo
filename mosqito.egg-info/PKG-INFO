@@ -1,9 +1,9 @@
 Metadata-Version: 2.1
 Name: mosqito
-Version: 1.0.8
+Version: 1.1.0
 Summary: Modular Sound Quality Integrated Toolbox
 Home-page: https://github.com/Eomys/MoSQITo
-Download-URL: https://github.com/Eomys/MoSQITo/archive/v1.0.8.tar.gz
+Download-URL: https://github.com/Eomys/MoSQITo/archive/v1.1.0.tar.gz
 Author: MoSQITo Developers
 Author-email: martin.glesser@eomys.com
 Classifier: Programming Language :: Python :: 3

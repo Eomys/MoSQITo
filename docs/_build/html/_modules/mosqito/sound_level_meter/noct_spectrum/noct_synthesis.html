@@ -44,7 +44,7 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
   </head>
   
   
@@ -381,14 +381,16 @@ document.write(`
 <span class="c1"># Local application imports</span>
 <span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._center_freq</span> <span class="kn">import</span> <span class="n">_center_freq</span>
 <span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._filter_bandwidth</span> <span class="kn">import</span> <span class="n">_filter_bandwidth</span>
-<span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter</span> <span class="kn">import</span> <span class="n">_n_oct_freq_filter</span>
+<span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_n_oct_freq_filter</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="noct_synthesis"><a class="viewcode-back" href="../../../../source/reference/mosqito.sound_level_meter.noct_spectrum.noct_synthesis.html#mosqito.sound_level_meter.noct_spectrum.noct_synthesis.noct_synthesis">[docs]</a><span class="k">def</span> <span class="nf">noct_synthesis</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Adapt input spectrum to nth-octave band spectrum</span>
-<span class="sd">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adapt input spectrum to nth-octave band spectrum</span>
+
 <span class="sd">    This function the input spectrum to n-th octave band levels.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    spectrum : array_like</span>
@@ -408,19 +410,19 @@ document.write(`
 <span class="sd">        Reference frequency. Shall be set to 1 kHz for audible frequency</span>
 <span class="sd">        range, to 1 Hz for infrasonic range (f &lt; 20 Hz) and to 1 MHz for</span>
 <span class="sd">        ultrasonic range (f &gt; 31.5 kHz).</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    spec : numpy.ndarray</span>
-<span class="sd">        Third octave band spectrum of signal sig [dB re.2e-5 Pa], size (nbands, nseg).</span>
+<span class="sd">        nth-octave octave band spectrum of signal sig [dB re.2e-5 Pa], size (nbands, nseg).</span>
 <span class="sd">    fpref : numpy.ndarray</span>
-<span class="sd">        Corresponding preferred third octave band center frequencies, size (nbands).</span>
-<span class="sd">        </span>
+<span class="sd">        Corresponding preferred nth-octave octave band center frequencies, size (nbands).</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    .comp_spectrum : Spectrum computation from a time signal</span>
 <span class="sd">    .noct_spectrum : N-th octave band spectrum computation from a time signal</span>
-<span class="sd">            </span>
+
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    .. plot::</span>
@@ -446,21 +448,21 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Center frequency [Hz]&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Amplitude [dB]&quot;)</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
-    
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Deduce sampling frequency</span>
     <span class="n">fs</span> <span class="o">=</span> <span class="n">freqs</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span>
-    
+
     <span class="c1"># Sampling frequency shall be equal to 48 kHz (as per ISO 532)</span>
     <span class="k">if</span> <span class="n">fs</span> <span class="o">!=</span> <span class="mi">48000</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;ERROR: Sampling frequency shall be equal to 48 kHz&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="c1"># Get filters center frequencies</span>
     <span class="n">fc_vec</span><span class="p">,</span> <span class="n">fpref</span> <span class="o">=</span> <span class="n">_center_freq</span><span class="p">(</span><span class="n">fmin</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="n">fmax</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="n">G</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="n">fr</span><span class="p">)</span>
-    
+
     <span class="c1"># Compute the filters bandwidth</span>
     <span class="n">alpha_vec</span><span class="p">,</span> <span class="n">f_low</span><span class="p">,</span> <span class="n">f_high</span> <span class="o">=</span> <span class="n">_filter_bandwidth</span><span class="p">(</span><span class="n">fc_vec</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
-    
+
     <span class="c1"># Delete ends frequencies to prevent aliasing</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">where</span><span class="p">(</span><span class="n">f_high</span> <span class="o">&gt;</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -474,8 +476,6 @@ document.write(`
         <span class="n">spec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_n_oct_freq_filter</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">alpha</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">spec</span><span class="p">),</span> <span class="n">fpref</span></div>
-
-
 </pre></div>
 
                 </article>
@@ -511,7 +511,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2023, Green Forge Coop.
+      © Copyright 2024, Green Forge Coop.
       <br/>
     
   </p>

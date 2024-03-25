@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; MOSQITO manual</title>
+    <title>pr_ecma_freq &#8212; MOSQITO manual</title>
   
   
   
@@ -44,11 +44,11 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.html" />
+    <link rel="next" title="pr_ecma_perseg" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg.html" />
+    <link rel="prev" title="pr_ecma_st" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
   </head>
   
   
@@ -237,6 +237,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </nav>
@@ -336,12 +340,12 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.sharpness.html">Sharpness</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.roughness.html">Roughness</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="mosqito.sq_metrics.tonality.html">Tonality</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.html"><code class="docutils literal notranslate"><span class="pre">pr_ecma_st()</span></code></a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">pr_ecma_freq()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv.html"><code class="docutils literal notranslate"><span class="pre">pr_ecma_tv()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st.html"><code class="docutils literal notranslate"><span class="pre">tnr_ecma_st()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq.html"><code class="docutils literal notranslate"><span class="pre">tnr_ecma_freq()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_tv.html"><code class="docutils literal notranslate"><span class="pre">tnr_ecma_tv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.html">pr_ecma_st</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">pr_ecma_freq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg.html">pr_ecma_perseg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st.html">tnr_ecma_st</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq.html">tnr_ecma_freq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_perseg.html">tnr_ecma_perseg</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.speech_intelligibility.html">Speech Intelligibility</a></li>
@@ -396,7 +400,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="mosqito.sq_metrics.tonality.html" class="nav-link">mosqito.sq_metrics.tonality</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
+    <li class="breadcrumb-item active" aria-current="page">pr_ecma_freq</li>
   </ul>
 </nav>
 </div>
@@ -413,11 +417,13 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <span class="target" id="module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq"></span><dl class="py function">
+  <section id="module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq">
+<span id="pr-ecma-freq"></span><h1>pr_ecma_freq<a class="headerlink" href="#module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq.pr_ecma_freq">
 <span class="sig-name descname"><span class="pre">pr_ecma_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prominence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/tonality/prominence_ratio_ecma/pr_ecma_freq.html#pr_ecma_freq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq.pr_ecma_freq" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the prominence ratio value</p>
-<p>This function computes the prominence ratio according to ECMA-74, annex D.9
+<dd><p>Compute the prominence ratio value from fine band spectrum (optionally segmented)</p>
+<p>This function computes the prominence ratio according to ECMA 418-1
 from a sound spectrum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -445,7 +451,7 @@ Default to True</p></li>
 </dd>
 <dt><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st.html#module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st" title="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pr_ecma_st</span></code></a></dt><dd><p>Prominence ratio for a stationary signal</p>
 </dd>
-<dt><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv.html#module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv" title="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pr_ecma_tv</span></code></a></dt><dd><p>PR computation for a non-stationary signal</p>
+<dt><a class="reference internal" href="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg.html#module-mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg" title="mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pr_ecma_perseg</span></code></a></dt><dd><p>PR computation for a non-stationary signal</p>
 </dd>
 </dl>
 </div>
@@ -466,7 +472,7 @@ PR can be more effective for multiple tones within the same critical band and is
 <div class="docutils container" id="id2">
 <div role="list" class="citation-list">
 <div class="citation" id="id20" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">ECMA4182202222</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>ECMA.418-2:2022. <em>Psychoacoustic metrics for ITT equipment — Part 2 (models based on human perception)</em>. European Computer Manufacturers Association, 2022. URL: <a class="reference external" href="https://www.ecma-international.org/wp-content/uploads/ECMA-418-2_2nd_edition_december_2022.pdf?trk=organization_guest_main-feed-card_reshare-text">https://www.ecma-international.org/wp-content/uploads/ECMA-418-2_2nd_edition_december_2022.pdf?trk=organization_guest_main-feed-card_reshare-text</a>.</p>
 </div>
 </div>
@@ -529,6 +535,7 @@ PR can be more effective for multiple tones within the same critical band and is
 </figure>
 </dd></dl>
 
+</section>
 
 
                 </article>
@@ -540,6 +547,21 @@ PR can be more effective for multiple tones within the same critical band and is
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq.pr_ecma_freq"><code class="docutils literal notranslate"><span class="pre">pr_ecma_freq()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -564,7 +586,7 @@ PR can be more effective for multiple tones within the same critical band and is
 
   <p class="copyright">
     
-      © Copyright 2023, Green Forge Coop.
+      © Copyright 2024, Green Forge Coop.
       <br/>
     
   </p>

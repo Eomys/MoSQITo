@@ -7,18 +7,17 @@ from scipy.fft import fft, fftfreq
 try:
     import pytest
 except ImportError:
-    raise RuntimeError(
-        "In order to perform the tests you need the 'pytest' package.")
-try:
-    from SciDataTool import DataLinspace, DataTime
-except ImportError:
-    raise RuntimeError(
-        "In order to handle Data objects you need the 'SciDataTool' package."
-    )
+    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
 
 # Local application imports
 from mosqito.utils import load
-from mosqito.sq_metrics import sharpness_din_st, sharpness_din_tv, sharpness_din_freq, sharpness_din_perseg
+from mosqito.sq_metrics import (
+    sharpness_din_st,
+    sharpness_din_tv,
+    sharpness_din_freq,
+    sharpness_din_perseg,
+)
+from mosqito.sound_level_meter.spectrum import spectrum
 
 
 @pytest.fixture
@@ -71,8 +70,7 @@ def test_sharpness_din_tv():
     """
 
     # Input signal
-    sig, fs = load(
-        "tests/input/white_noise_442_1768_Hz_varying.wav", wav_calib=0.01)
+    sig, fs = load("tests/input/white_noise_442_1768_Hz_varying.wav", wav_calib=0.01)
 
     # Compute sharpness
     sharpness, time = sharpness_din_tv(sig, fs, weighting="din", skip=0.2)
@@ -127,47 +125,10 @@ def test_sharpness_din_perseg(test_signal):
     fs = test_signal["fs"]
 
     # Compute sharpness
-    sharpness, _ = sharpness_din_perseg(
-        sig, fs, nperseg=2 ** 14, weighting="aures")
-    sharpness, _ = sharpness_din_perseg(
-        sig, fs, nperseg=2 ** 14, weighting="bismarck")
-    sharpness, _ = sharpness_din_perseg(
-        sig, fs, nperseg=2 ** 14, weighting="fastl")
-    sharpness, time_axis = sharpness_din_perseg(
-        sig, fs, nperseg=2 ** 14, weighting="din"
-    )
-
-    # Check that the value is within the desired values +/- 5%
-    # as per DIN 45692_2009E (chapter 6)
-    np.testing.assert_allclose(sharpness, test_signal["S_din"], rtol=0.05)
-
-
-@pytest.mark.sharpness_din  # to skip or run sharpness test
-def test_sharpness_din_perseg_sdt(test_signal):
-
-    # Input signal
-    sig = test_signal["signal"]
-    fs = test_signal["fs"]
-    time = DataLinspace(
-        name="time",
-        unit="s",
-        initial=0,
-        final=(len(sig) - 1) / fs,
-        number=len(sig),
-        include_endpoint=True,
-    )
-    sig_data = DataTime(
-        name="Test signal 5 (pinknoise 60 dB)",
-        symbol="p",
-        unit="Pa",
-        axes=[time],
-        values=sig,
-    )
-    # Compute sharpness
-    sharpness, time_axis = sharpness_din_perseg(
-        sig_data, fs, nperseg=2 ** 14, weighting="din", is_sdt_output=True
-    )
-    sharpness = sharpness.get_along('time')[sharpness.symbol]
+    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2**14, weighting="aures")
+    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2**14, weighting="bismarck")
+    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2**14, weighting="fastl")
+    sharpness, time_axis = sharpness_din_perseg(sig, fs, nperseg=2**14, weighting="din")
 
     # Check that the value is within the desired values +/- 5%
     # as per DIN 45692_2009E (chapter 6)
@@ -181,33 +142,30 @@ def test_sharpness_din_perseg_aures(test_signal):
     fs = test_signal["fs"]
 
     # Compute sharpness
-    sharpness, _ = sharpness_din_perseg(
-        sig, fs, nperseg=2 ** 14, weighting="aures")
+    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2**14, weighting="aures")
 
 
-@ pytest.mark.sharpness_din
+@pytest.mark.sharpness_din
 def test_sharpness_din_perseg_bismarck(test_signal):
     # Input signal
     sig = test_signal["signal"]
     fs = test_signal["fs"]
 
     # Compute sharpness
-    sharpness, _ = sharpness_din_perseg(
-        sig, fs, nperseg=2 ** 14, weighting="bismarck")
+    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2**14, weighting="bismarck")
 
 
-@ pytest.mark.sharpness_din
+@pytest.mark.sharpness_din
 def test_sharpness_din_perseg_fastl(test_signal):
     # Input signal
     sig = test_signal["signal"]
     fs = test_signal["fs"]
 
     # Compute sharpness
-    sharpness, _ = sharpness_din_perseg(
-        sig, fs, nperseg=2 ** 14, weighting="fastl")
+    sharpness, _ = sharpness_din_perseg(sig, fs, nperseg=2**14, weighting="fastl")
 
 
-@ pytest.mark.sharpness_din  # to skip or run sharpness test
+@pytest.mark.sharpness_din  # to skip or run sharpness test
 def test_sharpness_din_freq(test_signal):
     """Test function for the sharpness calculation of an audio signal
 
@@ -226,16 +184,13 @@ def test_sharpness_din_freq(test_signal):
     """
 
     # Input signal from DIN 45692_2009E
-    signal = {"data_file": "tests/input/broadband_570.wav",
-              "S": test_signal["S_din"]}
+    signal = {"data_file": "tests/input/broadband_570.wav", "S": test_signal["S_din"]}
 
     # Input signal
     sig = test_signal["signal"]
     fs = test_signal["fs"]
     # Compute corresponding spectrum
-    n = len(sig)
-    spec = 2 / np.sqrt(2) / n * fft(sig)[0:n//2]
-    freqs = fftfreq(n, 1/fs)[0:n//2]
+    spec, freqs = spectrum(sig, fs, nfft="default", window="blackman", db=False)
 
     # Compute sharpness
     sharpness = sharpness_din_freq(spec, freqs, weighting="din")
@@ -285,8 +240,7 @@ if __name__ == "__main__":
         "fs": fs,
         "S_din": 2.85,
     }
-    # test_sharpness_din_st(test_signal)
-    # test_sharpness_din_tv()
-    # test_sharpness_din_freq(test_signal)
-    # test_sharpness_din_perseg(test_signal)
-    test_sharpness_din_perseg_sdt(test_signal)
+    test_sharpness_din_st(test_signal)
+    test_sharpness_din_tv()
+    test_sharpness_din_freq(test_signal)
+    test_sharpness_din_perseg(test_signal)

@@ -260,10 +260,10 @@ def _third_octave_levels(sig, fs):
 
     third_octave_level = empty((n_level_band, n_time))
     for i_bands in range(n_level_band):
-        
+
         # Initialisation
-        tiny_value = 10 ** -12
-        i_ref = 4 * 10 ** -10
+        tiny_value = 10**-12
+        i_ref = 4 * 10**-10
         # 2nd order fltering (See ISO 532-1 section 6.3 and A.2)
         coeff = third_octave_filter_ref - third_octave_filter[i_bands, :, :]
         sig_filt = filter_gain[i_bands] * sosfilt(coeff, sig)

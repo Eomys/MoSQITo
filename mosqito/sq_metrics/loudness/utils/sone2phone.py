@@ -3,7 +3,7 @@ from numpy import log10
 
 
 def sone2phone(sones):
-    """ Conversion between sones and phones, based on the work done by Hugo Fastl and Eberhard Zwicker in the article
+    """Conversion between sones and phones, based on the work done by Hugo Fastl and Eberhard Zwicker in the article
     "Psychoacoustics: Facts and Models".
 
     Parameters

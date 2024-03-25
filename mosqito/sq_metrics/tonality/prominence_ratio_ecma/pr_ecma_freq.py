@@ -4,9 +4,7 @@
 from numpy import asarray, abs, float32
 
 # Local imports
-from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import (
-    _pr_main_calc,
-)
+from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import _pr_main_calc
 from mosqito.utils import amp2db
 
 

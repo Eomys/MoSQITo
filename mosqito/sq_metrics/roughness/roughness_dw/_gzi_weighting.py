@@ -4,7 +4,7 @@
 from numpy import array, arange, interp
 
 def _gzi_weighting(center_freq):
-    """ Weighting function for the specific roughness given by Aures """
+    """Weighting function for the specific roughness given by Aures"""
 
     gr_x = arange(0, 25, 1)
     gr_y = array(

@@ -6,7 +6,7 @@ def _auditory_filters_centre_freq():
     Auditory filter bank center frequencies generation
 
     This function generates the Auditory filter bank center frequencies according
-    to ECMA-418-2 section 5.1.3.1 equation 6
+    to ECMA-418-2, 2nd Ed (2022), Section 5.1.4.1, equation 9
 
     Parameters
     ----------

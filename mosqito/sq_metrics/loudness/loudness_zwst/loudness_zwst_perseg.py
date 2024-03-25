@@ -4,18 +4,8 @@
 from mosqito.utils import time_segmentation
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst import loudness_zwst
 
-# Optional package import
-try:
-    from SciDataTool import DataTime, DataLinspace, DataFreq, Norm_func
-except ImportError:
-    DataTime = None
-    DataLinspace = None
-    DataFreq = None
 
-
-def loudness_zwst_perseg(
-    signal, fs=None, nperseg=4096, noverlap=None, field_type="free", is_sdt_output=False
-):
+def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="free"):
     """
     Compute the loudness value per segments from a time signal
 
@@ -37,9 +27,6 @@ def loudness_zwst_perseg(
     field_type : {'free', 'diffuse'}
         Type of soundfield.
         Default is 'free'
-    is_sdt_output : Bool, optional
-        If True, the outputs are returned as SciDataTool objects.
-        Default to False
 
     Returns
     --------
@@ -54,8 +41,17 @@ def loudness_zwst_perseg(
 
     Warning
     -------
-    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    N : numpy.array
+        The overall loudness array [sones], size (Ntime,).
+    N_specific : numpy.ndarray
+        The specific loudness array [sones/bark], size (Nbark, Ntime).
+    bark_axis: numpy.array
+        The Bark axis array, size (Nbark,).
+    time_axis: numpy.array
+        The time axis array, size (Ntime,).
+	The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
     If the provided signal doesn't meet the requirements, it will be resampled.
+
 
     See Also
     ---------
@@ -116,57 +112,10 @@ def loudness_zwst_perseg(
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
 
-    # Manage input type
-    if DataTime is not None and isinstance(signal, DataTime):
-        time = signal.get_along("time")["time"]
-        fs = 1 / (time[1] - time[0])
-        signal = signal.get_along("time")[signal.symbol]
-
     # Time signal segmentation
     signal, time_axis = time_segmentation(signal, fs, nperseg, noverlap)
 
     # Compute loudness
     N, N_specific, bark_axis = loudness_zwst(signal, fs, field_type=field_type)
-
-    # Manage SciDataTool output type
-    if is_sdt_output:
-        if DataLinspace is None:
-            raise RuntimeError(
-                "In order to handle Data objects you need the 'SciDataTool' package."
-            )
-        else:
-            bark_data = DataLinspace(
-                name="Critical band rate",
-                unit="Bark",
-                initial=0,
-                final=24,
-                number=int(24 / 0.1),
-                include_endpoint=True,
-                normalizations={
-                    "Hz": Norm_func(function=lambda x: 1960 * (x + 0.53) / (26.28 - x))
-                },
-            )
-            time = DataLinspace(
-                name="time",
-                unit="s",
-                initial=time_axis[0],
-                final=time_axis[-1],
-                number=len(time_axis),
-                include_endpoint=True,
-            )
-            N_specific = DataFreq(
-                name="Specific loudness (Zwicker method for stationnary signal)",
-                symbol="N'_{zwst}",
-                axes=[bark_data, time],
-                values=N_specific,
-                unit="sone/Bark",
-            )
-            N = DataTime(
-                name="Loudness (Zwicker method for stationnary signal)",
-                symbol="N_{zwst}",
-                axes=[time],
-                values=N,
-                unit="sone",
-            )
 
     return N, N_specific, bark_axis, time_axis

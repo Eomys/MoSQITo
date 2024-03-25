@@ -9,16 +9,8 @@ from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudn
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
 from mosqito.utils import amp2db
 
-# Optional package import
-try:
-    from SciDataTool import DataTime, DataLinspace, DataFreq
-except ImportError:
-    DataTime = None
-    DataLinspace = None
-    DataFreq = None
 
-
-def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
+def loudness_zwst(signal, fs, field_type="free"):
     """
     Compute the loudness value from a time signal
 
@@ -27,17 +19,13 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
 
     Parameters
     ----------
-    signal: array_like or DataTime object
+    signal : numpy.array
         Signal time values [Pa], dim (nperseg, nseg).
-    fs : float, optional
-        Sampling frequency, can be omitted if the input is a DataTime object.
-        Default to None
-    field_type : {'free', 'diffuse'}
-        Type of soundfield.
-        Default is 'free'
-    is_sdt_output : Bool, optional
-        If True, the outputs are returned as SciDataTool objects.
-        Default to False
+    fs : float
+        Sampling frequency [Hz]
+    field_type : str
+        Type of soundfield corresponding to spec_third ("free" by
+        default or "diffuse").
 
     Returns
     -------
@@ -105,12 +93,6 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
        >>> plt.title("Loudness = " + f"{N:.2f}" + " [Sone]")
     """
 
-    # Manage SciDataTool input type
-    if DataTime is not None and isinstance(signal, DataTime):
-        time = signal.get_along("time")["time"]
-        fs = 1 / (time[1] - time[0])
-        signal = signal.get_along("time")[signal.symbol]
-
     if fs < 48000:
         print(
             "[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
@@ -119,7 +101,6 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
 
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
-
     # Compute third octave band spectrum
     spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600)
 
@@ -135,28 +116,5 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
 
     # Define Bark axis
     bark_axis = np.linspace(0.1, 24, int(24 / 0.1))
-
-    # Manage SciDataTool output type
-    if is_sdt_output:
-        if DataLinspace is None:
-            raise RuntimeError(
-                "In order to handle Data objects you need the 'SciDataTool' package."
-            )
-        else:
-            bark_data = DataLinspace(
-                name="Critical band rate",
-                unit="Bark",
-                initial=0,
-                final=24,
-                number=int(24 / 0.1),
-                include_endpoint=True,
-            )
-            N_specific = DataFreq(
-                name="Specific loudness (Zwicker method for stationnary signal)",
-                symbol="N'_{zwst}",
-                axes=[bark_data],
-                values=N_specific,
-                unit="sone/Bark",
-            )
 
     return N, N_specific, bark_axis

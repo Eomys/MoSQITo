@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; MOSQITO manual</title>
+    <title>sharpness_din_perseg &#8212; MOSQITO manual</title>
   
   
   
@@ -44,11 +44,11 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq.html" />
+    <link rel="next" title="sharpness_din_from_loudness" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness.html" />
+    <link rel="prev" title="sharpness_din_freq" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
   </head>
   
   
@@ -237,6 +237,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </nav>
@@ -334,11 +338,11 @@ document.write(`
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="mosqito.sq_metrics.html">sq_metrics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.loudness.html">Loudness</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="mosqito.sq_metrics.sharpness.html">Sharpness</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st.html"><code class="docutils literal notranslate"><span class="pre">sharpness_din_st()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.html"><code class="docutils literal notranslate"><span class="pre">sharpness_din_tv()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq.html"><code class="docutils literal notranslate"><span class="pre">sharpness_din_freq()</span></code></a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">sharpness_din_perseg()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness.html"><code class="docutils literal notranslate"><span class="pre">sharpness_din_from_loudness()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st.html">sharpness_din_st</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv.html">sharpness_din_tv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq.html">sharpness_din_freq</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">sharpness_din_perseg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness.html">sharpness_din_from_loudness</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.roughness.html">Roughness</a></li>
@@ -395,7 +399,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="mosqito.sq_metrics.sharpness.html" class="nav-link">mosqito.sq_metrics.sharpness</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
+    <li class="breadcrumb-item active" aria-current="page">sharpness_din_perseg</li>
   </ul>
 </nav>
 </div>
@@ -412,10 +416,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <span class="target" id="module-mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg"></span><dl class="py function">
+  <section id="module-mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg">
+<span id="sharpness-din-perseg"></span><h1>sharpness_din_perseg<a class="headerlink" href="#module-mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.sharpness_din_perseg">
 <span class="sig-name descname"><span class="pre">sharpness_din_perseg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'din'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nperseg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noverlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'free'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_sdt_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/sharpness/sharpness_din/sharpness_din_perseg.html#sharpness_din_perseg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.sharpness_din_perseg" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the sharpness value</p>
+<dd><p>Compute the sharpness value per segments from a time signal</p>
 <p>This function computes the sharpness value according to different methods.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -442,6 +448,11 @@ Default to False</p></li>
 </p>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.
+If the provided signal doesn’t meet the requirements, it will be resampled.</p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
@@ -455,16 +466,12 @@ Default to False</p></li>
 </dd>
 </dl>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.
-If the provided signal doesn’t meet the requirements, it will be resampled.</p>
-</div>
 <p class="rubric">Notes</p>
 <p>For each segment considered, the computation consists of a specific loudness weighting employing a weighting function <span class="math notranslate nohighlight">\(g(z)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[S=0.11\frac{\int_{0}^{24Bark}N'(z)g(z)\textup{dz}}{N}\]</div>
-<p>with <span class="math notranslate nohighlight">\(N'\)</span> the specific loudness and <span class="math notranslate nohighlight">\(N\)</span> the global loudness.</p>
+<p>with <span class="math notranslate nohighlight">\(N'\)</span> the specific loudness and <span class="math notranslate nohighlight">\(N\)</span> the global loudness according to Zwicker method
+for stationary signals.</p>
 <dl class="simple">
 <dt>The different methods available with the function account for the weighting function applied:</dt><dd><ul class="simple">
 <li><p>DIN 45692 : weighting defined in the standard</p></li>
@@ -481,15 +488,15 @@ If the provided signal doesn’t meet the requirements, it will be resampled.</p
 <div class="docutils container" id="id4">
 <div role="list" class="citation-list">
 <div class="citation" id="id23" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">DIN45692200909</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>DIN.45692:2009. <em>Measurement technique for the simulation of the auditory sensation of sharpness</em>. Deutsches Institut fur Normung, 2009. URL: <a class="reference external" href="https://www.normadoc.com/english/din-45692-2009-08.html?___from_store=french">https://www.normadoc.com/english/din-45692-2009-08.html?___from_store=french</a>.</p>
 </div>
 <div class="citation" id="id18" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">EZwickerHFastl07</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
 <p>E.Zwicker and H.Fastl. <em>Psychoacoustics</em>. Springer Berlin, 2007. URL: <a class="reference external" href="https://link.springer.com/book/10.1007/978-3-540-68888-4">https://link.springer.com/book/10.1007/978-3-540-68888-4</a>.</p>
 </div>
 <div class="citation" id="id19" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">vB74</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
 <p>E. von Bismarck. Sharpness as an attribute of the timbre of steady sounds. <em>Acta Acustica</em>, 1974. URL: <a class="reference external" href="https://www.ingentaconnect.com/contentone/dav/aaua/1974/00000030/00000003/art00006">https://www.ingentaconnect.com/contentone/dav/aaua/1974/00000030/00000003/art00006</a>.</p>
 </div>
 </div>
@@ -519,6 +526,7 @@ If the provided signal doesn’t meet the requirements, it will be resampled.</p
 </figure>
 </dd></dl>
 
+</section>
 
 
                 </article>
@@ -530,6 +538,21 @@ If the provided signal doesn’t meet the requirements, it will be resampled.</p
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.sharpness_din_perseg"><code class="docutils literal notranslate"><span class="pre">sharpness_din_perseg()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -554,7 +577,7 @@ If the provided signal doesn’t meet the requirements, it will be resampled.</p
 
   <p class="copyright">
     
-      © Copyright 2023, Green Forge Coop.
+      © Copyright 2024, Green Forge Coop.
       <br/>
     
   </p>

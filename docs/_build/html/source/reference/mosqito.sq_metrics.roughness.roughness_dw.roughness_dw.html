@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; MOSQITO manual</title>
+    <title>roughness_dw &#8212; MOSQITO manual</title>
   
   
   
@@ -44,11 +44,11 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.html" />
+    <link rel="next" title="roughness_dw_freq" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.html" />
     <link rel="prev" title="mosqito.sq_metrics.roughness" href="mosqito.sq_metrics.roughness.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
   </head>
   
   
@@ -237,6 +237,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </nav>
@@ -335,8 +339,8 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.loudness.html">Loudness</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.sharpness.html">Sharpness</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="mosqito.sq_metrics.roughness.html">Roughness</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">roughness_dw()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.html"><code class="docutils literal notranslate"><span class="pre">roughness_dw_freq()</span></code></a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">roughness_dw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq.html">roughness_dw_freq</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.sq_metrics.tonality.html">Tonality</a></li>
@@ -392,7 +396,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="mosqito.sq_metrics.roughness.html" class="nav-link">mosqito.sq_metrics.roughness</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
+    <li class="breadcrumb-item active" aria-current="page">roughness_dw</li>
   </ul>
 </nav>
 </div>
@@ -409,10 +413,13 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <span class="target" id="module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw"></span><dl class="py function">
+  <section id="module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw">
+<span id="roughness-dw"></span><h1>roughness_dw<a class="headerlink" href="#module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw">
 <span class="sig-name descname"><span class="pre">roughness_dw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_sdt_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/roughness/roughness_dw/roughness_dw.html#roughness_dw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the roughness according to Daniel and Weber method.</p>
+<dd><p>Computes the roughness according to Daniel and Weber method
+from a time signal</p>
 <p>This function computes the global and specific roughness values
 of a signal sampled at 48 kHz.</p>
 <dl class="field-list simple">
@@ -452,7 +459,7 @@ which are summed up to determine the total roughness <span class="math notransla
 <div class="docutils container" id="id2">
 <div role="list" class="citation-list">
 <div class="citation" id="id27" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">DW97</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>P. Daniel and R. Weber. Psychoacoustical roughness: implementation of an optimized model. <em>Acta Acustica, Vol. 83: 113-123</em>, 1997. URL: <a class="reference external" href="https://www.ingentaconnect.com/contentone/dav/aaua/1997/00000083/00000001/art00020">https://www.ingentaconnect.com/contentone/dav/aaua/1997/00000083/00000001/art00020</a>.</p>
 </div>
 </div>
@@ -484,6 +491,7 @@ which are summed up to determine the total roughness <span class="math notransla
 </figure>
 </dd></dl>
 
+</section>
 
 
                 </article>
@@ -495,6 +503,21 @@ which are summed up to determine the total roughness <span class="math notransla
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw"><code class="docutils literal notranslate"><span class="pre">roughness_dw()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -519,7 +542,7 @@ which are summed up to determine the total roughness <span class="math notransla
 
   <p class="copyright">
     
-      © Copyright 2023, Green Forge Coop.
+      © Copyright 2024, Green Forge Coop.
       <br/>
     
   </p>

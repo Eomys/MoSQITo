@@ -35,7 +35,7 @@ def _peak_level(freqs, spec, peak_index):
 
     # Screen the right points of the peak
     temp = peak_index + 1
-    
+
     if temp != len(spec):
         Ltemp = Li
         # As long as the level decreases,
@@ -45,7 +45,7 @@ def _peak_level(freqs, spec, peak_index):
                 Ltemp = spec[temp]
                 # its level is summed up with the peak's one
                 L = 10 * log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
-                
+
                 temp += 1
                 if temp == len(spec):
                     temp -= 1
@@ -55,7 +55,7 @@ def _peak_level(freqs, spec, peak_index):
 
     # Screen the left points of the peak
     temp = peak_index - 1
-    
+
     if temp != -1:
         Ltemp = Li
         # As long as the level decreases,
@@ -65,9 +65,9 @@ def _peak_level(freqs, spec, peak_index):
                 Ltemp = spec[temp]
                 # its level is summed up with the peak's one
                 L = 10 * log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
-    
+
                 temp -= 1
-                if temp <0:
+                if temp < 0:
                     temp += 1
                     Ltemp = -1
             else:

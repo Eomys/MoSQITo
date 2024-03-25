@@ -142,7 +142,7 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
     S = 0.11 * sum(N_specific * g * z * 0.1, axis=0) / N
 
     if S.size == 1:
-        S = float(S)
+        S = S.flat[0]
     else:
         S = squeeze(S)
         S[ind] = 0

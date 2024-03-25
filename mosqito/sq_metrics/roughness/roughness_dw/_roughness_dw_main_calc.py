@@ -12,6 +12,7 @@ from mosqito.sq_metrics.roughness.roughness_dw._ear_filter_coeff import (
 )
 from mosqito.utils import freq2bark, db2amp, amp2db, bark2freq
 
+
 def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     """
     Daniel and Weber roughness main calculation
@@ -57,7 +58,7 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     # Conversion of the spec into dB
     module = abs(spec[0:n//2])
     spec_dB = amp2db(module, ref=2e-5)
-    
+
     # Find the audible components within the spec
     threshold = LTQ(bark_axis, reference="roughness")
     audible_index = where(spec_dB > threshold)[0]
@@ -74,7 +75,9 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     # upper slope [dB/Bark]
     for k in arange(0, n_aud, 1):
         s2[k] = min(
-            -24 - (230 / freq_axis[audible_index[k]]) + (0.2 * spec_dB[audible_index[k]]),
+            -24
+            - (230 / freq_axis[audible_index[k]])
+            + (0.2 * spec_dB[audible_index[k]]),
             0,
         )
 
@@ -86,7 +89,7 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     zb = bark2freq(zi) * n / fs
     # Minimum excitation level
     minExcitDB = interp(zb, nZ, threshold)
-    
+
     ch_low = zeros((n_aud))
     ch_high = zeros((n_aud))
     for i in arange(0, n_aud):
@@ -188,6 +191,3 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     R = 0.25 * sum(R_spec)
 
     return R, R_spec, zi
-
-
-

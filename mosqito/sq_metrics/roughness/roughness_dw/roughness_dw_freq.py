@@ -97,7 +97,7 @@ def roughness_dw_freq(spectrum, freqs):
 
     if spectrum.any() < 0:
         raise ValueError(
-            "Input must be an amplitude spectrum (use abs() or complex spectrum)."
+            "Input must be an amplitude spectrum (use abs() on complex spectrum)."
         )
 
     # 1D spectrum

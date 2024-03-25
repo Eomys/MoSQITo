@@ -9,11 +9,13 @@ except ImportError:
 
 from numpy import amin, amax, arange, abs
 
-def isoclose(actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, xaxis=None):
+def isoclose(
+    actual, desired, rtol=1e-7, atol=0, is_plot=False, tol_label=None, xaxis=None
+):
     """
     Check if two arrays are equal up to desired tolerance.
 
-    The test is inspired from section 5.1 of ISO 532-1. It compares 
+    The test is inspired from section 5.1 of ISO 532-1. It compares
     ``actual`` to ``desired +/- min(atol, rtol * abs(desired))``.
 
     Parameters

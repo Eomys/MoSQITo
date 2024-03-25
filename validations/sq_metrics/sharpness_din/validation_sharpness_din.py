@@ -298,11 +298,7 @@ def _check_compliance(sharpness, reference, noise_type):
     plt.ylabel("Sharpness, [acum]")
 
     plt.savefig(
-        "output/"
-        + "validation_sharpness_"
-        + noise_type
-        + "_noise"
-        + ".png",
+        "output/" + "validation_sharpness_" + noise_type + "_noise" + ".png",
         format="png",
     )
     plt.clf()

@@ -23,7 +23,7 @@ def sone_to_phon(sone):
     """
 
     if sone < 1:
-        phon = 40 * sone ** 0.35
+        phon = 40 * sone**0.35
         if phon < 3:
             phon = 3
     else:

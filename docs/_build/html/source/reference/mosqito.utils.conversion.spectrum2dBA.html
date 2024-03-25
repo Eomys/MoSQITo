@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; MOSQITO manual</title>
+    <title>spectrum2dBA &#8212; MOSQITO manual</title>
   
   
   
@@ -43,11 +43,11 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="mosqito.utils.sine_wave_generator.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="mosqito.utils.conversion.freq2bark.html" />
+    <link rel="next" title="sine_wave_generator" href="mosqito.utils.sine_wave_generator.html" />
+    <link rel="prev" title="freq2bark" href="mosqito.utils.conversion.freq2bark.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 04, 2024"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
   </head>
   
   
@@ -236,6 +236,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </nav>
@@ -332,15 +336,15 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sound_level_meter.html">sound_level_meter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.html">sq_metrics</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="mosqito.utils.html">utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.amp2db.html"><code class="docutils literal notranslate"><span class="pre">amp2db()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.db2amp.html"><code class="docutils literal notranslate"><span class="pre">db2amp()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.bark2freq.html"><code class="docutils literal notranslate"><span class="pre">bark2freq()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.freq2bark.html"><code class="docutils literal notranslate"><span class="pre">freq2bark()</span></code></a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">spectrum2dBA()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.sine_wave_generator.html"><code class="docutils literal notranslate"><span class="pre">sine_wave_generator()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.time_segmentation.html"><code class="docutils literal notranslate"><span class="pre">time_segmentation()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.LTQ.html"><code class="docutils literal notranslate"><span class="pre">LTQ()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.load.html"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.amp2db.html">amp2db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.db2amp.html">db2amp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.bark2freq.html">bark2freq</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.freq2bark.html">freq2bark</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">spectrum2dBA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.sine_wave_generator.html">sine_wave_generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.time_segmentation.html">time_segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.LTQ.html">LTQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.load.html">load</a></li>
 </ul>
 </li>
 </ul>
@@ -386,7 +390,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="mosqito.utils.html" class="nav-link">mosqito.utils</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
+    <li class="breadcrumb-item active" aria-current="page">spectrum2dBA</li>
   </ul>
 </nav>
 </div>
@@ -403,7 +407,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <span class="target" id="module-mosqito.utils.conversion.spectrum2dBA"></span><dl class="py function">
+  <section id="module-mosqito.utils.conversion.spectrum2dBA">
+<span id="spectrum2dba"></span><h1>spectrum2dBA<a class="headerlink" href="#module-mosqito.utils.conversion.spectrum2dBA" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
 <dt class="sig sig-object py" id="mosqito.utils.conversion.spectrum2dBA.spectrum2dBA">
 <span class="sig-name descname"><span class="pre">spectrum2dBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/utils/conversion/spectrum2dBA.html#spectrum2dBA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.conversion.spectrum2dBA.spectrum2dBA" title="Permalink to this definition">#</a></dt>
 <dd><p>A_weighting dB ponderation</p>
@@ -463,6 +469,7 @@ using linear interpolation.</p>
 </figure>
 </dd></dl>
 
+</section>
 
 
                 </article>
@@ -474,6 +481,21 @@ using linear interpolation.</p>
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mosqito.utils.conversion.spectrum2dBA.spectrum2dBA"><code class="docutils literal notranslate"><span class="pre">spectrum2dBA()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -498,7 +520,7 @@ using linear interpolation.</p>
 
   <p class="copyright">
     
-      © Copyright 2023, Green Forge Coop.
+      © Copyright 2024, Green Forge Coop.
       <br/>
     
   </p>

@@ -88,8 +88,7 @@ def _calc_slopes(nm):
 
     # From Ernesto Avedillo 13/feb/2022
     # Considering the original routine if ig > 7:ig = 7 until ig = 21 so I can append the last column until usl.shape = (18,21)
-    usl_reshaped = append(usl, tile(
-        usl[:, 7], 13).reshape(13, 18).T, axis=1)
+    usl_reshaped = append(usl, tile(usl[:, 7], 13).reshape(13, 18).T, axis=1)
 
     # For test, in case nm has only 1 col.
     len_1_nm = False
@@ -123,7 +122,7 @@ def _calc_slopes(nm):
     # N_specific[:zup_ea[0],:] = np.multiply(N_specific[:zup_ea[0],:] , nm[1])
     # I complete the rest of the matrix extending the array 21  to 240
     for i in arange(nm_wide - 1):
-        N_specific[zup_ea[i - 1]: zup_ea[i], :] = nm[i]
+        N_specific[zup_ea[i - 1] : zup_ea[i], :] = nm[i]
 
     N = zeros(data_length)
 
@@ -149,11 +148,11 @@ def _calc_slopes(nm):
     dz[1, :] = zup[1]
 
     for i in arange(nm_wide):
-        n2_array_specific[zup_ea[i - 1]: zup_ea[i], :] = nm[i]
-        dz_array_specific[zup_ea[i - 1]: zup_ea[i], :] = dz[i]
-        z2_array_specific[zup_ea[i - 1]: zup_ea[i], :] = zup_array_ea[i]
-        usl_array_specific[zup_ea[i - 1]: zup_ea[i], :] = usl_array[i]
-        rns_values_specific[zup_ea[i - 1]: zup_ea[i], :] = rns_values[i]
+        n2_array_specific[zup_ea[i - 1] : zup_ea[i], :] = nm[i]
+        dz_array_specific[zup_ea[i - 1] : zup_ea[i], :] = dz[i]
+        z2_array_specific[zup_ea[i - 1] : zup_ea[i], :] = zup_array_ea[i]
+        usl_array_specific[zup_ea[i - 1] : zup_ea[i], :] = usl_array[i]
+        rns_values_specific[zup_ea[i - 1] : zup_ea[i], :] = rns_values[i]
 
     j = 1
     n1_aux = zeros(data_length)

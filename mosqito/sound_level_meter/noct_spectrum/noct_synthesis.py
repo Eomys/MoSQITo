@@ -6,16 +6,13 @@ from numpy import asarray, delete, array, where
 # Local application imports
 from mosqito.sound_level_meter.noct_spectrum._center_freq import _center_freq
 from mosqito.sound_level_meter.noct_spectrum._filter_bandwidth import _filter_bandwidth
-from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import (
-    _n_oct_freq_filter,
-)
-
+from mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter import _n_oct_freq_filter
 
 def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     """Adapt input spectrum to nth-octave band spectrum
-
+                
     This function the input spectrum to n-th octave band levels.
-
+                       
     Parameters
     ----------
     spectrum : array_like

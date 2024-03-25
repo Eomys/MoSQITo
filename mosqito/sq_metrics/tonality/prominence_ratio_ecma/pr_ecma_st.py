@@ -2,9 +2,7 @@
 
 # Local imports
 from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
-from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import (
-    _pr_main_calc,
-)
+from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import _pr_main_calc
 
 
 def pr_ecma_st(signal, fs, prominence=True):

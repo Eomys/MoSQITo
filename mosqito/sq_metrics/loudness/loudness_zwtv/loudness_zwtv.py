@@ -24,15 +24,15 @@ def loudness_zwtv(signal, fs, field_type="free"):
 
     Parameters
     ----------
-    signal: array_like or DataTime object
-        Signal time values [Pa], dim (nperseg, nseg).
-    fs : float, optional
+    signal : numpy.array
+        A time signal values [Pa].
+    fs : integer
         Sampling frequency, can be omitted if the input is a DataTime object.
         Default to None
     field_type : {'free', 'diffuse'}
         Type of soundfield.
         Default is 'free'
-
+    Outputs
     Returns
     -------
     N : float
