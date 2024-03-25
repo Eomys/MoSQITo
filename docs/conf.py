@@ -18,11 +18,13 @@ release = '1.1.1'
 import os
 import sys
 sys.path.insert(0, os.path.abspath(".."))
+import numpy as np
 
 # Remove rst files of the folder having the name than some functions
-os.remove('source/reference/mosqito.sq_metrics.loudness.loudness_zwst.rst')
-os.remove('source/reference/mosqito.sq_metrics.loudness.loudness_zwtv.rst')
-os.remove('source/reference/mosqito.sq_metrics.roughness.roughness_dw.rst')
+if os.path.isfile('source/reference/mosqito.sq_metrics.loudness.loudness_zwst.rst'):
+    os.remove('source/reference/mosqito.sq_metrics.loudness.loudness_zwst.rst')
+    os.remove('source/reference/mosqito.sq_metrics.loudness.loudness_zwtv.rst')
+    os.remove('source/reference/mosqito.sq_metrics.roughness.roughness_dw.rst')
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -40,7 +42,7 @@ extensions = [
     'sphinxcontrib.bibtex'
 ]
 
-templates_path = ['_templates']
+templates_path = ['templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 bibtex_bibfiles = ['ref.bib']
 bibtex_default_style = 'plain'
@@ -69,6 +71,8 @@ html_theme_options = {
   "github_url": "https://github.com/Eomys/MoSQITo",
   "collapse_navigation": True,
   "show_prev_next": False,
+  "show_nav_level": 0,
+  "navigation_depth": 3,
 }
 
 autosummary_generate = True
@@ -101,4 +105,44 @@ def fixed_init(self, app, template_dir=None):
 AutosummaryRenderer.__old_init__ = AutosummaryRenderer.__init__
 AutosummaryRenderer.__init__ = fixed_init
 
+from docutils import nodes
+from sphinx.application import Sphinx
+from sphinx.environment.collectors.title import TitleCollector
+
+_process_doc = TitleCollector.process_doc
+
+def process_doc(self, app: Sphinx, doctree: nodes.document) -> None:
+    if doctree.traverse(nodes.section):
+        _process_doc(self, app, doctree)
+    else:
+        titlenode = nodes.title()
+        app.env.titles[app.env.docname] = titlenode
+        app.env.longtitles[app.env.docname] = titlenode
+
+TitleCollectorprocess_doc = process_doc
+
+def crawl_source_shorten_titles(path):
+
+    # List files in directory
+    for file_name in os.listdir(path):
+
+        # Build path to file
+        file_path = os.path.join(path, file_name)
+
+        # Modify .rst source file title
+        _, extension = os.path.splitext(file_path)
+        if extension == ".rst":
+            with open(file_path, 'r') as file:
+                lines = file.readlines()
+            if lines[0]=='\n':
+                idx = file_name[:-4].rfind(".")
+                name = file_name[idx+1:-4]
+                # modify title, write back to file                
+                lines[0] = name + '\n'
+                lines[1] = "=======================================================\n"
+                with open(file_path, 'w') as file:
+                    file.writelines(lines)
+
+# Remove parents from titles in all .rst files
+crawl_source_shorten_titles(r"C:\Users\SaloméWanty\Documents\Mosqito_doc\docs\source\reference")
 
