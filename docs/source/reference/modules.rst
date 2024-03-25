@@ -5,3 +5,4 @@ mosqito
    :maxdepth: 4
 
    mosqito
+   :titlesonly:

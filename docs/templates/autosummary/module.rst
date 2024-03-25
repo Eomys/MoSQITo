@@ -1,9 +1,0 @@
-{%- if show_headings %}
-{{- heading }}
-
-{% endif -%}
-.. automodule:: {{ qualname }}
-{%- for option in automodule_options %}
-   :{{ option }}:
-{%- endfor %}
-
