@@ -11,7 +11,7 @@ version = __version__
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'MOSQITO'
-copyright = '2023, Green Forge Coop'
+copyright = '2024, Green Forge Coop'
 author = 'Green Forge Coop'
 release = '1.1.1'
 
@@ -43,7 +43,7 @@ extensions = [
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 bibtex_bibfiles = ['ref.bib']
-
+bibtex_default_style = 'plain'
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
