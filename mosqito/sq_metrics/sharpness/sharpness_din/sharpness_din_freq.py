@@ -5,11 +5,14 @@ from numpy import interp, arange
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwst_freq
-from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import (
+    sharpness_din_from_loudness,
+)
+
 
 def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     """
-    Returns the sharpness value 
+    Compute the sharpness value from a fine band spectrum
 
     This function computes the sharpness value along time according to different methods.
 
@@ -20,16 +23,21 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     freqs : array_like
         Frequency axis.
     weighting : {'din', 'aures', 'bismarck', 'fastl'}
-        Weighting function used for the sharpness computation. 
+        Weighting function used for the sharpness computation.
         Default is 'din'
     field_type : {'free', 'diffuse'}
         Type of soundfield.
         Default is 'free'
-        
+
     Returns
     --------
     S : numpy.array
         Sharpness value in [acum]
+
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
 
     See Also
     ---------
@@ -38,20 +46,16 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     .sharpness_din_tv : Sharpness computation for a non-stationary time signal
     .sharpness_din_perseg : Sharpness computation by time-segment
 
-    Warning
-    -------
-    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
-    If the provided signal doesn't meet the requirements, it will be resampled.
-
     Notes
     ------
     The computation consists of a specific loudness weighting employing a weighting function :math:`g(z)`:
-    
+
     .. math::
         S=0.11\\frac{\\int_{0}^{24Bark}N'(z)g(z)\\textup{dz}}{N}
-        
-    with :math:`N'` the specific loudness and :math:`N` the global loudness.
-    
+
+    with :math:`N'` the specific loudness and :math:`N` the global loudness according to Zwicker method
+    for stationary signals.
+
     The different methods available with the function account for the weighting function applied:
      * DIN 45692 : weighting defined in the standard
      * Aures
@@ -63,7 +67,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     :cite:empty:`S-DIN.45692:2009`
     :cite:empty:`S-ZF:9`
     :cite:empty:`S-B74`
-    
+
     .. bibliography::
         :keyprefix: S-
 
@@ -72,7 +76,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     .. plot::
        :include-source:
 
-       >>> from mosqito.sq_metrics import sharpness_din_freq 
+       >>> from mosqito.sq_metrics import sharpness_din_freq
        >>> from mosqito.sound_level_meter import comp_spectrum
        >>> import matplotlib.pyplot as plt
        >>> import numpy as np
@@ -95,26 +99,23 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
     """
     # Check the inputs
     if len(spectrum) != len(freqs):
-        raise ValueError(
-            'Input spectrum and frequency axis must have the same shape')
-    
+        raise ValueError("Input spectrum and frequency axis must have the same shape")
+
     if (freqs.max() < 24000) or (freqs.min() > 24):
-        print("[WARNING] freqs argument is not wide enough to cover the full audio range. Missing frequency bands will be filled with 0. To fulfill the standard requirements, the frequency axis should go from 24Hz up to 24 kHz."
+        print(
+            "[WARNING] freqs argument is not wide enough to cover the full audio range. Missing frequency bands will be filled with 0. To fulfill the standard requirements, the frequency axis should go from 24Hz up to 24 kHz."
         )
         df = freqs[1] - freqs[0]
-        spectrum = interp(arange(0,24000+df, df), freqs, spectrum)
-        freqs = arange(0,24000+df, df)
-        
+        spectrum = interp(arange(0, 24000 + df, df), freqs, spectrum)
+        freqs = arange(0, 24000 + df, df)
+
     # Compute loudness
-    N, N_specific, _ = loudness_zwst_freq(
-        spectrum, freqs, field_type=field_type)
+    N, N_specific, _ = loudness_zwst_freq(spectrum, freqs, field_type=field_type)
 
     if len(spectrum.shape) > 1:
-        raise ValueError(
-            "With a 2D spectrum use 'sharpness_din_perseg' calculation.")
+        raise ValueError("With a 2D spectrum use 'sharpness_din_perseg' calculation.")
 
     # Compute sharpness from loudness
     S = sharpness_din_from_loudness(N, N_specific, weighting=weighting)
 
     return S
-

@@ -20,17 +20,17 @@ except ImportError:
 
 def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
     """
-    Returns the loudness value 
+    Compute the loudness value from a time signal
 
     This function computes the acoustic loudness according to Zwicker method for
-    stationary signals.
-    
+    stationary signals (ISO.532-1:2017).
+
     Parameters
     ----------
     signal: array_like or DataTime object
         Signal time values [Pa], dim (nperseg, nseg).
     fs : float, optional
-        Sampling frequency, can be omitted if the input is a DataTime object. 
+        Sampling frequency, can be omitted if the input is a DataTime object.
         Default to None
     field_type : {'free', 'diffuse'}
         Type of soundfield.
@@ -38,7 +38,7 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
     is_sdt_output : Bool, optional
         If True, the outputs are returned as SciDataTool objects.
         Default to False
-        
+
     Returns
     -------
     N : float or array_like
@@ -48,43 +48,38 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
     bark_axis: array_like
         Bark axis array, size (Nbark,).
 
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
+
     See Also
     --------
     .loudness_zwst_perseg : Loudness computation by time-segment
     .loudness_zwst_freq : Loudness computation from a sound spectrum
     .loudness_zwtv : Loudness computation for a non-stationary time signal
 
-    Warning
-    -------
-    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
-    If the provided signal doesn't meet the requirements, it will be resampled.
-
     Notes
     -----
-    The total loudness :math:`N` of the signal is computed as the integral of the specific loudness :math:`N'` measured in sone/bark, over the Bark scale. 
+    The total loudness :math:`N` of the signal is computed as the integral of the specific loudness :math:`N'` measured in sone/bark, over the Bark scale.
     The values of specific loudness are evaluated from third octave band levels as function of critical band rate :math:`z` in Bark.
-    
+
     .. math::
         N=\\int_{0}^{24Bark}N'(z)\\textup{dz}
-    
-    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours 
+
+    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours
     instead of ISO 226:2003, as defined in the following standards:
         * ISO 532:1975 (method B)
         * DIN 45631:1991
         * ISO 532-1:2017 (method 1)
-    
+
     References
     ----------
     :cite:empty:`L_zw-ZF91`
 
     .. bibliography::
         :keyprefix: L_zw-
-        
-    Warning
-    -------
-    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
-    If the provided signal doesn't meet the requirements, it will be resampled.
-                    
+
     Examples
     --------
     .. plot::
@@ -114,14 +109,15 @@ def loudness_zwst(signal, fs=None, field_type="free", is_sdt_output=False):
         time = signal.get_along("time")["time"]
         fs = 1 / (time[1] - time[0])
         signal = signal.get_along("time")[signal.symbol]
-        
+
     if fs < 48000:
-        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
-             )
+        print(
+            "[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+        )
         from scipy.signal import resample
+
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
-        
 
     # Compute third octave band spectrum
     spec_third, _ = noct_spectrum(signal, fs, fmin=24, fmax=12600)

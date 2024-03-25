@@ -25,7 +25,7 @@ def sharpness_din_perseg(
     is_sdt_output=False,
 ):
     """
-    Returns the sharpness value 
+    Compute the sharpness value per segments from a time signal
 
     This function computes the sharpness value according to different methods.
 
@@ -37,7 +37,7 @@ def sharpness_din_perseg(
         Sampling frequency, can be omitted if the input is a DataTime
         object. Default to None
     weighting : {'din', 'aures', 'bismarck', 'fastl'}
-        Weighting function used for the sharpness computation. 
+        Weighting function used for the sharpness computation.
         Default is 'din'
     nperseg: int, optional
         Length of each segment. Defaults to 4096.
@@ -57,6 +57,11 @@ def sharpness_din_perseg(
     time_axis : numpy.array
         Time axis in [s]
 
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
+
     See Also
     --------
     .sharpness_din_from_loudness : Sharpness computation from loudness values
@@ -64,20 +69,16 @@ def sharpness_din_perseg(
     .sharpness_din_st : Sharpness computation for a stationary time signal
     .sharpness_din_freq : Sharpness computation from a sound spectrum
 
-    Warning
-    -------
-    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
-    If the provided signal doesn't meet the requirements, it will be resampled.
-
     Notes
     -----
     For each segment considered, the computation consists of a specific loudness weighting employing a weighting function :math:`g(z)`:
-    
+
     .. math::
         S=0.11\\frac{\\int_{0}^{24Bark}N'(z)g(z)\\textup{dz}}{N}
-        
-    with :math:`N'` the specific loudness and :math:`N` the global loudness.
-    
+
+    with :math:`N'` the specific loudness and :math:`N` the global loudness according to Zwicker method
+    for stationary signals.
+
     The different methods available with the function account for the weighting function applied:
      * DIN 45692 : weighting defined in the standard
      * Aures
@@ -89,7 +90,7 @@ def sharpness_din_perseg(
     :cite:empty:`S-DIN.45692:2009`
     :cite:empty:`S-ZF:9`
     :cite:empty:`S-B74`
-    
+
     .. bibliography::
         :keyprefix: S-
 
@@ -116,9 +117,11 @@ def sharpness_din_perseg(
        >>> plt.ylabel("Sharpness [Acum]")
     """
     if fs < 48000:
-        print("[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
-             )
+        print(
+            "[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be >=48 kHz."
+        )
         from scipy.signal import resample
+
         signal = resample(signal, int(48000 * len(signal) / fs))
         fs = 48000
 

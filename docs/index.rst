@@ -12,7 +12,7 @@ MOSQITO documentation
    Contribution </source/contribution/index>
 
 
-The objective of :mod:`mosqito` is to provide a unified and modular development framework of key sound quality tools 
+The objective of MOSQITO is to provide a unified and modular development framework of key sound quality tools 
 (including key SQ metrics), favoring reproducible science and efficient shared scripting among engineers, teachers and researchers
 community. The development roadmap of the project is presented in more details in the [scope section] of the documentation. 
 
@@ -45,11 +45,11 @@ https://github.com/Eomys/MoSQITo
 How to cite MOSQITO
 ---------------------
 
-If you are using :mod:`mosqito` in your research activities, please help our scientific visibility by citing our work! You can use the following citation in APA format:
+If you are using MOSQITO in your research activities, please help our scientific visibility by citing our work! You can use the following citation in APA format:
 
-Green Forge Coop. MOSQITO `Computer software <https://doi.org/10.5281/zenodo.5284054>`_.
+Green Forge Coop. MOSQITO [Computer software], doi 10.5281/zenodo.5284054.
 
-If you need to cite the current release of :mod:`mosqito`, please use the "Cite this repository" feature in the "About" section of this Github repository.
+If you need to cite the current release of MOSQITO, please use the "Cite this repository" feature in the "About" section of the `Github repository <https://github.com/Eomys/MoSQITo>`_.
 
 
 Packages using MOSQITO
@@ -74,10 +74,3 @@ Publications citing MOSQITO
 :cite:empty:`internoise21`
 
 .. bibliography::
-
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

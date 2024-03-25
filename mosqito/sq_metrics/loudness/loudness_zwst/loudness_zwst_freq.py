@@ -12,11 +12,11 @@ from mosqito.utils import amp2db
 
 def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     """
-    Returns the loudness value 
+    Compute the loudness value from a fine band spectrum
 
     This function computes the acoustic loudness according to Zwicker method for
-    stationary signals.
-    
+    stationary signals (ISO.532-1:2017).
+
     Parameters
     ----------
     spectrum : array_like
@@ -26,7 +26,7 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     field_type : {'free', 'diffuse'}
         Type of soundfield.
         Default is 'free'
-                
+
     Returns
     -------
     N : float or array_like
@@ -36,49 +36,44 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     bark_axis: array_like
         Bark axis array, size (Nbark,).
 
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
+
     See Also
     --------
     .loudness_zwst : Loudness computation for a stationary time signal
     .loudness_zwst_perseg : Loudness computation by time-segment
     .loudness_zwtv : Loudness computation for a non-stationary time signal
 
-    Warning
-    -------
-    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
-    If the provided signal doesn't meet the requirements, it will be resampled.
-
     Notes
     -----
-    The total loudness :math:`N` is computed as the integral of the specific loudness :math:`N'` measured in sone/bark, over the Bark scale. 
+    The total loudness :math:`N` is computed as the integral of the specific loudness :math:`N'` measured in sone/bark, over the Bark scale.
     The values of specific loudness are evaluated from third octave band levels as function of critical band rate :math:`z` in Bark.
-    
+
     .. math::
         N=\\int_{0}^{24Bark}N'(z)\\textup{dz}
-    
-    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours 
+
+    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours
     instead of ISO 226:2003, as defined in the following standards:
         * ISO 532:1975 (method B)
         * DIN 45631:1991
         * ISO 532-1:2017 (method 1)
-    
+
     References
     ----------
     :cite:empty:`L_zw-ZF91`
 
     .. bibliography::
         :keyprefix: L_zw-
-        
-    Warning
-    -------
-    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
-    If the provided signal doesn't meet the requirements, it will be resampled.
-        
+
     Examples
     --------
     .. plot::
        :include-source:
 
-       >>> from mosqito.sq_metrics import loudness_zwst_freq 
+       >>> from mosqito.sq_metrics import loudness_zwst_freq
        >>> from mosqito.sound_level_meter import comp_spectrum
        >>> import matplotlib.pyplot as plt
        >>> import numpy as np
@@ -96,21 +91,20 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
        >>> plt.plot(bark_axis, N_spec)
        >>> plt.xlabel("Frequency band [Bark]")
        >>> plt.ylabel("Specific loudness [Sone/Bark]")
-       >>> plt.title("Loudness = " + f"{N:.2f}" + " [Sone]")       
+       >>> plt.title("Loudness = " + f"{N:.2f}" + " [Sone]")
     """
-    
+
     # Check the inputs
     if len(spectrum) != len(freqs):
-        raise ValueError(
-            'Input spectrum and frequency axis must have the same shape')
-    
+        raise ValueError("Input spectrum and frequency axis must have the same shape")
+
     if (freqs.max() < 24000) or (freqs.min() > 24):
-        print("[WARNING] freqs argument is not wide enough to cover the full audio range. Missing frequency bands will be filled with 0. To fulfill the standard requirements, the frequency axis should go from 24Hz up to 24 kHz."
+        print(
+            "[WARNING] freqs argument is not wide enough to cover the full audio range. Missing frequency bands will be filled with 0. To fulfill the standard requirements, the frequency axis should go from 24Hz up to 24 kHz."
         )
         df = freqs[1] - freqs[0]
-        spectrum = interp(arange(0,24000+df, df), freqs, spectrum)
-        freqs = arange(0,24000+df, df)
-
+        spectrum = interp(arange(0, 24000 + df, df), freqs, spectrum)
+        freqs = arange(0, 24000 + df, df)
 
     # Compute third octave band spectrum
     spec_third, _ = noct_synthesis(spectrum, freqs, fmin=24, fmax=12600)
@@ -129,4 +123,3 @@ def loudness_zwst_freq(spectrum, freqs, field_type="free"):
     bark_axis = linspace(0.1, 24, int(24 / 0.1))
 
     return N, N_specific, bark_axis
-

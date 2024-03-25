@@ -8,7 +8,7 @@ Prominence Ratio (ECMA 418)
 
    /source/reference/mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st
    /source/reference/mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq
-   /source/reference/mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv
+   /source/reference/mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg
    
 Tone-to-noise Ratio (ISO 532B)
 ==================================
@@ -19,16 +19,20 @@ Tone-to-noise Ratio (ISO 532B)
 
    /source/reference/mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st
    /source/reference/mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq
-   /source/reference/mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_tv
+   /source/reference/mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_perseg
    
 """
 
-__all__ = ['tonality']
+__all__ = ["tonality"]
 
 from mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st import pr_ecma_st
-from mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_tv import pr_ecma_tv
+from mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_perseg import (
+    pr_ecma_perseg,
+)
 from mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq import pr_ecma_freq
 
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st import tnr_ecma_st
-from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_tv import tnr_ecma_tv
+from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_perseg import (
+    tnr_ecma_perseg,
+)
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq import tnr_ecma_freq
