@@ -21,13 +21,13 @@ from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq import tnr_ecm
 
 from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw import roughness_dw
 
-
-
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st import sharpness_din_st
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv import sharpness_din_tv
 
 
 from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi import sii_ansi
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_freq import sii_ansi_freq
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_level import sii_ansi_level
 
 
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon
@@ -45,6 +45,14 @@ from mosqito.utils.conversion.spectrum2dBA import spectrum2dBA
 __version__ = "1.1.0"
 
 # Colors and linestyles
+COLORS = [
+    "#69c3c5",
+    "#ffd788",
+    "#ff8b88",
+    "#7894cf",
+    "#228080",
+    "#a8e2e2"
+]
 # 0 : main mosqito color   # To use for mosqito results
 # 1 : complementary    # To use for "Test not passed"
 # 2 : accentuation     # To use for tolerance lines

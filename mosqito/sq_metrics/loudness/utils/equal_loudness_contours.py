@@ -29,7 +29,7 @@ def equal_loudness_contours(phones):
                            500.0, 630.0, 800.0, 1000.0, 1250.0, 1600.0, 2000.0, 2500.0, 3150.0, 4000.0, 5000.0, 6300.0,
                            8000.0, 10000.0, 12500.0])
 
-    af = np.array(
+    af = array(
         [
             0.532,
             0.506,
@@ -63,7 +63,7 @@ def equal_loudness_contours(phones):
         ]
     )
 
-    Lu = np.array(
+    Lu = array(
         [
             -31.6,
             -27.2,
@@ -97,7 +97,7 @@ def equal_loudness_contours(phones):
         ]
     )
 
-    Tf = np.array(
+    Tf = array(
         [
             78.5,
             68.7,
@@ -140,6 +140,6 @@ def equal_loudness_contours(phones):
         (0.4 * (10 ** (((Tf + Lu) / 10) - 9))) ** af
     )
 
-        spl_array[i] = ((10. / af[i]) * log10(Af)) - Lu[i] + 94
+    spl_array = ((10. / af) * log10(Af)) - Lu + 94
 
     return spl_array, freq_array

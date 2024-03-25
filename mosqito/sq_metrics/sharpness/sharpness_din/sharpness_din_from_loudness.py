@@ -34,9 +34,7 @@ def sharpness_din_from_loudness(N, N_specific, weighting="din"):
     weighting : {'din', 'aures', 'bismarck', 'fastl'}
         Weighting function used for the sharpness computation.
         Default is 'din'
-    skip : float
-        Duration to be cut at the beginning of the analysis in seconds.
-        Default is 0
+        
     Returns
     -------
     S : float or numpy.ndarray

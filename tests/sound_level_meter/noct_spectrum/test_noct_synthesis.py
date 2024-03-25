@@ -57,8 +57,8 @@ def test_noct_synthesis_technical():
 
     # plt.show()
 
-    np.testing.assert_allclose(_dB(spec_3t[:, 0]), _dB(spec_3f), atol=0.3)
-    np.testing.assert_allclose(_dB(spec_1t[:, 0]), _dB(spec_1f), atol=0.3)
+    np.testing.assert_allclose(_dB(spec_3t), _dB(spec_3f), atol=0.3)
+    np.testing.assert_allclose(_dB(spec_1t), _dB(spec_1f), atol=0.3)
 
 
 # @pytest.mark.noct_synthesis  # to skip or run only loudness noct_synthesis tests

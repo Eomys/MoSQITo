@@ -60,9 +60,8 @@ from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq import (
 
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon
 from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi import sii_ansi
-from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_freq import (
-    sii_ansi_freq,
-)
+from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_freq import sii_ansi_freq
+
 from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_level import (
     sii_ansi_level,
 )

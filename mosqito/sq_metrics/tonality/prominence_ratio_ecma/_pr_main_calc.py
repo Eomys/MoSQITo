@@ -215,7 +215,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
         if nseg > 1:
             if sum(power(10, (pr[prominence[i]] / 10))) != 0:
-                t_pr[i] = 10 * \ log10(sum(power(10, (pr[prominence[i]] / 10))))
+                t_pr[i] = 10 * log10(sum(power(10, (pr[prominence[i]] / 10))))
             else:
                 t_pr[i] = 0
             PR[i] = append(PR[i], pr)

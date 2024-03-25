@@ -60,8 +60,7 @@ def _nl_loudness(core_loudness):
     for i_in in arange(1, nl_iter):
         ui_delta[:, :, i_in] = ui_delta[:, :, i_in - 1] + delta
 
-    ui_delta = ui_delta.reshape(
-        core_loudness.shape[0], core_loudness.shape[1] * nl_iter
+    ui_delta = ui_delta.reshape(core_loudness.shape[0], core_loudness.shape[1] * nl_iter)
     uo_mat = copy(ui_delta,)
     # create u2_mat (equivalent to u2 last) and fill the first col.
     u2_mat = zeros(uo_mat.shape[0]*uo_mat.shape[1]
@@ -86,7 +85,7 @@ def _nl_loudness(core_loudness):
         False                                                                False                  Truth        ui                                       u2=f(u2(j-1),B(5),ui(j)
         False                                                                False                  False        ui                                       u2=f(u2(j-1),B(5),ui(j)
  
-    '''
+    """
     for col in arange(core_loudness.shape[1]*nl_iter):
         uo2 = uo_mat[:, col-1] * nl_lp["B"][2] - \
             u2_mat[:, col-1] * nl_lp["B"][3]
@@ -102,8 +101,8 @@ def _nl_loudness(core_loudness):
 
         u2_mat[:, col] = uo_mat[:, col]  # higher than uo
         u22 = uo_mat[:, col - 1] * nl_lp["B"][0] - u2_mat[:, col - 1] * nl_lp["B"][1]
-        mask = np.logical_and(
-            np.logical_and(
+        mask = logical_and(
+            logical_and(
                 ui_delta[:, col] < uo_mat[:, col - 1],
                 uo_mat[:, col - 1] > u2_mat[:, col - 1],
             ),
@@ -114,10 +113,10 @@ def _nl_loudness(core_loudness):
         u2_2 = (u2_mat[:, col - 1] - ui_delta[:, col]) * nl_lp["B"][5] + ui_delta[
             :, col
         ]
-        mask = np.logical_and(
+        mask = logical_and(
             ui_delta[:, col] >= uo_mat[:, col - 1],
-            np.logical_not(
-                np.logical_and(
+            logical_not(
+                logical_and(
                     abs(ui_delta[:, col] - uo_mat[:, col - 1]) < 1e-5,
                     uo_mat[:, col] <= u2_mat[:, col - 1],
                 )

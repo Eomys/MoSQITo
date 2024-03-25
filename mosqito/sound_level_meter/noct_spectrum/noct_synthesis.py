@@ -76,7 +76,7 @@ def noct_synthesis(spectrum, freqs, fmin, fmax, n=3, G=10, fr=1000):
     fs = freqs.max() * 2
 
     # Sampling frequency shall be equal to 48 kHz (as per ISO 532)
-    if fs != 48000:
+    if round(fs) != 48000:
         raise ValueError("""ERROR: Sampling frequency shall be equal to 48 kHz""")
 
     # Get filters center frequencies

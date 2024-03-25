@@ -117,7 +117,7 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
     N, N_specific, _, time_axis = loudness_zwtv(signal, fs, field_type)
 
     # Compute sharpness from loudness
-    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting, skip=0)
+    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting)
 
     # Cut transient effect
     cut_index = argmin(abs(time_axis - skip))
