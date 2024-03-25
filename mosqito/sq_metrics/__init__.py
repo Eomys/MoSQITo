@@ -3,7 +3,7 @@
    
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
    
    Loudness </source/reference/mosqito.sq_metrics.loudness>
    Sharpness </source/reference/mosqito.sq_metrics.sharpness>

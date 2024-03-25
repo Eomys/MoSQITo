@@ -4,7 +4,7 @@ Prominence Ratio (ECMA 418-1)
 ==================================
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
 
    /source/reference/mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_st
    /source/reference/mosqito.sq_metrics.tonality.prominence_ratio_ecma.pr_ecma_freq
@@ -14,7 +14,7 @@ Tone-to-noise Ratio (ECMA 418-1)
 ==================================
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
 
 
    /source/reference/mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st

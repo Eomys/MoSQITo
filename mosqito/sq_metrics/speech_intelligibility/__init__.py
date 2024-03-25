@@ -4,7 +4,7 @@ Speech Intelligibility Index (ANSI S3.5)
 ========================================
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
 
    /source/reference/mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi
    /source/reference/mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_freq

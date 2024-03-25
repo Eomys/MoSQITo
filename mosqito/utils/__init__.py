@@ -4,7 +4,7 @@ Conversion
 ==========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    /source/reference/mosqito.utils.conversion.amp2db
    /source/reference/mosqito.utils.conversion.db2amp
@@ -16,7 +16,7 @@ Sine wave generator
 ===================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    /source/reference/mosqito.utils.sine_wave_generator
    
@@ -25,7 +25,7 @@ Time segmentation
 ===================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    /source/reference/mosqito.utils.time_segmentation
    
@@ -33,7 +33,7 @@ Threshold of quiet
 ===================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    /source/reference/mosqito.utils.LTQ
    
@@ -42,7 +42,7 @@ Signal loading
 ===================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    /source/reference/mosqito.utils.load
 

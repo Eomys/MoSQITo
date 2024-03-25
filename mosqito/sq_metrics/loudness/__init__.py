@@ -5,7 +5,7 @@ Loudness ECMA
 ====================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    /source/reference/mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma
    
@@ -13,7 +13,7 @@ Stationnary loudness ISO 532-1:2017
 ============================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    /source/reference/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst
    /source/reference/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq
@@ -24,7 +24,7 @@ Time-varying loudness ISO 532-1:2017
 ==============================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    /source/reference/mosqito.sq_metrics.loudness.loudness_zwtv.loudness_zwtv
 """
