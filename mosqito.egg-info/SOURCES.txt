@@ -27,11 +27,13 @@ mosqito/sq_metrics/__init__.py
 mosqito/sq_metrics/loudness/__init__.py
 mosqito/sq_metrics/loudness/loudness_ecma/__init__.py
 mosqito/sq_metrics/loudness/loudness_ecma/_auditory_filters_centre_freq.py
+mosqito/sq_metrics/loudness/loudness_ecma/_band_pass_signals.py
 mosqito/sq_metrics/loudness/loudness_ecma/_ear_filter_design.py
+mosqito/sq_metrics/loudness/loudness_ecma/_ecma_time_segmentation.py
 mosqito/sq_metrics/loudness/loudness_ecma/_gammatone.py
 mosqito/sq_metrics/loudness/loudness_ecma/_loudness_ecma_data.py
 mosqito/sq_metrics/loudness/loudness_ecma/_nonlinearity.py
-mosqito/sq_metrics/loudness/loudness_ecma/_rectified_band_pass_signals.py
+mosqito/sq_metrics/loudness/loudness_ecma/_preprocessing.py
 mosqito/sq_metrics/loudness/loudness_ecma/loudness_ecma.py
 mosqito/sq_metrics/loudness/loudness_zwst/__init__.py
 mosqito/sq_metrics/loudness/loudness_zwst/_calc_slopes.py
@@ -80,6 +82,7 @@ mosqito/sq_metrics/tonality/__init__.py
 mosqito/sq_metrics/tonality/prominence_ratio_ecma/__init__.py
 mosqito/sq_metrics/tonality/prominence_ratio_ecma/_pr_main_calc.py
 mosqito/sq_metrics/tonality/prominence_ratio_ecma/pr_ecma_freq.py
+mosqito/sq_metrics/tonality/prominence_ratio_ecma/pr_ecma_perseg.py
 mosqito/sq_metrics/tonality/prominence_ratio_ecma/pr_ecma_st.py
 mosqito/sq_metrics/tonality/tone_to_noise_ecma/_LTH.py
 mosqito/sq_metrics/tonality/tone_to_noise_ecma/__init__.py
@@ -90,6 +93,7 @@ mosqito/sq_metrics/tonality/tone_to_noise_ecma/_screening_for_tones.py
 mosqito/sq_metrics/tonality/tone_to_noise_ecma/_spectrum_smoothing.py
 mosqito/sq_metrics/tonality/tone_to_noise_ecma/_tnr_main_calc.py
 mosqito/sq_metrics/tonality/tone_to_noise_ecma/tnr_ecma_freq.py
+mosqito/sq_metrics/tonality/tone_to_noise_ecma/tnr_ecma_perseg.py
 mosqito/sq_metrics/tonality/tone_to_noise_ecma/tnr_ecma_st.py
 mosqito/utils/LTQ.py
 mosqito/utils/__init__.py

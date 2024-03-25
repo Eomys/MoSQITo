@@ -417,7 +417,7 @@ document.write(`
 <span id="roughness-dw"></span><h1>roughness_dw<a class="headerlink" href="#module-mosqito.sq_metrics.roughness.roughness_dw.roughness_dw" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw">
-<span class="sig-name descname"><span class="pre">roughness_dw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_sdt_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/roughness/roughness_dw/roughness_dw.html#roughness_dw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">roughness_dw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/roughness/roughness_dw/roughness_dw.html#roughness_dw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.roughness.roughness_dw.roughness_dw.roughness_dw" title="Permalink to this definition">#</a></dt>
 <dd><p>Computes the roughness according to Daniel and Weber method
 from a time signal</p>
 <p>This function computes the global and specific roughness values
@@ -426,8 +426,7 @@ of a signal sampled at 48 kHz.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>signal</strong> (<em>array_like</em><em> or </em><em>DataTime object</em>) – Input time signal in Pa</p></li>
-<li><p><strong>fs</strong> (<em>float</em><em>, </em><em>optional</em>) – Sampling frequency, can be omitted if the input is a DataTime
-object. Default to None</p></li>
+<li><p><strong>fs</strong> (<em>float</em>) – Sampling frequency [Hz]</p></li>
 <li><p><strong>overlap</strong> (<em>float</em>) – Overlapping coefficient for the time windows of 200ms</p></li>
 </ul>
 </dd>

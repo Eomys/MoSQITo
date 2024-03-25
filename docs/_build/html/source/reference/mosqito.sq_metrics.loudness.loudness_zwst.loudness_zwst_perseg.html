@@ -420,7 +420,7 @@ document.write(`
 <span id="loudness-zwst-perseg"></span><h1>loudness_zwst_perseg<a class="headerlink" href="#module-mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_perseg" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_perseg.loudness_zwst_perseg">
-<span class="sig-name descname"><span class="pre">loudness_zwst_perseg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nperseg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noverlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'free'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_sdt_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/loudness/loudness_zwst/loudness_zwst_perseg.html#loudness_zwst_perseg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_perseg.loudness_zwst_perseg" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">loudness_zwst_perseg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nperseg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noverlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'free'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/loudness/loudness_zwst/loudness_zwst_perseg.html#loudness_zwst_perseg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_perseg.loudness_zwst_perseg" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the loudness value per segments from a time signal</p>
 <p>This function computes the acoustic loudness according to Zwicker method (ISO.532-1:2017)
 by segmentation of a stationary signal.</p>
@@ -435,8 +435,6 @@ Default to None</p></li>
 If None, noverlap = nperseg / 2. Defaults to None.</p></li>
 <li><p><strong>field_type</strong> (<em>{'free'</em><em>, </em><em>'diffuse'}</em>) – Type of soundfield.
 Default is ‘free’</p></li>
-<li><p><strong>is_sdt_output</strong> (<em>Bool</em><em>, </em><em>optional</em>) – If True, the outputs are returned as SciDataTool objects.
-Default to False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -451,8 +449,18 @@ Default to False</p></li>
 </dl>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.
-If the provided signal doesn’t meet the requirements, it will be resampled.</p>
+<dl class="simple">
+<dt>N<span class="classifier">numpy.array</span></dt><dd><p>The overall loudness array [sones], size (Ntime,).</p>
+</dd>
+<dt>N_specific<span class="classifier">numpy.ndarray</span></dt><dd><p>The specific loudness array [sones/bark], size (Nbark, Ntime).</p>
+</dd>
+<dt>bark_axis: numpy.array</dt><dd><p>The Bark axis array, size (Nbark,).</p>
+</dd>
+<dt>time_axis: numpy.array</dt><dd><p>The time axis array, size (Ntime,).
+The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.</p>
+</dd>
+</dl>
+<p>If the provided signal doesn’t meet the requirements, it will be resampled.</p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>

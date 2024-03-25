@@ -427,11 +427,12 @@ time-varying signals (ISO.532-1:2017).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>signal</strong> (<em>array_like</em><em> or </em><em>DataTime object</em>) – Signal time values [Pa], dim (nperseg, nseg).</p></li>
-<li><p><strong>fs</strong> (<em>float</em><em>, </em><em>optional</em>) – Sampling frequency, can be omitted if the input is a DataTime object.
+<li><p><strong>signal</strong> (<em>numpy.array</em>) – A time signal values [Pa].</p></li>
+<li><p><strong>fs</strong> (<em>integer</em>) – Sampling frequency, can be omitted if the input is a DataTime object.
 Default to None</p></li>
 <li><p><strong>field_type</strong> (<em>{'free'</em><em>, </em><em>'diffuse'}</em>) – Type of soundfield.
 Default is ‘free’</p></li>
+<li><p><strong>Outputs</strong> – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

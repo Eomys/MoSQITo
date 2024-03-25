@@ -384,16 +384,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes</span> <span class="kn">import</span> <span class="n">_calc_slopes</span>
 <span class="kn">from</span> <span class="nn">mosqito.utils</span> <span class="kn">import</span> <span class="n">amp2db</span>
 
-<span class="c1"># Optional package import</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">SciDataTool</span> <span class="kn">import</span> <span class="n">DataTime</span><span class="p">,</span> <span class="n">DataLinspace</span><span class="p">,</span> <span class="n">DataFreq</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">DataTime</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">DataLinspace</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">DataFreq</span> <span class="o">=</span> <span class="kc">None</span>
 
-
-<div class="viewcode-block" id="loudness_zwst"><a class="viewcode-back" href="../../../../../source/reference/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.html#mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.loudness_zwst">[docs]</a><span class="k">def</span> <span class="nf">loudness_zwst</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">,</span> <span class="n">is_sdt_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="loudness_zwst"><a class="viewcode-back" href="../../../../../source/reference/mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.html#mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst.loudness_zwst">[docs]</a><span class="k">def</span> <span class="nf">loudness_zwst</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the loudness value from a time signal</span>
 
@@ -402,17 +394,13 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    signal: array_like or DataTime object</span>
+<span class="sd">    signal : numpy.array</span>
 <span class="sd">        Signal time values [Pa], dim (nperseg, nseg).</span>
-<span class="sd">    fs : float, optional</span>
-<span class="sd">        Sampling frequency, can be omitted if the input is a DataTime object.</span>
-<span class="sd">        Default to None</span>
-<span class="sd">    field_type : {&#39;free&#39;, &#39;diffuse&#39;}</span>
-<span class="sd">        Type of soundfield.</span>
-<span class="sd">        Default is &#39;free&#39;</span>
-<span class="sd">    is_sdt_output : Bool, optional</span>
-<span class="sd">        If True, the outputs are returned as SciDataTool objects.</span>
-<span class="sd">        Default to False</span>
+<span class="sd">    fs : float</span>
+<span class="sd">        Sampling frequency [Hz]</span>
+<span class="sd">    field_type : str</span>
+<span class="sd">        Type of soundfield corresponding to spec_third (&quot;free&quot; by</span>
+<span class="sd">        default or &quot;diffuse&quot;).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -480,12 +468,6 @@ document.write(`
 <span class="sd">       &gt;&gt;&gt; plt.title(&quot;Loudness = &quot; + f&quot;{N:.2f}&quot; + &quot; [Sone]&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Manage SciDataTool input type</span>
-    <span class="k">if</span> <span class="n">DataTime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">DataTime</span><span class="p">):</span>
-        <span class="n">time</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">get_along</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
-        <span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">signal</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">get_along</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)[</span><span class="n">signal</span><span class="o">.</span><span class="n">symbol</span><span class="p">]</span>
-
     <span class="k">if</span> <span class="n">fs</span> <span class="o">&lt;</span> <span class="mi">48000</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
             <span class="s2">&quot;[Warning] Signal resampled to 48 kHz to allow calculation. To fulfill the standard requirements fs should be &gt;=48 kHz.&quot;</span>
@@ -494,7 +476,6 @@ document.write(`
 
         <span class="n">signal</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">48000</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span><span class="p">))</span>
         <span class="n">fs</span> <span class="o">=</span> <span class="mi">48000</span>
-
     <span class="c1"># Compute third octave band spectrum</span>
     <span class="n">spec_third</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">noct_spectrum</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">fmin</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mi">12600</span><span class="p">)</span>
 
@@ -510,29 +491,6 @@ document.write(`
 
     <span class="c1"># Define Bark axis</span>
     <span class="n">bark_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">24</span> <span class="o">/</span> <span class="mf">0.1</span><span class="p">))</span>
-
-    <span class="c1"># Manage SciDataTool output type</span>
-    <span class="k">if</span> <span class="n">is_sdt_output</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">DataLinspace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;In order to handle Data objects you need the &#39;SciDataTool&#39; package.&quot;</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">bark_data</span> <span class="o">=</span> <span class="n">DataLinspace</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Critical band rate&quot;</span><span class="p">,</span>
-                <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;Bark&quot;</span><span class="p">,</span>
-                <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                <span class="n">final</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
-                <span class="n">number</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">24</span> <span class="o">/</span> <span class="mf">0.1</span><span class="p">),</span>
-                <span class="n">include_endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">N_specific</span> <span class="o">=</span> <span class="n">DataFreq</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Specific loudness (Zwicker method for stationnary signal)&quot;</span><span class="p">,</span>
-                <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;N&#39;_</span><span class="si">{zwst}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="n">bark_data</span><span class="p">],</span>
-                <span class="n">values</span><span class="o">=</span><span class="n">N_specific</span><span class="p">,</span>
-                <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;sone/Bark&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">bark_axis</span></div>
 </pre></div>

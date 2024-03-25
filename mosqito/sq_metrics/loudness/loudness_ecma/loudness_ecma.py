@@ -87,9 +87,9 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
        >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
        >>> stimulus = stimulus * ampl
-       >>> N, N_spec, bark_axis, time_axis = loudness_ecma(stimulus)
-       >>> plt.plot(time_axis, N)
-       >>> plt.xlabel("Frequency band [Bark]")
+       >>> N, N_time, N_spec, bark_axis, time_array = loudness_ecma(stimulus, fs)
+       >>> plt.plot(time_array[0], N_time)
+       >>> plt.xlabel("Time [s]")
        >>> plt.ylabel("Loudness [Sone]")
     """
     if fs != 48000:
@@ -136,5 +136,5 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
     N = (mean(N_time**e)) ** (1 / e)
 
     bark_axis = linspace(0.5, 26.5, num=53, endpoint=True)
-
+    
     return N, N_time, N_spec, bark_axis, time_array

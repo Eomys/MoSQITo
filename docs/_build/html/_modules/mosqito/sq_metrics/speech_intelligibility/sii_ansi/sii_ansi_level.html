@@ -377,7 +377,18 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ones</span><span class="p">,</span> <span class="n">log10</span><span class="p">,</span> <span class="n">power</span>
 
-<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.speech_intelligibility.sii_ansi._speech_data</span> <span class="kn">import</span> <span class="n">_get_critical_band_speech_data</span><span class="p">,</span> <span class="n">_get_equal_critical_band_speech_data</span><span class="p">,</span> <span class="n">_get_octave_band_speech_data</span><span class="p">,</span> <span class="n">_get_third_octave_band_speech_data</span>
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.speech_intelligibility.sii_ansi._band_procedure_data</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_get_critical_band_data</span><span class="p">,</span>
+    <span class="n">_get_equal_critical_band_data</span><span class="p">,</span>
+    <span class="n">_get_octave_band_data</span><span class="p">,</span>
+    <span class="n">_get_third_octave_band_data</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.speech_intelligibility.sii_ansi._speech_data</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_get_critical_band_speech_data</span><span class="p">,</span>
+    <span class="n">_get_equal_critical_band_speech_data</span><span class="p">,</span>
+    <span class="n">_get_octave_band_speech_data</span><span class="p">,</span>
+    <span class="n">_get_third_octave_band_speech_data</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">mosqito.sq_metrics.speech_intelligibility.sii_ansi._main_sii</span> <span class="kn">import</span> <span class="n">_main_sii</span>
 
 
@@ -390,7 +401,7 @@ document.write(`
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    noise_level : float</span>
-<span class="sd">        Overall noise level in [dB ref. 2e-5 Pa]. </span>
+<span class="sd">        Overall noise level in [dB ref. 2e-5 Pa].</span>
 <span class="sd">    method: {&quot;critical&quot;, &quot;equally_critical&quot;, &quot;third_octave&quot;, &quot;octave&quot;}</span>
 <span class="sd">        Type of frequency band to be used for the calculation. See § 3.4 of the standard.</span>
 <span class="sd">    speech_level : {&#39;normal&#39;, &#39;raised&#39;, &#39;loud&#39;, &#39;shout&#39;}</span>
@@ -398,7 +409,7 @@ document.write(`
 <span class="sd">    threshold : array_like or &#39;zwicker&#39;</span>
 <span class="sd">        Threshold of hearing [dB ref. 2e-5 Pa] with same size as the chosen method frequency axis, or &#39;zwicker&#39; to use the standard threshold.</span>
 <span class="sd">        Default to None sets the threshold to zeros on each frequency band.</span>
-<span class="sd">                </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    sii: numpy.ndarray</span>
@@ -407,7 +418,7 @@ document.write(`
 <span class="sd">        Specific SII values along the frequency axis.</span>
 <span class="sd">    freq_axis: numpy.ndarray</span>
 <span class="sd">        Frequency axis corresponding to the chosen method.</span>
-<span class="sd">        </span>
+
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
 <span class="sd">    .sii_ansi : Speech intelligibility with a time signal as background noise</span>
@@ -444,7 +455,7 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    .. plot::</span>
 <span class="sd">       :include-source:</span>
-<span class="sd">       </span>
+
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">        &gt;&gt;&gt; from mosqito.sq_metrics.speech_intelligibility import sii_ansi_level</span>
@@ -462,34 +473,51 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; plt.plot(freq_axis, SII_spec)</span>
 <span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Frequency [Hz]&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Specific value &quot;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.title(&quot;Speech Intelligibility Index = &quot; + f&quot;{SII:.2f}&quot;)   </span>
-
+<span class="sd">        &gt;&gt;&gt; plt.title(&quot;Speech Intelligibility Index = &quot; + f&quot;{SII:.2f}&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="k">if</span> <span class="p">(</span><span class="n">method</span><span class="o">!=</span><span class="s1">&#39;critical&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">method</span><span class="o">!=</span><span class="s1">&#39;equally_critical&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">method</span><span class="o">!=</span><span class="s1">&#39;third_octave&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">method</span><span class="o">!=</span><span class="s1">&#39;octave&#39;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Method should be within {&quot;critical&quot;, &quot;equally_critical&quot;, &quot;third_octave&quot;, &quot;octave&quot;}.&#39;</span><span class="p">)</span>
-        
-    <span class="k">if</span> <span class="p">(</span><span class="n">speech_level</span><span class="o">!=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">speech_level</span><span class="o">!=</span><span class="s1">&#39;raised&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">speech_level</span><span class="o">!=</span><span class="s1">&#39;loud&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">speech_level</span><span class="o">!=</span><span class="s1">&#39;shout&#39;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Speech level should be within {&quot;normal&quot;, &quot;raised&quot;, &quot;loud&quot;, &quot;shout&quot;} to use the corresponding standard data.&#39;</span><span class="p">)</span>
-    
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;critical&quot;</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;equally_critical&quot;</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;third_octave&quot;</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;octave&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;Method should be within {&quot;critical&quot;, &quot;equally_critical&quot;, &quot;third_octave&quot;, &quot;octave&quot;}.&#39;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">speech_level</span> <span class="o">!=</span> <span class="s2">&quot;normal&quot;</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">speech_level</span> <span class="o">!=</span> <span class="s2">&quot;raised&quot;</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">speech_level</span> <span class="o">!=</span> <span class="s2">&quot;loud&quot;</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">speech_level</span> <span class="o">!=</span> <span class="s2">&quot;shout&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;Speech level should be within {&quot;normal&quot;, &quot;raised&quot;, &quot;loud&quot;, &quot;shout&quot;} to use the corresponding standard data.&#39;</span>
+        <span class="p">)</span>
+
     <span class="c1"># Get standard speech spectrum</span>
-    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;critical&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;critical&quot;</span><span class="p">:</span>
         <span class="n">speech_spectrum</span><span class="p">,</span> <span class="n">speech_level</span> <span class="o">=</span> <span class="n">_get_critical_band_speech_data</span><span class="p">(</span><span class="n">speech_level</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;equally_critical&#39;</span><span class="p">:</span>
-        <span class="n">speech_spectrum</span><span class="p">,</span> <span class="n">speech_level</span> <span class="o">=</span> <span class="n">_get_equal_critical_band_speech_data</span><span class="p">(</span><span class="n">speech_level</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;third_octave&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;equally_critical&quot;</span><span class="p">:</span>
+        <span class="n">speech_spectrum</span><span class="p">,</span> <span class="n">speech_level</span> <span class="o">=</span> <span class="n">_get_equal_critical_band_speech_data</span><span class="p">(</span>
+            <span class="n">speech_level</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;third_octave&quot;</span><span class="p">:</span>
         <span class="n">speech_spectrum</span><span class="p">,</span> <span class="n">speech_level</span> <span class="o">=</span> <span class="n">_get_third_octave_band_speech_data</span><span class="p">(</span><span class="n">speech_level</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;octave&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;octave&quot;</span><span class="p">:</span>
         <span class="n">speech_spectrum</span><span class="p">,</span> <span class="n">speech_level</span> <span class="o">=</span> <span class="n">_get_octave_band_speech_data</span><span class="p">(</span><span class="n">speech_level</span><span class="p">)</span>
     <span class="n">nbands</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">speech_spectrum</span><span class="p">)</span>
-    
+
     <span class="c1"># Create noise spectrum as uniform spectrum from overall level</span>
-    <span class="n">band_level</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">log10</span><span class="p">(</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">/</span><span class="n">nbands</span><span class="p">)</span>
+    <span class="n">band_level</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">log10</span><span class="p">(</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">noise_level</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="n">nbands</span><span class="p">)</span>
     <span class="n">noise_spectrum</span> <span class="o">=</span> <span class="n">ones</span><span class="p">((</span><span class="n">nbands</span><span class="p">))</span> <span class="o">*</span> <span class="n">band_level</span>
-        
+
     <span class="c1"># Compute SII</span>
-    <span class="n">SII</span><span class="p">,</span> <span class="n">SII_specific</span><span class="p">,</span> <span class="n">freq_axis</span> <span class="o">=</span> <span class="n">_main_sii</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">speech_spectrum</span><span class="p">,</span> <span class="n">noise_spectrum</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span>    
-    
+    <span class="n">SII</span><span class="p">,</span> <span class="n">SII_specific</span><span class="p">,</span> <span class="n">freq_axis</span> <span class="o">=</span> <span class="n">_main_sii</span><span class="p">(</span>
+        <span class="n">method</span><span class="p">,</span> <span class="n">speech_spectrum</span><span class="p">,</span> <span class="n">noise_spectrum</span><span class="p">,</span> <span class="n">threshold</span>
+    <span class="p">)</span>
+
     <span class="k">return</span> <span class="n">SII</span><span class="p">,</span> <span class="n">SII_specific</span><span class="p">,</span> <span class="n">freq_axis</span></div>
 </pre></div>
 

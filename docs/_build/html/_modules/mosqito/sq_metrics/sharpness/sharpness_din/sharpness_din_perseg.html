@@ -381,23 +381,14 @@ document.write(`
     <span class="n">sharpness_din_from_loudness</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="c1"># Optional package import</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">SciDataTool</span> <span class="kn">import</span> <span class="n">DataTime</span><span class="p">,</span> <span class="n">DataLinspace</span><span class="p">,</span> <span class="n">DataFreq</span><span class="p">,</span> <span class="n">Norm_func</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">DataTime</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">DataLinspace</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">DataFreq</span> <span class="o">=</span> <span class="kc">None</span>
-
 
 <div class="viewcode-block" id="sharpness_din_perseg"><a class="viewcode-back" href="../../../../../source/reference/mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.html#mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg.sharpness_din_perseg">[docs]</a><span class="k">def</span> <span class="nf">sharpness_din_perseg</span><span class="p">(</span>
     <span class="n">signal</span><span class="p">,</span>
-    <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fs</span><span class="p">,</span>
     <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;din&quot;</span><span class="p">,</span>
     <span class="n">nperseg</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
     <span class="n">noverlap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">,</span>
-    <span class="n">is_sdt_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the sharpness value per segments from a time signal</span>
@@ -408,9 +399,8 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    signal: array_like</span>
 <span class="sd">        Input time signal in [Pa]</span>
-<span class="sd">    fs : float, optional</span>
-<span class="sd">        Sampling frequency, can be omitted if the input is a DataTime</span>
-<span class="sd">        object. Default to None</span>
+<span class="sd">    fs : float</span>
+<span class="sd">        Sampling frequency [Hz]</span>
 <span class="sd">    weighting : {&#39;din&#39;, &#39;aures&#39;, &#39;bismarck&#39;, &#39;fastl&#39;}</span>
 <span class="sd">        Weighting function used for the sharpness computation.</span>
 <span class="sd">        Default is &#39;din&#39;</span>
@@ -422,9 +412,6 @@ document.write(`
 <span class="sd">    field_type : {&#39;free&#39;, &#39;diffuse&#39;}</span>
 <span class="sd">        Type of soundfield.</span>
 <span class="sd">        Default is &#39;free&#39;</span>
-<span class="sd">    is_sdt_output : Bool, optional</span>
-<span class="sd">        If True, the outputs are returned as SciDataTool objects.</span>
-<span class="sd">        Default to False</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    S : numpy.array</span>
@@ -500,12 +487,6 @@ document.write(`
         <span class="n">signal</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">48000</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span><span class="p">))</span>
         <span class="n">fs</span> <span class="o">=</span> <span class="mi">48000</span>
 
-    <span class="c1"># Manage input type</span>
-    <span class="k">if</span> <span class="n">DataTime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">DataTime</span><span class="p">):</span>
-        <span class="n">time</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">get_along</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
-        <span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">signal</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">get_along</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)[</span><span class="n">signal</span><span class="o">.</span><span class="n">symbol</span><span class="p">]</span>
-
     <span class="c1"># Compute loudness</span>
     <span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">time_axis</span> <span class="o">=</span> <span class="n">loudness_zwst_perseg</span><span class="p">(</span>
         <span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="n">nperseg</span><span class="p">,</span> <span class="n">noverlap</span><span class="o">=</span><span class="n">noverlap</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="n">field_type</span>
@@ -513,29 +494,6 @@ document.write(`
 
     <span class="c1"># Compute sharpness from loudness</span>
     <span class="n">S</span> <span class="o">=</span> <span class="n">sharpness_din_from_loudness</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="n">weighting</span><span class="p">)</span>
-
-    <span class="c1"># Manage SciDataTool output type</span>
-    <span class="k">if</span> <span class="n">is_sdt_output</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">DataLinspace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;In order to handle Data objects you need the &#39;SciDataTool&#39; package.&quot;</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">time</span> <span class="o">=</span> <span class="n">DataLinspace</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
-                <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
-                <span class="n">initial</span><span class="o">=</span><span class="n">time_axis</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="n">final</span><span class="o">=</span><span class="n">time_axis</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                <span class="n">number</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">time_axis</span><span class="p">),</span>
-                <span class="n">include_endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">S</span> <span class="o">=</span> <span class="n">DataTime</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sharpness (DIN 45692)&quot;</span><span class="p">,</span>
-                <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;S_</span><span class="si">{DIN}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="n">time</span><span class="p">],</span>
-                <span class="n">values</span><span class="o">=</span><span class="n">S</span><span class="p">,</span>
-                <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;acum&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">S</span><span class="p">,</span> <span class="n">time_axis</span></div>
 </pre></div>

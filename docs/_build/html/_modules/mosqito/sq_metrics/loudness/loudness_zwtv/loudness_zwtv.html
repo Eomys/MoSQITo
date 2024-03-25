@@ -399,15 +399,15 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    signal: array_like or DataTime object</span>
-<span class="sd">        Signal time values [Pa], dim (nperseg, nseg).</span>
-<span class="sd">    fs : float, optional</span>
+<span class="sd">    signal : numpy.array</span>
+<span class="sd">        A time signal values [Pa].</span>
+<span class="sd">    fs : integer</span>
 <span class="sd">        Sampling frequency, can be omitted if the input is a DataTime object.</span>
 <span class="sd">        Default to None</span>
 <span class="sd">    field_type : {&#39;free&#39;, &#39;diffuse&#39;}</span>
 <span class="sd">        Type of soundfield.</span>
 <span class="sd">        Default is &#39;free&#39;</span>
-
+<span class="sd">    Outputs</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    N : float</span>

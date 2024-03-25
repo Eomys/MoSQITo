@@ -381,16 +381,13 @@ document.write(`
 <span class="c1"># Local application imports</span>
 <span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._center_freq</span> <span class="kn">import</span> <span class="n">_center_freq</span>
 <span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._filter_bandwidth</span> <span class="kn">import</span> <span class="n">_filter_bandwidth</span>
-<span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">_n_oct_freq_filter</span><span class="p">,</span>
-<span class="p">)</span>
-
+<span class="kn">from</span> <span class="nn">mosqito.sound_level_meter.noct_spectrum._n_oct_freq_filter</span> <span class="kn">import</span> <span class="n">_n_oct_freq_filter</span>
 
 <div class="viewcode-block" id="noct_synthesis"><a class="viewcode-back" href="../../../../source/reference/mosqito.sound_level_meter.noct_spectrum.noct_synthesis.html#mosqito.sound_level_meter.noct_spectrum.noct_synthesis.noct_synthesis">[docs]</a><span class="k">def</span> <span class="nf">noct_synthesis</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Adapt input spectrum to nth-octave band spectrum</span>
-
+<span class="sd">                </span>
 <span class="sd">    This function the input spectrum to n-th octave band levels.</span>
-
+<span class="sd">                       </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    spectrum : array_like</span>
@@ -454,7 +451,7 @@ document.write(`
     <span class="n">fs</span> <span class="o">=</span> <span class="n">freqs</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span>
 
     <span class="c1"># Sampling frequency shall be equal to 48 kHz (as per ISO 532)</span>
-    <span class="k">if</span> <span class="n">fs</span> <span class="o">!=</span> <span class="mi">48000</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">round</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">48000</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;ERROR: Sampling frequency shall be equal to 48 kHz&quot;&quot;&quot;</span><span class="p">)</span>
 
     <span class="c1"># Get filters center frequencies</span>

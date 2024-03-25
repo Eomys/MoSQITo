@@ -10,7 +10,7 @@ stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
 rms = np.sqrt(np.mean(np.power(stimulus, 2)))
 ampl = 0.00002 * np.power(10, dB / 20) / rms
 stimulus = stimulus * ampl
-N, N_spec, bark_axis, time_axis = loudness_ecma(stimulus)
-plt.plot(time_axis, N)
-plt.xlabel("Frequency band [Bark]")
+N, N_time, N_spec, bark_axis, time_array = loudness_ecma(stimulus, fs)
+plt.plot(time_array[0], N_time)
+plt.xlabel("Time [s]")
 plt.ylabel("Loudness [Sone]")

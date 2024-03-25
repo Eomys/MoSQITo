@@ -375,19 +375,31 @@ document.write(`
   <h1>Source code for mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">linspace</span><span class="p">,</span> <span class="nb">sum</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">clip</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">linspace</span><span class="p">,</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">log10</span>
 
 <span class="c1"># Project Imports</span>
-<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_ecma._rectified_band_pass_signals</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">_rectified_band_pass_signals</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_ecma._band_pass_signals</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_band_pass_signals</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_ecma._ecma_time_segmentation</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_ecma_time_segmentation</span><span class="p">,</span>
+<span class="p">)</span>
+
 <span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_ecma._nonlinearity</span> <span class="kn">import</span> <span class="n">_nonlinearity</span>
+
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_ecma._preprocessing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_preprocessing</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Data import</span>
+<span class="c1"># Threshold in quiet</span>
 <span class="kn">from</span> <span class="nn">mosqito.sq_metrics.loudness.loudness_ecma._loudness_ecma_data</span> <span class="kn">import</span> <span class="n">ltq_z</span>
 
 
-<div class="viewcode-block" id="loudness_ecma"><a class="viewcode-back" href="../../../../../source/reference/mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.html#mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.loudness_ecma">[docs]</a><span class="k">def</span> <span class="nf">loudness_ecma</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">sb</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">sh</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the loudness value from a time signal</span>
+<div class="viewcode-block" id="loudness_ecma"><a class="viewcode-back" href="../../../../../source/reference/mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.html#mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.loudness_ecma">[docs]</a><span class="k">def</span> <span class="nf">loudness_ecma</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">sb</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">sh</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculation of the specific and total loudness according to ECMA-418-2</span>
+<span class="sd">    (2nd Ed, 2022), Section 5.</span>
 
 <span class="sd">    This function computes the acoustic loudness according to ECMA-418-2 section 5 method for</span>
 <span class="sd">    stationary signals.</span>
@@ -403,9 +415,17 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    N_specific : list of numpy.array</span>
-<span class="sd">        Specific Loudness [sone_HMS per Bark]. Each of the 53 elements of the list corresponds to the time-dependant</span>
-<span class="sd">        specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.</span>
+<span class="sd">    N : float</span>
+<span class="sd">        Overall loudness representative value [sone_HMS].</span>
+<span class="sd">    N_time : numpy.ndarray</span>
+<span class="sd">        Loudness over time [sone_HMS], size (Ntime,).</span>
+<span class="sd">    N_specific : numpy.ndarray</span>
+<span class="sd">        Specific loudness [sone_HMS/bark], size (Nbark, Ntime).</span>
+<span class="sd">	Each of the 53 elements of the list corresponds to the time-dependant specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.</span>
+<span class="sd">    bark_axis : numpy.ndarray</span>
+<span class="sd">        Corresponding bark axis, size (Nbark,).</span>
+<span class="sd">    time_axis : numpy.ndarray</span>
+<span class="sd">        Time axis, size (Ntime,).</span>
 <span class="sd">    bark_axis: array_like</span>
 <span class="sd">        Bark axis array, size (Nbark,).</span>
 
@@ -442,56 +462,57 @@ document.write(`
 <span class="sd">       &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
 <span class="sd">       &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
 <span class="sd">       &gt;&gt;&gt; stimulus = stimulus * ampl</span>
-<span class="sd">       &gt;&gt;&gt; N, N_spec, bark_axis, time_axis = loudness_ecma(stimulus)</span>
-<span class="sd">       &gt;&gt;&gt; plt.plot(time_axis, N)</span>
-<span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Frequency band [Bark]&quot;)</span>
+<span class="sd">       &gt;&gt;&gt; N, N_time, N_spec, bark_axis, time_array = loudness_ecma(stimulus, fs)</span>
+<span class="sd">       &gt;&gt;&gt; plt.plot(time_array[0], N_time)</span>
+<span class="sd">       &gt;&gt;&gt; plt.xlabel(&quot;Time [s]&quot;)</span>
 <span class="sd">       &gt;&gt;&gt; plt.ylabel(&quot;Loudness [Sone]&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">fs</span> <span class="o">!=</span> <span class="mi">48000</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;[Warning] Signal resampled to 48 kHz fulfill the standard requirements and allow calculation.&quot;</span>
+        <span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">resample</span>
 
-    <span class="c1"># Computaton of rectified band-pass signals</span>
-    <span class="c1"># (section 5.1.2 to 5.1.5 of the standard)</span>
-    <span class="n">block_array_rect</span> <span class="o">=</span> <span class="n">_rectified_band_pass_signals</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">sb</span><span class="p">,</span> <span class="n">sh</span><span class="p">)</span>
+        <span class="n">signal</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">48000</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span><span class="p">))</span>
+        <span class="n">fs</span> <span class="o">=</span> <span class="mi">48000</span>
 
-    <span class="c1"># # sb and sh for Tonality</span>
-    <span class="c1"># z = np.linspace(0.5, 26.5, num=53, endpoint=True)</span>
-    <span class="c1"># sb = np.ones(53, dtype=&quot;int&quot;)</span>
-    <span class="c1"># sh = np.ones(53, dtype=&quot;int&quot;)</span>
-    <span class="c1"># sb[z &lt;= 1.5] = 8192</span>
-    <span class="c1"># sh[z &lt;= 1.5] = 2048</span>
-    <span class="c1"># sb[np.all([z &gt;= 2, z &lt;= 8], axis=0)] = 4096</span>
-    <span class="c1"># sh[np.all([z &gt;= 2, z &lt;= 8], axis=0)] = 1024</span>
-    <span class="c1"># sb[np.all([z &gt;= 8.5, z &lt;= 12.5], axis=0)] = 2048</span>
-    <span class="c1"># sh[np.all([z &gt;= 8.5, z &lt;= 12.5], axis=0)] = 512</span>
-    <span class="c1"># sb[z &gt;= 13] = 1024</span>
-    <span class="c1"># sh[z &gt;= 13] = 256</span>
+    <span class="c1"># Windowing and zero-padding (5.1.2)</span>
+    <span class="n">signal</span><span class="p">,</span> <span class="n">n_new</span> <span class="o">=</span> <span class="n">_preprocessing</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">sb</span><span class="p">,</span> <span class="n">sh</span><span class="p">)</span>
 
+    <span class="c1"># Computaton of band-pass signals (5.1.3 to 5.1.4)</span>
+    <span class="n">bandpass_signals</span> <span class="o">=</span> <span class="n">_band_pass_signals</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+
+    <span class="c1"># Segmentation into blocks (5.1.5)</span>
+    <span class="n">block_array</span><span class="p">,</span> <span class="n">time_array</span> <span class="o">=</span> <span class="n">_ecma_time_segmentation</span><span class="p">(</span><span class="n">bandpass_signals</span><span class="p">,</span> <span class="n">sb</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">n_new</span><span class="p">)</span>
+
+    <span class="c1"># Rectification (5.1.6)</span>
+    <span class="n">block_array_rect</span> <span class="o">=</span> <span class="n">clip</span><span class="p">(</span><span class="n">block_array</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># Calculation of specific loudness (5.1.7 to 5.1.9)</span>
     <span class="n">N_spec</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">band_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">53</span><span class="p">):</span>
-        <span class="c1"># ROOT-MEAN-SQUARE (section 5.1.6)</span>
-        <span class="c1"># After the segmentation of the signal into blocks, root-mean square values of each block are calculated</span>
-        <span class="c1"># according to Formula 17.</span>
+        <span class="c1"># root mean square values (eq. 22)</span>
         <span class="n">rms_block_value</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span>
             <span class="mi">2</span> <span class="o">*</span> <span class="n">mean</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="n">block_array_rect</span><span class="p">[</span><span class="n">band_number</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="p">)</span>
-
-        <span class="c1"># NON-LINEARITY (section 5.1.7)</span>
-        <span class="c1"># This section covers the other part of the calculations needed to consider the non-linear transformation</span>
-        <span class="c1"># of sound pressure to specific loudness that does the the auditory system. After this point, the</span>
-        <span class="c1"># computation is done equally to every block in which we have divided our signal.</span>
+        <span class="c1"># non-linear transformation of sound pressure to specific loudness</span>
         <span class="n">a_prime</span> <span class="o">=</span> <span class="n">_nonlinearity</span><span class="p">(</span><span class="n">rms_block_value</span><span class="p">)</span>
-
-        <span class="c1"># SPECIFIC LOUDNESS CONSIDERING THE THRESHOLD IN QUIET (section 5.1.8)</span>
-        <span class="c1"># The next calculation helps us obtain the result for the specific loudness - specific loudness with</span>
-        <span class="c1"># consideration of the lower threshold of hearing.</span>
+        <span class="c1"># specific loudness considering the lower threshold of hearing.</span>
         <span class="n">a_prime</span><span class="p">[</span><span class="n">a_prime</span> <span class="o">&lt;</span> <span class="n">ltq_z</span><span class="p">[</span><span class="n">band_number</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ltq_z</span><span class="p">[</span><span class="n">band_number</span><span class="p">]</span>
         <span class="n">N_prime</span> <span class="o">=</span> <span class="n">a_prime</span> <span class="o">-</span> <span class="n">ltq_z</span><span class="p">[</span><span class="n">band_number</span><span class="p">]</span>
         <span class="n">N_spec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N_prime</span><span class="p">)</span>
 
-    <span class="n">bark_axis</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">26.5</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">time_axis</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">/</span> <span class="mi">48000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">N_spec</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="n">N_spec</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Time dependent values (eq. 116)</span>
+    <span class="n">delta_z</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">N_time</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">N_spec</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta_z</span>
 
-    <span class="k">return</span> <span class="n">N</span><span class="p">,</span> <span class="n">array</span><span class="p">(</span><span class="n">N_spec</span><span class="p">),</span> <span class="n">bark_axis</span><span class="p">,</span> <span class="n">time_axis</span></div>
+    <span class="c1"># Single-value loudness (eq. 117)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="p">(</span><span class="n">mean</span><span class="p">(</span><span class="n">N_time</span><span class="o">**</span><span class="n">e</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">e</span><span class="p">)</span>
+
+    <span class="n">bark_axis</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">26.5</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">N</span><span class="p">,</span> <span class="n">N_time</span><span class="p">,</span> <span class="n">N_spec</span><span class="p">,</span> <span class="n">bark_axis</span><span class="p">,</span> <span class="n">time_array</span></div>
 </pre></div>
 
                 </article>

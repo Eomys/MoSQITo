@@ -409,9 +409,7 @@ document.write(`
 <span class="sd">    weighting : {&#39;din&#39;, &#39;aures&#39;, &#39;bismarck&#39;, &#39;fastl&#39;}</span>
 <span class="sd">        Weighting function used for the sharpness computation.</span>
 <span class="sd">        Default is &#39;din&#39;</span>
-<span class="sd">    skip : float</span>
-<span class="sd">        Duration to be cut at the beginning of the analysis in seconds.</span>
-<span class="sd">        Default is 0</span>
+<span class="sd">        </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    S : float or numpy.ndarray</span>
@@ -517,7 +515,7 @@ document.write(`
     <span class="n">S</span> <span class="o">=</span> <span class="mf">0.11</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">N_specific</span> <span class="o">*</span> <span class="n">g</span> <span class="o">*</span> <span class="n">z</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
 
     <span class="k">if</span> <span class="n">S</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">S</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">S</span> <span class="o">=</span> <span class="n">squeeze</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
         <span class="n">S</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>

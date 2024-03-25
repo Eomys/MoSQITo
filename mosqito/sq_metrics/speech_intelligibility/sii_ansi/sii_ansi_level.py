@@ -98,8 +98,7 @@ def sii_ansi_level(noise_level, method, speech_level, threshold=None):
         >>> plt.plot(freq_axis, SII_spec)
         >>> plt.xlabel("Frequency [Hz]")
         >>> plt.ylabel("Specific value ")
-        >>> plt.title("Speech Intelligibility Index = " + f"{SII:.2f} \n Speech level: " + speech_level)
-
+        >>> plt.title("Speech Intelligibility Index = " + f"{SII:.2f}")
     """
 
     if (

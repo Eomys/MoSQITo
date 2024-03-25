@@ -419,8 +419,9 @@ document.write(`
 <span id="loudness-ecma"></span><h1>loudness_ecma<a class="headerlink" href="#module-mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.loudness_ecma">
-<span class="sig-name descname"><span class="pre">loudness_ecma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/loudness/loudness_ecma/loudness_ecma.html#loudness_ecma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.loudness_ecma" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute the loudness value from a time signal</p>
+<span class="sig-name descname"><span class="pre">loudness_ecma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/sq_metrics/loudness/loudness_ecma/loudness_ecma.html#loudness_ecma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.sq_metrics.loudness.loudness_ecma.loudness_ecma.loudness_ecma" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculation of the specific and total loudness according to ECMA-418-2
+(2nd Ed, 2022), Section 5.</p>
 <p>This function computes the acoustic loudness according to ECMA-418-2 section 5 method for
 stationary signals.</p>
 <dl class="field-list simple">
@@ -433,8 +434,12 @@ stationary signals.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>N_specific</strong> (<em>list of numpy.array</em>) – Specific Loudness [sone_HMS per Bark]. Each of the 53 elements of the list corresponds to the time-dependant
-specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.</p></li>
+<li><p><strong>N</strong> (<em>float</em>) – Overall loudness representative value [sone_HMS].</p></li>
+<li><p><strong>N_time</strong> (<em>numpy.ndarray</em>) – Loudness over time [sone_HMS], size (Ntime,).</p></li>
+<li><p><strong>N_specific</strong> (<em>numpy.ndarray</em>) – Specific loudness [sone_HMS/bark], size (Nbark, Ntime).
+Each of the 53 elements of the list corresponds to the time-dependant specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.</p></li>
+<li><p><strong>bark_axis</strong> (<em>numpy.ndarray</em>) – Corresponding bark axis, size (Nbark,).</p></li>
+<li><p><strong>time_axis</strong> (<em>numpy.ndarray</em>) – Time axis, size (Ntime,).</p></li>
 <li><p><strong>bark_axis</strong> (<em>array_like</em>) – Bark axis array, size (Nbark,).</p></li>
 </ul>
 </p>
@@ -476,9 +481,9 @@ specific loudness for a given bark band. Can be a ragged array if a different sb
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">stimulus</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ampl</span> <span class="o">=</span> <span class="mf">0.00002</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dB</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span> <span class="o">/</span> <span class="n">rms</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stimulus</span> <span class="o">=</span> <span class="n">stimulus</span> <span class="o">*</span> <span class="n">ampl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">N</span><span class="p">,</span> <span class="n">N_spec</span><span class="p">,</span> <span class="n">bark_axis</span><span class="p">,</span> <span class="n">time_axis</span> <span class="o">=</span> <span class="n">loudness_ecma</span><span class="p">(</span><span class="n">stimulus</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_axis</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency band [Bark]&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">N</span><span class="p">,</span> <span class="n">N_time</span><span class="p">,</span> <span class="n">N_spec</span><span class="p">,</span> <span class="n">bark_axis</span><span class="p">,</span> <span class="n">time_array</span> <span class="o">=</span> <span class="n">loudness_ecma</span><span class="p">(</span><span class="n">stimulus</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_array</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">N_time</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time [s]&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Loudness [Sone]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
