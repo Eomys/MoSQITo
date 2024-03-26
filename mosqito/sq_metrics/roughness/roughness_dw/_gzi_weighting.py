@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Nov  6 10:29:02 2020
 
-@author: wantysal
-"""
-
-import numpy as np
-
+# Standard library import
+from numpy import array, arange, interp
 
 def _gzi_weighting(center_freq):
     """Weighting function for the specific roughness given by Aures"""
 
-    gr_x = np.arange(0, 25, 1)
-    gr_y = np.array(
+    gr_x = arange(0, 25, 1)
+    gr_y = array(
         [
             0.15,
             0.26,
@@ -42,6 +37,6 @@ def _gzi_weighting(center_freq):
         ]
     )
 
-    gzi = np.interp(center_freq, gr_x, gr_y)
+    gzi = interp(center_freq, gr_x, gr_y)
 
     return gzi

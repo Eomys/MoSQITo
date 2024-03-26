@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-import numpy as np
+from numpy import max, array, newaxis, arange, multiply, ones, logical_xor, power, zeros, log10, copy, append, squeeze
 
 
 def _main_loudness(spec_third, field_type):
     """Calculate core loudness
 
     The code is based on BASIC program published in "Program for
-    calculating loudness according to DIN 45631 (ISO 532B)", E.Zwicker
+    calculating loudness according to DIN 45631 (ISO 532-1:2017)", E.Zwicker
     and H.Fastl, J.A.S.J (E) 12, 1 (1991).
     It also corresponds to the following functions of the C program
     published with ISO 532-1:2017:
@@ -35,7 +35,7 @@ def _main_loudness(spec_third, field_type):
     # center freq. below 300 Hz is only specified for levels up to 120 dB
     # If one of the first 11 bands (from 25 to 250 Hz) exceed 120 dB the
     # Zwicker method cannot be applied.
-    if np.max(spec_third[0:11]) > 120.0:
+    if max(spec_third[0:11]) > 120.0:
         raise ValueError(
             "1/3 octave band value exceed 120 dB, for which "
             + "the Zwicker method is no longer valid."
@@ -45,10 +45,10 @@ def _main_loudness(spec_third, field_type):
     # Zwicker:1991)
     # Ranges of 1/3 octave band levels for correction at low frequencies
     # according to equal loudness contours
-    rap = np.array([45, 55, 65, 71, 80, 90, 100, 120])
+    rap = array([45, 55, 65, 71, 80, 90, 100, 120])
     # Reduction of 1/3 octave band levels at low frequencies according to
     # equal loudness contours within the eight ranges defined by RAP
-    dll = np.array(
+    dll = array(
         [
             (-32, -24, -16, -10, -5, 0, -7, -3, 0, -2, 0),
             (-29, -22, -15, -10, -4, 0, -7, -2, 0, -2, 0),
@@ -62,14 +62,14 @@ def _main_loudness(spec_third, field_type):
     )
     # Critical band level at absolute threshold without taking into
     # account the transmission characteristics of the ear
-    ltq = np.array([30, 18, 12, 8, 7, 6, 5, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
+    ltq = array([30, 18, 12, 8, 7, 6, 5, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
     # Correction of levels according to the transmission characteristics
     # of the ear
-    a0 = np.array(
+    a0 = array(
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.5, -1.6, -3.2, -5.4, -5.6, -4, -1.5, 2, 5, 12]
     )
     # Level difference between free and diffuse sound fields
-    ddf = np.array(
+    ddf = array(
         [
             0,
             0,
@@ -95,7 +95,7 @@ def _main_loudness(spec_third, field_type):
     )
     # Adaptation of 1/3 oct. band levels to the corresponding critical
     # band level
-    dcb = np.array(
+    dcb = array(
         [
             -0.25,
             -0.6,
@@ -126,25 +126,25 @@ def _main_loudness(spec_third, field_type):
 
     # 1-dimensional array to 2-dimensional array with size (nfreq, 1)
     if spec_third.ndim == 1:
-        spec_third = spec_third[:, np.newaxis]
+        spec_third = spec_third[:, newaxis]
 
     spec_third_aux = spec_third[: dll.shape[1], :]
     # spec_third_aux[:, -1] = 0
 
     # Convert rap, dll in 3 dimensional array
     # 1. generate the array shape
-    base_mat = np.ones((dll.shape[0], dll.shape[1], spec_third_aux.shape[1]))
+    base_mat = ones((dll.shape[0], dll.shape[1], spec_third_aux.shape[1]))
     # 2. start saving data in rap and DLL array
-    rap_mat = np.array(
-        [base_mat[:, i, :].T * rap for i in np.arange(dll.shape[1])]
+    rap_mat = array(
+        [base_mat[:, i, :].T * rap for i in arange(dll.shape[1])]
     ).transpose(2, 0, 1)
-    dll_mat = np.array(
-        [np.multiply(base_mat[:, :, i], dll) for i in np.arange(spec_third.shape[1])]
+    dll_mat = array(
+        [multiply(base_mat[:, :, i], dll) for i in arange(spec_third.shape[1])]
     ).transpose(1, 2, 0)
-    spec_third_aux_mat = np.array(
+    spec_third_aux_mat = array(
         [
-            np.multiply(base_mat[i, :, :], spec_third_aux)
-            for i in np.arange(dll.shape[0])
+            multiply(base_mat[i, :, :], spec_third_aux)
+            for i in arange(dll.shape[0])
         ]
     )
     # create the the array rap-dll
@@ -155,66 +155,66 @@ def _main_loudness(spec_third, field_type):
     logic_mat = spec_third_aux_mat > rap_dll_mat
     dll_result = dll_mat[0, :, :]
     dll_result[logic_mat[0, :, :]] = 0
-    for i in np.arange(1, dll_mat.shape[0] - 1):
-        mask = np.logical_xor(logic_mat[i - 1, :, :], logic_mat[i, :, :])
+    for i in arange(1, dll_mat.shape[0] - 1):
+        mask = logical_xor(logic_mat[i - 1, :, :], logic_mat[i, :, :])
         dll_result[mask] = dll_mat[i, mask]
 
     xp = dll_result + spec_third_aux
-    ti = np.power(10, (xp / 10))
+    ti = power(10, (xp / 10))
 
     # Determination of levels LCB(1), LCB(2) and LCB(3) within the
     # first three critical bands
 
-    gi = np.zeros([3, dll_result.shape[1]])
+    gi = zeros([3, dll_result.shape[1]])
     gi[0, :] = ti[0:6, :].sum(axis=0)
     gi[1, :] = ti[6:9, :].sum(axis=0)
     gi[2, :] = ti[9:11, :].sum(axis=0)
 
     logic_gi = gi > 0
-    lcb = np.zeros([3, dll_result.shape[1]])
-    lcb[logic_gi] = 10 * np.log10(gi[logic_gi])
+    lcb = zeros([3, dll_result.shape[1]])
+    lcb[logic_gi] = 10 * log10(gi[logic_gi])
 
     # Calculation of main loudness
     s = 0.25
-    nm = np.zeros([20, spec_third_aux.shape[1]])
-    le = np.copy(spec_third[8:, :])
+    nm = zeros([20, spec_third_aux.shape[1]])
+    le = copy(spec_third[8:, :])
     # le = le.reshape((20))
     le[0:3, :] = lcb
-    a0_mat = np.ones(a0.shape[0] * spec_third.shape[1]).reshape(
+    a0_mat = ones(a0.shape[0] * spec_third.shape[1]).reshape(
         a0.shape[0], spec_third.shape[1]
     )
     a0_mat = (a0_mat.T * a0).T
     le = le - a0_mat
 
     if field_type == "diffuse":
-        ddf_mat = np.ones(ddf.shape[0] * spec_third.shape[1]).reshape(
+        ddf_mat = ones(ddf.shape[0] * spec_third.shape[1]).reshape(
             ddf.shape[0], spec_third.shape[1]
         )
         ddf_mat = (ddf_mat.T * ddf).T
         le += ddf_mat
 
-    ltq_mat = np.ones(ltq.shape[0] * spec_third.shape[1]).reshape(
+    ltq_mat = ones(ltq.shape[0] * spec_third.shape[1]).reshape(
         ltq.shape[0], spec_third.shape[1]
     )
     ltq_mat = (ltq_mat.T * ltq).T
     i = le > ltq_mat
-    dcb_mat = np.ones(dcb.shape[0] * spec_third.shape[1]).reshape(
+    dcb_mat = ones(dcb.shape[0] * spec_third.shape[1]).reshape(
         dcb.shape[0], spec_third.shape[1]
     )
     dcb_mat = (dcb_mat.T * dcb).T
     le[i] -= dcb_mat[i]
 
-    mp1 = 0.0635 * np.power(10, 0.025 * ltq_mat)
+    mp1 = 0.0635 * power(10, 0.025 * ltq_mat)
     mp1[i == False] = 0
-    mp2 = np.power(1 - s + s * np.power(10, 0.1 * (le - ltq_mat)), 0.25) - 1
+    mp2 = power(1 - s + s * power(10, 0.1 * (le - ltq_mat)), 0.25) - 1
     mp2[i == False] = 0
 
-    nm = np.multiply(mp1, mp2)
+    nm = multiply(mp1, mp2)
 
     nm[i == False] = 0
     nm[nm < 0] = 0
     current_shape = nm.shape
-    nm = np.append(nm, np.zeros(current_shape[1])).reshape(
+    nm = append(nm, zeros(current_shape[1])).reshape(
         current_shape[0] + 1, current_shape[1]
     )
     #
@@ -229,4 +229,4 @@ def _main_loudness(spec_third, field_type):
     #     # This line is only also for testing test_loudness_zwicker_wav(), only in case one col in spec third is given.
     #     nm = nm[:, 1]
 
-    return np.squeeze(nm)
+    return squeeze(nm)

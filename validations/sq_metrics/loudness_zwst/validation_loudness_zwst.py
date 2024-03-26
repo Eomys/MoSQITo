@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Dec 14 15:17:12 2020
-
-@author: wantysal
-"""
 
 try:
     import matplotlib.pyplot as plt
@@ -23,7 +18,7 @@ from mosqito.utils import load
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
 from input.ISO_532_1.test_signal_1 import test_signal_1
-
+from mosqito import COLORS as clr
 
 def validation_loudness_zwst_3oct():
     """Test function for the script loudness_zwicker_stationary
@@ -161,9 +156,9 @@ def validation_loudness_zwst():
 
 def _format_plot(is_isoclose_N, is_isoclose_N_specific, N, N_iso, filename):
     # Format plot
-    plt.xlabel("Critical band rate [Bark]")
-    plt.ylabel("N'_zwst [sone/Bark]")
-    color = "tab:green"
+    plt.xlabel('Critical band rate [Bark]')
+    plt.ylabel('N\'_zwst [sone/Bark]')
+    color = clr[5]
     if is_isoclose_N:
         txt_label = "N within tolerance (%.1f sone for an ISO value of %.1f sone)" % (
             N,
@@ -171,16 +166,14 @@ def _format_plot(is_isoclose_N, is_isoclose_N_specific, N, N_iso, filename):
         )
     else:
         txt_label = "N without tolerance (%.1f sone for an ISO value of %.1f sone)" % (
-            N,
-            N_iso,
-        )
-        color = "tab:red"
+            N, N_iso)
+        color = clr[1]
     if is_isoclose_N_specific:
         txt_label += "\n N' within tolerance"
     else:
-        txt_label += "\n N' without tolerance"
-        color = "tab:red"
-    props = dict(boxstyle="round", facecolor=color, alpha=0.3)
+        txt_label += '\n N\' without tolerance'
+        color = clr[1]
+    props = dict(boxstyle='round', facecolor=color, alpha=0.3)
     plt.text(
         0.5,
         0.05,

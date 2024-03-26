@@ -2,15 +2,14 @@
 
 
 # Standard library imports
-import numpy as np
+from numpy import multiply, sqrt, sum, abs
 from scipy.signal import butter, sosfreqz
 
-
-def _n_oct_freq_filter(spectrum, fs, fc, alpha, n=3):
-    """n-th octave filtering in frequency domain
+def _n_oct_freq_filter(spectrum, fs, fc, alpha, n=3):  
+    """ n-th octave filtering in frequency domain
 
     Designs a digital 1/3-octave filter with center frequency fc for
-    sampling frequency fs.
+    sampling frequency fs. 
 
     Parameters
     ----------
@@ -33,16 +32,16 @@ def _n_oct_freq_filter(spectrum, fs, fc, alpha, n=3):
     """
 
     # Normalized cutoff frequencies
-    w1 = fc / (fs / 2) / alpha
-    w2 = fc / (fs / 2) * alpha
+    w1 = fc / (fs  / 2) / alpha
+    w2 = fc / (fs  / 2) * alpha
 
     # Define filter coefficient
-    sos = butter(n, [w1, w2], "bandpass", analog=False, output="sos")
+    sos = butter(n, [w1, w2], "bandpass", analog=False, output ='sos')  
     # Get FRF and apply it
     w, h = sosfreqz(sos, worN=len(spectrum))
-    spec_filt = np.multiply(h, spectrum.T).T
-
+    spec_filt = multiply(h, spectrum.T).T
+    
     # Compute overall rms level
-    level = np.sqrt(np.sum(np.abs(spec_filt) ** 2, axis=0))
-
+    level = sqrt(sum(abs(spec_filt) ** 2, axis=0)) 
+        
     return level

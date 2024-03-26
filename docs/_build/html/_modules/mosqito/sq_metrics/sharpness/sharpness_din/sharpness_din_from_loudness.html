@@ -1,0 +1,590 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness &#8212; MOSQITO manual</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/source/_static/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/mosqito/sq_metrics/sharpness/sharpness_din/sharpness_din_from_loudness';</script>
+    <link rel="icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../../../../_static/logo.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../../../../_static/logo.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">MOSQITO</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/reference/index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/contribution/index.html">
+                        Contribution
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Eomys/MoSQITo" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/reference/index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/contribution/index.html">
+                        Contribution
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Eomys/MoSQITo" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">mosqito.sq_m...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">interp</span><span class="p">,</span>
+    <span class="n">newaxis</span><span class="p">,</span>
+    <span class="n">array</span><span class="p">,</span>
+    <span class="n">where</span><span class="p">,</span>
+    <span class="n">linspace</span><span class="p">,</span>
+    <span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">exp</span><span class="p">,</span>
+    <span class="n">ones</span><span class="p">,</span>
+    <span class="n">log</span><span class="p">,</span>
+    <span class="n">squeeze</span><span class="p">,</span>
+    <span class="nb">sum</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">mosqito.sq_metrics.sharpness.sharpness_din._weighting_fastl</span> <span class="kn">import</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+
+<div class="viewcode-block" id="sharpness_din_from_loudness"><a class="viewcode-back" href="../../../../../source/reference/mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness.html#mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness.sharpness_din_from_loudness">[docs]</a><span class="k">def</span> <span class="nf">sharpness_din_from_loudness</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N_specific</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;din&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the sharpness value from loudness</span>
+
+<span class="sd">    This function computes the sharpness value according to different methods.</span>
+
+<span class="sd">    Acoustic sharpness calculation according to different methods</span>
+<span class="sd">        (Aures, Von Bismarck, DIN 45692, Fastl) from loudness.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    N : float or array_like</span>
+<span class="sd">        Overall loudness [sones], size (Ntime,).</span>
+<span class="sd">    N_specific : numpy.ndarray</span>
+<span class="sd">        Specific loudness array [sones/bark], size (Nbark, Ntime).</span>
+<span class="sd">    weighting : {&#39;din&#39;, &#39;aures&#39;, &#39;bismarck&#39;, &#39;fastl&#39;}</span>
+<span class="sd">        Weighting function used for the sharpness computation.</span>
+<span class="sd">        Default is &#39;din&#39;</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    S : float or numpy.ndarray</span>
+<span class="sd">        Sharpness value in [acum], dim (nseg)</span>
+<span class="sd">    time_axis : numpy.array</span>
+<span class="sd">        Time axis cut according to skip argument, size (Ntime,).</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    The sampling frequency of the signal must be &gt;= 48 kHz to fulfill requirements.</span>
+<span class="sd">    If the provided signal doesn&#39;t meet the requirements, it will be resampled.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    .sharpness_din_tv : Sharpness computation for a non-stationary time signal</span>
+<span class="sd">    .sharpness_din_st : Sharpness computation for a stationary time signal</span>
+<span class="sd">    .sharpness_din_freq : Sharpness computation from a sound spectrum</span>
+<span class="sd">    .sharpness_din_perseg : Sharpness computation by time-segment</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The computation consists of a specific loudness weighting employing a weighting function :math:`g(z)`:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        S=0.11\\frac{\\int_{0}^{24Bark}N&#39;(z)g(z)\\textup{dz}}{N}</span>
+
+<span class="sd">    with :math:`N&#39;` the specific loudness and :math:`N` the global loudness.</span>
+
+<span class="sd">    The different methods available with the function account for the weighting function applied:</span>
+<span class="sd">     * DIN 45692 : weighting defined in the standard</span>
+<span class="sd">     * Aures</span>
+<span class="sd">     * Bismarck</span>
+<span class="sd">     * Fastl</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :cite:empty:`S-DIN.45692:2009`</span>
+<span class="sd">    :cite:empty:`S-ZF:9`</span>
+<span class="sd">    :cite:empty:`S-B74`</span>
+
+<span class="sd">    .. bibliography::</span>
+<span class="sd">        :keyprefix: S-</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">       :include-source:</span>
+
+<span class="sd">        &gt;&gt;&gt; from mosqito.sq_metrics import loudness_zwtv, sharpness_din_from_loudness</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; f=1000</span>
+<span class="sd">        &gt;&gt;&gt; fs=48000</span>
+<span class="sd">        &gt;&gt;&gt; d=0.2</span>
+<span class="sd">        &gt;&gt;&gt; dB=60</span>
+<span class="sd">        &gt;&gt;&gt; time = np.arange(0, d, 1/fs)</span>
+<span class="sd">        &gt;&gt;&gt; f = np.linspace(1000,5000, len(time))</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))</span>
+<span class="sd">        &gt;&gt;&gt; rms = np.sqrt(np.mean(np.power(stimulus, 2)))</span>
+<span class="sd">        &gt;&gt;&gt; ampl = 0.00002 * np.power(10, dB / 20) / rms</span>
+<span class="sd">        &gt;&gt;&gt; stimulus = stimulus * ampl</span>
+<span class="sd">        &gt;&gt;&gt; N, N_spec, bark_axis, time_axis = loudness_zwtv(stimulus, fs=fs)</span>
+<span class="sd">        &gt;&gt;&gt; S = sharpness_din_from_loudness(N, N_spec)</span>
+<span class="sd">        &gt;&gt;&gt; plt.plot(time_axis, S)</span>
+<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Time [s]&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Sharpness [Acum]&quot;)</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    Note the transient effect at the beginning of the signal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># 1D-array =&gt; 2D-array</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">N</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">N</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span><span class="n">N</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="n">N</span><span class="p">[</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">if</span> <span class="n">N_specific</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">N_specific</span> <span class="o">=</span> <span class="n">N_specific</span><span class="p">[:,</span> <span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="c1"># Bark axis</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">24</span> <span class="o">/</span> <span class="mf">0.1</span><span class="p">))[:,</span> <span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="c1"># weighting function</span>
+    <span class="k">if</span> <span class="n">weighting</span> <span class="o">==</span> <span class="s2">&quot;din&quot;</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">g</span><span class="p">[</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mf">15.8</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.15</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="mf">0.42</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mf">15.8</span><span class="p">]</span> <span class="o">-</span> <span class="mf">15.8</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.85</span>
+    <span class="k">elif</span> <span class="n">weighting</span> <span class="o">==</span> <span class="s2">&quot;aures&quot;</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="mf">0.078</span> <span class="o">*</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.171</span> <span class="o">*</span> <span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">/</span> <span class="n">log</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="mf">0.05</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">weighting</span> <span class="o">==</span> <span class="s2">&quot;bismarck&quot;</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">g</span><span class="p">[</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="mf">0.308</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">]</span> <span class="o">-</span> <span class="mi">15</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.8</span>
+    <span class="k">elif</span> <span class="n">weighting</span> <span class="o">==</span> <span class="s2">&quot;fastl&quot;</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;ERROR: weighting must be &#39;din&#39;, &#39;aures&#39;, &#39;bismarck&#39; or &#39;fastl&#39;&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># S = zeros(N.shape)</span>
+    <span class="c1"># ind = where(N &gt;= 0.1)[1]</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="mf">0.11</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">N_specific</span> <span class="o">*</span> <span class="n">g</span> <span class="o">*</span> <span class="n">z</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
+
+    <span class="k">if</span> <span class="n">S</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">squeeze</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+        <span class="n">S</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">S</span></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Green Forge Coop.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

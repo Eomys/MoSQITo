@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-import numpy as np
+from numpy import pi, sin, sqrt
 
 
 def _filter_bandwidth(fc, n=3, N=3):
@@ -55,9 +55,9 @@ def _filter_bandwidth(fc, n=3, N=3):
     # Reference bandwidth quotient
     qr = fc / (f2 - f1)  # ANSI eq7 & 8
     # Design bandwidth quotient
-    qd = (np.pi / 2 / N) / (np.sin(np.pi / 2 / N)) * qr  # ANSI eq9
+    qd = (pi / 2 / N) / (sin(pi / 2 / N)) * qr  # ANSI eq9
     # Ratio of the upper and lower band-edge frequencies to the mid-band frequency
-    alpha = (1 + np.sqrt(1 + 4 * qd**2)) / 2 / qd
+    alpha = (1 + sqrt(1 + 4 * qd ** 2)) / 2 / qd
 
     return alpha, f1, f2
 

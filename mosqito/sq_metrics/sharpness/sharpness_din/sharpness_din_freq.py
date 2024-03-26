@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# Standard library import
+from numpy import interp, arange
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwst_freq
@@ -12,31 +14,91 @@ from scipy.interpolate import interp1d
 
 
 def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
-    """Acoustic sharpness calculation according to different methods
-      (Aures, Von Bismarck, DIN 45692, Fastl) from a complex spectrum.
+    """
+    Compute the sharpness value from a fine band spectrum
 
-    Parameters:
-    ----------
-    signal: numpy.array
+    This function computes the sharpness value along time according to different methods.
+
+    Parameters
+    -----------
+    spectrum : array_like
         A RMS spectrum.
-    freqs: integer
+    freqs : array_like
         Frequency axis.
-    method : string
-        To specify the Loudness computation method
-    weighting : string
-        To specify the weighting function used for the
-        sharpness computation.'din' by default,'aures', 'bismarck','fastl'
-    field_type : str
-        Type of soundfield corresponding to spec_third ("free" by
-        default or "diffuse").
+    weighting : {'din', 'aures', 'bismarck', 'fastl'}
+        Weighting function used for the sharpness computation.
+        Default is 'din'
+    field_type : {'free', 'diffuse'}
+        Type of soundfield.
+        Default is 'free'
 
-    Outputs
+    Returns
+    --------
+    S : numpy.array
+        Sharpness value in [acum]
+
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
+
+    See Also
+    ---------
+    .sharpness_din_from_loudness : Sharpness computation from loudness values
+    .sharpness_din_st : Sharpness computation for a stationary time signal
+    .sharpness_din_tv : Sharpness computation for a non-stationary time signal
+    .sharpness_din_perseg : Sharpness computation by time-segment
+
+    Notes
     ------
-    S : float
-        sharpness value
-    time_axis: numpy.array
-        The time axis array, size (Ntime,) or None
+    The computation consists of a specific loudness weighting employing a weighting function :math:`g(z)`:
 
+    .. math::
+        S=0.11\\frac{\\int_{0}^{24Bark}N'(z)g(z)\\textup{dz}}{N}
+
+    with :math:`N'` the specific loudness and :math:`N` the global loudness according to Zwicker method
+    for stationary signals.
+
+    The different methods available with the function account for the weighting function applied:
+     * DIN 45692 : weighting defined in the standard
+     * Aures
+     * Bismarck
+     * Fastl
+
+    References
+    -----------
+    :cite:empty:`S-DIN.45692:2009`
+    :cite:empty:`S-ZF:9`
+    :cite:empty:`S-B74`
+
+    .. bibliography::
+        :keyprefix: S-
+
+    Examples
+    ---------
+    .. plot::
+       :include-source:
+
+       >>> from mosqito.sq_metrics import sharpness_din_freq
+       >>> from mosqito.sound_level_meter import comp_spectrum
+       >>> import matplotlib.pyplot as plt
+       >>> import numpy as np
+       >>> fs=48000
+       >>> d=0.2
+       >>> dB=60
+       >>> time = np.arange(0, d, 1/fs)
+       >>> f = np.linspace(1000,5000, len(time))
+       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> stimulus = stimulus * ampl
+       >>> spec, freqs = comp_spectrum(stimulus, fs, db=False)
+       >>> S = sharpness_din_freq(spec, freqs)
+       >>> plt.plot(time, stimulus)
+       >>> plt.xlim(0, 0.05)
+       >>> plt.xlabel("Time [s]")
+       >>> plt.ylabel("Amplitude [Pa]")
+       >>> plt.title("Sharpness = " + f"{S:.2f}" + " [Acum]")
     """
     # 1D spectrum
     if len(spectrum.shape) == 1:
@@ -95,6 +157,7 @@ def sharpness_din_freq(spectrum, freqs, weighting="din", field_type="free"):
                     freqs, spectrum, axis=0, bounds_error=False, fill_value=0
                 )(linspace(0, 24000, nperseg))
                 freqs = tile(linspace(0, 24000, nperseg), (nseg, 1)).T
+   
     # Compute loudness
     N, N_specific, _ = loudness_zwst_freq(spectrum, freqs, field_type=field_type)
 

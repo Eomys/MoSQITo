@@ -10,7 +10,8 @@ import numpy as np
 from numpy.fft import fft, fftfreq
 
 # Local application imports
-from mosqito.utils import load, isoclose
+from mosqito.utils import load
+from mosqito.utils.isoclose import isoclose
 from mosqito.sq_metrics import loudness_zwst, loudness_zwst_freq, loudness_zwst_perseg
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
