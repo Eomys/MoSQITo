@@ -141,5 +141,5 @@ def crawl_source_shorten_titles(path):
                     file.writelines(lines)
 
 # Remove parents from titles in all .rst files
-crawl_source_shorten_titles(os.path.abspath("") + "\\source\\reference")
+crawl_source_shorten_titles(os.path.abspath("") + "/source/reference")
 
