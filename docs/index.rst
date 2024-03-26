@@ -14,7 +14,7 @@ MOSQITO documentation
 
 The objective of MOSQITO is to provide a unified and modular development framework of key sound quality tools 
 (including key SQ metrics), favoring reproducible science and efficient shared scripting among engineers, teachers and researchers
-community. The development roadmap of the project is presented in more details in the [scope section] of the documentation. 
+community. The development roadmap of the project is presented in more details in the :ref:`scope` of the documentation. 
 
 It is written in Python, one of the most popular free programming language in the scientific computing community. 
 It is meant to be highly documented and validated with reference sound samples and scientific publications.
@@ -47,8 +47,7 @@ How to cite MOSQITO
 
 If you are using MOSQITO in your research activities, please help our scientific visibility by citing our work! You can use the following citation in APA format:
 
-Green Forge Coop. MOSQITO [Computer software], doi 10.5281/zenodo.5284054.
-
+Green Forge Coop. MOSQITO (Version 1.1.1). https://doi.org/10.5281/zenodo.10629475
 If you need to cite the current release of MOSQITO, please use the "Cite this repository" feature in the "About" section of the `Github repository <https://github.com/Eomys/MoSQITo>`_.
 
 
