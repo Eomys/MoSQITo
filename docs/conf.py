@@ -4,8 +4,6 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 
-from mosqito import __version__
-version = __version__
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -18,7 +16,6 @@ release = '1.1.1'
 import os
 import sys
 sys.path.insert(0, os.path.abspath(".."))
-import numpy as np
 
 # Remove rst files of the folder having the name than some functions
 if os.path.isfile('source/reference/mosqito.sq_metrics.loudness.loudness_zwst.rst'):
