@@ -32,9 +32,9 @@ from mosqito.sq_metrics import roughness_dw, roughness_ecma
 from mosqito.sq_metrics.roughness.utils._create_am_sin import _create_am_sin
 
 # must be run from 'MoSQITo/validations/sq_metrics/roughness_ecma' folder!
-from input.references import ref_zf
+from input.references import ref_zf, ref_ecma
 
-save_fig = False
+save_fig = True
 
 def signal_test(fc, fmod, mdepth, fs, d, dB):
     # time axis definition
@@ -68,36 +68,36 @@ spl = 60
 fc_all = np.array([125, 250, 500, 1000, 2000, 4000, 8000])
 
 # lower, upper frequency in range for each fc
-fm_all = np.array([[10,  10,  10,  10,  15,  15,  20],
+fm_all = np.array([[20,  20,  20,  20,  20,  20,  20],
                    [100, 150, 200, 400, 350, 300, 250]])
 
 
 # Recreate Figure 11.2 from Fastl & Zwicker
-N_interp_fm = 21
+N_interp_fm = 15
 
 linestyles = [':', ':', ':', '-', '--', '--', '--',]
 
-plt.figure()
+# plt.figure()
 
-for i, fc in enumerate(fc_all):
+# for i, fc in enumerate(fc_all):
     
-    fm = np.logspace(np.log10(fm_all[0, i]),
-                     np.log10(fm_all[1, i]), N_interp_fm, base=10)
+#     fm = np.logspace(np.log10(fm_all[0, i]),
+#                      np.log10(fm_all[1, i]), N_interp_fm, base=10)
 
-    R = ref_zf(fc, fm)
+#     R = ref_zf(fc, fm)
     
-    plt.loglog(fm, R, label=f'fc = {fc} Hz', linestyle=linestyles[i])
+#     plt.loglog(fm, R, label=f'fc = {fc} Hz', linestyle=linestyles[i])
 
-plt.xlim([10, 400])
-plt.ylim([0.07, 1])
-plt.legend()
-plt.xlabel(r'Modulation frequency $f_{m} [Hz]$')
-plt.ylabel('Roughness [asper]')
-plt.title('Fastl & Zwicker, Fig. 11.2')
+# plt.xlim([10, 400])
+# plt.ylim([0.07, 1])
+# plt.legend()
+# plt.xlabel(r'Modulation frequency $f_{m} [Hz]$')
+# plt.ylabel('Roughness [asper]')
+# plt.title('Fastl & Zwicker, Fig. 11.2')
 
 
-if save_fig:
-    plt.savefig('Fast_Zwicker_Fig_11_2.png')
+# if save_fig:
+#     plt.savefig('Fast_Zwicker_Fig_11_2.png')
 
 # %% create test signals
 
@@ -110,9 +110,10 @@ for i, fc in enumerate(fc_all):
     
     # get values from Fastl & Zwicker
     R_fz = ref_zf(fc, fm_array)
-    
+   
     R_dw = np.zeros(fm_array.shape)
     R_ecma = np.zeros(fm_array.shape)
+    Rref_ecma = np.zeros(fm_array.shape)
     
     for j, fm in enumerate(fm_array):
         
@@ -130,6 +131,8 @@ for i, fc in enumerate(fc_all):
         R_ecma_temp, _, _ = roughness_ecma(x, fs)
         R_ecma[j] = np.percentile(R_ecma_temp[16:], 90)
         
+        Rref_ecma[j] = ref_ecma(fc, fm)
+        
         # test for 0.1 asper tolerance relative to Fastl & Zwicker
         test = ((R_ecma < R_fz + 0.1).all()
                 and (R_ecma > R_fz - 0.1).all())
@@ -142,6 +145,9 @@ for i, fc in enumerate(fc_all):
     
     plt.loglog(fm_array, R_dw, 's', fillstyle='none', linewidth=1.5, color='C1',
                label='MoSQITo [Daniel & Weber]')
+    
+    plt.loglog(fm_array, Rref_ecma, '+', fillstyle='none', linewidth=1.5, color='k',
+               label='Reference from standard [ECMA-418-2]')
 
     plt.loglog(fm_array, R_fz, '--', linewidth=2, color='0.45',
                label='Fastl & Zwicker [interp]')
@@ -176,6 +182,6 @@ for i, fc in enumerate(fc_all):
     
     if save_fig:
         plt.savefig('validation_roughness_ecma_fc' + f'{fc}' + 'Hz.png')
-    
-plt.show(block=True)
+    else:
+        plt.show(block=True)
 print('\tDone!')
