@@ -18,16 +18,13 @@ The scope of the project is to implement the following first set of metrics:
      - Under dev.
      - To do
    * - Loudness for steady signals (Zwicker method)
-     - :footcite:t:`ISO.532B:1975` 
-       | :footcite:t:`DIN.45631:1991`
-       | :footcite:t:`ISO.532B-1:2017`
+     - :footcite:t:`ISO.532B-1:2017`
      - X 
      - X 
      - 
      - 
    * - Loudness for non-stationary (Zwicker method)
-     - :footcite:t:`DIN.45631/A1:2010-03`
-       | :footcite:t:`ISO.532B-1:2017`
+     - :footcite:t:`ISO.532B-1:2017`
      - X 
      - X 
      - 

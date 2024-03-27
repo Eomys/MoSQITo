@@ -1,4 +1,4 @@
-MOSQITO documentation
+MOSQITO sound quality library
 ===================================
 
 **Version**: |version|
