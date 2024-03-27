@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from numpy import ones, ceil, linspace, arange, mean, int32
-
+import numpy as np
 
 def _ecma_time_segmentation(signal_block, sb, sh, n_new):
     """Function used for the segmentation of a time signal into
@@ -56,12 +56,9 @@ def _ecma_time_segmentation(signal_block, sb, sh, n_new):
     time_array = []
 
     for z in range(53):
-
         signal = signal_block[z]
-
         # build time vector for signal
         time = linspace(0, (signal.shape[0] - 1) / fs, signal.shape[0])
-
         # Eq. (18)
         L = arange(L_last[z])
         idx = (
@@ -69,7 +66,6 @@ def _ecma_time_segmentation(signal_block, sb, sh, n_new):
             .astype(int32)
             .T
         )
-
         block_array.append(signal[idx])
         time_array.append(mean(time[idx], axis=1))
 

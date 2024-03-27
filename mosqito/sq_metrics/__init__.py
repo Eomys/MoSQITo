@@ -42,9 +42,8 @@ from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_perseg import (
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq import tnr_ecma_freq
 
 from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw import roughness_dw
-from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq import (
-    roughness_dw_freq,
-)
+from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq import roughness_dw_freq
+from mosqito.sq_metrics.roughness.roughness_ecma.roughness_ecma import roughness_ecma
 
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st import sharpness_din_st
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv import sharpness_din_tv
