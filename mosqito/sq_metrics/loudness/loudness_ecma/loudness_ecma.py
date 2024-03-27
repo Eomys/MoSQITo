@@ -46,13 +46,11 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
         Loudness over time [sone_HMS], size (Ntime,).
     N_specific : numpy.ndarray
         Specific loudness [sone_HMS/bark], size (Nbark, Ntime).
-	Each of the 53 elements of the list corresponds to the time-dependant specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.
+	    Each of the 53 elements of the list corresponds to the time-dependant specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.
     bark_axis : numpy.ndarray
         Corresponding bark axis, size (Nbark,).
-    time_axis : numpy.ndarray
-        Time axis, size (Ntime,).
-    bark_axis: array_like
-        Bark axis array, size (Nbark,).
+    time_array : numpy.ndarray
+        Time axis, size (Nbark, Ntime).
 
     Warning
     -------

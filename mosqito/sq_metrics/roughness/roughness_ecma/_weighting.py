@@ -3,7 +3,7 @@ import numpy as np
 def f_max(center_freq):
     """
     Function to compute the modulation rate at which the weighting factor G reaches the maximum 
-    of one for all band center frequencies according to equation 86 of ECMA 418-2 (2022)
+    of one for all band center frequencies according to equation 86 of ECMA 418-2 (2nd edition, 2022)
     
     Parameters
     ----------
@@ -15,7 +15,7 @@ def f_max(center_freq):
 def r_max(center_freq):
     """
     Function to compute the scaling factor for all band center frequencies
-    according to equation 84 of ECMA 418-2 (2022)
+    according to equation 84 of ECMA 418-2 (2nd edition, 2022)
     
     Parameters
     ----------
@@ -36,7 +36,7 @@ def r_max(center_freq):
     return r
 
 def Q2_high(center_freq):
-    """ Function to compute high modulation rate weighting parameter according to equation 87 of ECMA 418-2
+    """ Function to compute high modulation rate weighting parameter according to equation 87 of ECMA 418-2 (2nd edition, 2022)
 
     Parameters
     ----------
@@ -55,7 +55,7 @@ def Q2_high(center_freq):
     return q2
 
 def Q2_low(center_freq):
-    """ Function to compute low modulation rate weighting parameter according to equation 96 of ECMA 418-2
+    """ Function to compute low modulation rate weighting parameter according to equation 96 of ECMA 418-2 (2nd edition, 2022)
 
     Parameters
     ----------
@@ -71,7 +71,7 @@ def Q2_low(center_freq):
 
 def _high_mod_rate_weighting(mod_rate, amp, fmax, rmax, q2_high):
     """
-    Function to weight high modulation rates according to equation 83 of ECMA 418-2 (2022)
+    Function to weight high modulation rates according to equation 83 of ECMA 418-2 (2nd edition, 2022)
     
     Parameters
     ----------
@@ -102,7 +102,7 @@ def _high_mod_rate_weighting(mod_rate, amp, fmax, rmax, q2_high):
 
 def _low_mod_rate_weighting(mod_rate, amp, fmax, q2_low):
     """
-    Function to weight low modulation rates according to equation 95 of ECMA 418-2 (2022)
+    Function to weight low modulation rates according to equation 95 of ECMA 418-2 (2nd edition, 2022)
     
     Parameters
     ----------
