@@ -47,8 +47,34 @@ def sii_ansi_freq(spectrum, freqs, method, speech_level, threshold=None):
 
     See also
     --------
-    sii : speech intelligibility with a time signal as background noise
-    sii_level : speech intelligibility with an overall SPL level as background noise
+    .sii_ansi : Speech intelligibility with a time signal as background noise
+    .sii_ansi_level : Speech intelligibility with an overall SPL level as background noise
+
+    Warning
+    -------
+    Input spectrum must be provided in dB.
+    
+    Notes
+    -----
+    The Speech Intelligibility Index :math:`SII` of the signal is computed as the sum of the speech-to-noise ratio :math:`A` weighted by an importance function :math:`I`, 
+    over the :math:`n` frequency bands. 
+    
+    .. math::
+        SII=\\sum_{i=1}^{n}A_{i}I_{i}
+    
+    The number of frequency bands considered depends on the chosen method:
+      * "critical": 21 critical bands corresponding to the Bark scale
+      * "equally_critical": 17 equally contributing critical bands
+      * "third-octave": 18 third-octave bands
+      * "octave": 6 octave bands
+
+    
+    References
+    ----------
+    :cite:empty:`SII-ANSI.S3.5:2017`
+    
+    .. bibliography::
+        :keyprefix: SII-
 
     Examples
     --------
@@ -56,7 +82,7 @@ def sii_ansi_freq(spectrum, freqs, method, speech_level, threshold=None):
        :include-source:
 
         >>> from mosqito.sq_metrics import sii_ansi_freq
-        >>> from mosqito.sound_level_meter.spectrum import spectrum
+        >>> from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
         >>> import matplotlib.pyplot as plt
         >>> import numpy as np
         >>> fs=48000
@@ -68,8 +94,8 @@ def sii_ansi_freq(spectrum, freqs, method, speech_level, threshold=None):
         >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
         >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
         >>> stimulus = stimulus * ampl
-        >>> spec, freqs = spectrum(stimulus, fs, db=True)
-        >>> SII, SII_spec, freq_axis = sii_freq(spec, freqs, method='critical', speech_level='normal')
+        >>> spec, freqs = comp_spectrum(stimulus, fs, db=True)
+        >>> SII, SII_spec, freq_axis = sii_ansi_freq(spec, freqs, method='critical', speech_level='normal')
         >>> plt.plot(freq_axis, SII_spec)
         >>> plt.xlabel("Frequency [Hz]")
         >>> plt.ylabel("Specific value ")

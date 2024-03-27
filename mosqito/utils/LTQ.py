@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Nov  5 17:32:06 2020
 
-@author: wantysal
-"""
-
-import numpy as np
+from numpy import array, interp
 
 
 def LTQ(bark_axis, reference="zwicker"):
@@ -19,7 +14,7 @@ def LTQ(bark_axis, reference="zwicker"):
     Parameters
     ----------
     bark_axis: numpy.array
-        frequency axis in bark to compute the threshold
+        Frequency axis in bark to compute the threshold
     reference: str()
         'zwicker' or 'roughness'
     """
@@ -27,7 +22,7 @@ def LTQ(bark_axis, reference="zwicker"):
     # Make list of minimum excitation (Hearing Treshold)
 
     if reference == "zwicker":
-        HTres_x = np.array(
+        HTres_x = array(
             [
                 2.40445500e-04,
                 2.97265560e-04,
@@ -83,7 +78,7 @@ def LTQ(bark_axis, reference="zwicker"):
             ]
         )
 
-        HTres_y = np.array(
+        HTres_y = array(
             [
                 73.28456,
                 69.49444,
@@ -140,7 +135,7 @@ def LTQ(bark_axis, reference="zwicker"):
         )
 
     if reference == "roughness":
-        HTres_x = np.array(
+        HTres_x = array(
             [
                 0,
                 0.01,
@@ -172,7 +167,7 @@ def LTQ(bark_axis, reference="zwicker"):
             ]
         )
 
-        HTres_y = np.array(
+        HTres_y = array(
             [
                 130,
                 70,
@@ -204,6 +199,6 @@ def LTQ(bark_axis, reference="zwicker"):
             ]
         )
 
-    threshold = np.interp(bark_axis, HTres_x, HTres_y)
+    threshold = interp(bark_axis, HTres_x, HTres_y)
 
     return threshold

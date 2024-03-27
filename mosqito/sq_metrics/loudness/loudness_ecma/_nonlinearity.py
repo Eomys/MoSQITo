@@ -1,3 +1,4 @@
+# Standard library import
 from numpy import array, ones
 
 

@@ -5,3 +5,5 @@ pyuff
 pytest>=5.4.1
 pandas
 openpyxl
+sphinxcontrib-bibtex
+pydata_sphinx_theme

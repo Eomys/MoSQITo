@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import numpy as np
+from numpy import zeros, hstack, array, mean, linspace
 
 
 def time_segmentation(sig, fs, nperseg=2048, noverlap=None, is_ecma=False):
@@ -41,18 +41,17 @@ def time_segmentation(sig, fs, nperseg=2048, noverlap=None, is_ecma=False):
 
     if is_ecma:
         # pad with zeros at the begining
-        sig = np.hstack((np.zeros(nperseg), sig))
+        sig = hstack((zeros(nperseg), sig))
 
     # build time axis for sig
-    time = np.linspace(0, (len(sig) - 1) / fs, num=len(sig))
+    time = linspace(0, (len(sig) - 1) / fs, num=len(sig))
 
     l = 0
     block_array = []
     time_array = []
     while l * noverlap <= len(sig) - nperseg:
         block_array.append(sig[l * noverlap : nperseg + l * noverlap])
-        time_array.append(np.mean(time[l * noverlap : nperseg + l * noverlap]))
+        time_array.append(mean(time[l * noverlap : nperseg + l * noverlap]))
         l += 1
 
-    return np.array(block_array).T, np.array(time_array)
-
+    return array(block_array).T, array(time_array)

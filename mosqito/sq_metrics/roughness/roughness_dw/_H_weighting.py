@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Oct  2 11:38:13 2020
 
-@author: pc
-"""
 # Standard library import
-import numpy as np
-import math
+from numpy import zeros, array, arange, interp
+from math import floor
 
 
 def _H_weighting(n, fs):
@@ -43,27 +39,27 @@ def _H_weighting(n, fs):
     """
     cut = 2
     # freq_axis = np.concatenate((np.arange(0,int(n/2),1)*fs/n,np.zeros((int(n/2)))))
-    H = np.zeros((47, n))
+    H = zeros((47, n))
 
     # H2, H16 and H42 are given
 
-    H2_x = np.array([0, 17, 23, 25, 32, 37, 48, 67, 90, 114, 171, 206, 247, 294, 358])
-    H2_y = np.array(
+    H2_x = array([0, 17, 23, 25, 32, 37, 48, 67, 90, 114, 171, 206, 247, 294, 358])
+    H2_y = array(
         [0, 0.8, 0.95, 0.975, 1, 0.975, 0.9, 0.8, 0.7, 0.6, 0.4, 0.3, 0.2, 0.1, 0]
     )
-    last = math.floor((358 / fs) * n)
-    j = np.arange(cut, last)
+    last = floor((358 / fs) * n)
+    j = arange(cut, last)
     freq = j * fs / n
-    H[1, j] = np.interp(freq[j - cut], H2_x, H2_y)
+    H[1, j] = interp(freq[j - cut], H2_x, H2_y)
 
-    H5_x = np.array([0, 32, 43, 56, 69, 92, 120, 142, 165, 231, 277, 331, 397, 502])
-    H5_y = np.array([0, 0.8, 0.95, 1, 0.975, 0.9, 0.8, 0.7, 0.6, 0.4, 0.3, 0.2, 0.1, 0])
-    last = math.floor((502 / fs) * n)
-    j = np.arange(cut, last)
+    H5_x = array([0, 32, 43, 56, 69, 92, 120, 142, 165, 231, 277, 331, 397, 502])
+    H5_y = array([0, 0.8, 0.95, 1, 0.975, 0.9, 0.8, 0.7, 0.6, 0.4, 0.3, 0.2, 0.1, 0])
+    last = floor((502 / fs) * n)
+    j = arange(cut, last)
     freq = j * fs / n
-    H[4, j] = np.interp(freq[j - cut], H5_x, H5_y)
+    H[4, j] = interp(freq[j - cut], H5_x, H5_y)
 
-    H16_x = np.array(
+    H16_x = array(
         [
             0,
             23.5,
@@ -87,7 +83,7 @@ def _H_weighting(n, fs):
             645,
         ]
     )
-    H16_y = np.array(
+    H16_y = array(
         [
             0,
             0.4,
@@ -111,13 +107,13 @@ def _H_weighting(n, fs):
             0,
         ]
     )
-    last = math.floor((502 / fs) * n)
-    j = np.arange(cut, last)
+    last = floor((502 / fs) * n)
+    j = arange(cut, last)
     freq = j * fs / n
 
-    H[15, j] = np.interp(freq[j - cut], H16_x, H16_y)
+    H[15, j] = interp(freq[j - cut], H16_x, H16_y)
 
-    H21_x = np.array(
+    H21_x = array(
         [
             0,
             19,
@@ -139,7 +135,7 @@ def _H_weighting(n, fs):
             645,
         ]
     )
-    H21_y = np.array(
+    H21_y = array(
         [
             0,
             0.4,
@@ -161,9 +157,9 @@ def _H_weighting(n, fs):
             0,
         ]
     )
-    H[20, j] = np.interp(freq[j - cut], H21_x, H21_y)
+    H[20, j] = interp(freq[j - cut], H21_x, H21_y)
 
-    H42_x = np.array(
+    H42_x = array(
         [
             0,
             15,
@@ -186,7 +182,7 @@ def _H_weighting(n, fs):
             645,
         ]
     )
-    H42_y = np.array(
+    H42_y = array(
         [
             0,
             0.4,
@@ -209,7 +205,7 @@ def _H_weighting(n, fs):
             0,
         ]
     )
-    H[41, j] = np.interp(freq[j - cut], H42_x, H42_y)
+    H[41, j] = interp(freq[j - cut], H42_x, H42_y)
 
     # According to the article we have :
 

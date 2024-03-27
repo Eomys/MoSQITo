@@ -26,12 +26,15 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
     """Calculation of the specific and total loudness according to ECMA-418-2
     (2nd Ed, 2022), Section 5.
 
+    This function computes the acoustic loudness according to ECMA-418-2 section 5 method for
+    stationary signals.
+
     Parameters
     ----------
     signal: numpy.array
-        time signal values in 'Pa'. The sampling frequency of the signal must be 48000 Hz.
+        Signal time values [Pa]. The sampling frequency of the signal must be 48000 Hz.
     sb: int or list of int
-        block size.
+        Block size.
     sh: int or list of int
         Hop size.
 
@@ -43,11 +46,51 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
         Loudness over time [sone_HMS], size (Ntime,).
     N_specific : numpy.ndarray
         Specific loudness [sone_HMS/bark], size (Nbark, Ntime).
+	Each of the 53 elements of the list corresponds to the time-dependant specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.
     bark_axis : numpy.ndarray
         Corresponding bark axis, size (Nbark,).
     time_axis : numpy.ndarray
         Time axis, size (Ntime,).
+    bark_axis: array_like
+        Bark axis array, size (Nbark,).
 
+    Warning
+    -------
+    The sampling frequency of the signal must be 48 kHz.
+
+    See Also
+    --------
+    .loudness_zwst : Zwicker and Fastl loudness computation for a stationary time signal
+    .loudness_zwtv : Zwicker and Fastl loudness computation for a non-stationary time signal
+
+    References
+    ----------
+    :cite:empty:`L_ecma-ECMA-418-2`
+
+    .. bibliography::
+        :keyprefix: L_ecma-
+
+    Examples
+    --------
+    .. plot::
+       :include-source:
+
+       >>> from mosqito.sq_metrics import loudness_ecma
+       >>> import matplotlib.pyplot as plt
+       >>> import numpy as np
+       >>> f=1000
+       >>> fs=48000
+       >>> d=0.2
+       >>> dB=60
+       >>> time = np.arange(0, d, 1/fs)
+       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> stimulus = stimulus * ampl
+       >>> N, N_time, N_spec, bark_axis, time_array = loudness_ecma(stimulus, fs)
+       >>> plt.plot(time_array[0], N_time)
+       >>> plt.xlabel("Time [s]")
+       >>> plt.ylabel("Loudness [Sone]")
     """
     if fs != 48000:
         print(
@@ -96,5 +139,5 @@ def loudness_ecma(signal, fs, sb=2048, sh=1024):
     N = (mean(N_time**e)) ** (1 / e)
 
     bark_axis = linspace(0.5, 26.5, num=53, endpoint=True)
-
+    
     return N, N_time, N_spec, bark_axis, time_array

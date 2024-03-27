@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Dec  7 10:58:25 2020
 
-@author: wantysal
-"""
-
+# Standard library imports
 import numpy as np
 
 

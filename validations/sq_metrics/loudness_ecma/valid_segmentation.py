@@ -7,6 +7,7 @@ except ImportError:
         "In order to perform this validation you need the 'matplotlib' package."
     )
 
+import numpy as np
 # Local application imports
 from mosqito.utils import sine_wave_generator
 from mosqito.sq_metrics.loudness.loudness_ecma._ecma_time_segmentation import (
@@ -22,15 +23,20 @@ signal, _ = sine_wave_generator(
     spl_value=60,
     freq=40,
 )
+
+sb = 8192
+sh = 2048
+
 block_signals = _band_pass_signals(signal)
-blocks, time = _ecma_time_segmentation(block_signals, 8192, 2048, 12288)
+blocks, _ = _ecma_time_segmentation(block_signals, sb, sh, 12288)
+
 
 plt.subplot(211)
 plt.plot(signal)
 plt.subplot(212)
-plt.plot(time[0][0, :], blocks[0][0, :], label="block 1")
-plt.plot(time[0][1, :], blocks[0][1, :], label="block 2")
-plt.plot(time[0][2, :], blocks[0][2, :], label="block 3")
-plt.plot(time[0][5, :], blocks[0][5, :], label="block 6")
+plt.plot(np.arange(0, sb), blocks[0][0, :], label="block 1")
+plt.plot(np.arange(sh, sh+sb), blocks[0][1, :], label="block 2")
+plt.plot(np.arange(2*sh, 2*sh+sb), blocks[0][2, :], label="block 3")
+plt.plot(np.arange(5*sh, 5*sh+sb), blocks[0][5, :], label="block 6")
 plt.legend()
 plt.show(block=True)

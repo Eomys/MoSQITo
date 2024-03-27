@@ -1,30 +1,37 @@
 # -*- coding: utf-8 -*-
 
-import numpy as np
+from numpy import array, arange, sin, sqrt
 import math
 
 
 def sine_wave_generator(fs, t, spl_value, freq):
-    """It creates a sine wave signal given some input parameters like frequency, duration, sampling rate or sound
+    """
+    Sine wave signal generation
+    
+    This function creates a sine wave signal given a frequency, duration, sampling rate and sound
     pressure level.
 
     Parameters
     ----------
     fs: int
-        'Hz', sampling frequency.
+        Sampling frequency in [Hz].
     t: int
-        's', signal duration.
+        Signal duration in [s].
     spl_value: int
-        'dB SPL', signal sound pressure level.
+        Sound pressure level signal in [dB SPL].
     freq: int
-        'Hz', sine wave frequency.
+        Sine wave frequency in [Hz].
 
     Returns
     -------
-    signal: numpy.array
-        'Pa', time signal values. For ECMA-418-2 the sampling frequency of the signal must be 48000 Hz.
-    time: numpy.array
-        Time scale arranged in a numpy array.
+    signal: array_like
+        Signal time values in [Pa]. 
+    time: array_like
+        Time axis in [s].
+        
+    Notes
+    -----
+    Signal to be used for ECMA-418-2 validation must have a sampling frequency of 48 kHz.
     """
 
     # "Peak" value in Pascals (amplitude)
@@ -32,16 +39,16 @@ def sine_wave_generator(fs, t, spl_value, freq):
     pressure_rms = p_ref * (10.00 ** (spl_value / 20.00))
 
     # Sample range
-    # samples = np.linspace(0, t, int(fs * t), endpoint=False)
-    time = np.arange(0, t, 1 / fs)
+    # samples = linspace(0, t, int(fs * t), endpoint=False)
+    time = arange(0, t, 1 / fs)
 
     # Theta lets you specify the sine wave value at time 0
     theta = 0
 
     # Amplitude of the signal
-    amplitude = np.sqrt(2) * pressure_rms
+    amplitude = sqrt(2) * pressure_rms
 
     # Signal calculation
-    signal = np.array(amplitude * np.sin((2.00 * math.pi * freq * time) + theta))
+    signal = array(amplitude * sin((2.00 * math.pi * freq * time) + theta))
 
     return signal, time

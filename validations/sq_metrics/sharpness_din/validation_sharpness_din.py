@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Dec 15 16:36:37 2020
 
-@author: wantysal
-"""
 try:
     import matplotlib.pyplot as plt
 except ImportError:

@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import array, log10, where, arange, round
 
 from mosqito.sound_level_meter.noct_spectrum._nominal_frequency import (
     NOMINAL_OCTAVE_CENTER_FREQUENCIES,
@@ -40,7 +40,7 @@ def _center_freq(fmin, fmax, n=3, G=10, fr=1000):
     # determine band numbers
     b = 1 / n
     if G == 2:
-        U = 2**b  # ANSI eq2
+        U = 2 ** b  # ANSI eq2
     elif G == 10:
         U = 10 ** (3 * b / 10)  # ANSI eq4
     else:
@@ -48,13 +48,14 @@ def _center_freq(fmin, fmax, n=3, G=10, fr=1000):
             """ERROR: Only base 2 and base 10 are allowed for nth
             octave center frequency definition"""
         )
-    [kmin, kmax] = np.round(np.log10(np.array([fmin, fmax]) / fr) / np.log10(U), 0)
+    [kmin, kmax] = round(
+        log10(array([fmin, fmax]) / fr) / log10(U), 0)
 
     # Band numbers such that f_exact = fr for k=0
-    k = np.arange(kmin, kmax + 1).astype(int)
+    k = arange(kmin, kmax + 1).astype(int)
 
     # compute ANSI eq1
-    f_exact = fr * U**k
+    f_exact = fr * U ** k
 
     ####
     # get normalized frequencies
@@ -67,8 +68,8 @@ def _center_freq(fmin, fmax, n=3, G=10, fr=1000):
     elif n == 3:
         freq = NOMINAL_THIRD_OCTAVE_CENTER_FREQUENCIES
     if n == 1 or n == 3:
-        i_ref = np.where(freq == fr)[0][0]
-        ind = np.where((k >= -i_ref) & (k < (len(freq) - i_ref)))
+        i_ref = where(freq == fr)[0][0]
+        ind = where((k >= -i_ref) & (k < (len(freq) - i_ref)))
         f_nom = freq[k[ind] + i_ref]
 
     # TODO

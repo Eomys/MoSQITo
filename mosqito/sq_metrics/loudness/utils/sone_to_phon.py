@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
-"""
-@date Created on Fri Feb 28 2020
-@author martin_g for Eomys
-"""
 
 # Standard library imports
-import math
+from math import log2
 
 
 def sone_to_phon(sone):
     """Calculate Loudness level [phons] from Loudness [sones]
 
     The code is based on BASIC program published in "Program for
-    calculating loudness according to DIN 45631 (ISO 532B)", E.Zwicker
+    calculating loudness according to DIN 45631 (ISO 532-1:2017)", E.Zwicker
     and H.Fastl, J.A.S.J (E) 12, 1 (1991).
 
     Parameters
@@ -31,5 +27,5 @@ def sone_to_phon(sone):
         if phon < 3:
             phon = 3
     else:
-        phon = 10 * math.log2(sone) + 40
+        phon = 10 * log2(sone) + 40
     return phon
