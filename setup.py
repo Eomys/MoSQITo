@@ -29,7 +29,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Eomys/MoSQITo",
     download_url="https://github.com/Eomys/MoSQITo/archive/v{}.tar.gz".format(
-        MoSQITo_VERSION
+        version
     ),
     packages=setuptools.find_packages(
         exclude=[

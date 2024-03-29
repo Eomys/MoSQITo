@@ -15,3 +15,4 @@ __all__ = ['roughness']
 
 from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw import roughness_dw
 from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq import roughness_dw_freq
+from mosqito.sq_metrics.roughness.roughness_ecma.roughness_ecma import roughness_ecma

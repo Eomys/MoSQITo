@@ -32,6 +32,7 @@ mosqito/sq_metrics/loudness/loudness_ecma/_ear_filter_design.py
 mosqito/sq_metrics/loudness/loudness_ecma/_ecma_time_segmentation.py
 mosqito/sq_metrics/loudness/loudness_ecma/_gammatone.py
 mosqito/sq_metrics/loudness/loudness_ecma/_loudness_ecma_data.py
+mosqito/sq_metrics/loudness/loudness_ecma/_loudness_from_bandpass.py
 mosqito/sq_metrics/loudness/loudness_ecma/_nonlinearity.py
 mosqito/sq_metrics/loudness/loudness_ecma/_preprocessing.py
 mosqito/sq_metrics/loudness/loudness_ecma/loudness_ecma.py
