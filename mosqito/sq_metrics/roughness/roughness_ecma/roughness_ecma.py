@@ -67,22 +67,28 @@ def roughness_ecma(signal, fs):
     .. plot::
        :include-source:
 
-       >>> from mosqito.sq_metrics import roughness_ecma
-       >>> import matplotlib.pyplot as plt
-       >>> import numpy as np
-       >>> f=1000
-       >>> fs=48000
-       >>> d=0.2
-       >>> dB=60
-       >>> time = np.arange(0, d, 1/fs)
-       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
-       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
-       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
-       >>> stimulus = stimulus * ampl
-       >>> R, R_time, R_spec, bark_axis, time_axis = roughness_ecma(stimulus, fs)
-       >>> plt.plot(time_array[0], N_time)
-       >>> plt.xlabel("Time [s]")
-       >>> plt.ylabel("Roughness [Asper]")
+        >>> from mosqito.sq_metrics import roughness_ecma
+        >>> import matplotlib.pyplot as plt
+        >>> import numpy as np
+        >>> f=1000
+        >>> fs=48000
+        >>> d=1
+        >>> dB=60
+        >>> fmod = 70
+        >>> fc = 1000
+        >>> mdepth = 1
+        >>> time = np.arange(0, d, 1/fs)
+        >>> signal = (0.5* (1 + mdepth * (np.sin(2 * np.pi * fmod * time)))
+        >>>         * np.sin(2 * np.pi * fc * time)
+        >>>     )    
+        >>> rms = np.sqrt(np.mean(np.power(signal, 2)))
+        >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+        >>> stimulus = signal * ampl
+        >>> R, R_time, R_spec, bark_axis, time_axis = roughness_ecma(stimulus, fs)
+        >>> plt.step(bark_axis, R_spec)
+        >>> plt.xlabel("Bark axis [Bark]")
+        >>> plt.ylabel("Specific roughness [Asper/Bark]")
+        >>> plt.title("Roughness = " + f"{R:.2f}" + " [Asper]")
     """
     
     # Check on the sampling frequency
@@ -128,6 +134,8 @@ def roughness_ecma(signal, fs):
     envelopes_downsampled = decimate(envelopes_downsampled_, 4, axis=2)
 
     # CALCULATION OF SCALED POWER SPECTRUM (7.1.3)
+    
+    # Maximum loudness in each time block
     N_specific_max = np.asarray(N_specific).max(axis=1)
     
     # Hann window is precisely defined in the standard (different from numpy version)
@@ -177,7 +185,7 @@ def roughness_ecma(signal, fs):
 
     # CALCULATION OF TIME DEPENDENT SPECIFIC ROUGHNESS (7.1.7)
     # Interpolation to 50 Hz
-    amplitude_50, N50 = _interpolation_50(amplitude, time_axis, duration)
+    amplitude_50, t_50 = _interpolation_50(amplitude, time_axis, duration)
     R_est = np.clip(amplitude_50, 0, None)
     # Non linear transformation 
     R_time_spec_temp = _non_linear_transform(R_est)
@@ -192,5 +200,4 @@ def roughness_ecma(signal, fs):
     # Single representative value
     R = np.percentile(R_time, 90)
         
-    return R, R_time, R_spec, bark_axis, time_axis
-
+    return R, R_time, R_spec, bark_axis, t_50
