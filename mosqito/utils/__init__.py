@@ -12,14 +12,16 @@ Conversion
    /source/reference/mosqito.utils.conversion.freq2bark
    /source/reference/mosqito.utils.conversion.spectrum2dBA
    
-Sine wave generator
-===================
+Signal generators
+==================
 
 .. toctree::
    :maxdepth: 1
 
    /source/reference/mosqito.utils.sine_wave_generator
-   
+   /source/reference/mosqito.utils.am_sine_wave_generator
+   /source/reference/mosqito.utils.am_broadband_noise_generator
+   /source/reference/mosqito.utils.fm_sine_wave_generator
    
 Time segmentation
 ===================
@@ -59,4 +61,7 @@ from mosqito.utils.conversion.db2amp import db2amp
 from mosqito.utils.conversion.bark2freq import bark2freq
 from mosqito.utils.conversion.freq2bark import freq2bark
 from mosqito.utils.conversion.spectrum2dBA import spectrum2dBA
+from mosqito.utils.am_sine_wave_generator import am_sine_wave_generator
+from mosqito.utils.fm_sine_wave_generator import fm_sine_wave_generator
+from mosqito.utils.am_broadband_noise_generator import am_broadband_noise_generator
 
