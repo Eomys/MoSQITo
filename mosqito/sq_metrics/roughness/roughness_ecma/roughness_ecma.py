@@ -9,7 +9,7 @@ from mosqito.sq_metrics.loudness.loudness_ecma._ecma_time_segmentation import _e
 from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq import _auditory_filters_centre_freq
 from mosqito.sq_metrics.loudness.loudness_ecma._loudness_from_bandpass import _loudness_from_bandpass
 
-from mosqito.sq_metrics.roughness.roughness_ecma._weighting import f_max, r_max, Q2_high, Q2_low, _high_mod_rate_weighting, _low_mod_rate_weighting
+from mosqito.sq_metrics.roughness.roughness_ecma._weighting import _f_max, _r_max, _Q2_high, _Q2_low, _high_mod_rate_weighting, _low_mod_rate_weighting
 from mosqito.sq_metrics.roughness.roughness_ecma._estimate_fund_mod_rate import _estimate_fund_mod_rate
 from mosqito.sq_metrics.roughness.roughness_ecma._peak_picking import _peak_picking
 from mosqito.sq_metrics.roughness.roughness_ecma._von_hann_window import _von_hann_window
@@ -152,10 +152,10 @@ def roughness_ecma(signal, fs):
     Phi_E = _noise_reduction(phi_E)
     
     # Critical bands characteristics for the weightings to come
-    fmax = f_max(center_freq) # center_freq = fréquence centrale de la bande z (eq 86 clause 7.1.5.2)
-    rmax = r_max(center_freq)
-    q2_high = Q2_high(center_freq)
-    q2_low = Q2_low(center_freq)
+    fmax = _f_max(center_freq) # center_freq = central frequency of the band z (eq 86 section 7.1.5.2)
+    rmax = _r_max(center_freq)
+    q2_high = _Q2_high(center_freq)
+    q2_low = _Q2_low(center_freq)
 
     amplitude = np.zeros((L,CBF))
     for l in range(L):       
