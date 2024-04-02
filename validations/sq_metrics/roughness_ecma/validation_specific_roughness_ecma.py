@@ -8,9 +8,7 @@ from mosqito.sq_metrics import roughness_ecma
 from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq import _auditory_filters_centre_freq
 
 from mosqito.utils.am_sine_wave_generator import am_sine_wave_generator
-
 from input.references_specific import ref_artemis
-
 from mosqito import COLORS as clr
 
 def validation_specific_roughness_ecma(fc, fmod, ref_file):
@@ -106,7 +104,7 @@ def _check_compliance(fc, fmod, R_spec, ref):
 # test de la fonction
 if __name__ == "__main__":
     
-    ref_file = r"C:\Users\SaloméWanty\Documents\Mosqito_roughness\validations\sq_metrics\roughness_ecma\input\validation_specific_roughness_ecma.xlsx"
+    ref_file = r"validations\sq_metrics\roughness_ecma\input\validation_specific_roughness_ecma.xlsx"
     fc = 1000
     fm_vector = np.array([40,70,120])
     for fmod in fm_vector:
