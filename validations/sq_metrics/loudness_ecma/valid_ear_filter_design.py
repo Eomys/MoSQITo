@@ -46,9 +46,9 @@ while f < 20000:
     # Generate test signal
     signal, _ = sine_wave_generator(
         fs=48000,
-        t=1,
-        spl_value=60,
+        d=1,
         freq=f,
+        spl_level=60,
     )
     # Filter
     signal_filtered = sosfilt(sos_ear, signal, axis=0)

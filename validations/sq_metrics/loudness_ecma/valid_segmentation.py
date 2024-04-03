@@ -19,9 +19,9 @@ from mosqito.sq_metrics.loudness.loudness_ecma._band_pass_signals import (
 
 signal, _ = sine_wave_generator(
     fs=48000,
-    t=1,
-    spl_value=60,
+    d=1,
     freq=40,
+    spl_level=60,
 )
 
 sb = 8192
