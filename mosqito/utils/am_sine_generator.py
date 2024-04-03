@@ -1,48 +1,42 @@
-# -*- coding: utf-8 -*-
-"""
-Generate amplitude-modulated (AM) sine wave
-
-Author:
-    Fabio Casagrande Hirono
-    Mar 2024
-"""
-
 import numpy as np
 
-def am_sine_generator(spl_level, fc, xm, fs, print_m=False):
-    """
-    Creates an amplitude-modulated (AM) signal of level 'spl_level' (in dB SPL)
-    with sinusoidal carrier of frequency 'fc', arbitrary modulating signal
-    'xm', and sampling frequency 'fs'. The AM signal length is the same as the
-    length of 'xm'. 
+def am_sine_generator(xmod, fs, fc, spl_level, print_m=False):
+    """ Amplitude-modulated sine wave generation
     
+    This function creates an amplitude-modulated (AM) signal with sinusoidal 
+    carrier of frequency 'fc', and arbitrary modulating signal 'xmod'.
+    The AM signal length is the same as the length of 'xmod'. 
+    The signal level is adjusted to 'spl_level' in dB.
+
     Parameters
     ----------
-    spl_level: float
-        Sound Pressure Level [dB ref 20 uPa RMS] of the modulated signal.
-    
-    fc: float
-        Carrier frequency, in Hz. Must be less than 'fs/2'.
-    
-    xm: (N,)-shaped numpy.array
-        Numpy array containing the modulating signal.
-        
+    xmod: array
+        Modulating signal, dim(N).
     fs: float
         Sampling frequency, in Hz.
-    
+    fc: float
+        Carrier frequency, in Hz. Must be less than 'fs/2'.
+    spl_level: float
+        Sound Pressure Level [dB ref 20 uPa RMS] of the modulated signal.
     print_m: bool, optional
         Flag declaring whether to print the calculated modulation index.
         Default is False.
     
     Returns
     -------
-    y: (N,)-shaped numpy.array
-        Amplitude-modulated signal with sine carrier, in Pascals.
+    y: numpy.array
+        Amplitude-modulated signal with sine carrier in Pascals, dim(N).
+    m: float
+        Modulation index    
+        
+    Warning
+    -------
+    spl_level must be provided in dB, ref=2e-5 Pa.
         
     Notes
     -----
     The modulation index 'm' will be equal to the peak value of the modulating
-    signal 'xm'. Its value can be printed by setting the optional flag
+    signal 'xmod'. Its value can be printed by setting the optional flag
     'print_m' to True.
     
     For 'm' = 0.5, the carrier amplitude varies by 50% above and below its
@@ -50,11 +44,32 @@ def am_sine_generator(spl_level, fc, xm, fs, print_m=False):
     the wave amplitude sometimes reaches zero, and this represents full
     modulation. Increasing the modulating signal beyond that point is known as
     overmodulation.
+    
+    Examples
+    --------
+    .. plot::
+       :include-source:
+
+        >>> from mosqito.utils import am_sine_generator
+        >>> import matplotlib.pyplot as plt
+        >>> import numpy as np
+        >>> fs = 48000      # [Hz]
+        >>> duration = 1
+        >>> t = np.linspace(0, duration, int(fs*duration))
+        >>> dB = 60         # [dB SPL]
+        >>> fc = 100        # [Hz]
+        >>> fm = 4          # [Hz]
+        >>> xmod = np.sin(2*np.pi*t*fm)
+        >>> y_am, m = am_sine_generator(xmod, fs, fc, dB, True)
+        >>> plt.plot(t, y_am)
+        >>> plt.xlabel("Time axis [s]")
+        >>> plt.ylabel("Amplitude signal [Pa]")
+        >>> plt.title(f'Modulation index = {m:.1f}')    
     """
     
     assert fc < fs/2, "Carrier frequency 'fc' must be less than 'fs/2'!"
     
-    Nt = xm.shape[0]        # signal length in samples
+    Nt = xmod.shape[0]        # signal length in samples
     T = Nt/fs               # signal length in seconds
     dt = 1/fs               # sampling interval in seconds
 
@@ -65,10 +80,10 @@ def am_sine_generator(spl_level, fc, xm, fs, print_m=False):
     xc = np.sin(2*np.pi*fc*t)
 
     # AM signal
-    y_am = (1 + xm)*xc
+    y_am = (1 + xmod)*xc
 
     # modulation index
-    m = np.max(np.abs(xm))
+    m = np.max(np.abs(xmod))
 
     if print_m:
         print(f"AM Modulation index = {m}")
@@ -81,59 +96,4 @@ def am_sine_generator(spl_level, fc, xm, fs, print_m=False):
     A_rms = p_ref * 10**(spl_level/20)
     y_am *= A_rms/np.std(y_am)
 
-    return y_am
-
-
-# %% run example for AM sine generator
-
-if __name__ == "__main__":
-    
-    import matplotlib.pyplot as plt
-    
-    # preliminary definitions
-    fs = 48000      # [Hz]
-    dt = 1/fs
-    
-    T = 0.1         # [s]
-    t = np.linspace(0, T-dt, int(T*fs))
-    
-    spl = 60        # [dB SPL]
-    p_ref = 20e-6   # [Pa RMS]
-    
-    # sine carrier frequency
-    fc = 1000        # [Hz]
-    
-    # modulating signal: low frequency sine wave
-    fm = 100         # [Hz]
-    xm = np.sin(2*np.pi*t*fm)
-    
-    # frequency-modulated signal
-    y_am = am_sine_generator(spl, fc, xm, fs)
-    
-    # signal power check - must be close to 'spl_level'
-    sig_power_dB = 10*np.log10(np.var(y_am)/(p_ref**2))
-    print('AM sine generator example:')
-    print(f'\tTarget SPL: {spl:.1f} dB')
-    print(f'\tResulting SPL: {sig_power_dB:.1f} dB')
-    
-    # plot signal
-    fig, plots = plt.subplots(2, 1)
-    
-    plots[0].set_title('Test signal - amplitude-modulated sine wave')
-    
-    plots[0].plot(t, xm, 'C0', label='Modulating signal')
-    plots[0].legend(loc='upper right')
-    plots[0].grid()
-    plots[0].set_ylabel('Amplitude')
-    plots[0].set_xlim([0, T])
-    
-    plots[1].plot(t, y_am, 'C1', label='AM signal')
-    plots[1].legend(loc='upper right')
-    plots[1].grid()
-    plots[1].set_ylabel('Amplitude')
-    plots[1].set_xlim([0, T])
-    plots[1].set_xlabel('Time [s]')
-    
-    fig.set_tight_layout('tight')
-    
-    # fig.savefig('AM_sine_generator.png')
+    return y_am, m

@@ -12,13 +12,16 @@ Conversion
    /source/reference/mosqito.utils.conversion.freq2bark
    /source/reference/mosqito.utils.conversion.spectrum2dBA
    
-Sine wave generator
+Signal generators
 ===================
 
 .. toctree::
    :maxdepth: 1
 
    /source/reference/mosqito.utils.sine_wave_generator
+   /source/reference/mosqito.utils.am_sine_generator
+   /source/reference/mosqito.utils.am_noise_generator
+   /source/reference/mosqito.utils.fm_sine_generator
    
    
 Time segmentation
