@@ -1,5 +1,5 @@
-import numpy as np
-
+# Standard library import
+from numpy import round, tile, ones
 
 def _get_rns_index(array_nm, vector_rns, equal_too=False):
     """Function that returns the index in the array vector_rns for each value of srray _nm
@@ -20,13 +20,13 @@ def _get_rns_index(array_nm, vector_rns, equal_too=False):
     if len(array_nm.shape) == 1:
         (wide,) = array_nm.shape
         (deep,) = vector_rns.shape
-        array_aux = np.round(np.tile(array_nm, [deep, 1]), 8)
-        rns_array = np.round(np.ones([wide, deep]) * vector_rns, 8).T
+        array_aux = round(tile(array_nm, [deep, 1]), 8)
+        rns_array = round(ones([wide, deep]) * vector_rns, 8).T
     else:
         wide, length = array_nm.shape
         (deep,) = vector_rns.shape
-        array_aux = np.round(np.tile(array_nm, [deep, 1, 1]), 8)
-        rns_array = np.round((np.ones([wide, length, deep]) * vector_rns), 8).transpose(
+        array_aux = round(tile(array_nm, [deep, 1, 1]), 8)
+        rns_array = round((ones([wide, length, deep]) * vector_rns), 8).transpose(
             2, 0, 1
         )
         # indexes = (array_aux < rns_array).sum(axis=0)

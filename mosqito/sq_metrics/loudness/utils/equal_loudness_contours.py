@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-@author: Daniel Jiménez-Caminero Costa
-"""
 
-import numpy as np
+from numpy import array, empty, log10
 
 
 def equal_loudness_contours(phones):
@@ -28,41 +25,11 @@ def equal_loudness_contours(phones):
         Frequencies in which the function computes the resulting 'SPL' values.
     """
     n_frequencies = 29
-    freq_array = np.array(
-        [
-            20.0,
-            25.0,
-            31.5,
-            40.0,
-            50.0,
-            63.0,
-            80.0,
-            100.0,
-            125.0,
-            160.0,
-            200.0,
-            250.0,
-            315.0,
-            400.0,
-            500.0,
-            630.0,
-            800.0,
-            1000.0,
-            1250.0,
-            1600.0,
-            2000.0,
-            2500.0,
-            3150.0,
-            4000.0,
-            5000.0,
-            6300.0,
-            8000.0,
-            10000.0,
-            12500.0,
-        ]
-    )
+    freq_array = array([20.0, 25.0, 31.5, 40.0, 50.0, 63.0, 80.0, 100.0, 125.0, 160.0, 200.0, 250.0, 315.0, 400.0,
+                           500.0, 630.0, 800.0, 1000.0, 1250.0, 1600.0, 2000.0, 2500.0, 3150.0, 4000.0, 5000.0, 6300.0,
+                           8000.0, 10000.0, 12500.0])
 
-    af = np.array(
+    af = array(
         [
             0.532,
             0.506,
@@ -96,7 +63,7 @@ def equal_loudness_contours(phones):
         ]
     )
 
-    Lu = np.array(
+    Lu = array(
         [
             -31.6,
             -27.2,
@@ -130,7 +97,7 @@ def equal_loudness_contours(phones):
         ]
     )
 
-    Tf = np.array(
+    Tf = array(
         [
             78.5,
             68.7,
@@ -166,13 +133,13 @@ def equal_loudness_contours(phones):
 
     # Ln = phones
     # Lp = SPL
-    spl_array = np.zeros(n_frequencies, dtype=float)
+    spl_array = empty(n_frequencies, dtype=float)
 
     # Deriving sound pressure level from loudness level (iso226 sect 4.1). Ln = phones
     Af = (4.47 * (10 ** (-3))) * ((10 ** (0.025 * phones)) - 1.15) + (
         (0.4 * (10 ** (((Tf + Lu) / 10) - 9))) ** af
     )
 
-    spl_array = ((10.0 / af) * np.log10(Af)) - Lu + 94
+    spl_array = ((10. / af) * log10(Af)) - Lu + 94
 
     return spl_array, freq_array

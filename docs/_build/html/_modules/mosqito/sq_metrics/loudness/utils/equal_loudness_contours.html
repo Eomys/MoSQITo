@@ -1,0 +1,587 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mosqito.sq_metrics.loudness.utils.equal_loudness_contours &#8212; MOSQITO manual</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/source/_static/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/mosqito/sq_metrics/loudness/utils/equal_loudness_contours';</script>
+    <link rel="icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2024"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../../../../_static/logo.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../../../../_static/logo.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">MOSQITO</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/reference/index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/contribution/index.html">
+                        Contribution
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Eomys/MoSQITo" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/reference/index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../source/contribution/index.html">
+                        Contribution
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Eomys/MoSQITo" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">mosqito.sq_m...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for mosqito.sq_metrics.loudness.utils.equal_loudness_contours</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">empty</span><span class="p">,</span> <span class="n">log10</span>
+
+
+<div class="viewcode-block" id="equal_loudness_contours"><a class="viewcode-back" href="../../../../../source/reference/mosqito.sq_metrics.loudness.utils.equal_loudness_contours.html#mosqito.sq_metrics.loudness.utils.equal_loudness_contours.equal_loudness_contours">[docs]</a><span class="k">def</span> <span class="nf">equal_loudness_contours</span><span class="p">(</span><span class="n">phones</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;This function will return a 29-point equal loudness contour for your desired phon level. The frequencies</span>
+<span class="sd">    evaluated in this function only span from 20Hz - 12.5kHz, and only 29 selective frequencies are covered. This is</span>
+<span class="sd">    the limitation of the ISO standard&quot;.</span>
+
+<span class="sd">    Function based on the MATLAB project from Jeff Tackett, &#39;ISO 226 Equal-Loudness-Level Contour Signal&#39;</span>
+<span class="sd">    (es.mathworks.com/matlabcentral/fileexchange/7028-iso-226-equal-loudness-level-contour-signal).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    phones: int</span>
+<span class="sd">        Logarithmic unit for the evaluation curve of the perceived sound (1phon = 1dB @ 1kHz).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    spl_array: numpy.array</span>
+<span class="sd">        Sound pressure level (&#39;SPL&#39;) values.</span>
+
+<span class="sd">    frequencies_array: numpy.array</span>
+<span class="sd">        Frequencies in which the function computes the resulting &#39;SPL&#39; values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_frequencies</span> <span class="o">=</span> <span class="mi">29</span>
+    <span class="n">freq_array</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">,</span> <span class="mf">31.5</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">63.0</span><span class="p">,</span> <span class="mf">80.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">125.0</span><span class="p">,</span> <span class="mf">160.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">,</span> <span class="mf">315.0</span><span class="p">,</span> <span class="mf">400.0</span><span class="p">,</span>
+                           <span class="mf">500.0</span><span class="p">,</span> <span class="mf">630.0</span><span class="p">,</span> <span class="mf">800.0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="mf">1250.0</span><span class="p">,</span> <span class="mf">1600.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">,</span> <span class="mf">2500.0</span><span class="p">,</span> <span class="mf">3150.0</span><span class="p">,</span> <span class="mf">4000.0</span><span class="p">,</span> <span class="mf">5000.0</span><span class="p">,</span> <span class="mf">6300.0</span><span class="p">,</span>
+                           <span class="mf">8000.0</span><span class="p">,</span> <span class="mf">10000.0</span><span class="p">,</span> <span class="mf">12500.0</span><span class="p">])</span>
+
+    <span class="n">af</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mf">0.532</span><span class="p">,</span>
+            <span class="mf">0.506</span><span class="p">,</span>
+            <span class="mf">0.480</span><span class="p">,</span>
+            <span class="mf">0.455</span><span class="p">,</span>
+            <span class="mf">0.432</span><span class="p">,</span>
+            <span class="mf">0.409</span><span class="p">,</span>
+            <span class="mf">0.387</span><span class="p">,</span>
+            <span class="mf">0.367</span><span class="p">,</span>
+            <span class="mf">0.349</span><span class="p">,</span>
+            <span class="mf">0.330</span><span class="p">,</span>
+            <span class="mf">0.315</span><span class="p">,</span>
+            <span class="mf">0.301</span><span class="p">,</span>
+            <span class="mf">0.288</span><span class="p">,</span>
+            <span class="mf">0.276</span><span class="p">,</span>
+            <span class="mf">0.267</span><span class="p">,</span>
+            <span class="mf">0.259</span><span class="p">,</span>
+            <span class="mf">0.253</span><span class="p">,</span>
+            <span class="mf">0.250</span><span class="p">,</span>
+            <span class="mf">0.246</span><span class="p">,</span>
+            <span class="mf">0.244</span><span class="p">,</span>
+            <span class="mf">0.243</span><span class="p">,</span>
+            <span class="mf">0.243</span><span class="p">,</span>
+            <span class="mf">0.243</span><span class="p">,</span>
+            <span class="mf">0.242</span><span class="p">,</span>
+            <span class="mf">0.242</span><span class="p">,</span>
+            <span class="mf">0.245</span><span class="p">,</span>
+            <span class="mf">0.254</span><span class="p">,</span>
+            <span class="mf">0.271</span><span class="p">,</span>
+            <span class="mf">0.301</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">Lu</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="o">-</span><span class="mf">31.6</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">27.2</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">23.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">19.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">15.9</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">13.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">10.3</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">8.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">6.2</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">4.5</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">3.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="mf">0.3</span><span class="p">,</span>
+            <span class="mf">0.5</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">2.7</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">4.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>
+            <span class="mf">1.7</span><span class="p">,</span>
+            <span class="mf">2.5</span><span class="p">,</span>
+            <span class="mf">1.2</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">2.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">7.1</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">11.2</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">10.7</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">3.1</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">Tf</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mf">78.5</span><span class="p">,</span>
+            <span class="mf">68.7</span><span class="p">,</span>
+            <span class="mf">59.5</span><span class="p">,</span>
+            <span class="mf">51.1</span><span class="p">,</span>
+            <span class="mf">44.0</span><span class="p">,</span>
+            <span class="mf">37.5</span><span class="p">,</span>
+            <span class="mf">31.5</span><span class="p">,</span>
+            <span class="mf">26.5</span><span class="p">,</span>
+            <span class="mf">22.1</span><span class="p">,</span>
+            <span class="mf">17.9</span><span class="p">,</span>
+            <span class="mf">14.4</span><span class="p">,</span>
+            <span class="mf">11.4</span><span class="p">,</span>
+            <span class="mf">8.6</span><span class="p">,</span>
+            <span class="mf">6.2</span><span class="p">,</span>
+            <span class="mf">4.4</span><span class="p">,</span>
+            <span class="mf">3.0</span><span class="p">,</span>
+            <span class="mf">2.2</span><span class="p">,</span>
+            <span class="mf">2.4</span><span class="p">,</span>
+            <span class="mf">3.5</span><span class="p">,</span>
+            <span class="mf">1.7</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">1.3</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">4.2</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">6.0</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">5.4</span><span class="p">,</span>
+            <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span>
+            <span class="mf">6.0</span><span class="p">,</span>
+            <span class="mf">12.6</span><span class="p">,</span>
+            <span class="mf">13.9</span><span class="p">,</span>
+            <span class="mf">12.3</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Ln = phones</span>
+    <span class="c1"># Lp = SPL</span>
+    <span class="n">spl_array</span> <span class="o">=</span> <span class="n">empty</span><span class="p">(</span><span class="n">n_frequencies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># Deriving sound pressure level from loudness level (iso226 sect 4.1). Ln = phones</span>
+    <span class="n">Af</span> <span class="o">=</span> <span class="p">(</span><span class="mf">4.47</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)))</span> <span class="o">*</span> <span class="p">((</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.025</span> <span class="o">*</span> <span class="n">phones</span><span class="p">))</span> <span class="o">-</span> <span class="mf">1.15</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
+        <span class="p">(</span><span class="mf">0.4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(((</span><span class="n">Tf</span> <span class="o">+</span> <span class="n">Lu</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-</span> <span class="mi">9</span><span class="p">)))</span> <span class="o">**</span> <span class="n">af</span>
+    <span class="p">)</span>
+
+    <span class="n">spl_array</span> <span class="o">=</span> <span class="p">((</span><span class="mf">10.</span> <span class="o">/</span> <span class="n">af</span><span class="p">)</span> <span class="o">*</span> <span class="n">log10</span><span class="p">(</span><span class="n">Af</span><span class="p">))</span> <span class="o">-</span> <span class="n">Lu</span> <span class="o">+</span> <span class="mi">94</span>
+
+    <span class="k">return</span> <span class="n">spl_array</span><span class="p">,</span> <span class="n">freq_array</span></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Green Forge Coop.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

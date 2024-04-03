@@ -16,7 +16,7 @@ from mosqito.sq_metrics.speech_intelligibility.sii_ansi._speech_data import (
     _get_third_octave_band_speech_data,
 )
 from mosqito.utils.LTQ import LTQ
-from mosqito.utils.conversion import freq2bark
+from mosqito.utils import freq2bark
 
 
 def _main_sii(method, speech_spectrum, noise_spectrum, threshold):

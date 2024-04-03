@@ -1,0 +1,31 @@
+html[data-theme="light"] {
+    --pst-color-primary: rgb(105, 195, 197);
+}
+
+html[data-theme="dark"] {
+    --pst-color-primary: rgb(105, 195, 197);
+}
+
+html[data-theme="light"] {
+    --pst-color-secondary: rgb(224, 241, 242);
+}
+
+html[data-theme="dark"] {
+    --pst-color-secondary: rgb(224, 241, 242);
+}
+
+html[data-theme="light"] {
+    --pst-color-accent: rgb(100, 53, 53);
+}
+
+html[data-theme="dark"] {
+    --pst-color-accent: rgb(100, 53, 53);
+}
+
+html[data-theme="light"] {
+    --pst-color-warning: rgb(100, 84, 53);
+}
+
+html[data-theme="dark"] {
+    --pst-color-warning: rgb(100, 84, 53);
+}

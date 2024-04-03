@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Standard library imports
-import numpy as np
+from numpy import sqrt, mean
 from scipy.signal import decimate, butter, sosfilt
 
 
@@ -59,13 +59,13 @@ def _n_oct_time_filter(sig, fs, fc, alpha, N=3):
     w2 = fc / (fs / 2) * alpha
 
     # define filter coefficient
-    sos = butter(int(N), (w1, w2), "bandpass", analog=False, output="sos")
+    sos = butter(int(N), (w1, w2), "bandpass", analog=False, output='sos')
 
     # filter signal
     sig_filt = sosfilt(sos, sig, axis=0)
 
     # Compute overall rms level
-    level = np.sqrt(np.mean(sig_filt**2, axis=0))
+    level = sqrt(mean(sig_filt ** 2, axis=0))
 
     return level
 

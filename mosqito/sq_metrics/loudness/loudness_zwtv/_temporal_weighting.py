@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@date Created on Fri May 22 2020
-@author martin_g for Eomys
-"""
 
 # Local application import
 from mosqito.sq_metrics.loudness.loudness_zwtv._lowpass_intp import (

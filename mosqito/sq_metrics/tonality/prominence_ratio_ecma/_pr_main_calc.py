@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import numpy as np
+from numpy import asarray, where, append, empty, array, argmin, log10, power, delete, abs
 
 # from scipy.signal import welch, periodogram
 
@@ -30,9 +29,9 @@ def _pr_main_calc(spectrum_db, freq_axis):
     Parameters
     ----------
     spectrum_db : array
-        Spectrum values in dB [nperseg x nseg]
+        Spectrum values in dB (nperseg x nseg)
     freq_axis : array
-        frequency axis corresponding to the spectrum [nperseg x nseg]
+        frequency axis corresponding to the spectrum (nperseg x nseg)
 
     Output
     ------
@@ -51,7 +50,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
     if len(spectrum_db.shape) == 1:
         nseg = 1
         # Frequency axis of interest
-        freq_index = np.where((freq_axis > 89.1) & (freq_axis < 11200))[0]
+        freq_index = where((freq_axis > 89.1) & (freq_axis < 11200))[0]
         freqs = freq_axis[freq_index]
         spec_db = spectrum_db[freq_index]
 
@@ -61,22 +60,22 @@ def _pr_main_calc(spectrum_db, freq_axis):
         spec_db = [[] for i in range(nseg)]
         for i in range(nseg):
             # Frequency axis of interest
-            freq_index_rows = np.where(
+            freq_index_rows = where(
                 (freq_axis[:, i] > 89.1) & (freq_axis[:, i] < 11200)
             )[0]
-            freqs[i] = np.append(freqs[i], freq_axis[freq_index_rows, i])
-            spec_db[i] = np.append(spec_db[i], spectrum_db[freq_index_rows, i])
-        freqs = np.asarray(freqs)
-        spec_db = np.asarray(spec_db)
+            freqs[i] = append(freqs[i], freq_axis[freq_index_rows, i])
+            spec_db[i] = append(spec_db[i], spectrum_db[freq_index_rows, i])
+        freqs = asarray(freqs)
+        spec_db = asarray(spec_db)
 
     elif (len(spectrum_db.shape) > 1) & (len(freq_axis.shape) == 1):
         # Frequency axis of interest
-        freq_index = np.where((freq_axis > 89.1) & (freq_axis < 11200))[0]
+        freq_index = where((freq_axis > 89.1) & (freq_axis < 11200))[0]
         # Initialization
         nfreqs = len(freq_index)
         nseg = spectrum_db.shape[1]
-        freqs = np.zeros((nseg, nfreqs))
-        spec_db = np.zeros((nseg, nfreqs))
+        freqs = empty((nseg, nfreqs))
+        spec_db = empty((nseg, nfreqs))
         for i in range(nseg):
             freqs[i, :] = freq_axis[freq_index]
             spec_db[i, :] = spectrum_db[freq_index, i]
@@ -101,7 +100,7 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
     for i in range(nseg):
 
-        pr = np.array([], dtype=object)
+        pr = array([], dtype=object)
 
         if nseg == 1:
             peaks = peak_index
@@ -129,23 +128,23 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
             # Level of the middle critical band
             f1, f2 = _critical_band(ft)
-            low_limit_idx = np.argmin(np.abs(fr - f1))
-            high_limit_idx = np.argmin(np.abs(fr - f2))
+            low_limit_idx = argmin(abs(fr - f1))
+            high_limit_idx = argmin(abs(fr - f2))
 
             spec_sum = sum(10 ** (spec[low_limit_idx:high_limit_idx] / 10))
             if spec_sum != 0:
-                Lm = 10 * np.log10(spec_sum)
+                Lm = 10 * log10(spec_sum)
             else:
                 Lm = 0
 
             # Level of the lower critical band
             f1, f2 = _lower_critical_band(ft)
-            low_limit = np.argmin(np.abs(fr - f1))
-            high_limit = np.argmin(np.abs(fr - f2))
+            low_limit = argmin(abs(fr - f1))
+            high_limit = argmin(abs(fr - f2))
 
             spec_sum = sum(10 ** (spec[low_limit:high_limit] / 10))
             if spec_sum != 0:
-                Ll = 10 * np.log10(spec_sum)
+                Ll = 10 * log10(spec_sum)
             else:
                 Ll = 0
 
@@ -153,35 +152,35 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
             # Level of the upper critical band
             f1, f2 = _upper_critical_band(ft)
-            low_limit = np.argmin(np.abs(fr - f1))
-            high_limit = np.argmin(np.abs(fr - f2))
+            low_limit = argmin(abs(fr - f1))
+            high_limit = argmin(abs(fr - f2))
 
             spec_sum = sum(10 ** (spec[low_limit:high_limit] / 10))
             if spec_sum != 0:
-                Lu = 10 * np.log10(spec_sum)
+                Lu = 10 * log10(spec_sum)
             else:
                 Lu = 0
 
             if ft <= 171.4:
-                delta = 10 * np.log10(10 ** (0.1 * Lm)) - 10 * np.log10(
+                delta = 10 * log10(10 ** (0.1 * Lm)) - 10 * log10(
                     ((100 / delta_f) * 10 ** (0.1 * Ll) + 10 ** (0.1 * Lu)) * 0.5
                 )
 
             elif ft > 171.4:
-                delta = 10 * np.log10(10 ** (0.1 * Lm)) - 10 * np.log10(
+                delta = 10 * log10(10 ** (0.1 * Lm)) - 10 * log10(
                     (10 ** (0.1 * Ll) + 10 ** (0.1 * Lu)) * 0.5
                 )
 
             if delta > 0:
                 if nseg > 1:
-                    tones_freqs[i] = np.append(tones_freqs[i], ft)
+                    tones_freqs[i] = append(tones_freqs[i], ft)
                 elif nseg == 1:
-                    tones_freqs = np.append(tones_freqs, ft)
-                pr = np.append(pr, delta)
+                    tones_freqs = append(tones_freqs, ft)
+                pr = append(pr, delta)
 
                 # Prominent discrete tone criteria
                 if ft >= 89.1 and ft <= 1000:
-                    if delta >= 9 + 10 * np.log10(1000 / ft):
+                    if delta >= 9 + 10 * log10(1000 / ft):
                         if nseg > 1:
                             prominence[i].append(True)
 
@@ -210,27 +209,26 @@ def _pr_main_calc(spectrum_db, freq_axis):
 
             # suppression from the list of tones of all the candidates belonging to the
             # same critical band
-            sup = np.where((peaks >= low_limit_idx) & (peaks <= high_limit_idx))[0]
-            peaks = np.delete(peaks, sup)
+            sup = where((peaks >= low_limit_idx) & (peaks <= high_limit_idx))[0]
+            peaks = delete(peaks, sup)
             nb_tones -= len(sup)
 
         if nseg > 1:
-            if sum(np.power(10, (pr[prominence[i]] / 10))) != 0:
-                t_pr[i] = 10 * np.log10(sum(np.power(10, (pr[prominence[i]] / 10))))
+            if sum(power(10, (pr[prominence[i]] / 10))) != 0:
+                t_pr[i] = 10 * log10(sum(power(10, (pr[prominence[i]] / 10))))
             else:
                 t_pr[i] = 0
-            PR[i] = np.append(PR[i], pr)
+            PR[i] = append(PR[i], pr)
 
         elif nseg == 1:
-            if sum(np.power(10, (pr[prominence] / 10))) != 0:
-                t_pr = np.append(
-                    t_pr, 10 * np.log10(sum(np.power(10, (pr[prominence] / 10))))
-                )
+            if sum(power(10, (pr[prominence] / 10))) != 0:
+                t_pr = append(
+                    t_pr, 10 * log10(sum(power(10, (pr[prominence] / 10)))))
             else:
                 t_pr = 0
-            PR = np.append(PR, pr)
+            PR = append(PR, pr)
 
-    tones_freqs = np.asarray(tones_freqs, dtype=object)
-    prominence = np.asarray(prominence, dtype=object)
+    tones_freqs = asarray(tones_freqs, dtype=object)
+    prominence = asarray(prominence, dtype=object)
 
     return tones_freqs, PR, prominence, t_pr

@@ -30,7 +30,8 @@ def _ecma_time_segmentation(signal_block, sb, sh, n_new):
 
     time: list
         List of  Numpy arrays of size (nseg,) containing the time axis
-        corresponding to each segmented signal
+        corresponding to each segmented signal. For each block, the time
+        value chosen is the mean of the segmented time axis.
     """
 
     # Sampling frequency must be 48 kHz for ECMA-418-2 (2022)
@@ -70,6 +71,6 @@ def _ecma_time_segmentation(signal_block, sb, sh, n_new):
         )
 
         block_array.append(signal[idx])
-        time_array.append(time[idx])
+        time_array.append(mean(time[idx], axis=1))
 
     return block_array, time_array

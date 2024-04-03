@@ -8,44 +8,97 @@ from scipy.interpolate import interp1d
 from mosqito.sound_level_meter.noct_spectrum.noct_synthesis import noct_synthesis
 from mosqito.sq_metrics.loudness.loudness_zwst._main_loudness import _main_loudness
 from mosqito.sq_metrics.loudness.loudness_zwst._calc_slopes import _calc_slopes
-from mosqito.utils.conversion import amp2db
+from mosqito.utils import amp2db
 
 
 def loudness_zwst_freq(spectrum, freqs, field_type="free"):
-    """Zwicker-loudness calculation for stationary signals
+    """
+    Compute the loudness value from a fine band spectrum
 
-    Calculates the acoustic loudness according to Zwicker method for
-    stationary signals.
-    Normatice reference:
-        ISO 532:1975 (method B)
-        DIN 45631:1991
-        ISO 532-1:2017 (method 1)
-    The code is based on BASIC program published in "Program for
-    calculating loudness according to DIN 45631 (ISO 532B)", E.Zwicker
-    and H.Fastl, J.A.S.J (E) 12, 1 (1991).
-    Note that due to normative continuity, as defined in the
-    preceeding standards, the method is in accordance with
-    ISO 226:1987 equal loudness contours (instead of ISO 226:2003)
+    This function computes the acoustic loudness according to Zwicker method for
+    stationary signals (ISO.532-1:2017).
 
     Parameters
     ----------
-    spectrum : numpy.array
-        A RMS frequency spectrum, size (Nfreq, Ntime)
-    freqs : list
-        List of the corresponding frequencies, size (Nfreq,) or (Nfreq, Ntime)
-    field_type : str
-        Type of soundfield corresponding to spec_third ("free" by
-        default or "diffuse")
+    spectrum : array_like
+        A RMS spectrum.
+    freqs : array_like
+        Frequency axis.
+    field_type : {'free', 'diffuse'}
+        Type of soundfield.
+        Default is 'free'
 
-    Outputs
+    Returns
     -------
-    N : float or numpy.array
-        Calculated loudness [sones], size (Ntime,).
-    N_specific : numpy.ndarray
-        Specific loudness [sones/bark], size (Nbark, Ntime).
-    bark_axis : numpy.array
-        Frequency axis in bark, size (Nbark,).
+    N : float or array_like
+        Overall loudness array in [sones], size (Ntime,).
+    N_specific : array_like
+        Specific loudness array [sones/bark], size (Nbark, Ntime).
+    bark_axis: array_like
+        Bark axis array, size (Nbark,).
+
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
+
+    See Also
+    --------
+    .loudness_zwst : Loudness computation for a stationary time signal
+    .loudness_zwst_perseg : Loudness computation by time-segment
+    .loudness_zwtv : Loudness computation for a non-stationary time signal
+
+    Notes
+    -----
+    The total loudness :math:`N` is computed as the integral of the specific loudness :math:`N'` measured in sone/bark, over the Bark scale.
+    The values of specific loudness are evaluated from third octave band levels as function of critical band rate :math:`z` in Bark.
+
+    .. math::
+        N=\\int_{0}^{24Bark}N'(z)\\textup{dz}
+
+    Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours
+    instead of ISO 226:2003, as defined in the following standards:
+        * ISO 532:1975 (method B)
+        * DIN 45631:1991
+        * ISO 532-1:2017 (method 1)
+
+    References
+    ----------
+    :cite:empty:`L_zw-ZF91`
+    :cite:empty:`L_zw-ISO.532-1:2017`
+
+    .. bibliography::
+        :keyprefix: L_zw-
+
+    Examples
+    --------
+    .. plot::
+       :include-source:
+
+       >>> from mosqito.sq_metrics import loudness_zwst_freq
+       >>> from mosqito.sound_level_meter import comp_spectrum
+       >>> import matplotlib.pyplot as plt
+       >>> import numpy as np
+       >>> fs=48000
+       >>> d=0.2
+       >>> dB=60
+       >>> time = np.arange(0, d, 1/fs)
+       >>> f = np.linspace(1000,5000, len(time))
+       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> stimulus = stimulus * ampl
+       >>> spec, freqs = comp_spectrum(stimulus, fs, db=False)
+       >>> N, N_spec, bark_axis = loudness_zwst_freq(spec, freqs)
+       >>> plt.plot(bark_axis, N_spec)
+       >>> plt.xlabel("Frequency band [Bark]")
+       >>> plt.ylabel("Specific loudness [Sone/Bark]")
+       >>> plt.title("Loudness = " + f"{N:.2f}" + " [Sone]")
     """
+
+    # Check the inputs
+    if len(spectrum) != len(freqs):
+        raise ValueError("Input spectrum and frequency axis must have the same shape")
 
     # 1D spectrum
     if len(spectrum.shape) == 1:

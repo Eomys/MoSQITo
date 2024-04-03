@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # External import
-import numpy as np
+from numpy import argmin, abs
 
 # Local imports
 from mosqito.sq_metrics import loudness_zwtv
@@ -11,31 +11,93 @@ from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness impo
 
 
 def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
-    """Acoustic sharpness calculation according to different methods
-        (Aures, Von Bismarck, DIN 45692, Fastl) for a time varying signal.
+    """
+    Compute the sharpness value from a time signal (optionally segmented)
 
-    Parameters:
+    This function computes the sharpness value along time according to different methods.
+
+    Parameters
     ----------
-    signal : numpy.array
-        A time signal values [Pa], size (Ntime,)
-    fs : integer
-        Sampling frequency.
-    weighting : string
-        To specify the weighting function used for the
-        sharpness computation.'din' by default,'aures', 'bismarck','fastl'
-    field_type : str
-        Type of soundfield corresponding to spec_third ("free" by
-        default or "diffuse").
+    signal: array_like
+        Input time signal in [Pa], dim (nperseg, nseg)
+    fs: float
+        Sampling frequency
+    weighting : {'din', 'aures', 'bismarck', 'fastl'}
+        Weighting function used for the sharpness computation.
+        Default is 'din'
+    field_type : {'free', 'diffuse'}
+        Type of soundfield.
+        Default is 'free'
     skip : float
         Number of second to be cut at the beginning of the analysis to skip the transient effect.
+        Default is 0
 
-    Outputs
-    ------
-    S : float
-        Sharpness value, size (Ntime,) .
-    time_axis: numpy.array
-        The time axis array, size (Ntime,) .
+    Returns
+    -------
+    S : numpy.array
+        Sharpness value in [acum], dim (nseg)
+    time_axis : numpy.array
+        Time axis in [s]
 
+    Warning
+    -------
+    The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
+    If the provided signal doesn't meet the requirements, it will be resampled.
+
+    See Also
+    --------
+    .sharpness_din_from_loudness : Sharpness computation from loudness values
+    .sharpness_din_st : Sharpness computation for a stationary time signal
+    .sharpness_din_perseg : Sharpness computation by time-segment
+    .sharpness_din_freq : Sharpness computation from a sound spectrum
+
+    Notes
+    -----
+    For each time frame considered, the computation consists of a specific loudness weighting
+    employing a weighting function :math:`g(z)`:
+
+    .. math::
+        S=0.11\\frac{\\int_{0}^{24Bark}N'(z)g(z)\\textup{dz}}{N}
+
+    with :math:`N'` the specific loudness and :math:`N` the global loudness according to Zwicker
+    method for time-varying signals.
+
+    The different methods available with the function account for the weighting function applied:
+     * DIN 45692 : weighting defined in the standard
+     * Aures
+     * Bismarck
+     * Fastl
+
+    References
+    ----------
+    :cite:empty:`S-DIN.45692:2009`
+    :cite:empty:`S-ZF:9`
+    :cite:empty:`S-B74`
+
+    .. bibliography::
+        :keyprefix: S-
+
+    Examples
+    --------
+    .. plot::
+       :include-source:
+
+       >>> from mosqito.sq_metrics import sharpness_din_tv
+       >>> import matplotlib.pyplot as plt
+       >>> import numpy as np
+       >>> fs=48000
+       >>> d=1
+       >>> dB=60
+       >>> time = np.arange(0, d, 1/fs)
+       >>> f = np.linspace(1000,5000, len(time))
+       >>> stimulus = 0.5 * (1 + np.sin(2 * np.pi * f * time))
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> stimulus = stimulus * ampl
+       >>> S, time_axis = sharpness_din_tv(stimulus, fs=fs, skip=0.1)
+       >>> plt.plot(time_axis, S)
+       >>> plt.xlabel("Time [s]")
+       >>> plt.ylabel("Sharpness [Acum]")
     """
     if fs < 48000:
         print(
@@ -52,12 +114,12 @@ def sharpness_din_tv(signal, fs, weighting="din", field_type="free", skip=0):
         )
 
     # Compute loudness
-    N, N_specific, _, time_axis = loudness_zwtv(signal, fs)
+    N, N_specific, _, time_axis = loudness_zwtv(signal, fs, field_type)
 
     # Compute sharpness from loudness
-    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting, skip=0)
+    S = sharpness_din_from_loudness(N, N_specific, weighting=weighting)
 
     # Cut transient effect
-    cut_index = np.argmin(np.abs(time_axis - skip))
+    cut_index = argmin(abs(time_axis - skip))
 
     return S[cut_index:], time_axis[cut_index:]

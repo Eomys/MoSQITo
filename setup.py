@@ -1,7 +1,8 @@
 import setuptools
 
 # /!\ update before a release
-MoSQITo_VERSION = "1.1.1"
+from mosqito import __version__
+version = __version__
 
 # MoSQITo description
 with open("README.md", "r", encoding="utf-8") as fh:
@@ -20,7 +21,7 @@ tests_require = ["pytest>=5.4.1", "pandas", "openpyxl", "matplotlib"]
 
 setuptools.setup(
     name="mosqito",
-    version=MoSQITo_VERSION,
+    version=version,
     author="MoSQITo Developers",
     author_email="martin.glesser@eomys.com",
     description="Modular Sound Quality Integrated Toolbox",
@@ -28,7 +29,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Eomys/MoSQITo",
     download_url="https://github.com/Eomys/MoSQITo/archive/v{}.tar.gz".format(
-        MoSQITo_VERSION
+        version
     ),
     packages=setuptools.find_packages(
         exclude=[
