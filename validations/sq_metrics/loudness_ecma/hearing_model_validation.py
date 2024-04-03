@@ -44,8 +44,8 @@ def comp_loudness_wrapper(spl, freq, phon_1kHz):
     duration = 0.5
     fs = 48000.0
 
-    signal, _ = sine_wave_generator(fs, duration, spl, freq)
-    signal_1kHz, _ = sine_wave_generator(fs, duration, spl_value=phon_1kHz, freq=1000)
+    signal, _ = sine_wave_generator(fs, duration, freq, spl)
+    signal_1kHz, _ = sine_wave_generator(fs, duration, freq=1000, spl_level=phon_1kHz)
 
     # compute loudness for the test signal
     N, _, N_spec, _, _ = loudness_ecma(signal_1kHz, fs)

@@ -22,18 +22,19 @@ def test_loudness_ecma():
     # Generate a 1kHz / 80 dB test tone and compute loudness
     signal, _ = sine_wave_generator(
         fs=48000,
-        t=0.25,
-        spl_value=80,
+        d=0.25,
         freq=1000,
+        spl_level=80,
     )
+    
     n_1kHz, _, _, _, _ = loudness_ecma(signal, fs=48000)
 
     # Generate a 5kHz / 78.7 dB test tone and compute loudness
     signal, _ = sine_wave_generator(
         fs=48000,
-        t=0.25,
-        spl_value=78.49095, 
+        d=0.25,
         freq=5000,
+        spl_level=78.49095, 
     )
     n_5kHz, _, _, _, _ = loudness_ecma(signal, fs=48000)
 
