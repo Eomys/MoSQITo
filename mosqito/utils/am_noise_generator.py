@@ -57,11 +57,21 @@ def am_noise_generator(xmod, spl_level, print_m=False):
         >>> fm = 4     
         >>> xmod = np.sin(2*np.pi*t*fm)
         >>> y_am, MI = am_noise_generator(xmod, dB, True)
-        >>> plt.plot(t, y_am)
-        >>> plt.xlabel("Time axis [s]")
-        >>> plt.ylabel("Amplitude signal [Pa]")    
-        >>> plt.title(f'Modulation index = {MI:.1f}')    
-        
+        >>> fig, plots = plt.subplots(2, 1)
+        >>> plots[0].set_title('Amplitude-modulated broadband noise')
+        >>> plots[0].plot(t, xmod, 'C0', label='Modulating signal')
+        >>> plots[0].legend(loc='upper right')
+        >>> plots[0].grid()
+        >>> plots[0].set_ylabel('Amplitude')
+        >>> plots[0].set_xlim([0, duration])
+        >>> plots[1].plot(t, y_am, '#69c3c5', label='AM signal')
+        >>> plots[1].legend(loc='upper right')
+        >>> plots[1].grid()
+        >>> plots[1].set_ylabel('Amplitude')
+        >>> plots[1].set_xlim([0, duration])
+        >>> plots[1].set_xlabel('Time [s]')
+        >>> fig.set_tight_layout('tight')
+         
     """
     
     # signal length in samples

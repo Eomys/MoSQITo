@@ -432,11 +432,21 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; fm = 4     </span>
 <span class="sd">        &gt;&gt;&gt; xmod = np.sin(2*np.pi*t*fm)</span>
 <span class="sd">        &gt;&gt;&gt; y_am, MI = am_noise_generator(xmod, dB, True)</span>
-<span class="sd">        &gt;&gt;&gt; plt.plot(t, y_am)</span>
-<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Time axis [s]&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Amplitude signal [Pa]&quot;)    </span>
-<span class="sd">        &gt;&gt;&gt; plt.title(f&#39;Modulation index = {MI:.1f}&#39;)    </span>
-<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; fig, plots = plt.subplots(2, 1)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].set_title(&#39;Amplitude-modulated broadband noise&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].plot(t, xmod, &#39;C0&#39;, label=&#39;Modulating signal&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].legend(loc=&#39;upper right&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].grid()</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].set_ylabel(&#39;Amplitude&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].set_xlim([0, duration])</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].plot(t, y_am, &#39;#69c3c5&#39;, label=&#39;AM signal&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].legend(loc=&#39;upper right&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].grid()</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].set_ylabel(&#39;Amplitude&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].set_xlim([0, duration])</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].set_xlabel(&#39;Time [s]&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; fig.set_tight_layout(&#39;tight&#39;)</span>
+<span class="sd">         </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="c1"># signal length in samples</span>

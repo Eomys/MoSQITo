@@ -434,17 +434,28 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; fm = 10        # [Hz]</span>
 <span class="sd">        &gt;&gt;&gt; xmod = np.sin(2*np.pi*t*fm)</span>
 <span class="sd">        &gt;&gt;&gt; y_fm, inst_freq, f_delta, m  = fm_sine_generator(xmod, fs, fc, k, dB, True)</span>
-<span class="sd">        &gt;&gt;&gt; plt.figure()</span>
-<span class="sd">        &gt;&gt;&gt; plt.plot(t, y_fm)</span>
-<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Time axis [s]&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Amplitude signal [Pa]&quot;)    </span>
-<span class="sd">        &gt;&gt;&gt; plt.title(f&#39;Modulation index = {m:.1f}&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.figure()</span>
-<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Time axis [s]&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Instantaneous frequency [Hz]&quot;)    </span>
-<span class="sd">        &gt;&gt;&gt; plt.title(f&#39;Max frequency deviation = {f_delta:.1f}&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.plot(t, inst_freq)</span>
-<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; fig, plots = plt.subplots(3, 1)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].set_title(&#39;Frequency-modulated sine wave&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].plot(t, xmod, &#39;C0&#39;, label=&#39;Modulating signal&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].legend(loc=&#39;upper right&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].grid()</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].set_ylabel(&#39;Amplitude&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].set_xlim([0, duration])</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].plot(t, y_fm, &#39;#69c3c5&#39;, label=&#39;FM signal&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].legend(loc=&#39;upper right&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].grid()</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].set_ylabel(&#39;Amplitude&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].set_xlim([0, duration])</span>
+<span class="sd">        &gt;&gt;&gt; plots[2].plot(t, inst_freq, &#39;#7894cf&#39;, label=&#39;Inst Frequency&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[2].legend(loc=&#39;upper right&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[2].grid()</span>
+<span class="sd">        &gt;&gt;&gt; plots[2].hlines(fc, -0.1, 1.2*duration, color=&#39;k&#39;, linestyle=&#39;--&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[2].text(0.0025, fc*0.7, &#39;carrier freq $f_c$&#39;, fontsize=12)</span>
+<span class="sd">        &gt;&gt;&gt; plots[2].set_ylim([0, 1.1*(fc+k)])</span>
+<span class="sd">        &gt;&gt;&gt; plots[2].set_xlim([0, duration])</span>
+<span class="sd">        &gt;&gt;&gt; plots[2].set_ylabel(&#39;Frequency&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[2].set_xlabel(&#39;Time [s]&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plt.tight_layout()        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">assert</span> <span class="n">fc</span> <span class="o">&lt;</span> <span class="n">fs</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Carrier frequency &#39;fc&#39; must be less than &#39;fs/2&#39;!&quot;</span>

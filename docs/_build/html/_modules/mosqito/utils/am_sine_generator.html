@@ -424,7 +424,7 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    .. plot::</span>
 <span class="sd">       :include-source:</span>
-
+<span class="sd">       </span>
 <span class="sd">        &gt;&gt;&gt; from mosqito.utils import am_sine_generator</span>
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; import numpy as np</span>
@@ -435,12 +435,22 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; fc = 100        # [Hz]</span>
 <span class="sd">        &gt;&gt;&gt; fm = 4          # [Hz]</span>
 <span class="sd">        &gt;&gt;&gt; xmod = np.sin(2*np.pi*t*fm)</span>
-<span class="sd">        &gt;&gt;&gt; y_am, m = am_sine_generator(xmod, fs, fc, dB, True)</span>
-<span class="sd">        &gt;&gt;&gt; plt.plot(t, y_am)</span>
-<span class="sd">        &gt;&gt;&gt; plt.xlabel(&quot;Time axis [s]&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.ylabel(&quot;Amplitude signal [Pa]&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; plt.title(f&#39;Modulation index = {m:.1f}&#39;)    </span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        &gt;&gt;&gt; y_am, m = am_sine_generator(xmod, fs, fc, dB, True)    </span>
+<span class="sd">        &gt;&gt;&gt; fig, plots = plt.subplots(2, 1)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].set_title(f&#39;Amplitude-modulated sine wave, modulation index = {m:.1f}&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].plot(t, xmod, &#39;C0&#39;, label=&#39;Modulating signal&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].legend(loc=&#39;upper right&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].grid()</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].set_ylabel(&#39;Amplitude&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[0].set_xlim([0, duration])</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].plot(t, y_am, &#39;#69c3c5&#39;, label=&#39;AM signal&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].legend(loc=&#39;upper right&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].grid()</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].set_ylabel(&#39;Amplitude&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].set_xlim([0, duration])</span>
+<span class="sd">        &gt;&gt;&gt; plots[1].set_xlabel(&#39;Time [s]&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; fig.set_tight_layout(&#39;tight&#39;)</span>
+<span class="sd">        &gt;&gt;&gt;         &quot;&quot;&quot;</span>
     
     <span class="k">assert</span> <span class="n">fc</span> <span class="o">&lt;</span> <span class="n">fs</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Carrier frequency &#39;fc&#39; must be less than &#39;fs/2&#39;!&quot;</span>
     
