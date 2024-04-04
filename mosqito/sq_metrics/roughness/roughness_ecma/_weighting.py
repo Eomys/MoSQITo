@@ -123,9 +123,9 @@ def _low_mod_rate_weighting(mod_rate, amp, fmax, q2_low):
     """
     if mod_rate < fmax:
         G = 1/((1+((mod_rate/fmax-fmax/mod_rate)*0.7066)**2)**q2_low)        
-        weighted_amp = sum(G * amp)
+        weighted_amp = np.sum(G * amp)
     else:
-        weighted_amp = sum(amp)
+        weighted_amp = np.sum(amp)
 
     return weighted_amp
             

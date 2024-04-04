@@ -38,8 +38,11 @@ from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi_level import si
 from mosqito.sq_metrics.loudness.utils.sone_to_phon import sone_to_phon
 from mosqito.utils.isoclose import isoclose
 from mosqito.utils.load import load
-from mosqito.utils.sine_wave_generator import sine_wave_generator
 from mosqito.utils.time_segmentation import time_segmentation
+from mosqito.utils.sine_wave_generator import sine_wave_generator
+from mosqito.utils.am_noise_generator import am_noise_generator
+from mosqito.utils.am_sine_generator import am_sine_generator
+from mosqito.utils.fm_sine_generator import fm_sine_generator
 from mosqito.utils.conversion.amp2db import amp2db
 from mosqito.utils.conversion.db2amp import db2amp
 from mosqito.utils.conversion.freq2bark import freq2bark

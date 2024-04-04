@@ -98,6 +98,9 @@ mosqito/sq_metrics/tonality/tone_to_noise_ecma/tnr_ecma_perseg.py
 mosqito/sq_metrics/tonality/tone_to_noise_ecma/tnr_ecma_st.py
 mosqito/utils/LTQ.py
 mosqito/utils/__init__.py
+mosqito/utils/am_noise_generator.py
+mosqito/utils/am_sine_generator.py
+mosqito/utils/fm_sine_generator.py
 mosqito/utils/isoclose.py
 mosqito/utils/load.py
 mosqito/utils/sine_wave_generator.py

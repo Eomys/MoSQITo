@@ -53,8 +53,9 @@ Green Forge Coop. MOSQITO (Version 1.1.1). https://doi.org/10.5281/zenodo.106294
 If you need to cite the current release of MOSQITO, please use the "Cite this repository" feature in the "About" section of the `Github repository <https://github.com/Eomys/MoSQITo>`_.
 
 
-Packages using MOSQITO
+Softwares using MOSQITO
 ------------------------
+`Manatee <https://manatee.eomys.com/>`_: A software solution for the assessment and control of magnetic noise & vibrations in electric drives
 
 `Soundscapy <https://github.com/MitchellAcoustics/Soundscapy>`_: A python library for analysing and visualising soundscape assessments.
 

@@ -391,7 +391,7 @@ def _check_compliance(loudness, signal, out_dir):
                     horizontalalignment="center",
                     verticalalignment="center",
                     transform=plt.gca().transAxes,
-                    bbox=dict(facecolor=clr[1], alpha=0.3),
+                    bbox=dict(facecolor=clr[2], alpha=0.3),
                     wrap=True,
                 )
             else:
@@ -403,7 +403,7 @@ def _check_compliance(loudness, signal, out_dir):
                     horizontalalignment="center",
                     verticalalignment="center",
                     transform=plt.gca().transAxes,
-                    bbox=dict(facecolor=clr[2], alpha=0.3),
+                    bbox=dict(facecolor=clr[1], alpha=0.3),
                 )
             #
             # Highlights non-compliant area
