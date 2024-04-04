@@ -11,7 +11,7 @@
 project = 'MOSQITO'
 copyright = '2024, Green Forge Coop'
 author = 'Green Forge Coop'
-version = "1.1.1"
+version = "1.2"
 release = version
 
 import os
