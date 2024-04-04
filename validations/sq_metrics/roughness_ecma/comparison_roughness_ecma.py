@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Local application imports
-from mosqito.utils.am_sine_wave_generator import am_sine_wave_generator
+from mosqito.utils.am_sine_generator import am_sine_generator
 from input.references import (
     ref_zf,
     ref_dw,
@@ -30,6 +30,7 @@ def comparison_roughness():
     mdepth = 1
     duration = 1
     dB = 60
+    time = np.linspace(0,duration,int(duration*fs))
 
     # Overlapping definition for roughness calculation
     overlap = 0
@@ -49,7 +50,8 @@ def comparison_roughness():
         r_ps[ind_fc, :] = ref_ps(fc, fmod)
         # Roughness calculation for each modulation frequency
         for ind_fmod, fm in enumerate(fmod):
-            signal = am_sine_wave_generator(duration, fs, fc, fm, mdepth, dB)
+            xmod = np.sin(2 * np.pi * fm * time)
+            signal, _ = am_sine_generator(xmod, fs, fc, dB)
             rtemp, _, _, _ = roughness_dw(signal, fs, overlap)
             R_dw[ind_fc, ind_fmod] = np.mean(rtemp)
             R_ecma[ind_fc, ind_fmod], _, _, _, _ = roughness_ecma(signal, fs)

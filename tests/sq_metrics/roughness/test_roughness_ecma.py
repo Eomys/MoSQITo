@@ -11,7 +11,7 @@ from scipy.fft import fft
 
 # Local application imports
 from mosqito.sq_metrics import roughness_ecma, roughness_ecma
-from mosqito.utils.am_sine_wave_generator import am_sine_wave_generator
+from mosqito.utils.am_sine_generator import am_sine_generator
 
 
 @pytest.mark.roughness_ecma  # to skip or run only ECMA 418-2 roughness tests
@@ -35,7 +35,10 @@ def test_roughness_ecma():
     """
 
     # Stimulus generation
-    stimulus = am_sine_wave_generator(d=1, fs=48000, fc=1000, fmod=70, mdepth=1 , dB_level=60)
+    fmod = 70
+    time = np.linspace(0,1,48000)
+    xmod = np.sin(2*np.pi*fmod*time)
+    stimulus, _ = am_sine_generator(xmod, fs=48000, fc=1000, spl_level=60)
 
     # Roughness calculation
     R, _, _, _, _ = roughness_ecma(stimulus, fs=48000)

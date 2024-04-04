@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.sq_metrics import roughness_dw
-from mosqito.utils.am_sine_wave_generator import am_sine_wave_generator
+from mosqito.utils.am_sine_generator import am_sine_generator
 from input.references import ref_zf, ref_dw
 
 from mosqito import COLORS as clr
@@ -161,6 +161,7 @@ def validation_roughness_dw(fc):
     fs = 48000
     level = 60
     mdepth = 1
+    time = np.linspace(0, duration, int(duration*fs))
     
     fm_vector = np.array([30,40,50,60,70,80,90,100,120,140,160])
     n = len(fm_vector)
@@ -174,7 +175,8 @@ def validation_roughness_dw(fc):
     R_ref_dw = np.zeros((n)) 
     
     for i, f_mod in enumerate(fm_vector):
-        stimulus = am_sine_wave_generator(duration, fs, fc, f_mod, mdepth , level)
+        xmod = np.sin(2*np.pi*f_mod*time)
+        stimulus, _ = am_sine_generator(xmod, fs, fc, level)
         roughness, _, _, _ = roughness_dw(stimulus, fs, overlap)
         R_dw[i] = roughness[0]
         R_ref_zf[i] = ref_zf(fc, f_mod)

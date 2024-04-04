@@ -43,11 +43,9 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="fm_sine_wave_generator" href="mosqito.utils.fm_sine_wave_generator.html" />
-    <link rel="prev" title="am_sine_wave_generator" href="mosqito.utils.am_sine_wave_generator.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Apr 02, 2024"/>
+    <meta name="docbuild:last-update" content="Apr 04, 2024"/>
   </head>
   
   
@@ -152,7 +150,7 @@
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="index.html">
                         API reference
                       </a>
@@ -236,10 +234,6 @@ document.write(`
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
-      <span class="fa-solid fa-outdent"></span>
-    </label>
-  
 </div>
 
     </nav>
@@ -247,7 +241,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -273,7 +267,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="index.html">
                         API reference
                       </a>
@@ -327,34 +321,6 @@ document.write(`
     
   </div>
   
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mosqito.sound_level_meter.html">sound_level_meter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.html">sq_metrics</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="mosqito.utils.html">utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.amp2db.html">amp2db</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.db2amp.html">db2amp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.bark2freq.html">bark2freq</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.freq2bark.html">freq2bark</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.spectrum2dBA.html">spectrum2dBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.sine_wave_generator.html">sine_wave_generator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.am_sine_wave_generator.html">am_sine_wave_generator</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">am_broadband_noise_generator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.fm_sine_wave_generator.html">fm_sine_wave_generator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.time_segmentation.html">time_segmentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.LTQ.html">LTQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.load.html">load</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</nav></div>
-    </div>
-  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -387,12 +353,6 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">🔧 API reference</a></li>
-    
-    
-    <li class="breadcrumb-item"><a href="mosqito.utils.html" class="nav-link">mosqito.utils</a></li>
-    
     <li class="breadcrumb-item active" aria-current="page">am_broadband...</li>
   </ul>
 </nav>
@@ -410,61 +370,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="module-mosqito.utils.am_broadband_noise_generator">
-<span id="am-broadband-noise-generator"></span><h1>am_broadband_noise_generator<a class="headerlink" href="#module-mosqito.utils.am_broadband_noise_generator" title="Permalink to this heading">#</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="mosqito.utils.am_broadband_noise_generator.am_broadband_noise_generator">
-<span class="sig-name descname"><span class="pre">am_broadband_noise_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mod_signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dB_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_MI</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/utils/am_broadband_noise_generator.html#am_broadband_noise_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.am_broadband_noise_generator.am_broadband_noise_generator" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a amplitude-modulated (AM) signal from a Gaussian broadband (noise)
-carrier, and the input arbitrary modulating signal ‘mod_signal’, at
-sampling frequency ‘fs’. The AM signal length is the same as the length of
-‘mod_signal’. The signal level is then adjusted to a specific dB level.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mod_signal</strong> (<em>array</em>) – Array containing the modulating signal.</p></li>
-<li><p><strong>dB_level</strong> (<em>float</em>) – Sound Pressure Level in dB [ref 2e-5 Pa RMS]</p></li>
-<li><p><strong>print_MI</strong> (<em>Bool</em><em>, </em><em>optional</em>) – If True, the modulation index is printed along calculation,
-if False it is printed only in case of overmodulation.
-Default to False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>am_signal</strong> (<em>numpy.array</em>) – Amplitude-modulated noise signal</p></li>
-<li><p><strong>MI</strong> (<em>float</em>) – Modulation index</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The modulation index MI is equal to the peak value of the modulating
-signal ‘mod_signal’. Its value can be printed by setting the optional flag
-‘print_MI’ to True.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mosqito.utils</span> <span class="kn">import</span> <span class="n">am_broadband_noise_generator</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span><span class="o">=</span><span class="mi">48000</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dB</span><span class="o">=</span><span class="mi">60</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fmod</span><span class="o">=</span><span class="mi">4</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mdepth</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">fs</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sine_wave</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">fmod</span><span class="o">*</span><span class="n">time</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">signal</span><span class="p">,</span> <span class="n">MI</span> <span class="o">=</span> <span class="n">am_broadband_noise_generator</span><span class="p">(</span><span class="n">sine_wave</span><span class="p">,</span> <span class="n">dB</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">signal</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time axis [s]&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitude signal [Pa]&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Modulation index = </span><span class="si">{</span><span class="n">MI</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>(<a class="reference external" href="../../source/reference/mosqito-utils-am_broadband_noise_generator-1.py">Source code</a>, <a class="reference external" href="../../source/reference/mosqito-utils-am_broadband_noise_generator-1.png">png</a>, <a class="reference external" href="../../source/reference/mosqito-utils-am_broadband_noise_generator-1.hires.png">hires.png</a>, <a class="reference external" href="../../source/reference/mosqito-utils-am_broadband_noise_generator-1.pdf">pdf</a>)</p>
-<figure class="align-default">
-<img alt="../../_images/mosqito-utils-am_broadband_noise_generator-1.png" src="../../_images/mosqito-utils-am_broadband_noise_generator-1.png" />
-</figure>
-</dd></dl>
-
+  <section id="am-broadband-noise-generator">
+<h1>am_broadband_noise_generator<a class="headerlink" href="#am-broadband-noise-generator" title="Permalink to this heading">#</a></h1>
 </section>
 
 
@@ -477,21 +384,6 @@ signal ‘mod_signal’. Its value can be printed by setting the optional flag
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mosqito.utils.am_broadband_noise_generator.am_broadband_noise_generator"><code class="docutils literal notranslate"><span class="pre">am_broadband_noise_generator()</span></code></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

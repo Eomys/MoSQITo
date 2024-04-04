@@ -33,6 +33,12 @@ def am_sine_generator(xmod, fs, fc, spl_level, print_m=False):
     -------
     spl_level must be provided in dB, ref=2e-5 Pa.
         
+    See Also
+    --------
+    .am_noise_generator : Amplitude modulation with broadband noise carrier
+    .fm_sine_generator : Frequency modulation with sine wave carrier
+    .sine_wave_generator : Sine wave generation
+        
     Notes
     -----
     The modulation index 'm' will be equal to the peak value of the modulating

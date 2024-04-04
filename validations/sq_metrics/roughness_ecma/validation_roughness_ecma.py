@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # Local application imports
 from mosqito.sq_metrics import roughness_ecma
-from mosqito.utils.am_sine_wave_generator import am_sine_wave_generator
+from mosqito.utils.am_sine_generator import am_sine_generator
 from input.references import ref_zf, ref_ecma
 
 from mosqito import COLORS as clr
@@ -28,6 +28,7 @@ def validation_roughness_ecma(fc):
     # Stimulus parameters
     duration = 1.5
     fs = 48000
+    time = np.linspace(0, duration, int(duration*fs))
     level = 60
     mdepth = 1
 
@@ -40,7 +41,8 @@ def validation_roughness_ecma(fc):
     R_ref_ecma = np.zeros((n), dtype=dict)
     
     for i, f_mod in enumerate(fm_vector):
-        stimulus = am_sine_wave_generator(duration, fs, fc, fm_vector[i], mdepth , level)
+        xmod = np.sin(2 * np.pi * fm_vector[i] * time)
+        stimulus, _ = am_sine_generator(xmod, fs, fc, level)
         R_ecma[i], _, _, _, _ = roughness_ecma(stimulus, fs)
         R_ref_zf[i] = ref_zf(fc, f_mod)
         R_ref_ecma[i] = ref_ecma(fc, f_mod)

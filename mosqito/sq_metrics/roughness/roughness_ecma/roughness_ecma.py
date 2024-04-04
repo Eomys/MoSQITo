@@ -20,9 +20,9 @@ from mosqito.sq_metrics.roughness.roughness_ecma._lowpass_filter import _lowpass
 
 def roughness_ecma(signal, fs):
     """Calculation of the specific and total roughness according to ECMA-418-2
-    (2nd Ed, 2022), Section 7.
+    (2nd Ed, 2022).
 
-    This function computes the acoustic loudness according to ECMA-418-2 section 7 method for
+    This function computes the acoustic loudness according to ECMA-418-2 (section 7) method for
     stationary signals. The calculation is based on the Hearing Model (HMS) used in loudness_ecma aswell.
 
     Parameters

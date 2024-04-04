@@ -43,11 +43,11 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="am_sine_wave_generator" href="mosqito.utils.am_sine_wave_generator.html" />
+    <link rel="next" title="am_sine_generator" href="mosqito.utils.am_sine_generator.html" />
     <link rel="prev" title="spectrum2dBA" href="mosqito.utils.conversion.spectrum2dBA.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Apr 02, 2024"/>
+    <meta name="docbuild:last-update" content="Apr 04, 2024"/>
   </head>
   
   
@@ -342,9 +342,9 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.freq2bark.html">freq2bark</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.spectrum2dBA.html">spectrum2dBA</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">sine_wave_generator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.am_sine_wave_generator.html">am_sine_wave_generator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.am_broadband_noise_generator.html">am_broadband_noise_generator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.fm_sine_wave_generator.html">fm_sine_wave_generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.am_sine_generator.html">am_sine_generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.am_noise_generator.html">am_noise_generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.fm_sine_generator.html">fm_sine_generator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.utils.time_segmentation.html">time_segmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.utils.LTQ.html">LTQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mosqito.utils.load.html">load</a></li>
@@ -414,17 +414,17 @@ document.write(`
 <span id="sine-wave-generator"></span><h1>sine_wave_generator<a class="headerlink" href="#module-mosqito.utils.sine_wave_generator" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="mosqito.utils.sine_wave_generator.sine_wave_generator">
-<span class="sig-name descname"><span class="pre">sine_wave_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spl_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/utils/sine_wave_generator.html#sine_wave_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.sine_wave_generator.sine_wave_generator" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sine_wave_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spl_level</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/utils/sine_wave_generator.html#sine_wave_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.sine_wave_generator.sine_wave_generator" title="Permalink to this definition">#</a></dt>
 <dd><p>Sine wave signal generation</p>
-<p>This function creates a sine wave signal given a frequency, duration, sampling rate and sound
-pressure level.</p>
+<p>This function creates a sine wave signal given a sampling rate, duration,
+frequency and sound pressure level.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fs</strong> (<em>int</em>) – Sampling frequency in [Hz].</p></li>
-<li><p><strong>t</strong> (<em>int</em>) – Signal duration in [s].</p></li>
-<li><p><strong>spl_value</strong> (<em>int</em>) – Sound pressure level signal in [dB SPL].</p></li>
+<li><p><strong>d</strong> (<em>int</em>) – Signal duration in [s].</p></li>
 <li><p><strong>freq</strong> (<em>int</em>) – Sine wave frequency in [Hz].</p></li>
+<li><p><strong>spl_level</strong> (<em>int</em>) – Sound pressure level signal in [dB SPL].</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -435,8 +435,30 @@ pressure level.</p>
 </p>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>spl_level must be provided in dB, ref=2e-5 Pa.</p>
+</div>
 <p class="rubric">Notes</p>
 <p>Signal to be used for ECMA-418-2 validation must have a sampling frequency of 48 kHz.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mosqito.utils</span> <span class="kn">import</span> <span class="n">sine_wave_generator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="mi">48000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">duration</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dB</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">signal</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">sine_wave_generator</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">dB</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">signal</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time axis [s]&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitude signal [Pa]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../../source/reference/mosqito-utils-sine_wave_generator-1.py">Source code</a>, <a class="reference external" href="../../source/reference/mosqito-utils-sine_wave_generator-1.png">png</a>, <a class="reference external" href="../../source/reference/mosqito-utils-sine_wave_generator-1.hires.png">hires.png</a>, <a class="reference external" href="../../source/reference/mosqito-utils-sine_wave_generator-1.pdf">pdf</a>)</p>
+<figure class="align-default">
+<img alt="../../_images/mosqito-utils-sine_wave_generator-1.png" src="../../_images/mosqito-utils-sine_wave_generator-1.png" />
+</figure>
 </dd></dl>
 
 </section>

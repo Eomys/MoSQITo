@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from mosqito.sq_metrics import roughness_ecma
 from mosqito.sq_metrics.loudness.loudness_ecma._auditory_filters_centre_freq import _auditory_filters_centre_freq
 
-from mosqito.utils.am_sine_wave_generator import am_sine_wave_generator
+from mosqito.utils.am_sine_generator import am_sine_generator
 from input.references_specific import ref_artemis
 from mosqito import COLORS as clr
 
@@ -25,9 +25,12 @@ def validation_specific_roughness_ecma(fc, fmod, ref_file):
     fs = 48000
     level = 65
     mdepth = 1
-
+    time = np.linspace(0, duration, int(duration*fs))
+    
     # Stimulus generation
-    stimulus = am_sine_wave_generator(duration, fs, fc, fmod, mdepth , level)
+    # Modulating sine wave
+    xmod = np.sin(2*np.pi*fmod*time)
+    stimulus, _ = am_sine_generator(xmod, fs, fc, level, print_m=False)
     
     # Roughness calculation 
     R_ecma, _, R_spec, _, _ = roughness_ecma(stimulus, fs)

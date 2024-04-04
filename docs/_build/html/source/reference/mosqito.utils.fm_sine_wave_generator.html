@@ -43,11 +43,9 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="time_segmentation" href="mosqito.utils.time_segmentation.html" />
-    <link rel="prev" title="am_broadband_noise_generator" href="mosqito.utils.am_broadband_noise_generator.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Apr 02, 2024"/>
+    <meta name="docbuild:last-update" content="Apr 04, 2024"/>
   </head>
   
   
@@ -152,7 +150,7 @@
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="index.html">
                         API reference
                       </a>
@@ -236,10 +234,6 @@ document.write(`
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
-      <span class="fa-solid fa-outdent"></span>
-    </label>
-  
 </div>
 
     </nav>
@@ -247,7 +241,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -273,7 +267,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="index.html">
                         API reference
                       </a>
@@ -327,34 +321,6 @@ document.write(`
     
   </div>
   
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mosqito.sound_level_meter.html">sound_level_meter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mosqito.sq_metrics.html">sq_metrics</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="mosqito.utils.html">utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.amp2db.html">amp2db</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.db2amp.html">db2amp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.bark2freq.html">bark2freq</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.freq2bark.html">freq2bark</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.conversion.spectrum2dBA.html">spectrum2dBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.sine_wave_generator.html">sine_wave_generator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.am_sine_wave_generator.html">am_sine_wave_generator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.am_broadband_noise_generator.html">am_broadband_noise_generator</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">fm_sine_wave_generator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.time_segmentation.html">time_segmentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.LTQ.html">LTQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mosqito.utils.load.html">load</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</nav></div>
-    </div>
-  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -387,12 +353,6 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">🔧 API reference</a></li>
-    
-    
-    <li class="breadcrumb-item"><a href="mosqito.utils.html" class="nav-link">mosqito.utils</a></li>
-    
     <li class="breadcrumb-item active" aria-current="page">fm_sine_wave...</li>
   </ul>
 </nav>
@@ -410,80 +370,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="module-mosqito.utils.fm_sine_wave_generator">
-<span id="fm-sine-wave-generator"></span><h1>fm_sine_wave_generator<a class="headerlink" href="#module-mosqito.utils.fm_sine_wave_generator" title="Permalink to this heading">#</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="mosqito.utils.fm_sine_wave_generator.fm_sine_wave_generator">
-<span class="sig-name descname"><span class="pre">fm_sine_wave_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mod_signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dB_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mosqito/utils/fm_sine_wave_generator.html#fm_sine_wave_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mosqito.utils.fm_sine_wave_generator.fm_sine_wave_generator" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a frequency-modulated (FM) signal with a sinusoidal carrier at
-frequency ‘fc’, and an arbitrary modulating signal ‘mod_signal’.
-The FM signal length is the same as the length of ‘mod_signal’.
-The signal level is then adjusted to a specific dB level.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fs</strong> (<em>float</em>) – Sampling frequency, in [Hz].</p></li>
-<li><p><strong>mod_signal</strong> (<em>array</em>) – Modulating signal.</p></li>
-<li><p><strong>fc</strong> (<em>float</em>) – Carrier frequency, in [Hz]. Must be less than ‘fs/2’.</p></li>
-<li><p><strong>k</strong> (<em>float</em>) – Frequency sensitivity of the modulator. This is equal to the frequency
-deviation in Hz away from ‘fc’ per unit amplitude of the modulating
-signal ‘mod_signal’.</p></li>
-<li><p><strong>dB_level</strong> (<em>float</em>) – Sound Pressure Level in dB [ref 2e-5 Pa RMS]</p></li>
-<li><p><strong>print_info</strong> (<em>Bool</em><em>, </em><em>optional</em>) – If True, the maximum frequency deviation and FM modulation index
-are printed along calculation.
-Default to False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>fm_signal</strong> (<em>numpy.array</em>) – Frequency-modulated signal with sine carrier</p></li>
-<li><p><strong>inst_freq</strong> (<em>numpy.array</em>) – Instantaneaous frequency [Hz]</p></li>
-<li><p><strong>f_delta</strong> (<em>float</em>) – Maximum frequency deviation</p></li>
-<li><p><strong>MI</strong> (<em>float</em>) – Modulation index</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mosqito.utils</span> <span class="kn">import</span> <span class="n">fm_sine_wave_generator</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span><span class="o">=</span><span class="mi">48000</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dB</span><span class="o">=</span><span class="mi">60</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fc</span><span class="o">=</span><span class="mi">50</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fmod</span><span class="o">=</span><span class="mi">10</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="n">fc</span><span class="o">//</span><span class="mi">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">fs</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sine_wave</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">fmod</span><span class="o">*</span><span class="n">time</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">signal</span><span class="p">,</span> <span class="n">inst_freq</span><span class="p">,</span> <span class="n">f_delta</span><span class="p">,</span> <span class="n">MI</span> <span class="o">=</span> <span class="n">fm_sine_wave_generator</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">sine_wave</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">dB</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">signal</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time axis [s]&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitude signal [Pa]&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Modulation index = </span><span class="si">{</span><span class="n">MI</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time axis [s]&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Instantaneous frequency [Hz]&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Max frequency deviation = </span><span class="si">{</span><span class="n">f_delta</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">inst_freq</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>(<a class="reference external" href="../../source/reference/mosqito-utils-fm_sine_wave_generator-1.py">Source code</a>)</p>
-<figure class="align-default" id="id1">
-<img alt="../../_images/mosqito-utils-fm_sine_wave_generator-1_00.png" src="../../_images/mosqito-utils-fm_sine_wave_generator-1_00.png" />
-<figcaption>
-<p><span class="caption-text">(<a class="reference external" href="../../source/reference/mosqito-utils-fm_sine_wave_generator-1_00.png">png</a>, <a class="reference external" href="../../source/reference/mosqito-utils-fm_sine_wave_generator-1_00.hires.png">hires.png</a>, <a class="reference external" href="../../source/reference/mosqito-utils-fm_sine_wave_generator-1_00.pdf">pdf</a>)</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<figure class="align-default" id="id2">
-<img alt="../../_images/mosqito-utils-fm_sine_wave_generator-1_01.png" src="../../_images/mosqito-utils-fm_sine_wave_generator-1_01.png" />
-<figcaption>
-<p><span class="caption-text">(<a class="reference external" href="../../source/reference/mosqito-utils-fm_sine_wave_generator-1_01.png">png</a>, <a class="reference external" href="../../source/reference/mosqito-utils-fm_sine_wave_generator-1_01.hires.png">hires.png</a>, <a class="reference external" href="../../source/reference/mosqito-utils-fm_sine_wave_generator-1_01.pdf">pdf</a>)</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-</dd></dl>
-
+  <section id="fm-sine-wave-generator">
+<h1>fm_sine_wave_generator<a class="headerlink" href="#fm-sine-wave-generator" title="Permalink to this heading">#</a></h1>
 </section>
 
 
@@ -496,21 +384,6 @@ Default to False</p></li>
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mosqito.utils.fm_sine_wave_generator.fm_sine_wave_generator"><code class="docutils literal notranslate"><span class="pre">fm_sine_wave_generator()</span></code></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
