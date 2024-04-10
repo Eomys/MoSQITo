@@ -9,7 +9,7 @@ from input.references import ref_zf, ref_ecma
 
 from mosqito import COLORS as clr
 
-def validation_roughness_ecma(fc):
+def validation_roughness_ecma(fc, fm_vector):
     """Validation function for the roughness calculation of an audio signal
     according to ECMA 418-2 (2nd edition, 2022).
 
@@ -30,9 +30,7 @@ def validation_roughness_ecma(fc):
     fs = 48000
     time = np.linspace(0, duration, int(duration*fs))
     level = 60
-    mdepth = 1
 
-    fm_vector = np.array([20,30,40,50,60,70,80,90,100,120,140,160,200, 250])
     n = len(fm_vector)
     
     # Roughness calculation for each carrier frequency
@@ -138,6 +136,15 @@ def _check_compliance(fc, fm_vector, R_ecma, R_ref_zf, R_ref_ecma):
 
 # test de la fonction
 if __name__ == "__main__":
+    # carrier frequency
     fc_vector = np.array([125, 250, 500, 1000, 2000, 4000, 8000])
-    for fc in fc_vector:
-        validation_roughness_ecma(fc)
+    
+    # lower, upper modulation frequency in range for each fc
+    N_interp = 15
+    fm_all = np.array([[20,  20,  20,  20,  20,  20,  20],
+                    [100, 150, 200, 400, 350, 300, 250]])
+
+    for i, fc in enumerate(fc_vector):
+        fm_vector = np.logspace(np.log10(fm_all[0, i]),
+                        np.log10(fm_all[1, i]), N_interp, base=10)
+        validation_roughness_ecma(fc, fm_vector)
