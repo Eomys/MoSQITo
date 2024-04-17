@@ -9,7 +9,7 @@ def _estimate_fund_mod_rate(f_p, Ai_tilde):
     f_p : list of floats
         Estimated modulation rates of maxima
     Ai_tilde : list of floats
-        Weighted Ai_tildelitudes of maxima
+        Weighted amplitudes of maxima
 
     Returns:
     --------
