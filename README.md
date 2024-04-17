@@ -1,4 +1,6 @@
-# ![MOSQITO Logo](https://raw.githubusercontent.com/Eomys/MoSQITo/master/logo.png) MOSQITO
+<div align="center">
+[MOSQITO Logo](https://raw.githubusercontent.com/Eomys/MoSQITo/master/logo.png)
+</div>
 
 ## What is MOSQITO ?
 
