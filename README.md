@@ -1,5 +1,5 @@
 <div align="center">
-[MOSQITO Logo](https://raw.githubusercontent.com/Eomys/MoSQITo/master/logo.png)
+    <img src="https://raw.githubusercontent.com/Eomys/MoSQITo/master/logo.png">
 </div>
 
 ## What is MOSQITO ?
