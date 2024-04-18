@@ -38,6 +38,12 @@ def fm_sine_generator(xmod, fs, fc, k, spl_level, print_info=False):
     -------
     spl_level must be provided in dB, ref=2e-5 Pa.
     
+    See Also
+    --------
+    .am_sine_generator : Amplitude modulation with sine wave carrier
+    .am_noise_generator : Amplitude modulation with broadband noise carrier
+    .sine_wave_generator : Sine wave generation
+    
     Notes
     -----
     The frequency sensitivity 'k' is equal to the frequency deviation in Hz 

@@ -47,7 +47,7 @@
     <link rel="prev" title="mosqito.sq_metrics.loudness" href="mosqito.sq_metrics.loudness.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Apr 03, 2024"/>
+    <meta name="docbuild:last-update" content="Apr 04, 2024"/>
   </head>
   
   
@@ -433,14 +433,17 @@ stationary signals.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
+<dd class="field-even"><p><ul>
 <li><p><strong>N</strong> (<em>float</em>) – Overall loudness representative value [sone_HMS].</p></li>
 <li><p><strong>N_time</strong> (<em>numpy.ndarray</em>) – Loudness over time [sone_HMS], size (Ntime,).</p></li>
-<li><p><strong>N_specific</strong> (<em>numpy.ndarray</em>) – Specific loudness [sone_HMS/bark], size (Nbark, Ntime).
-Each of the 53 elements of the list corresponds to the time-dependant specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.</p></li>
+<li><p><strong>N_specific</strong> (<em>numpy.ndarray</em>) –</p>
+<dl class="simple">
+<dt>Specific loudness [sone_HMS/bark], size (Nbark, Ntime).</dt><dd><p>Each of the 53 elements of the list corresponds to the time-dependant specific loudness for a given bark band. Can be a ragged array if a different sb/sh are used for each band.</p>
+</dd>
+</dl>
+</li>
 <li><p><strong>bark_axis</strong> (<em>numpy.ndarray</em>) – Corresponding bark axis, size (Nbark,).</p></li>
-<li><p><strong>time_axis</strong> (<em>numpy.ndarray</em>) – Time axis, size (Ntime,).</p></li>
-<li><p><strong>bark_axis</strong> (<em>array_like</em>) – Bark axis array, size (Nbark,).</p></li>
+<li><p><strong>time_array</strong> (<em>numpy.ndarray</em>) – Time axis, size (Nbark, Ntime).</p></li>
 </ul>
 </p>
 </dd>

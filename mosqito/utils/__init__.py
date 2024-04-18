@@ -23,7 +23,6 @@ Signal generators
    /source/reference/mosqito.utils.am_noise_generator
    /source/reference/mosqito.utils.fm_sine_generator
    
-   
 Time segmentation
 ===================
 

@@ -11,7 +11,7 @@ from scipy.fft import fft
 
 # Local application imports
 from mosqito.sq_metrics import roughness_dw, roughness_dw_freq
-from tests.sq_metrics.roughness.signals_test_generation import signal_test
+from mosqito.utils.am_sine_generator import am_sine_generator
 from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
 
 
@@ -36,7 +36,10 @@ def test_roughness_dw():
     """
 
     # Stimulus generation
-    stimulus, _ = signal_test(fc=1000, fmod=70, mdepth=1, fs=44100, d=0.2, dB=60)
+    fmod = 70
+    time = np.linspace(0,1,48000)
+    xmod = np.sin(2*np.pi*fmod*time)
+    stimulus, _ = am_sine_generator(xmod, fs=48000, fc=1000, spl_level=60)
 
     # Roughness calculation
     roughness, time, _, _ = roughness_dw(stimulus, fs=44100, overlap=0)
@@ -71,9 +74,11 @@ def test_roughness_dw_freq():
     -------
     None
     """
-    fs = 44100
-    # Stimulus generation
-    stimulus, _ = signal_test(fc=1000, fmod=70, mdepth=1, fs=fs, d=0.2, dB=60)
+    fs = 48000
+    fmod = 70
+    time = np.linspace(0,1,fs)
+    xmod = np.sin(2*np.pi*fmod*time)
+    stimulus, _ = am_sine_generator(xmod, fs=fs, fc=1000, spl_level=60)
 
     # conversion into frequency domain
     n = len(stimulus)

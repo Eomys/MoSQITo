@@ -20,9 +20,14 @@ from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_perseg import tnr_e
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq import tnr_ecma_freq
 
 from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw import roughness_dw
+from mosqito.sq_metrics.roughness.roughness_dw.roughness_dw_freq import roughness_dw_freq
+from mosqito.sq_metrics.roughness.roughness_ecma.roughness_ecma import roughness_ecma
 
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_st import sharpness_din_st
 from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_tv import sharpness_din_tv
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_from_loudness import sharpness_din_from_loudness
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_perseg import sharpness_din_perseg
+from mosqito.sq_metrics.sharpness.sharpness_din.sharpness_din_freq import sharpness_din_freq
 
 
 from mosqito.sq_metrics.speech_intelligibility.sii_ansi.sii_ansi import sii_ansi
@@ -45,7 +50,7 @@ from mosqito.utils.conversion.bark2freq import bark2freq
 from mosqito.utils.conversion.spectrum2dBA import spectrum2dBA
 
 
-__version__ = "1.1.1"
+__version__ = "1.2"
 
 # Colors and linestyles
 COLORS = [

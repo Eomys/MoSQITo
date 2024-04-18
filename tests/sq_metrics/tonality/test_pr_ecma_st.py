@@ -17,8 +17,7 @@ from mosqito.sq_metrics import pr_ecma_st
 def test_pr_ecma_st():
     """Test function for the prominence ratio calculation of an audio signal
 
-    Validation function for the Audio_signal class "tone_to_noise_ecma" method with signal array
-    as input. The input signals are generated using audacity.
+    Validation function for the function pr_ecma_st. The input signals were generated using audacity.
 
     Parameters
     ----------

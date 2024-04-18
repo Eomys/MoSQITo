@@ -11,7 +11,7 @@
 project = 'MOSQITO'
 copyright = '2024, Green Forge Coop'
 author = 'Green Forge Coop'
-version = "1.1.1"
+version = "1.2"
 release = version
 
 import os
@@ -23,6 +23,7 @@ if os.path.isfile('source/reference/mosqito.sq_metrics.loudness.loudness_zwst.rs
     os.remove('source/reference/mosqito.sq_metrics.loudness.loudness_zwst.rst')
     os.remove('source/reference/mosqito.sq_metrics.loudness.loudness_zwtv.rst')
     os.remove('source/reference/mosqito.sq_metrics.roughness.roughness_dw.rst')
+    os.remove('source/reference/mosqito.sq_metrics.roughness.roughness_ecma.rst')
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
