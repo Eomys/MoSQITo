@@ -50,7 +50,7 @@ from mosqito.utils.conversion.bark2freq import bark2freq
 from mosqito.utils.conversion.spectrum2dBA import spectrum2dBA
 
 
-__version__ = "1.2"
+__version__ = "1.2.0"
 
 # Colors and linestyles
 COLORS = [
