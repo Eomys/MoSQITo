@@ -1,8 +1,7 @@
 import setuptools
 
 # /!\ update before a release
-from mosqito import __version__
-version = __version__
+version = __version__ = "1.2.1"
 
 # MoSQITo description
 with open("README.md", "r", encoding="utf-8") as fh:
