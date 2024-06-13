@@ -6,7 +6,6 @@ from numpy.fft import fft, ifft
 import math
 
 # Local imports
-from mosqito.utils.LTQ import LTQ
 from mosqito.utils import hearing_threshold
 from mosqito.sq_metrics.roughness.roughness_dw._ear_filter_coeff import (
     _ear_filter_coeff,
@@ -61,8 +60,7 @@ def _roughness_dw_main_calc(spec, freq_axis, fs, gzi, hWeight):
     spec_dB = amp2db(module, ref=2e-5)
 
     # Find the audible components within the spec
-    # threshold = hearing_threshold(freq_axis, method="DW_1997")
-    threshold = LTQ(bark_axis, reference="roughness")
+    threshold = hearing_threshold(freq_axis, method="DW_1997")
     audible_index = np.where(spec_dB > threshold)[0]
     # Number of audible frequencies
     n_aud = len(audible_index)
