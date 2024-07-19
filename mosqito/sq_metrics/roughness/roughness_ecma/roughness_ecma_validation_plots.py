@@ -205,87 +205,31 @@ def roughness_ecma(signal, fs):
 
 if __name__ == '__main__':
     
-    def signal_test(fs, d, fc, fmod, dB, mdepth=1):
-        dt = 1 / fs
-        time = np.arange(0, d, dt)
-
-        signal = (
-            0.5
-            * (1 + mdepth * (np.sin(2 * np.pi * fmod * time)))
-            * np.sin(2 * np.pi * fc * time)
-        )    
-        
-        rms = np.sqrt(np.mean(np.power(signal, 2)))
-        ampl = 0.00002 * np.power(10, dB / 20) / rms
-        return signal * ampl
-
+    from mosqito import COLORS
+    # Set the default color cycle
+    import matplotlib as mpl
+    mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color=COLORS)
     
+    from scipy.signal import square
+    
+    from am_bbn_signal import _create_am_bbn
+    fs = 48000
+    time = np.linspace(0,1,fs)
+    square_wave = square(2*np.pi*70*time)
+    signal = _create_am_bbn(spl_level=60, xm=square_wave, fs=fs, print_m=False)
     
     # Fig 1
-    plt.figure(figsize=[7, 4.8])
-    plt.plot(signal)
-    # 01_broadband_noise_70Hz_square_modulated_signal.png
-
-    file = r"C:\Users\SaloméWanty\Documents\Mosqito_roughness\validations\sq_metrics\roughness_ecma\validation_specific_roughness_ecma.xlsx"
-    import matplotlib.colors as mcolors
-    fc = [125,250,500,1000,2000,4000, 8000]
-    fmod = [20,30,40,50,60,70,80,90,100,120,140,160,200,300,400]
-    fs = 48000
-    d = 1
-    dB = 60
-    mdepth = 1
-    # fc = [1000]
-    # fmod = [70]
-    Ro = np.empty((len(fc), len(fmod)))
-    Rref = np.empty((len(fc), len(fmod)))
-    for i in range(len((fc))):
-        for j in range(len((fmod))):
-            carrier = fc[i]
-            mod = fmod[j]
-            stimulus = signal_test(fs, d, carrier, mod, dB, mdepth)
-            R_time, R_spec, R = roughness_ecma(stimulus, fs, plot=True)
-            Ro[i,j] = R
-            #ref_spec, ref_R = ref_artemis(file, carrier, mod)
-            
-            # plt.figure()
-            # plt.step(ref_spec[:,0], ref_spec[:,1], label="Artemis", color="k")
-            # plt.step(_auditory_filters_centre_freq(), R_spec, label="Mosqito", color="#69c3c5")
-            # plt.title("Artemis="+ref_R+"\n MOSQITO="+f"{R:.3f}"+" asper")
-            # plt.legend()
-            # plt.xlim(-5,9000)
-            # plt.xlabel("Asper/Bark")
-            # plt.ylabel("Frequency [Hz]")
-            # # plt.show(block=True)
-            # plt.savefig(r"C:\Users\SaloméWanty\Documents\Mosqito_roughness\validations\roughness\output\fc_" + f"{carrier}" +"_fmod_" + f"{mod}"+ ".png" )
-
-    colors = plt.cm.rainbow(np.linspace(0,1,len(Ro)))
-    plt.figure()
-    for i in range(len((fc))):  
-        plt.plot(np.array(fmod), Ro[i,:] + i, label=f"{fc[i]}", marker='o', color=colors[i])
-        plt.plot(np.array(fmod), Rref[i,:] + i, marker='s', linestyle='--', color=colors[i])
-    plt.legend()
-    
-    colors = plt.cm.rainbow(np.linspace(0,1,len(fmod)))
-    plt.figure()
-    for j in range(len((fmod))):  
-        plt.plot(fc, Ro[:,j]+3*j, label=f"{fmod[j]}", marker='o', color=colors[j])
-        plt.plot(fc, Rref[:,j]+3*j, marker='s', linestyle='--', color=colors[j])
-    plt.legend()
+    plt.figure(figsize=[7, 2.8])
+    plt.plot(time,signal)
+    plt.plot(time,square_wave, color=COLORS[3])
+    plt.xlabel('Time [s]')
+    plt.ylabel('Amplitude signal [Pa]')
+    plt.xlim(0,0.2)
+    plt.tight_layout()
     plt.show(block=True)
-    
-    from matplotlib import cm
-    fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')
-    
-    Y, X = np.meshgrid(fc, fmod)
-    ax.plot_surface(X, Y, Ro.T, cmap=cm.coolwarm)
-    ax.plot_wireframe(X, Y, Rref.T, color='k')
+    # plt.savefig(01_broadband_noise_70Hz_square_modulated_signal.png)
 
-    ax.set_xlabel('Fc Label')
-    ax.set_ylabel('Fmod Label')
-    ax.set_zlabel('R Label')
-    
+    R_time, R_spec, R = roughness_ecma(signal, fs, plot=True)
 
-    plt.show(block=True)
     
     print('pause')
