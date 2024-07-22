@@ -110,9 +110,7 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.grid()
     
-    plt.savefig('Implementation_comparison.png')
-    plt.show(block=True)
-    
-
+    path = "./validations/sq_metrics/roughness_ecma/output/"
+    plt.savefig(path+'\\output\\Implementation_comparison.png')
 
     print('done')

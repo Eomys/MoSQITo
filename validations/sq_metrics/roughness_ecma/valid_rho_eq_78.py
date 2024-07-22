@@ -59,7 +59,9 @@ def valid_rho(f, delta_f):
     plt.xlim([-0.5, 0.2])
     plt.ylim([-0.35, 0.])
     plt.tight_layout()
-    plt.savefig('rho_bias_term_equation_78_correction.png')
+    
+    path = "./validations/sq_metrics/roughness_ecma/output/"
+    plt.savefig(path+'rho_bias_term_equation_78_correction.png')
     
 if __name__ == "__main__":
 

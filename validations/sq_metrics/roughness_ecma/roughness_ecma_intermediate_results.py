@@ -28,7 +28,7 @@ from mosqito.sq_metrics.roughness.roughness_ecma._lowpass_filter import _lowpass
 from mosqito.utils.conversion.bark2freq import bark2freq
 
 
-def roughness_ecma_validation_plots(signal, fs, show=True, save=False):
+def roughness_ecma_validation_plots(signal, fs, show=True, save=False, save_path=None):
     """Calculation of the specific and total roughness according to ECMA-418-2
     (2nd Ed, 2022), Section 7.
 
@@ -159,7 +159,7 @@ def roughness_ecma_validation_plots(signal, fs, show=True, save=False):
         ax.legend()
         plt.tight_layout()
         if save:
-            plt.savefig('02_Bandpassed_signals_envelope.png')
+            plt.savefig(save_path+'02_Bandpassed_signals_envelope.png')
         if show:
             plt.show(block=True)
         # .........................................................................
@@ -194,7 +194,7 @@ def roughness_ecma_validation_plots(signal, fs, show=True, save=False):
         ax.legend()
         plt.tight_layout()
         if save:
-            plt.savefig('03_Bandpassed_signals_envelope_downsampling.png')
+            plt.savefig(save_path+'03_Bandpassed_signals_envelope_downsampling.png')
         if show:
             plt.show()    
             
@@ -212,7 +212,7 @@ def roughness_ecma_validation_plots(signal, fs, show=True, save=False):
         ax.legend()
         plt.tight_layout()
         if save:
-            plt.savefig(f'03_Bandpassed_signals_envelope_decimation.png')
+            plt.savefig(save_path+'03_Bandpassed_signals_envelope_decimation.png')
         if show:
             plt.show()
         # .........................................................................
@@ -250,7 +250,7 @@ def roughness_ecma_validation_plots(signal, fs, show=True, save=False):
         clb.ax.set_title(r'$\Phi_{E}$'+'[dB]')    
         plt.tight_layout()
         if save:
-            plt.savefig(f'04_Scaled_envelope_power_spectra.png')
+            plt.savefig(save_path+'04_Scaled_envelope_power_spectra.png')
         if show:
             plt.show()
         # .........................................................................
@@ -285,7 +285,7 @@ def roughness_ecma_validation_plots(signal, fs, show=True, save=False):
         plt.colorbar()
         plt.tight_layout()
         if save:
-            plt.savefig('05_Averaged_envelope_power_spectra.png')
+            plt.savefig(save_path+'05_Averaged_envelope_power_spectra.png')
         if show:
             plt.show(block=True)
             
@@ -301,7 +301,7 @@ def roughness_ecma_validation_plots(signal, fs, show=True, save=False):
         clb.ax.set_title(r'$\hat{\Phi}_{E}$'+'[dB]')    
         plt.tight_layout()
         if save:
-            plt.savefig(f'05_Weighted_envelope_power_spectra.png')
+            plt.savefig(save_path+'05_Weighted_envelope_power_spectra.png')
         if show:
             plt.show(block=True)
         # .........................................................................
@@ -350,7 +350,7 @@ def roughness_ecma_validation_plots(signal, fs, show=True, save=False):
         clb.ax.set_title(r'$A(l,z)$')    
         plt.tight_layout()
         if save:
-            plt.savefig(f'08_Weighted_peaks_magnitudes.png')   
+            plt.savefig(save_path+'08_Weighted_peaks_magnitudes.png')   
         if show:
             plt.show()
         # .........................................................................
@@ -377,7 +377,7 @@ def roughness_ecma_validation_plots(signal, fs, show=True, save=False):
         plt.title(f'{bark_axis[z]:1.1f} Bark ({bark2freq(bark_axis[z]):1.0f} Hz)')
         plt.tight_layout()
         if save:
-            plt.savefig('09_time_dependent_specific_roughness_interpolation.png')
+            plt.savefig(save_path+'09_time_dependent_specific_roughness_interpolation.png')
         if show:
             plt.show()
         # .........................................................................
@@ -398,13 +398,15 @@ def roughness_ecma_validation_plots(signal, fs, show=True, save=False):
     return R, R_time, R_spec, bark_axis, t_50, R_est
 
 if __name__ == "__main__":
-        
+    
+    path = "./validations/sq_metrics/roughness_ecma/"
+          
     '''
-    To get the exact same figures as in the paper, load the wav file:
+    To get the exact same figures as in the paper, load the corresponding wav file:
     '''
     from scipy.io.wavfile import read
     from scipy.signal import square
-    fs, signal = read(r"C:\Users\SWY3\Documents\Conf\INTERNOISE 2024\MOSQITO\Mosqito_valid_papier\validations\sq_metrics\roughness_ecma\input\test_signal.wav")
+    fs, signal = read(path + "/input/test_signal_internoise_2024.wav")
 
     fs = 48000
     duration = 1
@@ -422,37 +424,36 @@ if __name__ == "__main__":
     ax.set_ylabel('Amplitude signal [Pa]')
     #ax.set_title('60 dB broadband noise modulated with a 70Hz square signal')
     plt.tight_layout()
-    plt.savefig('01_broadband_noise_70Hz_square_modulated_signal.png')
+    plt.savefig(path+'\\output\\01_broadband_noise_70Hz_square_modulated_signal.png')
     #plt.clf()
     plt.show(block=True)
     
-    R, R_time, R_spec, bark_axis, t_50, _ = roughness_ecma_validation_plots(signal, fs)
+    R, R_time, R_spec, bark_axis, t_50, _ = roughness_ecma_validation_plots(signal, fs, False, True, path+'/output/')
     
     '''
     To re-generate a new test signal and get the corresponding figures:
     '''
     # Test signal generation 
-    # from mosqito.utils import am_broadband_noise_generator
-    # from scipy.signal import square
-    # from scipy.io.wavfile import write
+    from mosqito.utils import am_broadband_noise_generator
+    from scipy.signal import square
+    from scipy.io.wavfile import write
     
-    # fs = 48000
-    # duration = 1
-    # time = np.linspace(0,duration, int(duration*fs), endpoint=False)
-    # fmod = 70
-    # mod_signal = square(2*np.pi*fmod*time)
-    # signal, _ = am_broadband_noise_generator(mod_signal, dB_level=60)
-    # write("input/test_signal.wav", fs, signal)
+    fs = 48000
+    duration = 1
+    time = np.linspace(0,duration, int(duration*fs), endpoint=False)
+    fmod = 70
+    mod_signal = square(2*np.pi*fmod*time)
+    signal, _ = am_broadband_noise_generator(mod_signal, dB_level=60)
+    write("input/new_test_signal.wav", fs, signal)
 
-    # fig, ax = plt.subplots(figsize=[5.76, 4.8]) 
-    # ax.plot(time, signal, label="Modulated signal")
-    # ax.plot(time, mod_signal, label="Modulating square signal")
-    # ax.set_xlim(0, 0.2)
-    # ax.set_xlabel('Time [s]')
-    # ax.set_ylabel('Amplitude signal [Pa]')
-    # ax.set_title('60 dB broadband noise modulated with a 70Hz square signal')
-    # plt.tight_layout()
-    # plt.savefig('01_broadband_noise_70Hz_square_modulated_signal.png')
-    # #plt.clf()
-    # plt.show(block=True)
+    fig, ax = plt.subplots(figsize=[5.76, 4.8]) 
+    ax.plot(time, signal, label="Modulated signal")
+    ax.plot(time, mod_signal, label="Modulating square signal")
+    ax.set_xlim(0, 0.2)
+    ax.set_xlabel('Time [s]')
+    ax.set_ylabel('Amplitude signal [Pa]')
+    ax.set_title('60 dB broadband noise modulated with a 70Hz square signal')
+    plt.tight_layout()
+    #plt.savefig(path+'\\output\\01_broadband_noise_70Hz_square_modulated_signal.png')
+    plt.clf()
 

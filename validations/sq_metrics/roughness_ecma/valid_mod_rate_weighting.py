@@ -22,7 +22,7 @@ def bark2freq_(bark):
     central frequency in Hertz as defined in ECMA 418-2 (2nd edition, 2022)."""
     return bark2freq(bark/2)
 
-def high_mod_rate_weighting_validation(fmod):
+def high_mod_rate_weighting_validation(fmod, path):
     """ Function to plot the weighting functions defined in sections 7.1.5.2
     and 7.1.5.4 of ECMA 418-2 (2nd edition, 2022)."""
 
@@ -39,7 +39,7 @@ def high_mod_rate_weighting_validation(fmod):
     secax.set_xlabel('Critical band number')
     secax.set_xticks(np.array([1,10,20,30,40]))    
     secax.set_xticklabels(np.array([1,10,20,30,40]))    
-    plt.savefig('scaling_factor_rmax.png')
+    plt.savefig(path+'\\output\\scaling_factor_rmax.png')
     plt.clf()
 
     fig, ax = plt.subplots(figsize=[5.76, 4.8]) 
@@ -51,7 +51,7 @@ def high_mod_rate_weighting_validation(fmod):
     secax.set_xlabel('Critical band number')
     secax.set_xticks(np.array([1,10,20,30,40]))    
     secax.set_xticklabels(np.array([1,10,20,30,40]))    
-    plt.savefig('maximum_modulation_rate_fmax.png')
+    plt.savefig(path+'\\output\\maximum_modulation_rate_fmax.png')
     plt.clf()
     
     amp = 1
@@ -83,7 +83,7 @@ def high_mod_rate_weighting_validation(fmod):
     secax.set_xticks(np.array([1,10,20,30,40]))    
     secax.set_xticklabels(np.array([1,10,20,30,40]))    
     plt.tight_layout()
-    plt.savefig('high_mod_rate_weighting_function_G.png')
+    plt.savefig(path+'\\output\\high_mod_rate_weighting_function_G.png')
     plt.clf()
     
     fig, ax = plt.subplots(figsize=[5.76, 4.8]) 
@@ -101,10 +101,10 @@ def high_mod_rate_weighting_validation(fmod):
     secax.set_xticks(np.array([1,10,20,30,40]))    
     secax.set_xticklabels(np.array([1,10,20,30,40]))    
     plt.tight_layout()
-    plt.savefig('high_mod_rate_weighting.png')
+    plt.savefig(path+'\\output\\high_mod_rate_weighting.png')
     plt.clf()
     
-def low_mod_rate_weighting_validation(fmod):
+def low_mod_rate_weighting_validation(fmod, path):
     """ Function to plot the weighting functions defined in sections 7.1.5.2
     and 7.1.5.4 of ECMA 418-2 (2nd edition, 2022)."""
 
@@ -139,7 +139,7 @@ def low_mod_rate_weighting_validation(fmod):
     secax.set_xticks(np.array([1,10,20,30,40]))    
     secax.set_xticklabels(np.array([1,10,20,30,40]))  
     plt.tight_layout()
-    plt.savefig('low_mod_rate_weighting_function_G.png')
+    plt.savefig(path+'\\output\\low_mod_rate_weighting_function_G.png')
     plt.clf()
     
     fig, ax = plt.subplots(figsize=[5.76, 4.8]) 
@@ -158,12 +158,13 @@ def low_mod_rate_weighting_validation(fmod):
     secax.set_xticks(np.array([1,10,20,30,40]))    
     secax.set_xticklabels(np.array([1,10,20,30,40]))    
     plt.tight_layout()
-    plt.savefig('low_mod_rate_weighting.png')
+    plt.savefig(path+'\\output\\low_mod_rate_weighting.png')
     plt.clf()
    
 if __name__ == "__main__":
     
-    fmod_vector = np.array([20, 30, 40, 50, 60, 70, 80, 100,120,140,160,200,300])
+    path = "./validations/sq_metrics/roughness_ecma/output/"
     
-    high_mod_rate_weighting_validation(fmod_vector)
-    low_mod_rate_weighting_validation(fmod_vector)
+    fmod_vector = np.array([20, 30, 40, 50, 60, 70, 80, 100,120,140,160,200,300])
+    high_mod_rate_weighting_validation(fmod_vector, path)
+    low_mod_rate_weighting_validation(fmod_vector, path)

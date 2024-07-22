@@ -36,8 +36,9 @@ def valid_eq_76(Phi_E):
     ax.set_xlabel(r'Modulation index $k_{p,i}(l,z)$')
     ax.set_ylabel(r'Corrected modulation rate $\tilde{f}_{p,i}(l,z)$')
     plt.tight_layout()
-    plt.show(block=True)
-    plt.savefig('06_mod_rate_estimation_eq_76.png')        
+    
+    path = "./validations/sq_metrics/roughness_ecma/output/"
+    plt.savefig(path+'\\output\\06_mod_rate_estimation_eq_76.png')        
     print('done')
 
 if __name__ =="__main__":
