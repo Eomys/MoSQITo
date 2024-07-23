@@ -30,7 +30,7 @@ The scope of the project is to implement the following first set of metrics:
      - 
      - 
    * - Loudness for non-stationary (ECMA method)
-     - :footcite:t:`ECMA 418-2:2022`
+     - :footcite:t:`ECMA-418-2`
      - X 
      - X 
      - 
@@ -48,10 +48,10 @@ The scope of the project is to implement the following first set of metrics:
      - 
      - 
    * - Roughness (ECMA method)
-     - :footcite:t:`ECMA 418-2:2022`
+     - :footcite:t:`ECMA-418-2`
      -  
-     -  
-     - X
+     - X 
+     - 
      - 
 
    * - Fluctuation Strength
