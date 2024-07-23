@@ -1,4 +1,4 @@
-MOSQITO sound quality library
+Sound Quality Library
 ===================================
 
 **Version**: |version|
@@ -19,6 +19,10 @@ community. The development roadmap of the project is presented in more details i
 It is written in Python, one of the most popular free programming language in the scientific computing community. 
 It is meant to be highly documented and validated with reference sound samples and scientific publications.
 
+
+.. figure:: source/_static/logo_big.png
+   :scale: 15 %
+   :alt: MOSQITO logo
 
 
 Background

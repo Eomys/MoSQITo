@@ -48,7 +48,6 @@ bibtex_default_style = 'plain'
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_favicon = 'source/_static/favicon.ico'
 html_theme = 'pydata_sphinx_theme'
 html_title = "MOSQITO manual"
 html_last_updated_fmt = '%b %d, %Y'
@@ -73,6 +72,7 @@ html_theme_options = {
   "show_nav_level": 0,
   "navigation_depth": 3,
 }
+html_favicon = 'source/_static/favicon.ico'
 
 autosummary_generate = True
 add_module_names = False
