@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Dec 22 10:26:48 2020
 
-@author: wantysal
-"""
 # Standard library import
-import numpy as np
+from numpy import abs, log10
 
 
 def _peak_level(freqs, spec, peak_index):
@@ -39,17 +35,17 @@ def _peak_level(freqs, spec, peak_index):
 
     # Screen the right points of the peak
     temp = peak_index + 1
-    
+
     if temp != len(spec):
         Ltemp = Li
         # As long as the level decreases,
-        while Ltemp - np.abs(spec[temp]) > 0:
+        while Ltemp - abs(spec[temp]) > 0:
             # if the level of the point is close enough of the peak point,
             if Li - spec[temp] < 10:
                 Ltemp = spec[temp]
                 # its level is summed up with the peak's one
-                L = 10 * np.log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
-                
+                L = 10 * log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
+
                 temp += 1
                 if temp == len(spec):
                     temp -= 1
@@ -59,19 +55,19 @@ def _peak_level(freqs, spec, peak_index):
 
     # Screen the left points of the peak
     temp = peak_index - 1
-    
+
     if temp != -1:
         Ltemp = Li
         # As long as the level decreases,
-        while Ltemp - np.abs(spec[temp]) > 0:
+        while Ltemp - abs(spec[temp]) > 0:
             # if the level of the point is close enough of the peak point,
             if Li - spec[temp] < 10:
                 Ltemp = spec[temp]
                 # its level is summed up with the peak's one
-                L = 10 * np.log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
-    
+                L = 10 * log10(10 ** (L / 10) + 10 ** (spec[temp] / 10))
+
                 temp -= 1
-                if temp <0:
+                if temp < 0:
                     temp += 1
                     Ltemp = -1
             else:

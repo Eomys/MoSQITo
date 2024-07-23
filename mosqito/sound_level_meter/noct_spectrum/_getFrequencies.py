@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import array, empty, append
 
 
 def _getFrequencies(fstart, fend, b, G=10, fr=1000):
@@ -13,7 +13,7 @@ def _getFrequencies(fstart, fend, b, G=10, fr=1000):
     """
 
     # frequency matrix
-    freqs = np.empty((0, 3))
+    freqs = empty((0, 3))
 
     if G == 10:
         G = 10 ** (3 / 10)  # Base ten
@@ -35,6 +35,6 @@ def _getFrequencies(fstart, fend, b, G=10, fr=1000):
         f1 = (G ** (-1 / (2 * b))) * (fm)
         f2 = (G ** (1 / (2 * b))) * (fm)
         if f2 >= fstart:
-            freqs = np.append(freqs, np.array([[f1, fm, f2]]), axis=0)
+            freqs = append(freqs, array([[f1, fm, f2]]), axis=0)
         x += 1
     return {"f": freqs, "b": b, "G": G}

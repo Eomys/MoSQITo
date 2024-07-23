@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-@date Created on Fri May 22 2020
-@author martin_g for Eomys
-"""
 
 # Standard library imports
 import numpy as np
-from scipy import signal
+from scipy.signal import lfilter
 
 
 def _square_and_smooth(sig, center_freq, fs):
@@ -32,11 +28,11 @@ def _square_and_smooth(sig, center_freq, fs):
     else:
         tau = 2 / (3 * 1000)
     # Squaring
-    sig = sig ** 2
+    sig = sig**2
     # Three smoothing low-pass filters
     a1 = np.exp(-1 / (fs * tau))
     b0 = 1 - a1
     # zi = signal.lfilter_zi([b0], [1 -a1])
     for i in range(3):
-        sig = signal.lfilter([b0], [1, -a1], sig)
+        sig = lfilter([b0], [1, -a1], sig)
     return sig

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # Standard imports
-import numpy as np
+from numpy import arange, empty
 
 # Local imports
 from mosqito.utils.time_segmentation import time_segmentation
-from mosqito.sound_level_meter.spectrum import spectrum
+from mosqito.sound_level_meter.comp_spectrum import comp_spectrum
 from mosqito.sq_metrics.roughness.roughness_dw._roughness_dw_main_calc import (
     _roughness_dw_main_calc,
 )
@@ -14,34 +14,76 @@ from mosqito.sq_metrics.roughness.roughness_dw._H_weighting import _H_weighting
 
 
 def roughness_dw(signal, fs, overlap=0.5):
-    """Roughness calculation of a signal sampled at 48kHz.
+    """
+    Computes the roughness according to Daniel and Weber method
+    from a time signal
 
-    The code is based on the algorithm described in "Psychoacoustical roughness:
-    implementation of an optimized model" by Daniel and Weber in 1997.
-    The roughness model consists of a parallel processing structure that is made up
-    of successive stages and calculates intermediate specific roughnesses R_spec,
-    which are summed up to determine the total roughness R.
+    This function computes the global and specific roughness values
+    of a signal sampled at 48 kHz.
 
     Parameters
     ----------
-    signal :numpy.array
-        A time signal [Pa]
+    signal : array_like or DataTime object
+        Input time signal in Pa
     fs : float
         Sampling frequency [Hz]
     overlap : float
         Overlapping coefficient for the time windows of 200ms
 
-    Outputs
+    Returns
     -------
     R : numpy.array
-        Roughness [asper].
+        Roughness value in [asper]
     R_spec : numpy.array
-        Specific roughness over bark axis.
+        Specific roughness over bark axis
     bark_axis : numpy.array
-        Frequency axis [bark].
+        Frequency axis in [bark]
     time : numpy.array
-        Time axis [s].
+        Time axis in [s]
 
+    See Also
+    --------
+    .roughness_dw_freq : Roughness computation from a sound spectrum
+
+    Notes
+    -----
+    The model consists of a parallel processing structure made up
+    of successive stages to calculate intermediate specific roughnesses :math:`R'`,
+    which are summed up to determine the total roughness :math:`R`:
+
+    .. math::
+        R=0.25\\sum_{i=1}^{47}R'_{i}
+
+    References
+    ----------
+    :cite:empty:`R-roughnessDW`
+
+    .. bibliography::
+        :keyprefix: R-
+
+    Examples
+    --------
+    .. plot::
+       :include-source:
+
+       >>> from mosqito.sq_metrics import roughness_dw
+       >>> import matplotlib.pyplot as plt
+       >>> import numpy as np
+       >>> fc=1000
+       >>> fmod=70
+       >>> fs=44100
+       >>> d=0.2
+       >>> dB=60
+       >>> time = np.arange(0, d, 1/fs)
+       >>> stimulus = (0.5 * (1 + np.sin(2 * np.pi * fmod * time))* np.sin(2 * np.pi * fc * time))
+       >>> rms = np.sqrt(np.mean(np.power(stimulus, 2)))
+       >>> ampl = 0.00002 * np.power(10, dB / 20) / rms
+       >>> stimulus = stimulus * ampl
+       >>> R, R_specific, bark, time = roughness_dw(stimulus, fs=44100, overlap=0)
+       >>> plt.plot(bark, R_specific)
+       >>> plt.xlabel("Bark axis [Bark]")
+       >>> plt.ylabel("Specific roughness [Asper/Bark]")
+       >>> plt.title("Roughness = " + f"{R[0]:.2f}" + " [Asper]")
     """
 
     # Number of points within each frame according to the time resolution of 200ms
@@ -57,19 +99,19 @@ def roughness_dw(signal, fs, overlap=0.5):
     else:
         nseg = sig.shape[1]
 
-    spec, _ = spectrum(sig, fs, nfft="default", window="blackman", db=False)
+    spec, _ = comp_spectrum(sig, fs, nfft="default", window="blackman", db=False)
 
     # Frequency axis in Hertz
-    freq_axis = np.arange(1, nperseg // 2 + 1, 1) * (fs / nperseg)
+    freq_axis = arange(1, nperseg // 2 + 1, 1) * (fs / nperseg)
 
     # Initialization of the weighting functions H and g
     hWeight = _H_weighting(nperseg, fs)
     # Aures modulation depth weighting function
-    gzi = _gzi_weighting(np.arange(1, 48, 1) / 2)
+    gzi = _gzi_weighting(arange(1, 48, 1) / 2)
 
-    R = np.zeros((nseg))
-    R_spec = np.zeros((47, nseg))
     if len(spec.shape) > 1:
+        R = empty((nseg))
+        R_spec = empty((47, nseg))
         for i in range(nseg):
             R[i], R_spec[:, i], bark_axis = _roughness_dw_main_calc(
                 spec[:, i], freq_axis, fs, gzi, hWeight

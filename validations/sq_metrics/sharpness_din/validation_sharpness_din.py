@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Dec 15 16:36:37 2020
 
-@author: wantysal
-"""
 try:
     import matplotlib.pyplot as plt
 except ImportError:
@@ -302,11 +298,7 @@ def _check_compliance(sharpness, reference, noise_type):
     plt.ylabel("Sharpness, [acum]")
 
     plt.savefig(
-        "output/"
-        + "validation_sharpness_"
-        + noise_type
-        + "_noise"
-        + ".png",
+        "output/" + "validation_sharpness_" + noise_type + "_noise" + ".png",
         format="png",
     )
     plt.clf()

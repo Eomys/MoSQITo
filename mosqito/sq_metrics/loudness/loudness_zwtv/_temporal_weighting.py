@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@date Created on Fri May 22 2020
-@author martin_g for Eomys
-"""
 
 # Local application import
 from mosqito.sq_metrics.loudness.loudness_zwtv._lowpass_intp import (
@@ -29,9 +25,9 @@ def _temporal_weighting(loudness):
         Filtered loudness
     """
     sample_rate = 2000
-    tau = 3.5 * 10 ** -3
+    tau = 3.5 * 10**-3
     filt_loudness_1 = _lowpass_intp(loudness, tau, sample_rate)
-    tau = 70 * 10 ** -3
+    tau = 70 * 10**-3
     filt_loudness_2 = _lowpass_intp(loudness, tau, sample_rate)
 
     loudness = 0.47 * filt_loudness_1 + 0.53 * filt_loudness_2

@@ -1,16 +1,11 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Dec 14 15:16:38 2020
-
-@author: wantysal
-"""
 
 try:
     import matplotlib.pyplot as plt
 except ImportError:
     raise RuntimeError(
         "In order to perform this validation you need the 'matplotlib' package."
-        )
+    )
 
 # Third party imports
 import numpy as np
@@ -21,7 +16,7 @@ import time
 # Local application imports
 from mosqito.sq_metrics import loudness_zwtv
 from mosqito.utils import load
-
+from mosqito import COLORS as clr
 
 # Test signals as input for time-varying loudness
 # (from ISO 532-1 annex B4)
@@ -193,16 +188,18 @@ def validation_loudness_zwtv(signal):
     """
 
     # Load signal and compute third octave band spectrum
-    sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
+    sig, fs = load(signal["data_file"], wav_calib=2 * 2**0.5)
 
     # Compute Loudness
 
     start = time.time()
     N, N_spec, bark_axis, _ = loudness_zwtv(sig, fs, signal["field"])
     end = time.time()
-    print("[Info] " + signal["tab"] +
-          " loudness_zwtv computation: {:2.2f} s".format(end - start)
-          )
+    print(
+        "[Info] "
+        + signal["tab"]
+        + " loudness_zwtv computation: {:2.2f} s".format(end - start)
+    )
 
     loudness = {
         "name": "Loudness",
@@ -212,9 +209,7 @@ def validation_loudness_zwtv(signal):
     }
 
     # Check ISO 532-1 compliance
-    _check_compliance(
-        loudness, signal, "output/"
-    )
+    _check_compliance(loudness, signal, "output/")
 
 
 def _check_compliance(loudness, signal, out_dir):
@@ -270,7 +265,9 @@ def _check_compliance(loudness, signal, out_dir):
             header=None,
             skiprows=10,
             usecols="B",
-        ).squeeze("columns").to_numpy()
+        )
+        .squeeze("columns")
+        .to_numpy()
     )
     N_iso = N_iso[~np.isnan(N_iso)]
     N_specif_iso = np.transpose(
@@ -280,7 +277,9 @@ def _check_compliance(loudness, signal, out_dir):
             header=None,
             skiprows=10,
             usecols="L",
-        ).squeeze("columns").to_numpy()
+        )
+        .squeeze("columns")
+        .to_numpy()
     )
     N_specif_iso = N_specif_iso[~np.isnan(N_specif_iso)]
 
@@ -304,7 +303,7 @@ def _check_compliance(loudness, signal, out_dir):
         tolerances = [[0.9, 0.95, 1.05, 1.1], [-0.2, -0.1, 0.1, 0.2]]
         style = ["solid", "dashed", "dashed", "solid"]
         lab = ["10% tolerance", "5% tolerance", "", ""]
-        clrs = ["red", "orange", "orange", "red"]
+        clrs = [clr[2], clr[1], clr[1], clr[2]]
         #
         # +/- 2ms temporal tolerance
         if sum(abs(N[1:] - N_iso[:-1])) < sum(abs(N - N_iso)):
@@ -336,8 +335,7 @@ def _check_compliance(loudness, signal, out_dir):
             # Data to plot
             Ni = [N, N_specific[i_bark, :]]
             Ni_ref = [N_iso, N_specif_iso]
-            Ni_label = ["Loudness",
-                        "Specific loudness at " + str(bark) + " Bark"]
+            Ni_label = ["Loudness", "Specific loudness at " + str(bark) + " Bark"]
         else:
             #
             # Data to plot
@@ -371,10 +369,8 @@ def _check_compliance(loudness, signal, out_dir):
                 )
             #
             # Check compliance
-            comp_10 = np.array([comp[0, i] and comp[3, i]
-                                for i in np.arange(N.size)])
-            comp_5 = np.array([comp[1, i] and comp[2, i]
-                               for i in np.arange(N.size)])
+            comp_10 = np.array([comp[0, i] and comp[3, i] for i in np.arange(N.size)])
+            comp_5 = np.array([comp[1, i] and comp[2, i] for i in np.arange(N.size)])
             ind_10 = np.nonzero(comp_10 == 0)[0]
             ind_5 = np.nonzero(comp_5 == 0)[0]
             if ind_5.size == 0:
@@ -385,7 +381,7 @@ def _check_compliance(loudness, signal, out_dir):
                     horizontalalignment="center",
                     verticalalignment="center",
                     transform=plt.gca().transAxes,
-                    bbox=dict(facecolor="green", alpha=0.3),
+                    bbox=dict(facecolor=clr[5], alpha=0.3),
                 )
             elif ind_5.size / N.size <= 0.01:
                 plt.text(
@@ -395,7 +391,7 @@ def _check_compliance(loudness, signal, out_dir):
                     horizontalalignment="center",
                     verticalalignment="center",
                     transform=plt.gca().transAxes,
-                    bbox=dict(facecolor="orange", alpha=0.3),
+                    bbox=dict(facecolor=clr[2], alpha=0.3),
                     wrap=True,
                 )
             else:
@@ -407,7 +403,7 @@ def _check_compliance(loudness, signal, out_dir):
                     horizontalalignment="center",
                     verticalalignment="center",
                     transform=plt.gca().transAxes,
-                    bbox=dict(facecolor="red", alpha=0.3),
+                    bbox=dict(facecolor=clr[1], alpha=0.3),
                 )
             #
             # Highlights non-compliant area
@@ -422,7 +418,7 @@ def _check_compliance(loudness, signal, out_dir):
                     )
             #
             # Plot the calculated loudness
-            plt.plot(time, N, label="MOSQITO")
+            plt.plot(time, N, color=clr[0], label="MOSQITO")
             plt.title(
                 N_label
                 + " vs. time - "

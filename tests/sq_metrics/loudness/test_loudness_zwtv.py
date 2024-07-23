@@ -39,7 +39,7 @@ def test_loudness_zwtv():
     }
 
     # Load signal and compute third octave band spectrum
-    sig, fs = load(signal["data_file"], wav_calib=2 * 2 ** 0.5)
+    sig, fs = load(signal["data_file"], wav_calib=2 * 2**0.5)
 
     # Compute Loudness
     N, N_spec, bark_axis, time_axis = loudness_zwtv(sig, fs, field_type=signal["field"])

@@ -5,11 +5,10 @@
 try:
     import pytest
 except ImportError:
-    raise RuntimeError(
-        "In order to perform the tests you need the 'pytest' package."
-    )
+    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
 
 import numpy as np
+
 # Local application imports
 from mosqito.utils import load
 from mosqito.sq_metrics import tnr_ecma_st
@@ -33,10 +32,10 @@ def test_tnr_ecma_st():
     # Test signal as input for tone to noise ratio calculation
     # signals generated using audacity : white noise + tones at 442 and 1768 Hz
 
-    signal =  {
-            "tones freq": [442, 1768],
-            "data_file": "tests/input/white_noise_442_1768_Hz_stationary.wav"
-        }
+    signal = {
+        "tones freq": [442, 1768],
+        "data_file": "tests/input/white_noise_442_1768_Hz_stationary.wav",
+    }
 
     # Load signal
     audio, fs = load(signal["data_file"], wav_calib=0.01)
@@ -45,8 +44,7 @@ def test_tnr_ecma_st():
     np.testing.assert_almost_equal(t_tnr, 32.7142766)
     np.testing.assert_almost_equal(freq.astype(np.int32), [442, 1768])
     assert np.count_nonzero(prom == True) == 2
-        
+
+
 if __name__ == "__main__":
     test_tnr_ecma_st()
-
-

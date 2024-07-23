@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-@author: Daniel Jiménez-Caminero Costa
-"""
-
-import numpy as np
+from numpy import log10
 
 
 def sone2phone(sones):
-    """ Conversion between sones and phones, based on the work done by Hugo Fastl and Eberhard Zwicker in the article
+    """Conversion between sones and phones, based on the work done by Hugo Fastl and Eberhard Zwicker in the article
     "Psychoacoustics: Facts and Models".
 
     Parameters
@@ -26,7 +22,7 @@ def sone2phone(sones):
     """
 
     if sones >= 1:
-        phons = 40 + ((10 * np.log10(sones)) / np.log10(2))
+        phons = 40 + ((10 * log10(sones)) / log10(2))
 
     else:
         phons = 40 * ((sones + 0.0005) ** 0.35)

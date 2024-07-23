@@ -4,11 +4,10 @@
 try:
     import pytest
 except ImportError:
-    raise RuntimeError(
-        "In order to perform the tests you need the 'pytest' package."
-    )
+    raise RuntimeError("In order to perform the tests you need the 'pytest' package.")
 
 import numpy as np
+
 # Local application imports
 from mosqito.utils import load
 from mosqito.sq_metrics import pr_ecma_st
@@ -18,8 +17,7 @@ from mosqito.sq_metrics import pr_ecma_st
 def test_pr_ecma_st():
     """Test function for the prominence ratio calculation of an audio signal
 
-    Validation function for the Audio_signal class "tone_to_noise_ecma" method with signal array
-    as input. The input signals are generated using audacity.
+    Validation function for the function pr_ecma_st. The input signals were generated using audacity.
 
     Parameters
     ----------
@@ -32,9 +30,7 @@ def test_pr_ecma_st():
     # Test signal as input for prominence ratio calculation
     # signals generated using audacity : white noise + tones at 442 and 1768 Hz
 
-    signal = {
-            "data_file": "tests/input/white_noise_442_1768_Hz_stationary.wav"
-        }
+    signal = {"data_file": "tests/input/white_noise_442_1768_Hz_stationary.wav"}
 
     # Load signal
     audio, fs = load(signal["data_file"], wav_calib=0.01)
@@ -48,4 +44,3 @@ def test_pr_ecma_st():
 
 if __name__ == "__main__":
     test_pr_ecma_st()
-

@@ -15,9 +15,9 @@ def test_time_segmentation():
     fs = 48000
     signal, _ = sine_wave_generator(
         fs=fs,
-        t=1,
-        spl_value=60,
+        d=1,
         freq=40,
+        spl_level=60,
     )
 
     blocks, _ = time_segmentation(signal, fs, 8192, 2048, is_ecma=True)
