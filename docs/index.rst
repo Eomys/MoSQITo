@@ -64,15 +64,26 @@ Softwares using MOSQITO
 Publications citing MOSQITO
 ----------------------------
 
+:cite:empty:`AA2024` 
+:cite:empty:`daga2024` 
+:cite:empty:`mexico2024` 
+:cite:empty:`souaille2024` 
+:cite:empty:`vivien2024` 
+:cite:empty:`alz2023` 
 :cite:empty:`FA2023` 
 :cite:empty:`JASA23` 
 :cite:empty:`internoise23` 
+:cite:empty:`internoise23suas` 
+:cite:empty:`kaisei` 
 :cite:empty:`IEEE2022` 
 :cite:empty:`ICASSP2023` 
 :cite:empty:`AIAA2022` 
 :cite:empty:`menegatt`
+:cite:empty:`jimenez`
+:cite:empty:`alvarez`
 :cite:empty:`AAC2021`
 :cite:empty:`SIA2021` 
 :cite:empty:`internoise21`
+:cite:empty:`internoise21tr`
 
 .. bibliography::
