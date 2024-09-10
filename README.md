@@ -12,3 +12,8 @@ It is written in Python, one of the most popular free programming language in th
 
 Full documentation available on the [ReadTheDocs website](https://mosqito.readthedocs.io/en/latest/) !
 
+## Purpose of the present branch
+
+The scripts to reproduce the figures shown in the following paper are available in this branch:
+
+S. Wanty, J. Le Besnerais, E. Parizet, N. Totaro, Simulation of Pulse-Width Modulation strategies : validation based on sound quality evaluations, *Internoise 2024*, Nantes, France
