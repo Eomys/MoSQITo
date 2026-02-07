@@ -200,4 +200,4 @@ def roughness_ecma(signal, fs):
     # Single representative value
     R = np.percentile(R_time, 90)
         
-    return R, R_time, R_spec, bark_axis, t_50
+    return R, R_time, R_time_spec.transpose(), bark_axis, t_50
