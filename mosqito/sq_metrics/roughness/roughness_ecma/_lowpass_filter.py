@@ -47,6 +47,6 @@ def _lowpass_filter(R_hat):
     # Apply filter (Eq. 109)
     R_time_spec = np.zeros((N50, CBF))
     R_time_spec[0,:] = R_hat[0,:]
-    R_time_spec[1:,:] = (R_hat[1,:]*(1-np.exp(-1/(50*tau[1,:])))  + R_hat[0:-1,:]*np.exp(-1/(50*tau[1,:])))
+    R_time_spec[1:,:] = (R_hat[1:,:]*(1-np.exp(-1/(50*tau[1:,:])))  + R_hat[0:-1,:]*np.exp(-1/(50*tau[1:,:])))
 
     return R_time_spec
