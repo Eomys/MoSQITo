@@ -1,13 +1,31 @@
 # -*- coding: utf-8 -*-
 
+"""Aures tonality according to the formulation summarized in Casajus-Quiros et al."""
+
 import numpy as np
-from scipy.signal import welch
-from mosqito.sq_metrics.loudness import loudness_zwst_freq
+from scipy.signal import periodogram
+
+from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq import (
+    loudness_zwst_freq,
+)
+
+
+REF_PRESSURE = 2e-5
+REF_PRESSURE_SQ = REF_PRESSURE**2
+TARGET_FREQ_RES_HZ = 12.5
+PROMINENCE_THRESHOLD_DB = 7.0
+TONE_HALF_WIDTH_BINS = 2
+MIN_BARK_SEPARATION = 0.5
+CALIBRATION_CONSTANT = 1.09
+
 
 def tonality_aures(signal, fs):
     """
-    Compute the tonality value from a time signal according to Aures' model.
-    The implementation is based on the documentation provided by the user.
+    Compute the Aures tonality value from a time signal in Pascal.
+
+    The implementation follows the original Aures structure as summarized in:
+    Casajus-Quiros et al., "Improved Aures tonality metric for complex sounds",
+    Applied Acoustics 2023.
 
     Parameters
     ----------
@@ -15,156 +33,217 @@ def tonality_aures(signal, fs):
         Input time signal in [Pa].
     fs : float
         Sampling frequency in [Hz].
-        
+
     Returns
     -------
-    K : float
+    float
         Tonality value in [t.u.].
     """
-    
-    # TODO: The provided implementation is a basic translation of the provided 
-    # documentation and may not be fully functionnal. It needs to be completed
-    # and validated against a reference implementation.
 
-    # 1. Signal preprocessing and spectrum analysis
-    # The user's documentation suggests 0.2s blocks and a Blackman window.
-    nperseg = 4096
-    freqs, Pxx = welch(signal, fs, window='blackmanharris', nperseg=nperseg, scaling='density')
-    
-    # Convert PSD to amplitude spectrum
-    amp_spec = np.sqrt(Pxx * (freqs[1]-freqs[0])) * np.sqrt(2)
-    
-    # Convert amplitude to dB SPL
-    L = 20 * np.log10(amp_spec / 2e-5)
-    
-    # 2. Identification of tonal components
-    tones = _find_tonal_components(L, freqs)
-    
-    # 3. Refine tonal components and calculate excess level
-    refined_tones = []
-    for (i, f_c_temp) in tones:
-        # 3.1 3dB bandwidth and precise center frequency
-        f_c, delta_z = _center_freq_3dB(i, L, freqs)
-        
-        # 3.2 Excess Level calculation
-        delta_L = _excess_level(i, L, freqs, tones)
-        
-        if delta_L > 0:
-            refined_tones.append((f_c, delta_z, delta_L))
-            
-    # 4. Weighting functions
-    w_T_sum_sq = 0
-    for (f_c, delta_z, delta_L) in refined_tones:
-        w1 = 0.13 / (delta_z + 0.13)
-        w2 = (1 / np.sqrt(1 + 0.2 * (f_c / 700 + 700 / f_c)**2))**0.29
-        w3 = (1 - np.exp(-delta_L / 15))**0.29
-        
-        w1_p = w1**(1 / 0.29)
-        w2_p = w2**(1 / 0.29)
-        w3_p = w3**(1 / 0.29)
-        
-        w_T_sum_sq += (w1_p * w2_p * w3_p)**2
-        
-    w_T = np.sqrt(w_T_sum_sq)
-    
-    # 5. Loudness weighting factor
-    freqs_loudness, Pxx_loudness = welch(signal, fs, window='hann', nperseg=4096, noverlap=2048, scaling='density')
-    amp_spec_loudness = np.sqrt(Pxx_loudness * (freqs_loudness[1]-freqs_loudness[0])) * np.sqrt(2)
+    signal = np.asarray(signal, dtype=float).squeeze()
+    if signal.ndim != 1:
+        raise ValueError("signal must be a one-dimensional array")
+    if signal.size == 0:
+        raise ValueError("signal must not be empty")
 
-    N_total, N_specific, _ = loudness_zwst_freq(amp_spec_loudness, freqs_loudness)
-    
-    # Create a spectrum without tonal components
-    amp_spec_no_tones = np.copy(amp_spec_loudness)
-    # Find tone indices in the loudness spectrum
-    for (i, f_c) in tones:
-        # Find the closest index in the loudness frequency axis
-        idx = (np.abs(freqs_loudness - f_c)).argmin()
-        # Remove the 7 spectral lines around the tone - this is an approximation
-        freq_res = freqs[1] - freqs[0]
-        lines_to_remove = int(3 * (freqs_loudness[1]-freqs_loudness[0]) / freq_res)
-        amp_spec_no_tones[max(0, idx-lines_to_remove):min(len(amp_spec_loudness), idx+lines_to_remove+1)] = 0
-    
-    N_gr, _, _ = loudness_zwst_freq(amp_spec_no_tones, freqs_loudness)
+    freqs, power_spectrum = _compute_power_spectrum(signal, fs)
+    levels_db = 10 * np.log10(np.maximum(power_spectrum, np.finfo(float).tiny) / REF_PRESSURE_SQ)
 
-    if N_total > 0:
-        w_Gr = 1 - N_gr / N_total
-    else:
-        w_Gr = 0
-    
-    # 6. Final tonality calculation
-    c = 1.09
-    K = c * (w_T**0.29) * (w_Gr**0.79)
-    
-    return K
+    candidates = _find_tonal_candidates(levels_db)
+    if not candidates:
+        return 0.0
 
-def _bark(f):
-    """Convert frequency from Hz to Bark."""
-    return 13 * np.arctan(0.76 * f / 1000) + 3.5 * np.arctan((f / 7500)**2)
+    bark_axis = _bark(freqs)
+    candidate_mask = _build_tone_mask(power_spectrum.size, candidates)
 
-def _find_tonal_components(L, freqs):
-    """Find tonal components in the spectrum."""
-    tones = []
-    for i in range(3, len(L) - 3):
-        is_peak = L[i] > L[i-1] and L[i] > L[i+1]
-        if is_peak:
-            is_prominent = all(L[i] - L[i+m] >= 7 for m in [-3, -2, 2, 3])
-            if is_prominent:
-                f_c_temp = freqs[i] + 0.46 * (L[i+1] - L[i-1])
-                tones.append((i, f_c_temp))
-    return tones
+    relevant_tones = []
+    for index in candidates:
+        tone = _build_relevant_tone(
+            index=index,
+            freqs=freqs,
+            levels_db=levels_db,
+            power_spectrum=power_spectrum,
+            bark_axis=bark_axis,
+            candidates=candidates,
+            candidate_mask=candidate_mask,
+        )
+        if tone is not None:
+            relevant_tones.append(tone)
 
-def _center_freq_3dB(i, L, freqs):
-    """Calculate center frequency and bandwidth using 3dB method."""
-    L_peak = L[i]
-    
-    # Find lower 3dB point
-    j = i
-    while j > 0 and L_peak - L[j] < 3:
-        j -= 1
-    # TODO: Interpolate to find exact frequency
-    f_l = freqs[j]
-    
-    # Find upper 3dB point
-    k = i
-    while k < len(L) - 1 and L_peak - L[k] < 3:
-        k += 1
-    # TODO: Interpolate to find exact frequency
-    f_u = freqs[k]
-    
-    f_c = np.sqrt(f_l * f_u)
-    delta_z = _bark(f_u) - _bark(f_l)
-    
-    return f_c, delta_z
+    relevant_tones = _select_dominant_tones(relevant_tones)
+    if not relevant_tones:
+        return 0.0
 
-def _excess_level(i, L, freqs, tones):
-    """Calculate the excess level of a tonal component."""
-    
-    f_i = freqs[i]
-    L_i = L[i]
-    
-    # Masking from other tonal components
-    masking_tones = 0
-    for k_idx, (k, f_c_k) in enumerate(tones):
-        if k != i:
-            L_k = L[k]
-            z_i = _bark(f_i)
-            z_k = _bark(f_c_k)
-            
-            if f_i <= f_c_k:
-                s = 27
-            else:
-                s = -24 - (230 / (f_c_k + 0.2 * L_k))
-                
-            L_ek = L_k - s * (z_k - z_i)
-            A_ek = 10**(L_ek / 20)
-            masking_tones += A_ek
-            
-    # Masking from noise (not implemented, needs critical band analysis)
-    E_gr = 0
-    
-    # Hearing threshold
-    E_hs = 3.64 * (f_i/1000)**-0.8 - 6.5 * np.exp(-0.6 * (f_i/1000 - 3.3)**2) + 1e-3 * (f_i/1000)**4
-    
-    delta_L = L_i - 10 * np.log10(masking_tones**2 + E_gr + E_hs)
-    
-    return delta_L
+    tonal_weight = np.sqrt(
+        sum((tone["w1"] * tone["w2"] * tone["w3"]) ** 2 for tone in relevant_tones)
+    )
+
+    signal_loudness = _loudness_from_power_spectrum(power_spectrum, freqs)
+    noise_spectrum = power_spectrum.copy()
+    for tone in relevant_tones:
+        lo, hi = _tone_bounds(tone["index"], power_spectrum.size)
+        noise_spectrum[lo:hi] = 0.0
+
+    noise_loudness = _loudness_from_power_spectrum(noise_spectrum, freqs)
+    loudness_weight = 0.0
+    if signal_loudness > 0:
+        loudness_weight = max(0.0, 1.0 - noise_loudness / signal_loudness)
+
+    tonality = CALIBRATION_CONSTANT * tonal_weight**0.29 * loudness_weight**0.79
+    return float(min(tonality, 1.0))
+
+
+def _compute_power_spectrum(signal, fs):
+    nfft = max(int(round(fs / TARGET_FREQ_RES_HZ)), 8)
+    freqs, power_spectrum = periodogram(
+        signal,
+        fs=fs,
+        window="hamming",
+        nfft=nfft,
+        detrend=False,
+        scaling="spectrum",
+        return_onesided=True,
+    )
+    return freqs, power_spectrum
+
+
+def _find_tonal_candidates(levels_db):
+    candidates = []
+    for index in range(3, len(levels_db) - 3):
+        if levels_db[index - 1] < levels_db[index] >= levels_db[index + 1]:
+            if all(
+                levels_db[index] - levels_db[index + offset] >= PROMINENCE_THRESHOLD_DB
+                for offset in (-3, -2, 2, 3)
+            ):
+                candidates.append(index)
+    return candidates
+
+
+def _build_relevant_tone(
+    index,
+    freqs,
+    levels_db,
+    power_spectrum,
+    bark_axis,
+    candidates,
+    candidate_mask,
+):
+    df = freqs[1] - freqs[0]
+    center_freq = _refined_center_frequency(index, freqs, levels_db)
+    bark_value = _bark(center_freq)
+    tone_level_db = _tone_level_db(index, power_spectrum)
+
+    band_mask = (bark_axis >= bark_value - 0.5) & (bark_axis < bark_value + 0.5)
+    noise_intensity = np.sum(power_spectrum[band_mask & ~candidate_mask]) / REF_PRESSURE_SQ
+
+    masking_intensity = 0.0
+    for other_index in candidates:
+        if other_index == index:
+            continue
+
+        other_freq = _refined_center_frequency(other_index, freqs, levels_db)
+        other_level_db = _tone_level_db(other_index, power_spectrum)
+        other_bark = _bark(other_freq)
+
+        if center_freq <= other_freq:
+            slope = 27.0
+        else:
+            slope = -24.0 - 230.0 / (other_freq + 0.2 * other_level_db)
+
+        excitation_level_db = other_level_db - slope * (other_bark - bark_value)
+        masking_intensity += 10 ** (excitation_level_db / 10)
+
+    threshold_intensity = 10 ** (_hearing_threshold(center_freq) / 10)
+    excess_level_db = tone_level_db - 10 * np.log10(
+        masking_intensity + noise_intensity + threshold_intensity
+    )
+
+    if excess_level_db <= 0:
+        return None
+
+    bandwidth_bark = _effective_bandwidth_bark(index, freqs, levels_db, center_freq, df)
+
+    return {
+        "index": index,
+        "freq_hz": center_freq,
+        "bark": bark_value,
+        "level_db": tone_level_db,
+        "delta_z": bandwidth_bark,
+        "delta_l": excess_level_db,
+        "w1": (0.13 / (bandwidth_bark + 0.13)) ** (1 / 0.29),
+        "w2": 1.0
+        / np.sqrt(1.0 + 0.2 * (center_freq / 700.0 + 700.0 / center_freq) ** 2),
+        "w3": 1.0 - np.exp(-excess_level_db / 15.0),
+    }
+
+
+def _tone_level_db(index, power_spectrum):
+    lo, hi = _tone_bounds(index, power_spectrum.size)
+    tone_power = np.sum(power_spectrum[lo:hi])
+    return 10 * np.log10(np.maximum(tone_power, np.finfo(float).tiny) / REF_PRESSURE_SQ)
+
+
+def _refined_center_frequency(index, freqs, levels_db):
+    df = freqs[1] - freqs[0]
+    offset = 0.46 * df * (levels_db[index + 1] - levels_db[index - 1])
+    return float(np.clip(freqs[index] + offset, freqs[index - 1], freqs[index + 1]))
+
+
+def _effective_bandwidth_bark(index, freqs, levels_db, center_freq, df):
+    peak_level = levels_db[index]
+
+    lower = index
+    while lower > 0 and peak_level - levels_db[lower] < 3.0:
+        lower -= 1
+
+    upper = index
+    while upper < len(levels_db) - 1 and peak_level - levels_db[upper] < 3.0:
+        upper += 1
+
+    measured_bandwidth_hz = max(freqs[upper] - freqs[lower], 0.0)
+    effective_bandwidth_hz = max(measured_bandwidth_hz - 2.0 * df, 0.0)
+
+    if effective_bandwidth_hz <= 0:
+        return 0.0
+
+    lower_freq = max(center_freq - effective_bandwidth_hz / 2.0, df)
+    upper_freq = center_freq + effective_bandwidth_hz / 2.0
+    return float(_bark(upper_freq) - _bark(lower_freq))
+
+
+def _select_dominant_tones(relevant_tones):
+    selected = []
+    for tone in sorted(relevant_tones, key=lambda item: item["level_db"], reverse=True):
+        if all(abs(tone["bark"] - kept["bark"]) >= MIN_BARK_SEPARATION for kept in selected):
+            selected.append(tone)
+    return selected
+
+
+def _build_tone_mask(size, tone_indices):
+    mask = np.zeros(size, dtype=bool)
+    for index in tone_indices:
+        lo, hi = _tone_bounds(index, size)
+        mask[lo:hi] = True
+    return mask
+
+
+def _tone_bounds(index, size):
+    lo = max(0, index - TONE_HALF_WIDTH_BINS)
+    hi = min(size, index + TONE_HALF_WIDTH_BINS + 1)
+    return lo, hi
+
+
+def _loudness_from_power_spectrum(power_spectrum, freqs):
+    rms_spectrum = np.sqrt(np.maximum(power_spectrum, 0.0))
+    loudness, _, _ = loudness_zwst_freq(rms_spectrum, freqs)
+    return float(loudness)
+
+
+def _bark(freq_hz):
+    freq_hz = np.asarray(freq_hz, dtype=float)
+    return 13 * np.arctan(0.76 * freq_hz / 1000) + 3.5 * np.arctan((freq_hz / 7500) ** 2)
+
+
+def _hearing_threshold(freq_hz):
+    x = freq_hz / 1000
+    return 3.64 * x**-0.8 - 6.5 * np.exp(-0.6 * (x - 3.3) ** 2) + 1e-3 * x**4
