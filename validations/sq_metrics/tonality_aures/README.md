@@ -51,27 +51,27 @@ The notation below is intended to make the correspondence between the implementa
 
 Let `x(t)` denote the stationary sound-pressure signal in Pascal. A one-sided power spectrum is first computed:
 
-```text
+$$
 P(f_k)
-```
+$$
 
 with frequency spacing:
 
-```text
-df ≈ 12.5 Hz
-```
+$$
+\Delta f \approx 12.5\ \mathrm{Hz}
+$$
 
 The level associated with each spectral line is expressed in dB SPL as:
 
-```text
-L_k = 10 log10(P(f_k) / p_ref^2)
-```
+$$
+L_k = 10 \log_{10}\!\left(\frac{P(f_k)}{p_{\mathrm{ref}}^2}\right)
+$$
 
 with:
 
-```text
-p_ref = 2 × 10^-5 Pa
-```
+$$
+p_{\mathrm{ref}} = 2 \times 10^{-5}\ \mathrm{Pa}
+$$
 
 In the implementation, this quantity corresponds to the array `levels_db`.
 
@@ -79,16 +79,16 @@ In the implementation, this quantity corresponds to the array `levels_db`.
 
 A spectral line `k` is retained as a tonal candidate if:
 
-```text
-L_{k-1} < L_k >= L_{k+1}
-```
+$$
+L_{k-1} < L_k \geq L_{k+1}
+$$
 
 and if the prominence condition is satisfied:
 
-```text
-L_k - L_{k+m} >= 7 dB
-for m in {-3, -2, 2, 3}
-```
+$$
+L_k - L_{k+m} \geq 7\ \mathrm{dB},
+\qquad m \in \{-3,-2,2,3\}
+$$
 
 This is the tonal screening condition used in the original Aures framework.
 
@@ -96,9 +96,9 @@ This is the tonal screening condition used in the original Aures framework.
 
 For each candidate, the center frequency is refined from the discrete peak location through local level asymmetry:
 
-```text
-f_c = f_k + 0.46 df (L_{k+1} - L_{k-1})
-```
+$$
+f_c = f_k + 0.46\,\Delta f\,(L_{k+1} - L_{k-1})
+$$
 
 This yields a sub-bin estimate of the tonal center frequency.
 
@@ -106,16 +106,15 @@ This yields a sub-bin estimate of the tonal center frequency.
 
 The tonal component level is evaluated from a 5-bin group centered on the candidate:
 
-```text
-I_t = Σ P(f_n)
-for n = k-2 ... k+2
-```
+$$
+I_t = \sum_{n=k-2}^{k+2} P(f_n)
+$$
 
 and converts it to a tonal level:
 
-```text
-L_t = 10 log10(I_t / p_ref^2)
-```
+$$
+L_t = 10 \log_{10}\!\left(\frac{I_t}{p_{\mathrm{ref}}^2}\right)
+$$
 
 This level is used in the subsequent masking and excess-level calculations.
 
@@ -123,49 +122,50 @@ This level is used in the subsequent masking and excess-level calculations.
 
 The Bark transform is:
 
-```text
-z(f) = 13 arctan(0.76 f / 1000) + 3.5 arctan((f / 7500)^2)
-```
+$$
+z(f) = 13 \arctan\!\left(0.76\,\frac{f}{1000}\right)
+      + 3.5 \arctan\!\left(\left(\frac{f}{7500}\right)^2\right)
+$$
 
 Each tonal component is evaluated within a 1-Bark neighborhood:
 
-```text
-z_c - 0.5 <= z(f) < z_c + 0.5
-```
+$$
+z_c - 0.5 \leq z(f) < z_c + 0.5
+$$
 
 where:
 
-```text
+$$
 z_c = z(f_c)
-```
+$$
 
 ### 6. Masking by other tonal components
 
 For another tonal component `j`, the excitation produced at the Bark position of tone `i` is written in level form as:
 
-```text
-L_ec,ij = L_t,j - q_ij (z_j - z_i)
-```
+$$
+L_{\mathrm{ec},ij} = L_{t,j} - q_{ij}(z_j - z_i)
+$$
 
 with slope:
 
-```text
-q_ij = 27
-if f_i <= f_j
-```
+$$
+q_{ij} = 27,
+\qquad \text{if } f_i \leq f_j
+$$
 
 and:
 
-```text
-q_ij = -24 - 230 / (f_j + 0.2 L_t,j)
-if f_i > f_j
-```
+$$
+q_{ij} = -24 - \frac{230}{f_j + 0.2 L_{t,j}},
+\qquad \text{if } f_i > f_j
+$$
 
 The tonal masking term is then summed in linear intensity form:
 
-```text
-I_tm,i = Σ 10^(L_ec,ij / 10)
-```
+$$
+I_{\mathrm{tm},i} = \sum_j 10^{L_{\mathrm{ec},ij}/10}
+$$
 
 over all other tonal candidates `j`.
 
@@ -173,9 +173,9 @@ over all other tonal candidates `j`.
 
 Within the 1-Bark band of tone `i`, the non-tonal contribution is estimated by removing all candidate 5-bin tonal groups and summing the remaining power:
 
-```text
-I_n,i = Σ P(f) / p_ref^2
-```
+$$
+I_{n,i} = \sum \frac{P(f)}{p_{\mathrm{ref}}^2}
+$$
 
 over all frequencies in the local critical band that are not covered by a tonal candidate mask.
 
@@ -185,31 +185,31 @@ The quantities `I_n,i`, `I_tm,i`, and the threshold term are therefore expressed
 
 The hearing threshold is introduced in level form as:
 
-```text
-L_h(f) = 3.64 (f / 1000)^(-0.8)
-         - 6.5 exp(-0.6 (f / 1000 - 3.3)^2)
-         + 10^-3 (f / 1000)^4
-```
+$$
+L_h(f) = 3.64 \left(\frac{f}{1000}\right)^{-0.8}
+         - 6.5 \exp\!\left[-0.6\left(\frac{f}{1000} - 3.3\right)^2\right]
+         + 10^{-3}\left(\frac{f}{1000}\right)^4
+$$
 
 and converted to intensity:
 
-```text
-I_h,i = 10^(L_h(f_c) / 10)
-```
+$$
+I_{h,i} = 10^{L_h(f_c)/10}
+$$
 
 ### 9. Excess level
 
 The excess level of tone `i` is then defined as:
 
-```text
-ΔL_i = L_t,i - 10 log10(I_tm,i + I_n,i + I_h,i)
-```
+$$
+\Delta L_i = L_{t,i} - 10 \log_{10}\!\left(I_{\mathrm{tm},i} + I_{n,i} + I_{h,i}\right)
+$$
 
 Only tones with:
 
-```text
-ΔL_i > 0
-```
+$$
+\Delta L_i > 0
+$$
 
 are retained as relevant tones.
 
@@ -219,27 +219,28 @@ The measured 3 dB width of the tonal peak is first obtained from the discrete sp
 
 If `f_l` and `f_u` are those crossing frequencies, the measured width is:
 
-```text
-B_meas = f_u - f_l
-```
+$$
+B_{\mathrm{meas}} = f_u - f_l
+$$
 
 An effective-width correction is then applied:
 
-```text
-B_eff = max(B_meas - 2 df, 0)
-```
+$$
+B_{\mathrm{eff}} = \max(B_{\mathrm{meas}} - 2\Delta f,\ 0)
+$$
 
 The corrected width is then converted to Bark:
 
-```text
-Δz_i = z(f_c + B_eff / 2) - z(f_c - B_eff / 2)
-```
+$$
+\Delta z_i = z\!\left(f_c + \frac{B_{\mathrm{eff}}}{2}\right) -
+             z\!\left(f_c - \frac{B_{\mathrm{eff}}}{2}\right)
+$$
 
 The corresponding weighting term is:
 
-```text
-w_1,i = (0.13 / (Δz_i + 0.13))^(1 / 0.29)
-```
+$$
+w_{1,i} = \left(\frac{0.13}{\Delta z_i + 0.13}\right)^{1/0.29}
+$$
 
 This correction compensates for analysis-window broadening and avoids attributing the FFT main-lobe width to the physical tonal bandwidth.
 
@@ -247,25 +248,25 @@ This correction compensates for analysis-window broadening and avoids attributin
 
 The frequency weighting term is:
 
-```text
-w_2,i = 1 / sqrt(1 + 0.2 (f_c / 700 + 700 / f_c)^2)
-```
+$$
+w_{2,i} = \frac{1}{\sqrt{1 + 0.2\left(\frac{f_c}{700} + \frac{700}{f_c}\right)^2}}
+$$
 
 ### 12. Excess-level weighting
 
 The excess-level weighting term is:
 
-```text
-w_3,i = 1 - exp(-ΔL_i / 15)
-```
+$$
+w_{3,i} = 1 - \exp\!\left(-\frac{\Delta L_i}{15}\right)
+$$
 
 ### 13. Global tonal weight
 
 For all relevant tones, the global tonal weight is obtained by quadratic summation:
 
-```text
-w_T = sqrt(Σ (w_1,i w_2,i w_3,i)^2)
-```
+$$
+w_T = \sqrt{\sum_i \left(w_{1,i} w_{2,i} w_{3,i}\right)^2}
+$$
 
 In the current implementation, only the dominant relevant tone within a `0.5 Bark` neighborhood is retained, in order to avoid multiple counting of the same perceived component.
 
@@ -273,43 +274,43 @@ In the current implementation, only the dominant relevant tone within a `0.5 Bar
 
 Let:
 
-```text
+$$
 N_s
-```
+$$
 
 be the loudness of the original spectrum, and:
 
-```text
+$$
 N_n
-```
+$$
 
 be the loudness after removal of the relevant tonal groups.
 
 The loudness weight is then:
 
-```text
-w_L = max(0, 1 - N_n / N_s)
-```
+$$
+w_L = \max\!\left(0,\ 1 - \frac{N_n}{N_s}\right)
+$$
 
 ### 15. Final tonality
 
 The final Aures tonality value is:
 
-```text
-K = C w_T^0.29 w_L^0.79
-```
+$$
+K = C\,w_T^{0.29} w_L^{0.79}
+$$
 
 with:
 
-```text
+$$
 C = 1.09
-```
+$$
 
 The implemented value is clipped to:
 
-```text
-K <= 1.0 t.u.
-```
+$$
+K \leq 1.0\ \mathrm{t.u.}
+$$
 
 This preserves the interpretation of the Aures reference signal as the calibration reference.
 
