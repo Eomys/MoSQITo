@@ -9,9 +9,7 @@ except ImportError:
 
 from pathlib import Path
 
-from mosqito.sq_metrics.tonality.tonality_aures.tonality_aures_validation import (
-    summarize_validation,
-)
+from tonality_aures_validation import summarize_validation
 from mosqito import COLORS as clr
 
 

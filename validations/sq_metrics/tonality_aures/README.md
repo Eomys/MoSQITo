@@ -5,6 +5,7 @@ This directory contains the validation material associated with the Aures tonali
 ## Directory Structure
 
 - `validation_tonality_aures.py`: validation entry point following the project `validations/` layout.
+- `tonality_aures_validation.py`: reusable validation helpers (reference signal and dataset checks).
 - `input/Tonality_Aures1985/`: local SQAT validation sounds used for Aures tonality validation.
 - `output/`: generated validation figure.
 
@@ -12,27 +13,17 @@ The implementation under study is located in:
 
 - `mosqito/sq_metrics/tonality/tonality_aures/tonality_aures.py`
 
-The reusable validation utilities are located in:
-
-- `mosqito/sq_metrics/tonality/tonality_aures/tonality_aures_validation.py`
-
 ## Validation Dataset
 
-The validation relies on the `Tonality_Aures1985` signals distributed in Zenodo record `7933206`.
+The validation relies on the `Tonality_Aures1985` signals distributed with the SQAT v1.0 validation material in Zenodo record `7933206` (https://zenodo.org/records/7933206).
 
-The helper module first checks for the expected `.wav` files in:
+The 9 `.wav` files are stored in:
 
 ```text
 validations/sq_metrics/tonality_aures/input/Tonality_Aures1985/
 ```
 
-If one or more files are absent, an automatic download is attempted from:
-
-```text
-https://zenodo.org/records/7933206
-```
-
-This arrangement keeps validation assets in the `validations/` tree rather than in the library source directory.
+This arrangement keeps validation assets and helpers in the `validations/` tree rather than in the library source directory.
 
 ## Validation Criteria
 
@@ -339,10 +330,10 @@ The correspondence between the principal formulas and the implementation is as f
 
 ## Execution
 
-Validation helper:
+Validation helper (prints a text report):
 
 ```bash
-PYTHONPATH=. python -m mosqito.sq_metrics.tonality.tonality_aures.tonality_aures_validation
+PYTHONPATH=. python validations/sq_metrics/tonality_aures/tonality_aures_validation.py
 ```
 
 Project-level validation entry point:
