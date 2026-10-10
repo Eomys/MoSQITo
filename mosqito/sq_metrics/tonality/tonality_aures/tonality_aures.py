@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Aures tonality according to the formulation summarized in Casajus-Quiros et al."""
+"""Aures tonality (Aures, 1985) following the formulation summarized in Estreder et al. (2023)."""
 
 import numpy as np
 from scipy.signal import periodogram
@@ -21,23 +21,78 @@ CALIBRATION_CONSTANT = 1.09
 
 def tonality_aures(signal, fs):
     """
-    Compute the Aures tonality value from a time signal in Pascal.
+    Compute the Aures tonality of a signal.
 
-    The implementation follows the original Aures structure as summarized in:
-    Casajus-Quiros et al., "Improved Aures tonality metric for complex sounds",
-    Applied Acoustics 2023.
+    This function computes the tonality of a signal in tonality units [t.u.]
+    according to the model of Aures (1985), following the formulation
+    summarized in Estreder et al. (2023). A 1 kHz pure tone at 60 dB SPL has
+    a tonality of 1 t.u.
 
     Parameters
     ----------
     signal : array_like
-        Input time signal in [Pa].
+        Input time signal in [Pa], one-dimensional.
     fs : float
         Sampling frequency in [Hz].
 
     Returns
     -------
-    float
-        Tonality value in [t.u.].
+    T : float
+        Tonality value in [t.u.], limited to 1.
+
+    Notes
+    -----
+    The tonal components are extracted from a power spectrum with a frequency
+    resolution of 12.5 Hz: a local maximum is kept when it exceeds the spectral
+    lines two and three bins away on both sides by at least 7 dB. For each
+    tonal component :math:`i`, the excess level over the masking produced by
+    the other tonal components, the noise in its critical band and the
+    threshold in quiet gives the weighting :math:`w_{3,i}`, which is combined
+    with a bandwidth weighting :math:`w_{1,i}` and a frequency weighting
+    :math:`w_{2,i}`:
+
+    .. math::
+        w_T = \\sqrt{\\sum_i (w_{1,i} w_{2,i} w_{3,i})^2}
+
+    The loudness weighting compares the loudness :math:`N` of the signal with
+    the loudness :math:`N_{noise}` of the signal without its tonal components:
+
+    .. math::
+        w_{Gr} = 1 - \\frac{N_{noise}}{N}
+
+    and the tonality is:
+
+    .. math::
+        T = 1.09 \\, w_T^{0.29} \\, w_{Gr}^{0.79}
+
+    The validation of the implementation is described in
+    ``validations/sq_metrics/tonality_aures``.
+
+    References
+    ----------
+    :cite:empty:`T_aures-Aures1985`
+    :cite:empty:`T_aures-Estreder2023`
+
+    .. bibliography::
+        :keyprefix: T_aures-
+
+    Examples
+    --------
+    .. plot::
+       :include-source:
+
+        >>> import numpy as np
+        >>> import matplotlib.pyplot as plt
+        >>> from mosqito.sq_metrics import tonality_aures
+        >>> from mosqito.utils import sine_wave_generator
+        >>> fs = 48000
+        >>> noise = np.random.default_rng(0).standard_normal(fs)
+        >>> noise = noise * 2e-5 * 10 ** (60 / 20) / np.std(noise)
+        >>> levels = np.arange(40, 85, 5)
+        >>> T = [tonality_aures(sine_wave_generator(fs, 1, 1000, L)[0] + noise, fs) for L in levels]
+        >>> plt.plot(levels, T, marker="o")
+        >>> plt.xlabel("Level of a 1 kHz tone in 60 dB SPL white noise [dB SPL]")
+        >>> plt.ylabel("Tonality [t.u.]")
     """
 
     signal = np.asarray(signal, dtype=float).squeeze()
