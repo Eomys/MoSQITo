@@ -22,7 +22,7 @@ def _white_noise(spl_level, seed=0):
     return noise * 2e-5 * 10 ** (spl_level / 20) / np.std(noise)
 
 
-@pytest.mark.aures_tonality
+@pytest.mark.tonality_aures
 def test_tonality_aures_reference_tone():
     """A 1 kHz pure tone at 60 dB SPL defines 1 t.u."""
 
@@ -31,14 +31,14 @@ def test_tonality_aures_reference_tone():
     assert tonality_aures(signal, FS) == pytest.approx(1.0, abs=0.1)
 
 
-@pytest.mark.aures_tonality
+@pytest.mark.tonality_aures
 def test_tonality_aures_white_noise():
     """White noise has no tonal component."""
 
     assert tonality_aures(_white_noise(60), FS) < 0.1
 
 
-@pytest.mark.aures_tonality
+@pytest.mark.tonality_aures
 def test_tonality_aures_increases_with_tone_level():
     """Tonality of a 1 kHz tone in noise increases with the tone level."""
 
@@ -51,7 +51,7 @@ def test_tonality_aures_increases_with_tone_level():
     assert tonality[0] < tonality[1] < tonality[2]
 
 
-@pytest.mark.aures_tonality
+@pytest.mark.tonality_aures
 def test_tonality_aures_invalid_input():
     """Multichannel and empty signals are rejected."""
 
