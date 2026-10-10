@@ -3,7 +3,7 @@
 """Aures tonality (Aures, 1985) following the formulation summarized in Estreder et al. (2023)."""
 
 import numpy as np
-from scipy.signal import periodogram
+from scipy.signal import welch
 
 from mosqito.sq_metrics.loudness.loudness_zwst.loudness_zwst_freq import (
     loudness_zwst_freq,
@@ -149,11 +149,17 @@ def tonality_aures(signal, fs):
 
 
 def _compute_power_spectrum(signal, fs):
+    # Welch estimate averaged over the whole signal: segments of fs/12.5 samples
+    # (80 ms at 48 kHz) with 50 % overlap, zero-padded for signals shorter than
+    # one segment so that the frequency spacing stays at 12.5 Hz.
     nfft = max(int(round(fs / TARGET_FREQ_RES_HZ)), 8)
-    freqs, power_spectrum = periodogram(
+    nperseg = min(nfft, signal.size)
+    freqs, power_spectrum = welch(
         signal,
         fs=fs,
         window="hamming",
+        nperseg=nperseg,
+        noverlap=nperseg // 2,
         nfft=nfft,
         detrend=False,
         scaling="spectrum",
