@@ -20,7 +20,16 @@ Tone-to-noise Ratio (ECMA 418-1)
    /source/reference/mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_st
    /source/reference/mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq
    /source/reference/mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_perseg
-   
+
+Aures tonality
+==================================
+
+.. toctree::
+   :maxdepth: 1
+
+   /source/reference/mosqito.sq_metrics.tonality.tonality_aures.tonality_aures_st
+   /source/reference/mosqito.sq_metrics.tonality.tonality_aures.tonality_aures_tv
+
 """
 
 __all__ = ["tonality"]
@@ -36,3 +45,6 @@ from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_perseg import (
     tnr_ecma_perseg,
 )
 from mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_freq import tnr_ecma_freq
+
+from mosqito.sq_metrics.tonality.tonality_aures.tonality_aures_st import tonality_aures_st
+from mosqito.sq_metrics.tonality.tonality_aures.tonality_aures_tv import tonality_aures_tv
