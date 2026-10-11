@@ -126,7 +126,11 @@ def tonality_aures_st(signal, fs, field_type="free"):
     the power above that floor); the analytic Bark scale and critical
     bandwidth of Zwicker and Terhardt (1980) used by Terhardt et al. (1982).
     The validation in ``validations/sq_metrics/tonality_aures`` reproduces
-    Fig. 5, 6 and 7 of the paper with synthetic signals.
+    Fig. 5, 6 and 7 of the paper with synthetic signals. The implementation
+    is independent of other implementations of the method; its results were
+    compared with those of the SQAT toolbox (``Tonality_Aures1985.m``,
+    ``main`` branch at commit 11658b5 of 2026-10-02, not a tagged release),
+    and the comparison is documented in the same folder.
 
     References
     ----------

@@ -41,8 +41,10 @@ def tonality_aures_tv(signal, fs, field_type="free", frame_length=0.25, hop=0.12
         12.5 Hz resolution of Terhardt et al. 1982).
     hop : float, optional
         Time between the starts of consecutive frames in [s]. Default is
-        0.125 s. The defaults are the frames of the SQAT toolbox, so the two
-        implementations can be compared frame by frame.
+        0.125 s. The defaults are the frames of the SQAT toolbox
+        (``Tonality_Aures1985.m``, ``main`` branch at commit 11658b5 of
+        2026-10-02), so the two implementations can be compared frame by
+        frame; the implementation itself is independent of SQAT.
 
     Returns
     -------
