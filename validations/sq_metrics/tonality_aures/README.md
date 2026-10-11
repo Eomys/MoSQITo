@@ -209,6 +209,10 @@ The same SQAT version was run on the ISO 532-1 Annex B.5 recordings and a few ot
 
 The largest difference between the frame means, white noise with tones at 442 and 1768 Hz, comes from the loudness weighting (w_Gr 0.63 here, 0.70 in SQAT): the bridging of the regions described above also lowers the noise around each tone down to the nearest minimum of the spectrum, so N_Gr is smaller in SQAT; this implementation only subtracts the leakage of the sinusoids.
 
+## Credits
+
+Implementation, validation and documentation by Zhenxian Li, with assistance from Claude (Anthropic) for the review against the paper, the validation scripts and the text. The SQAT runs were made on the author's machine.
+
 ## References
 
 * W. Aures, "Berechnungsverfahren für den sensorischen Wohlklang beliebiger Schallsignale", Acustica 59 (1985) 130-141.

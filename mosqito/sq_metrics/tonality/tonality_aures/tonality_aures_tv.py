@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-"""Frame-wise Aures tonality. The model is in ``tonality_aures_st.py``."""
+"""Frame-wise Aures tonality. The model is in ``tonality_aures_st.py``.
+
+Written by Zhenxian Li with assistance from Claude (Anthropic).
+"""
 
 import numpy as np
 

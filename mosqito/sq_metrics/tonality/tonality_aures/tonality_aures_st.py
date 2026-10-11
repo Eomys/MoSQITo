@@ -6,6 +6,9 @@ The tonal component extraction, the masking slopes and the threshold in quiet
 come from the pitch analysis of Terhardt, Stoll and Seewann, J. Acoust. Soc.
 Am. 71 (1982) 679-688, which Aures' method builds on. Equation numbers in the
 comments refer to Aures (1985) unless stated otherwise.
+
+Written by Zhenxian Li with assistance from Claude (Anthropic) for the review
+against the paper, the validation and the documentation.
 """
 
 import numpy as np
