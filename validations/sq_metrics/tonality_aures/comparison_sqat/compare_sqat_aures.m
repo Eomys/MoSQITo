@@ -1,23 +1,21 @@
-function compare_sqat_aures(sqat_root, mosqito_root)
+function compare_sqat_aures(sqat_root)
 % compare_sqat_aures  Run SQAT's Tonality_Aures1985 on a fixed set of test signals.
 %
-%   compare_sqat_aures(sqat_root, mosqito_root)
+%   compare_sqat_aures(sqat_root)
 %
-%   Runs SQAT's Aures tonality on deterministic signals (sums of zero-phase
-%   sinusoids, generated here with the same formula as the Python side) and
-%   on the nine Tonality_Aures1985 validation WAV files stored in the
-%   MoSQITo fork, then writes sqat_aures_results.csv next to this file.
+%   Runs SQAT's Aures tonality on deterministic signals generated here with
+%   the same formulas as the Python side (sums of zero-phase sinusoids, and
+%   multisines with pseudo-random phases for narrowband noise) and on the
+%   Tonality_Aures1985 validation sounds of the SQAT clone, then writes
+%   sqat_aures_results.csv next to this file.
 %
 %   Nothing is modified in either repository. SQAT (GPL-3.0) is only run,
 %   not copied: this script contains no SQAT code.
 %
-%   Inputs
-%     sqat_root    : folder of the SQAT clone (contains psychoacoustic_metrics/)
-%     mosqito_root : folder of the MoSQITo_zhenxian clone (branch master, 10b4ab2
-%                    or later, which holds the validation WAV files)
+%   Input
+%     sqat_root : folder of the SQAT clone (contains psychoacoustic_metrics/)
 
-if nargin < 1 || isempty(sqat_root),    error('give the folder of the SQAT clone as first argument'); end
-if nargin < 2 || isempty(mosqito_root), mosqito_root = fileparts(fileparts(fileparts(fileparts(fileparts(mfilename('fullpath')))))); end
+if nargin < 1 || isempty(sqat_root), error('give the folder of the SQAT clone as argument'); end
 
 addpath(genpath(sqat_root));
 here = fileparts(mfilename('fullpath'));
@@ -28,7 +26,7 @@ sqat_commit = strtrim(sqat_commit);
 sqat_date = strtrim(sqat_date);
 
 fs  = 48000;   % Hz, SQAT accepts 44.1 or 48 kHz without resampling
-dur = 2;       % s, gives 15 frames of 250 ms with 50 % overlap
+dur = 2;       % s, gives 14 frames of 250 ms with 50 % overlap
 
 cases = struct('name', {}, 'desc', {}, 'x', {}, 'fs', {});
 cases(end+1) = mk('ref',     '1000 Hz 60 dB',                      tone(fs, dur, 1000, 60), fs);
@@ -45,11 +43,22 @@ for f = [250 500 2000 4000]
     cases(end+1) = mk(sprintf('freq_%d', f), sprintf('%d Hz 60 dB', f), tone(fs, dur, f, 60), fs); %#ok<AGROW>
 end
 
-% the SQAT validation WAV files kept in the MoSQITo fork (64-bit float, pascals)
-wavdir = fullfile(mosqito_root, 'validations', 'sq_metrics', 'tonality_aures', 'input', 'Tonality_Aures1985');
-wavs = dir(fullfile(wavdir, '*.wav'));
+% narrowband noise, and a tone in it: multisines with 1 Hz line spacing and
+% pseudo-random phases from a Park-Miller generator, so that MATLAB and Python
+% build the same samples. Phases linear in the line index (a golden-ratio
+% sequence, for instance) would make a pulse train, which a frame-wise analysis
+% reads very differently from the long-term spectrum; the generator phases keep
+% the signal stationary at the frame scale (crest factor about 10 dB).
+cases(end+1) = mk('lcg_band',      'multisine 961-1040 Hz 60 dB, LCG phases',                 multisine_lcg(fs, dur, 961, 1040, 60), fs);
+cases(end+1) = mk('lcg_tone_26dB', '1000 Hz 82 dB + multisine 912-1088 Hz 56 dB, LCG phases', tone(fs, dur, 1000, 82) + multisine_lcg(fs, dur, 912, 1088, 56), fs);
+cases(end+1) = mk('lcg_tone_6dB',  '1000 Hz 82 dB + multisine 912-1088 Hz 76 dB, LCG phases', tone(fs, dur, 1000, 82) + multisine_lcg(fs, dur, 912, 1088, 76), fs);
+
+% the Tonality_Aures1985 validation sounds of SQAT (1 kHz tone at 82 dB SPL in
+% one critical band of noise, the tone 0 to 80 dB over the band), read from the
+% SQAT clone; they are not shipped with MoSQITo
+wavs = dir(fullfile(sqat_root, '**', '1Bark_tone_prominence_*dB_fc_1khz*.wav'));
 for k = 1:numel(wavs)
-    [x, fsw] = audioread(fullfile(wavdir, wavs(k).name), 'native');
+    [x, fsw] = audioread(fullfile(wavs(k).folder, wavs(k).name), 'native');
     x = double(x(:, 1));
     tok = regexp(wavs(k).name, 'prominence_(\d+)dB', 'tokens', 'once');
     cases(end+1) = mk(sprintf('wav_%02ddB', str2double(tok{1})), wavs(k).name, x, fsw); %#ok<AGROW>
@@ -59,7 +68,7 @@ out = fullfile(here, 'sqat_aures_results.csv');
 fid = fopen(out, 'w');
 fprintf(fid, '# SQAT commit %s (%s), MATLAB %s, generated %s\n', sqat_commit, sqat_date, version, datestr(now, 'yyyy-mm-dd HH:MM'));
 fprintf(fid, 'case,description,fs,nframes,K_mean,K_max,K_median,wT_mean,wGr_mean\n');
-fprintf('%-12s %-36s %8s %8s %8s %8s %8s\n', 'case', 'description', 'K_mean', 'K_max', 'K_med', 'wT', 'wGr');
+fprintf('%-14s %-58s %8s %8s %8s %8s %8s\n', 'case', 'description', 'K_mean', 'K_max', 'K_med', 'wT', 'wGr');
 for k = 1:numel(cases)
     c = cases(k);
     OUT = Tonality_Aures1985(c.x, c.fs, 0, 0, 0);   % free field, no time skip, no plot
@@ -68,7 +77,7 @@ for k = 1:numel(cases)
     wGr = OUT.LoudnessWeighting(:);
     fprintf(fid, '%s,"%s",%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f\n', c.name, c.desc, c.fs, numel(K), ...
         mean(K), max(K), median(K), mean(wT), mean(wGr));
-    fprintf('%-12s %-36s %8.4f %8.4f %8.4f %8.4f %8.4f\n', c.name, c.desc, mean(K), max(K), median(K), mean(wT), mean(wGr));
+    fprintf('%-14s %-58s %8.4f %8.4f %8.4f %8.4f %8.4f\n', c.name, c.desc, mean(K), max(K), median(K), mean(wT), mean(wGr));
 end
 fclose(fid);
 fprintf('\nwritten: %s\nSQAT commit %s (%s)\n', out, sqat_commit, sqat_date);
@@ -82,4 +91,19 @@ function x = tone(fs, dur, f, spl)
 % zero-phase sinusoid in pascals; identical formula on the Python side
 t = (0:round(fs * dur) - 1).' / fs;
 x = sqrt(2) * 2e-5 * 10^(spl / 20) * sin(2 * pi * f * t);
+end
+
+function x = multisine_lcg(fs, dur, flo, fhi, spl)
+% equal-amplitude lines at 1 Hz spacing from flo to fhi, pseudo-random phases
+% from the Park-Miller generator (seed 12345, exact in double precision);
+% identical formula on the Python side
+t = (0:round(fs * dur) - 1).' / fs;
+n = fhi - flo + 1;
+amp = sqrt(2 / n) * 2e-5 * 10^(spl / 20);
+s = 12345;
+x = zeros(size(t));
+for k = 0:n - 1
+    s = mod(16807 * s, 2147483647);
+    x = x + amp * sin(2 * pi * (flo + k) * t + 2 * pi * s / 2147483647);
+end
 end

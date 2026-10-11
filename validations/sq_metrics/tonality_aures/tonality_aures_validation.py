@@ -53,6 +53,27 @@ def band_noise(f_low, f_high, spl, seed=0, fs=FS, duration=DURATION):
     return y * 2e-5 * 10 ** (spl / 20) / np.sqrt(np.mean(y**2))
 
 
+def multisine_lcg(f_low, f_high, spl, seed=12345, fs=FS, duration=DURATION):
+    """Equal-amplitude lines at 1 Hz spacing with pseudo-random phases in [Pa].
+
+    The phases come from the Park-Miller generator (exact in double precision),
+    so the MATLAB driver of the SQAT comparison builds the same samples. Phases
+    linear in the line index (a golden-ratio sequence, for instance) would make
+    a pulse train, which a frame-wise analysis reads very differently from the
+    long-term spectrum; the generator phases keep the signal stationary at the
+    frame scale (crest factor about 10 dB).
+    """
+    t = np.arange(int(round(fs * duration))) / fs
+    n_lines = f_high - f_low + 1
+    amp = np.sqrt(2 / n_lines) * 2e-5 * 10 ** (spl / 20)
+    state = seed
+    x = np.zeros(t.size)
+    for k in range(n_lines):
+        state = (16807 * state) % 2147483647
+        x += amp * np.sin(2 * np.pi * (f_low + k) * t + 2 * np.pi * state / 2147483647)
+    return x
+
+
 def bark2freq(z):
     """Inverse of the Bark scale of Zwicker and Terhardt (1980) used by the model."""
     lo, hi = 1.0, 24000.0
@@ -167,6 +188,9 @@ def compare_with_sqat(csv_path=SQAT_CSV):
         "two_A": pure_tone(1000, 60) + pure_tone(1500, 30),
         "two_B": pure_tone(1000, 60) + pure_tone(1200, 40),
         "three": pure_tone(500, 50) + pure_tone(1000, 50) + pure_tone(2000, 50),
+        "lcg_band": multisine_lcg(961, 1040, 60),
+        "lcg_tone_26dB": pure_tone(1000, 82) + multisine_lcg(912, 1088, 56),
+        "lcg_tone_6dB": pure_tone(1000, 82) + multisine_lcg(912, 1088, 76),
     }
     for spl in (40, 50, 60, 70, 80):
         signals[f"level_{spl}"] = pure_tone(1000, spl)
