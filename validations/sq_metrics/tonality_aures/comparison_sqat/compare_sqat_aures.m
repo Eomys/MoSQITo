@@ -1,21 +1,28 @@
-function compare_sqat_aures(sqat_root)
+function compare_sqat_aures(sqat_root, sounds_dir)
 % compare_sqat_aures  Run SQAT's Tonality_Aures1985 on a fixed set of test signals.
 %
 %   compare_sqat_aures(sqat_root)
+%   compare_sqat_aures(sqat_root, sounds_dir)
 %
 %   Runs SQAT's Aures tonality on deterministic signals generated here with
 %   the same formulas as the Python side (sums of zero-phase sinusoids, and
-%   multisines with pseudo-random phases for narrowband noise) and on the
-%   Tonality_Aures1985 validation sounds of the SQAT clone, then writes
-%   sqat_aures_results.csv next to this file.
+%   multisines with pseudo-random phases for narrowband noise), then writes
+%   sqat_aures_results.csv next to this file. With a second argument it also
+%   runs the nine Tonality_Aures1985 validation sounds of the SQAT v1.x data
+%   set (1 kHz tone at 82 dB SPL in one critical band of noise, Zenodo
+%   doi:10.5281/zenodo.7933206); they are neither in the SQAT repository nor
+%   shipped with MoSQITo.
 %
 %   Nothing is modified in either repository. SQAT (GPL-3.0) is only run,
 %   not copied: this script contains no SQAT code.
 %
-%   Input
-%     sqat_root : folder of the SQAT clone (contains psychoacoustic_metrics/)
+%   Inputs
+%     sqat_root  : folder of the SQAT clone (contains psychoacoustic_metrics/)
+%     sounds_dir : optional, a folder holding the 1Bark_tone_prominence_*.wav
+%                  files of the data set (searched recursively)
 
-if nargin < 1 || isempty(sqat_root), error('give the folder of the SQAT clone as argument'); end
+if nargin < 1 || isempty(sqat_root), error('give the folder of the SQAT clone as first argument'); end
+if nargin < 2, sounds_dir = ''; end
 
 addpath(genpath(sqat_root));
 here = fileparts(mfilename('fullpath'));
@@ -53,10 +60,12 @@ cases(end+1) = mk('lcg_band',      'multisine 961-1040 Hz 60 dB, LCG phases',   
 cases(end+1) = mk('lcg_tone_26dB', '1000 Hz 82 dB + multisine 912-1088 Hz 56 dB, LCG phases', tone(fs, dur, 1000, 82) + multisine_lcg(fs, dur, 912, 1088, 56), fs);
 cases(end+1) = mk('lcg_tone_6dB',  '1000 Hz 82 dB + multisine 912-1088 Hz 76 dB, LCG phases', tone(fs, dur, 1000, 82) + multisine_lcg(fs, dur, 912, 1088, 76), fs);
 
-% the Tonality_Aures1985 validation sounds of SQAT (1 kHz tone at 82 dB SPL in
-% one critical band of noise, the tone 0 to 80 dB over the band), read from the
-% SQAT clone; they are not shipped with MoSQITo
-wavs = dir(fullfile(sqat_root, '**', '1Bark_tone_prominence_*dB_fc_1khz*.wav'));
+% the Tonality_Aures1985 validation sounds of the SQAT v1.x data set (1 kHz tone
+% at 82 dB SPL in one critical band of noise, the tone 0 to 80 dB over the band)
+wavs = [];
+if ~isempty(sounds_dir)
+    wavs = dir(fullfile(sounds_dir, '**', '1Bark_tone_prominence_*dB_fc_1khz*.wav'));
+end
 for k = 1:numel(wavs)
     [x, fsw] = audioread(fullfile(wavs(k).folder, wavs(k).name), 'native');
     x = double(x(:, 1));
