@@ -29,7 +29,7 @@ REFERENCE_TONE = (1000.0, 60.0)  # Hz, dB SPL: the sound with K = 1 (p. 137)
 _calibration = {}
 
 
-def tonality_aures(signal, fs, field_type="free"):
+def tonality_aures_st(signal, fs, field_type="free"):
     """
     Compute the Aures tonality of a stationary signal.
 
@@ -141,13 +141,13 @@ def tonality_aures(signal, fs, field_type="free"):
 
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
-        >>> from mosqito.sq_metrics import tonality_aures
+        >>> from mosqito.sq_metrics import tonality_aures_st
         >>> from mosqito.utils import sine_wave_generator
         >>> fs = 48000
         >>> noise = np.random.default_rng(0).standard_normal(fs)
         >>> noise = noise * 2e-5 * 10 ** (60 / 20) / np.std(noise)
         >>> levels = np.arange(40, 85, 5)
-        >>> K = [tonality_aures(sine_wave_generator(fs, 1, 1000, L)[0] + noise, fs) for L in levels]
+        >>> K = [tonality_aures_st(sine_wave_generator(fs, 1, 1000, L)[0] + noise, fs) for L in levels]
         >>> plt.plot(levels, K, marker="o")
         >>> plt.xlabel("Level of a 1 kHz tone in 60 dB SPL white noise [dB SPL]")
         >>> plt.ylabel("Tonality [t.u.]")

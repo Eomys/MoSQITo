@@ -116,7 +116,7 @@ def validation_tonality_aures():
         ax.step(t_frames, k_frames, where="mid", color=clr[0], label="tonality_aures_tv")
         whole = next((r["mosqito"] for r in summary["sqat_recordings"]["rows"] if r["file"] == name), None)
         if whole is not None:
-            ax.axhline(whole, linestyle="--", color=clr[2], label="tonality_aures, whole file")
+            ax.axhline(whole, linestyle="--", color=clr[2], label="tonality_aures_st, whole file")
         ax.set_xlabel("Time [s]")
         ax.set_ylabel("Tonality [t.u.]")
         ax.set_title(name.replace(".wav", ""), fontsize=10)

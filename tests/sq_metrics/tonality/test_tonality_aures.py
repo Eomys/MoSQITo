@@ -9,7 +9,7 @@ except ImportError:
 import numpy as np
 
 # Local application imports
-from mosqito.sq_metrics import tonality_aures
+from mosqito.sq_metrics import tonality_aures_st
 
 
 FS = 48000
@@ -35,7 +35,7 @@ def _band_noise(f_low, f_high, spl, seed=0, duration=1):
 def test_tonality_aures_reference_tone():
     """A 1 kHz pure tone at 60 dB SPL defines 1 t.u. (Aures 1985, p. 137)."""
 
-    assert tonality_aures(_tone(1000, 60), FS) == pytest.approx(1.0, abs=1e-3)
+    assert tonality_aures_st(_tone(1000, 60), FS) == pytest.approx(1.0, abs=1e-3)
 
 
 @pytest.mark.tonality_aures
@@ -43,7 +43,7 @@ def test_tonality_aures_tone_between_bins():
     """The result does not depend on where the tone falls between two FFT bins."""
 
     for freq in (1003, 1006.25, 1009):
-        assert tonality_aures(_tone(freq, 60), FS) == pytest.approx(1.0, abs=0.01)
+        assert tonality_aures_st(_tone(freq, 60), FS) == pytest.approx(1.0, abs=0.01)
 
 
 @pytest.mark.tonality_aures
@@ -51,7 +51,7 @@ def test_tonality_aures_level_independence():
     """Fig. 7: the tonality of a tone does not depend on its level."""
 
     for spl in (40, 60, 80):
-        assert tonality_aures(_tone(1000, spl), FS) == pytest.approx(1.0, abs=0.03)
+        assert tonality_aures_st(_tone(1000, spl), FS) == pytest.approx(1.0, abs=0.03)
 
 
 @pytest.mark.tonality_aures
@@ -63,7 +63,7 @@ def test_tonality_aures_frequency_weighting():
 
     for freq in (250, 4000):
         target = w2(freq) / w2(1000)
-        assert tonality_aures(_tone(freq, 60), FS) == pytest.approx(target, abs=0.05)
+        assert tonality_aures_st(_tone(freq, 60), FS) == pytest.approx(target, abs=0.05)
 
 
 @pytest.mark.tonality_aures
@@ -71,7 +71,7 @@ def test_tonality_aures_narrowband_noise():
     """Fig. 6: 1 kHz band noise half a Bark wide follows Gl. (7)."""
 
     # 0.5 Bark around 1 kHz on the Bark scale of Zwicker and Terhardt (1980)
-    tonality = tonality_aures(_band_noise(961, 1040, 60, duration=2), FS)
+    tonality = tonality_aures_st(_band_noise(961, 1040, 60, duration=2), FS)
     target = 0.13 / (0.5 + 0.13)
 
     assert tonality == pytest.approx(target, rel=0.15)
@@ -81,15 +81,15 @@ def test_tonality_aures_narrowband_noise():
 def test_tonality_aures_white_noise():
     """White noise has no tonal component."""
 
-    assert tonality_aures(_band_noise(20, 20000, 60), FS) == pytest.approx(0.0, abs=0.02)
+    assert tonality_aures_st(_band_noise(20, 20000, 60), FS) == pytest.approx(0.0, abs=0.02)
 
 
 @pytest.mark.tonality_aures
 def test_tonality_aures_masked_tone():
     """A 1.5 kHz, 30 dB tone next to a 1 kHz, 60 dB tone is nearly masked (Gl. 8)."""
 
-    alone = tonality_aures(_tone(1000, 60), FS)
-    pair = tonality_aures(_tone(1000, 60) + _tone(1500, 30), FS)
+    alone = tonality_aures_st(_tone(1000, 60), FS)
+    pair = tonality_aures_st(_tone(1000, 60) + _tone(1500, 30), FS)
 
     assert pair == pytest.approx(alone, abs=0.01)
 
@@ -99,7 +99,7 @@ def test_tonality_aures_tone_in_noise_increases_with_level():
     """Tonality of a 1 kHz tone in one-critical-band noise rises with the tone level."""
 
     noise = _band_noise(912, 1088, 60)
-    tonality = [tonality_aures(_tone(1000, spl) + noise, FS) for spl in (60, 70, 80)]
+    tonality = [tonality_aures_st(_tone(1000, spl) + noise, FS) for spl in (60, 70, 80)]
 
     assert tonality[0] < tonality[1] < tonality[2]
 
@@ -109,9 +109,9 @@ def test_tonality_aures_invalid_input():
     """Multichannel and empty signals are rejected."""
 
     with pytest.raises(ValueError):
-        tonality_aures(np.zeros((2, FS)), FS)
+        tonality_aures_st(np.zeros((2, FS)), FS)
     with pytest.raises(ValueError):
-        tonality_aures(np.array([]), FS)
+        tonality_aures_st(np.array([]), FS)
 
 
 if __name__ == "__main__":

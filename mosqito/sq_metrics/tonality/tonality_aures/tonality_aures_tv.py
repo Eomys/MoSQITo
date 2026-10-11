@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-"""Frame-wise Aures tonality. The model is in ``tonality_aures.py``."""
+"""Frame-wise Aures tonality. The model is in ``tonality_aures_st.py``."""
 
 import numpy as np
 
-from mosqito.sq_metrics.tonality.tonality_aures.tonality_aures import (
+from mosqito.sq_metrics.tonality.tonality_aures.tonality_aures_st import (
     FREQ_RESOLUTION,
     _aures_analysis,
     _calibration_constant,
@@ -15,12 +15,12 @@ def tonality_aures_tv(signal, fs, field_type="free", frame_length=0.25, hop=0.12
     """
     Compute the Aures tonality of a time-varying signal, frame by frame.
 
-    Each frame is analysed exactly as :func:`tonality_aures` analyses a whole
+    Each frame is analysed exactly as :func:`tonality_aures_st` analyses a whole
     signal (same spectrum, component extraction, weightings and calibration),
     which gives the tonality K in [t.u.] of the sound as if it were stationary
     within the frame. Aures (1985) defines the method for stationary sounds
     and gives no rule for a time series; this function is the frame-wise
-    reading of the model, the single value of :func:`tonality_aures` is its
+    reading of the model, the single value of :func:`tonality_aures_st` is its
     whole-signal reading, and the latter is not the mean of the former.
 
     Parameters
@@ -64,7 +64,7 @@ def tonality_aures_tv(signal, fs, field_type="free", frame_length=0.25, hop=0.12
     * Frames are not windowed as a whole, only their segments are. Frames run
       from the start of the signal, a last part shorter than a frame is
       dropped, and a signal shorter than a frame is analysed as one frame.
-    * The calibration constant is the one of :func:`tonality_aures`: the Welch
+    * The calibration constant is the one of :func:`tonality_aures_st`: the Welch
       spectrum of the reference tone is the same in a frame as over a second,
       so a frame of the reference tone gives exactly 1 t.u.
     * A tone present during part of the signal gives a high K in its frames

@@ -25,9 +25,9 @@ from pathlib import Path
 
 import numpy as np
 
-from mosqito.sq_metrics import tonality_aures
+from mosqito.sq_metrics import tonality_aures_st
 from mosqito.sq_metrics.tonality.tonality_aures.tonality_aures_tv import tonality_aures_tv
-from mosqito.sq_metrics.tonality.tonality_aures.tonality_aures import _bark
+from mosqito.sq_metrics.tonality.tonality_aures.tonality_aures_st import _bark
 
 HERE = Path(__file__).resolve().parent
 SQAT_CSV = HERE / "input" / "sqat_aures_results.csv"
@@ -110,7 +110,7 @@ def _row(signal, source, target, obtained, tolerance):
 
 def check_reference():
     """1 kHz, 60 dB SPL defines 1 t.u. (Aures 1985, p. 137)."""
-    k = tonality_aures(pure_tone(1000, 60), FS)
+    k = tonality_aures_st(pure_tone(1000, 60), FS)
     return [_row("1 kHz, 60 dB SPL", "Aures 1985 p. 137", 1.0, k, 0.001)]
 
 
@@ -118,7 +118,7 @@ def check_bin_alignment():
     """A tone between two bins (spacing 12.5 Hz) reads as a tone on a bin."""
     rows = []
     for freq in np.arange(990, 1011, 2.5):
-        k = tonality_aures(pure_tone(freq, 60), FS)
+        k = tonality_aures_st(pure_tone(freq, 60), FS)
         rows.append(_row(f"{freq:g} Hz, 60 dB SPL", "same as 1 kHz", 1.0, k, 0.01))
     return rows
 
@@ -127,7 +127,7 @@ def check_frequency():
     """Fig. 5: pure tones at 60 dB SPL follow Gl. (9), normalised at 1 kHz."""
     rows = []
     for freq in (250, 500, 1000, 2000, 4000, 8000):
-        k = tonality_aures(pure_tone(freq, 60), FS)
+        k = tonality_aures_st(pure_tone(freq, 60), FS)
         rows.append(_row(f"{freq} Hz, 60 dB SPL", "Gl. (9) / Fig. 5", w2(freq) / w2(1000), k, 0.05))
     return rows
 
@@ -138,7 +138,7 @@ def check_bandwidth():
     z0 = float(_bark(1000))
     for dz in (0.2, 0.3, 0.5, 0.7, 1.0, 1.4):
         f_low, f_high = bark2freq(z0 - dz / 2), bark2freq(z0 + dz / 2)
-        k = tonality_aures(band_noise(f_low, f_high, 60), FS)
+        k = tonality_aures_st(band_noise(f_low, f_high, 60), FS)
         rows.append(_row(f"1 kHz band noise, dz = {dz} Bark ({f_high - f_low:.0f} Hz), 60 dB SPL",
                          "Gl. (7) / Fig. 6", w1(dz), k, 0.15 * w1(dz)))
     return rows
@@ -148,7 +148,7 @@ def check_level():
     """Fig. 7: the tonality of a 1 kHz tone does not depend on its level (2 to 28 sone)."""
     rows = []
     for spl in (40, 50, 60, 70, 80):
-        k = tonality_aures(pure_tone(1000, spl), FS)
+        k = tonality_aures_st(pure_tone(1000, spl), FS)
         rows.append(_row(f"1 kHz, {spl} dB SPL", "Fig. 7", 1.0, k, 0.03))
     return rows
 
@@ -158,7 +158,7 @@ def check_tone_in_noise():
     rows = []
     previous = -1.0
     for prominence, noise_spl in zip(range(0, 90, 10), (106, 96, 86, 76, 66, 56, 46, 36, 26)):
-        k = tonality_aures(pure_tone(1000, 82) + band_noise(912, 1088, noise_spl, seed=1), FS)
+        k = tonality_aures_st(pure_tone(1000, 82) + band_noise(912, 1088, noise_spl, seed=1), FS)
         rows.append({"prominence_db": prominence, "noise_spl": noise_spl, "computed_tu": k,
                      "passes": bool(k >= previous - 1e-9)})
         previous = k
@@ -167,7 +167,7 @@ def check_tone_in_noise():
 
 def check_white_noise():
     """White noise has no tonal component."""
-    k = tonality_aures(band_noise(20, 20000, 60), FS)
+    k = tonality_aures_st(band_noise(20, 20000, 60), FS)
     return [_row("white noise 20 Hz - 20 kHz, 60 dB SPL", "Aures section 2.3.2", 0.0, k, 0.02)]
 
 
@@ -186,7 +186,7 @@ def compare_with_sqat(csv_path=SQAT_CSV):
         name = entry["case"]
         if name not in signals:
             continue
-        ours = tonality_aures(signals[name], FS)
+        ours = tonality_aures_st(signals[name], FS)
         theirs = float(entry["K_mean"])
         rows.append({"case": name, "description": entry["description"], "sqat": theirs,
                      "mosqito": ours, "difference": ours - theirs})
@@ -284,7 +284,7 @@ def compare_with_sqat_recordings(csv_path=RECORDINGS_CSV, frames_csv=RECORDINGS_
 
     The files are loaded with the calibration MoSQITo uses for them (column
     ``calib`` of the CSV, the ``wav_calib`` argument of ``mosqito.utils.load``).
-    SQAT gives statistics over 250 ms frames; ``tonality_aures`` gives one
+    SQAT gives statistics over 250 ms frames; ``tonality_aures_st`` gives one
     value for the whole file and ``tonality_aures_tv`` the same frames as
     SQAT, so the frame statistics are the like-for-like comparison and the
     whole-file value agrees with them only for stationary sounds. Where
@@ -307,7 +307,7 @@ def compare_with_sqat_recordings(csv_path=RECORDINGS_CSV, frames_csv=RECORDINGS_
         if path is None or not path.exists():
             continue
         signal, fs = load(str(path), wav_calib=float(entry["calib"]))
-        ours = tonality_aures(signal, fs)
+        ours = tonality_aures_st(signal, fs)
         ours_k, _ = tonality_aures_tv(signal, fs)
         theirs = float(entry["K_mean"])
         row = {"file": name, "leq": float(entry["Leq_dB"]), "sqat_mean": theirs,
