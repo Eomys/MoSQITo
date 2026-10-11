@@ -64,7 +64,8 @@ def tonality_aures(signal, fs, field_type="free"):
     Warning
     -------
     The method is defined for stationary sounds (one spectrum, one value).
-    For time-varying sounds, analyse segments.
+    For time-varying sounds use :func:`tonality_aures_tv`, which analyses
+    frames; the value of this function is not the mean of its frames.
 
     Notes
     -----

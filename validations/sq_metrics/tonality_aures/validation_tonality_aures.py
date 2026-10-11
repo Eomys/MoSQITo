@@ -11,7 +11,16 @@ from pathlib import Path
 
 import numpy as np
 
-from tonality_aures_validation import print_validation_report, w1, w2
+from tonality_aures_validation import (
+    RECORDINGS_DIRS,
+    RECORDINGS_FRAMES_CSV,
+    _read_sqat_frames,
+    print_validation_report,
+    w1,
+    w2,
+)
+from mosqito.sq_metrics import tonality_aures_tv
+from mosqito.utils import load
 from mosqito import COLORS as clr
 
 
@@ -20,7 +29,7 @@ def validation_tonality_aures():
 
     summary = print_validation_report()
 
-    fig, axes = plt.subplots(2, 3, figsize=(13, 7.5))
+    fig, axes = plt.subplots(3, 3, figsize=(13, 11))
     fig.suptitle("Aures tonality: validation against Aures (1985)")
 
     # Fig. 5: frequency dependence of pure tones
@@ -89,6 +98,41 @@ def validation_tonality_aures():
         ax.set_title("Same signals, " + summary["sqat"]["commit"].split(" (")[0])
         ax.set_xlim(0.6, 1.2)
         ax.set_ylim(0.6, 1.2)
+
+    # frame by frame against SQAT on two recordings, and the frame statistics of all of them
+    _, sqat_frames = _read_sqat_frames(RECORDINGS_FRAMES_CSV, "file")
+    root = Path(__file__).resolve().parents[3]
+    for ax, name, calib in ((axes[2, 0], "Test signal 14 (propeller-driven airplane).wav", 2 * np.sqrt(2)),
+                            (axes[2, 1], "Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav", 2 * np.sqrt(2))):
+        folder = next((d for key, d in RECORDINGS_DIRS.items() if name.startswith(key)), None)
+        path = root / folder / name if folder else None
+        if path is None or not path.exists():
+            continue
+        signal, fs = load(str(path), wav_calib=calib)
+        k_frames, t_frames = tonality_aures_tv(signal, fs)
+        if name in sqat_frames:
+            t_sqat, k_sqat = sqat_frames[name]
+            ax.step(t_sqat + 0.125, k_sqat, where="mid", color=clr[1], label="SQAT, 250 ms frames")
+        ax.step(t_frames, k_frames, where="mid", color=clr[0], label="tonality_aures_tv")
+        whole = next((r["mosqito"] for r in summary["sqat_recordings"]["rows"] if r["file"] == name), None)
+        if whole is not None:
+            ax.axhline(whole, linestyle="--", color=clr[2], label="tonality_aures, whole file")
+        ax.set_xlabel("Time [s]")
+        ax.set_ylabel("Tonality [t.u.]")
+        ax.set_title(name.replace(".wav", ""), fontsize=10)
+        ax.set_ylim(0, 1.1)
+        ax.legend(fontsize=8)
+
+    ax = axes[2, 2]
+    rows = summary["sqat_recordings"]["rows"]
+    if rows:
+        ax.plot([0, 1.05], [0, 1.05], "--", color=clr[2])
+        ax.plot([r["sqat_mean"] for r in rows], [r["mosqito_frames_mean"] for r in rows], "o", color=clr[0], label="frames mean")
+        ax.plot([r["sqat_mean"] for r in rows], [r["mosqito"] for r in rows], "o", markerfacecolor="none", color=clr[0], label="whole file")
+        ax.set_xlabel("SQAT, mean over frames [t.u.]")
+        ax.set_ylabel("MoSQITo [t.u.]")
+        ax.set_title("18 recordings shipped with MoSQITo", fontsize=10)
+        ax.legend(fontsize=8)
 
     color = clr[5] if summary["success"] else clr[1]
     fig.text(0.5, 0.01, "All checks passed" if summary["success"] else "Some checks failed",

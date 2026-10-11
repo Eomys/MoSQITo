@@ -7,7 +7,10 @@ function compare_sqat_aures(sqat_root, sounds_dir)
 %   Runs SQAT's Aures tonality on deterministic signals generated here with
 %   the same formulas as the Python side (sums of zero-phase sinusoids, and
 %   multisines with pseudo-random phases for narrowband noise), then writes
-%   sqat_aures_results.csv next to this file. With a second argument it also
+%   sqat_aures_results.csv (one row per signal, statistics over the frames)
+%   and sqat_aures_frames.csv (one row per frame: the time series K(t) that
+%   MoSQITo's tonality_aures_tv is compared with) next to this file. With a
+%   second argument it also
 %   runs the nine Tonality_Aures1985 validation sounds of the SQAT v1.x data
 %   set (1 kHz tone at 82 dB SPL in one critical band of noise, Zenodo
 %   doi:10.5281/zenodo.7933206); they are neither in the SQAT repository nor
@@ -75,8 +78,12 @@ end
 
 out = fullfile(here, 'sqat_aures_results.csv');
 fid = fopen(out, 'w');
-fprintf(fid, '# SQAT commit %s (%s), MATLAB %s, generated %s\n', sqat_commit, sqat_date, version, datestr(now, 'yyyy-mm-dd HH:MM'));
+stamp = sprintf('# SQAT commit %s (%s), MATLAB %s, generated %s', sqat_commit, sqat_date, version, datestr(now, 'yyyy-mm-dd HH:MM'));
+fprintf(fid, '%s\n', stamp);
 fprintf(fid, 'case,description,fs,nframes,K_mean,K_max,K_median,wT_mean,wGr_mean\n');
+fidf = fopen(fullfile(here, 'sqat_aures_frames.csv'), 'w');
+fprintf(fidf, '%s\n', stamp);
+fprintf(fidf, 'case,frame,time_s,K,wT,wGr\n');
 fprintf('%-14s %-58s %8s %8s %8s %8s %8s\n', 'case', 'description', 'K_mean', 'K_max', 'K_med', 'wT', 'wGr');
 for k = 1:numel(cases)
     c = cases(k);
@@ -86,10 +93,24 @@ for k = 1:numel(cases)
     wGr = OUT.LoudnessWeighting(:);
     fprintf(fid, '%s,"%s",%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f\n', c.name, c.desc, c.fs, numel(K), ...
         mean(K), max(K), median(K), mean(wT), mean(wGr));
+    tt = frame_times(OUT, numel(K));
+    for j = 1:numel(K)
+        fprintf(fidf, '%s,%d,%.6f,%.6f,%.6f,%.6f\n', c.name, j, tt(j), K(j), wT(j), wGr(j));
+    end
     fprintf('%-14s %-58s %8.4f %8.4f %8.4f %8.4f %8.4f\n', c.name, c.desc, mean(K), max(K), median(K), mean(wT), mean(wGr));
 end
 fclose(fid);
-fprintf('\nwritten: %s\nSQAT commit %s (%s)\n', out, sqat_commit, sqat_date);
+fclose(fidf);
+fprintf('\nwritten: %s and sqat_aures_frames.csv\nSQAT commit %s (%s)\n', out, sqat_commit, sqat_date);
+end
+
+function tt = frame_times(OUT, n)
+% time stamps of SQAT's frames as the toolbox reports them, in seconds
+if isfield(OUT, 'time') && numel(OUT.time) == n
+    tt = OUT.time(:);
+else
+    tt = (0:n - 1).' * 0.125;   % frame starts, 125 ms hop, if no time vector is given
+end
 end
 
 function c = mk(name, desc, x, fs)

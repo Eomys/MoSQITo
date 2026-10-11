@@ -124,3 +124,53 @@ if __name__ == "__main__":
     test_tonality_aures_masked_tone()
     test_tonality_aures_tone_in_noise_increases_with_level()
     test_tonality_aures_invalid_input()
+
+
+@pytest.mark.tonality_aures
+def test_tonality_aures_tv_reference_tone():
+    """Every 250 ms frame of the reference tone gives 1 t.u., frames every 125 ms."""
+    from mosqito.sq_metrics import tonality_aures_tv
+
+    tonality, time = tonality_aures_tv(_tone(1000, 60, duration=2), FS)
+    assert tonality.shape == time.shape == (15,)
+    assert time[0] == pytest.approx(0.125)
+    assert np.diff(time) == pytest.approx(0.125)
+    assert tonality == pytest.approx(np.ones(15), abs=1e-3)
+
+
+@pytest.mark.tonality_aures
+def test_tonality_aures_tv_tone_switched_on():
+    """A tone that starts after one second raises the tonality of the later frames only."""
+    from mosqito.sq_metrics import tonality_aures_tv
+
+    tone = _tone(1000, 60, duration=2)
+    tone[:FS] = 0
+    tonality, time = tonality_aures_tv(_band_noise(20, 20000, 50, duration=2) + tone, FS)
+    before = tonality[time < 0.9]  # frames that end before the tone starts
+    after = tonality[time > 1.1]  # frames that start after it
+    assert before.max() < 0.2
+    assert after.min() > 0.3
+    assert after.min() > before.max() + 0.3
+
+
+@pytest.mark.tonality_aures
+def test_tonality_aures_tv_short_signal():
+    """A signal shorter than a frame is analysed as one frame."""
+    from mosqito.sq_metrics import tonality_aures_tv
+
+    tonality, time = tonality_aures_tv(_tone(1000, 60, duration=0.2), FS)
+    assert tonality.shape == (1,)
+    assert time[0] == pytest.approx(0.1)
+    assert tonality[0] == pytest.approx(1.0, abs=1e-3)
+
+
+@pytest.mark.tonality_aures
+def test_tonality_aures_tv_invalid_parameters():
+    from mosqito.sq_metrics import tonality_aures_tv
+
+    with pytest.raises(ValueError):
+        tonality_aures_tv(_tone(1000, 60), FS, frame_length=0.05)
+    with pytest.raises(ValueError):
+        tonality_aures_tv(_tone(1000, 60), FS, hop=0)
+    with pytest.raises(ValueError):
+        tonality_aures_tv(np.zeros((2, 100)), FS)

@@ -1,0 +1,767 @@
+# SQAT commit 11658b5 (2026-10-02), MATLAB 26.1.0.3251617 (R2026a) Update 2, generated 2026-10-11 11:21
+file,frame,time_s,K,wT,wGr
+"Test signal 14 (propeller-driven airplane).wav",1,0.000021,0.047698,0.008951,0.105664
+"Test signal 14 (propeller-driven airplane).wav",2,0.125021,0.085111,0.064472,0.106532
+"Test signal 14 (propeller-driven airplane).wav",3,0.250021,0.154330,0.119114,0.180629
+"Test signal 14 (propeller-driven airplane).wav",4,0.375021,0.187230,0.131323,0.222569
+"Test signal 14 (propeller-driven airplane).wav",5,0.500021,0.215934,0.070605,0.334820
+"Test signal 14 (propeller-driven airplane).wav",6,0.625021,0.036431,0.006489,0.084541
+"Test signal 14 (propeller-driven airplane).wav",7,0.750021,0.083743,0.059756,0.107320
+"Test signal 14 (propeller-driven airplane).wav",8,0.875021,0.000000,0.000000,0.006622
+"Test signal 14 (propeller-driven airplane).wav",9,1.000021,0.096679,0.067344,0.123194
+"Test signal 14 (propeller-driven airplane).wav",10,1.125021,0.191926,0.141322,0.223555
+"Test signal 14 (propeller-driven airplane).wav",11,1.250021,0.234418,0.162637,0.273485
+"Test signal 14 (propeller-driven airplane).wav",12,1.375021,0.210727,0.153755,0.243959
+"Test signal 14 (propeller-driven airplane).wav",13,1.500021,0.232054,0.177765,0.261327
+"Test signal 14 (propeller-driven airplane).wav",14,1.625021,0.220838,0.125350,0.279026
+"Test signal 14 (propeller-driven airplane).wav",15,1.750021,0.241776,0.190568,0.268323
+"Test signal 14 (propeller-driven airplane).wav",16,1.875021,0.285944,0.183373,0.336536
+"Test signal 14 (propeller-driven airplane).wav",17,2.000021,0.289541,0.169449,0.351960
+"Test signal 14 (propeller-driven airplane).wav",18,2.125021,0.285340,0.172157,0.343503
+"Test signal 14 (propeller-driven airplane).wav",19,2.250021,0.233503,0.171469,0.266903
+"Test signal 14 (propeller-driven airplane).wav",20,2.375021,0.345573,0.221649,0.398963
+"Test signal 14 (propeller-driven airplane).wav",21,2.500021,0.327116,0.130888,0.451582
+"Test signal 14 (propeller-driven airplane).wav",22,2.625021,0.305969,0.145000,0.399644
+"Test signal 14 (propeller-driven airplane).wav",23,2.750021,0.402457,0.250847,0.462357
+"Test signal 14 (propeller-driven airplane).wav",24,2.875021,0.360409,0.225657,0.418009
+"Test signal 14 (propeller-driven airplane).wav",25,3.000021,0.350558,0.215734,0.410317
+"Test signal 14 (propeller-driven airplane).wav",26,3.125021,0.380561,0.231891,0.443354
+"Test signal 14 (propeller-driven airplane).wav",27,3.250021,0.474382,0.266576,0.556766
+"Test signal 14 (propeller-driven airplane).wav",28,3.375021,0.335529,0.224870,0.382314
+"Test signal 14 (propeller-driven airplane).wav",29,3.500021,0.333055,0.223570,0.379555
+"Test signal 14 (propeller-driven airplane).wav",30,3.625021,0.345849,0.242609,0.386338
+"Test signal 14 (propeller-driven airplane).wav",31,3.750021,0.346265,0.225416,0.397508
+"Test signal 14 (propeller-driven airplane).wav",32,3.875021,0.392565,0.245566,0.451532
+"Test signal 14 (propeller-driven airplane).wav",33,4.000021,0.404046,0.232001,0.478184
+"Test signal 14 (propeller-driven airplane).wav",34,4.125021,0.402248,0.185601,0.516081
+"Test signal 14 (propeller-driven airplane).wav",35,4.250021,0.461042,0.236232,0.561381
+"Test signal 14 (propeller-driven airplane).wav",36,4.375021,0.452393,0.231143,0.552483
+"Test signal 14 (propeller-driven airplane).wav",37,4.500021,0.470884,0.244446,0.569403
+"Test signal 14 (propeller-driven airplane).wav",38,4.625021,0.424083,0.246051,0.497542
+"Test signal 14 (propeller-driven airplane).wav",39,4.750021,0.404769,0.201925,0.504327
+"Test signal 14 (propeller-driven airplane).wav",40,4.875021,0.456931,0.219763,0.569974
+"Test signal 14 (propeller-driven airplane).wav",41,5.000021,0.498542,0.225543,0.630417
+"Test signal 14 (propeller-driven airplane).wav",42,5.125021,0.510532,0.233695,0.641258
+"Test signal 14 (propeller-driven airplane).wav",43,5.250021,0.557610,0.245099,0.704575
+"Test signal 14 (propeller-driven airplane).wav",44,5.375021,0.530507,0.233257,0.673644
+"Test signal 14 (propeller-driven airplane).wav",45,5.500021,0.528915,0.254404,0.650045
+"Test signal 14 (propeller-driven airplane).wav",46,5.625021,0.528498,0.243139,0.660282
+"Test signal 14 (propeller-driven airplane).wav",47,5.750021,0.454244,0.171956,0.619043
+"Test signal 14 (propeller-driven airplane).wav",48,5.875021,0.458933,0.200027,0.593280
+"Test signal 14 (propeller-driven airplane).wav",49,6.000021,0.459606,0.163247,0.640408
+"Test signal 14 (propeller-driven airplane).wav",50,6.125021,0.509350,0.236918,0.636173
+"Test signal 14 (propeller-driven airplane).wav",51,6.250021,0.549568,0.252345,0.684379
+"Test signal 14 (propeller-driven airplane).wav",52,6.375021,0.525816,0.242916,0.656265
+"Test signal 14 (propeller-driven airplane).wav",53,6.500021,0.520768,0.243086,0.648133
+"Test signal 14 (propeller-driven airplane).wav",54,6.625021,0.506000,0.233267,0.634487
+"Test signal 14 (propeller-driven airplane).wav",55,6.750021,0.501011,0.227989,0.631866
+"Test signal 14 (propeller-driven airplane).wav",56,6.875021,0.466326,0.209012,0.595716
+"Test signal 14 (propeller-driven airplane).wav",57,7.000021,0.310368,0.084968,0.495139
+"Test signal 14 (propeller-driven airplane).wav",58,7.125021,0.397515,0.187616,0.506395
+"Test signal 14 (propeller-driven airplane).wav",59,7.250021,0.363601,0.146066,0.495879
+"Test signal 14 (propeller-driven airplane).wav",60,7.375021,0.336690,0.093527,0.529880
+"Test signal 14 (propeller-driven airplane).wav",61,7.500021,0.370648,0.108641,0.566395
+"Test signal 14 (propeller-driven airplane).wav",62,7.625021,0.388944,0.196869,0.483984
+"Test signal 14 (propeller-driven airplane).wav",63,7.750021,0.299076,0.099601,0.445678
+"Test signal 14 (propeller-driven airplane).wav",64,7.875021,0.316855,0.200212,0.371070
+"Test signal 14 (propeller-driven airplane).wav",65,8.000021,0.301450,0.228608,0.331827
+"Test signal 14 (propeller-driven airplane).wav",66,8.125021,0.304519,0.197674,0.354535
+"Test signal 14 (propeller-driven airplane).wav",67,8.250021,0.236051,0.137777,0.293222
+"Test signal 14 (propeller-driven airplane).wav",68,8.375021,0.097053,0.018146,0.200344
+"Test signal 14 (propeller-driven airplane).wav",69,8.500021,0.060832,0.002317,0.236088
+"Test signal 14 (propeller-driven airplane).wav",70,8.625021,0.058250,0.001635,0.254001
+"Test signal 14 (propeller-driven airplane).wav",71,8.750021,0.145371,0.123849,0.165080
+"Test signal 14 (propeller-driven airplane).wav",72,8.875021,0.000000,0.000000,0.055219
+"Test signal 14 (propeller-driven airplane).wav",73,9.000021,0.000000,0.000000,0.032823
+"Test signal 14 (propeller-driven airplane).wav",74,9.125021,0.055743,0.001288,0.262211
+"Test signal 14 (propeller-driven airplane).wav",75,9.250021,0.093592,0.070874,0.116040
+"Test signal 14 (propeller-driven airplane).wav",76,9.375021,0.062315,0.003255,0.214853
+"Test signal 14 (propeller-driven airplane).wav",77,9.500021,0.090145,0.039090,0.137671
+"Test signal 14 (propeller-driven airplane).wav",78,9.625021,0.164491,0.052329,0.264835
+"Test signal 14 (propeller-driven airplane).wav",79,9.750021,0.079749,0.003687,0.280460
+"Test signal 14 (propeller-driven airplane).wav",80,9.875021,0.086846,0.008512,0.229814
+"Test signal 14 (propeller-driven airplane).wav",81,10.000021,0.062380,0.004075,0.198105
+"Test signal 14 (propeller-driven airplane).wav",82,10.125021,0.070319,0.007077,0.188257
+"Test signal 14 (propeller-driven airplane).wav",83,10.250021,0.218385,0.145075,0.260739
+"Test signal 14 (propeller-driven airplane).wav",84,10.375021,0.179320,0.069546,0.266120
+"Test signal 14 (propeller-driven airplane).wav",85,10.500021,0.211451,0.106694,0.280192
+"Test signal 14 (propeller-driven airplane).wav",86,10.625021,0.139831,0.011578,0.375119
+"Test signal 14 (propeller-driven airplane).wav",87,10.750021,0.106676,0.007563,0.311370
+"Test signal 14 (propeller-driven airplane).wav",88,10.875021,0.212797,0.135811,0.258508
+"Test signal 14 (propeller-driven airplane).wav",89,11.000021,0.260882,0.133331,0.336830
+"Test signal 14 (propeller-driven airplane).wav",90,11.125021,0.223823,0.073027,0.346066
+"Test signal 14 (propeller-driven airplane).wav",91,11.250021,0.064005,0.001132,0.327516
+"Test signal 14 (propeller-driven airplane).wav",92,11.375021,0.130867,0.056137,0.193224
+"Test signal 14 (propeller-driven airplane).wav",93,11.500021,0.123030,0.014073,0.296953
+"Test signal 14 (propeller-driven airplane).wav",94,11.625021,0.027286,0.000646,0.136734
+"Test signal 14 (propeller-driven airplane).wav",95,11.750021,0.000000,0.000000,0.004412
+"Test signal 14 (propeller-driven airplane).wav",96,11.875021,0.041685,0.010569,0.083819
+"Test signal 14 (propeller-driven airplane).wav",97,12.000021,0.000000,0.000000,0.113425
+"Test signal 14 (propeller-driven airplane).wav",98,12.125021,0.000000,0.000000,0.092005
+"Test signal 14 (propeller-driven airplane).wav",99,12.250021,0.000000,0.000000,0.016070
+"Test signal 14 (propeller-driven airplane).wav",100,12.375021,0.022916,0.000109,0.210798
+"Test signal 14 (propeller-driven airplane).wav",101,12.500021,0.000000,0.000000,0.023830
+"Test signal 14 (propeller-driven airplane).wav",102,12.625021,NaN,0.000000,NaN
+"Test signal 14 (propeller-driven airplane).wav",103,12.750021,0.000000,0.000000,0.000000
+"Test signal 14 (propeller-driven airplane).wav",104,12.875021,0.000000,0.000000,0.000000
+"Test signal 15 (vehicle interior 40 kmh).wav",1,0.000021,0.000000,0.000000,0.009850
+"Test signal 15 (vehicle interior 40 kmh).wav",2,0.125021,0.000000,0.000000,0.002264
+"Test signal 15 (vehicle interior 40 kmh).wav",3,0.250021,0.000000,0.000000,0.002337
+"Test signal 15 (vehicle interior 40 kmh).wav",4,0.375021,0.000000,0.000000,0.008294
+"Test signal 15 (vehicle interior 40 kmh).wav",5,0.500021,0.000000,0.000000,0.010948
+"Test signal 15 (vehicle interior 40 kmh).wav",6,0.625021,0.000000,0.000000,0.033124
+"Test signal 15 (vehicle interior 40 kmh).wav",7,0.750021,0.000000,0.000000,0.034365
+"Test signal 15 (vehicle interior 40 kmh).wav",8,0.875021,0.000000,0.000000,0.045131
+"Test signal 15 (vehicle interior 40 kmh).wav",9,1.000021,0.000000,0.000000,0.002653
+"Test signal 15 (vehicle interior 40 kmh).wav",10,1.125021,0.000000,0.000000,0.007975
+"Test signal 15 (vehicle interior 40 kmh).wav",11,1.250021,0.000000,0.000000,0.002796
+"Test signal 15 (vehicle interior 40 kmh).wav",12,1.375021,0.000000,0.000000,0.011150
+"Test signal 15 (vehicle interior 40 kmh).wav",13,1.500021,0.000000,0.000000,0.063303
+"Test signal 15 (vehicle interior 40 kmh).wav",14,1.625021,0.000000,0.000000,0.004237
+"Test signal 15 (vehicle interior 40 kmh).wav",15,1.750021,0.000000,0.000000,0.018369
+"Test signal 15 (vehicle interior 40 kmh).wav",16,1.875021,0.000000,0.000000,0.006384
+"Test signal 15 (vehicle interior 40 kmh).wav",17,2.000021,0.000000,0.000000,0.009487
+"Test signal 15 (vehicle interior 40 kmh).wav",18,2.125021,0.000000,0.000000,0.051554
+"Test signal 15 (vehicle interior 40 kmh).wav",19,2.250021,0.000000,0.000000,0.005888
+"Test signal 15 (vehicle interior 40 kmh).wav",20,2.375021,0.000000,0.000000,0.001375
+"Test signal 15 (vehicle interior 40 kmh).wav",21,2.500021,0.000000,0.000000,0.012932
+"Test signal 15 (vehicle interior 40 kmh).wav",22,2.625021,0.024592,0.000290,0.160856
+"Test signal 15 (vehicle interior 40 kmh).wav",23,2.750021,0.000000,0.000000,0.008808
+"Test signal 15 (vehicle interior 40 kmh).wav",24,2.875021,0.000000,0.000000,0.002375
+"Test signal 15 (vehicle interior 40 kmh).wav",25,3.000021,0.000000,0.000000,0.005753
+"Test signal 15 (vehicle interior 40 kmh).wav",26,3.125021,0.000000,0.000000,0.007297
+"Test signal 15 (vehicle interior 40 kmh).wav",27,3.250021,0.000000,0.000000,0.017095
+"Test signal 15 (vehicle interior 40 kmh).wav",28,3.375021,0.000000,0.000000,0.007524
+"Test signal 15 (vehicle interior 40 kmh).wav",29,3.500021,0.000000,0.000000,0.003235
+"Test signal 15 (vehicle interior 40 kmh).wav",30,3.625021,0.000000,0.000000,0.023804
+"Test signal 15 (vehicle interior 40 kmh).wav",31,3.750021,0.000000,0.000000,0.010634
+"Test signal 15 (vehicle interior 40 kmh).wav",32,3.875021,0.000000,0.000000,0.005270
+"Test signal 15 (vehicle interior 40 kmh).wav",33,4.000021,0.000000,0.000000,0.044809
+"Test signal 15 (vehicle interior 40 kmh).wav",34,4.125021,0.000000,0.000000,0.090543
+"Test signal 15 (vehicle interior 40 kmh).wav",35,4.250021,0.000000,0.000000,0.107817
+"Test signal 15 (vehicle interior 40 kmh).wav",36,4.375021,0.000000,0.000000,0.007228
+"Test signal 15 (vehicle interior 40 kmh).wav",37,4.500021,0.000000,0.000000,0.001741
+"Test signal 15 (vehicle interior 40 kmh).wav",38,4.625021,0.000000,0.000000,0.008453
+"Test signal 15 (vehicle interior 40 kmh).wav",39,4.750021,0.000000,0.000000,0.010662
+"Test signal 15 (vehicle interior 40 kmh).wav",40,4.875021,0.000000,0.000000,0.021633
+"Test signal 15 (vehicle interior 40 kmh).wav",41,5.000021,0.000000,0.000000,0.119682
+"Test signal 15 (vehicle interior 40 kmh).wav",42,5.125021,0.000000,0.000000,0.008513
+"Test signal 15 (vehicle interior 40 kmh).wav",43,5.250021,0.000000,0.000000,0.006302
+"Test signal 15 (vehicle interior 40 kmh).wav",44,5.375021,0.025175,0.000160,0.206006
+"Test signal 15 (vehicle interior 40 kmh).wav",45,5.500021,0.000000,0.000000,0.017038
+"Test signal 15 (vehicle interior 40 kmh).wav",46,5.625021,0.000000,0.000000,0.001483
+"Test signal 15 (vehicle interior 40 kmh).wav",47,5.750021,0.000000,0.000000,0.026629
+"Test signal 15 (vehicle interior 40 kmh).wav",48,5.875021,0.000000,0.000000,0.006387
+"Test signal 15 (vehicle interior 40 kmh).wav",49,6.000021,0.000000,0.000000,0.001936
+"Test signal 15 (vehicle interior 40 kmh).wav",50,6.125021,0.000000,0.000000,0.001519
+"Test signal 15 (vehicle interior 40 kmh).wav",51,6.250021,0.000000,0.000000,0.003011
+"Test signal 15 (vehicle interior 40 kmh).wav",52,6.375021,0.000000,0.000000,0.000000
+"Test signal 15 (vehicle interior 40 kmh).wav",53,6.500021,0.000000,0.000000,0.010952
+"Test signal 15 (vehicle interior 40 kmh).wav",54,6.625021,0.000000,0.000000,0.004049
+"Test signal 15 (vehicle interior 40 kmh).wav",55,6.750021,0.000000,0.000000,0.052947
+"Test signal 15 (vehicle interior 40 kmh).wav",56,6.875021,0.046830,0.004615,0.131657
+"Test signal 15 (vehicle interior 40 kmh).wav",57,7.000021,0.000000,0.000000,0.027867
+"Test signal 15 (vehicle interior 40 kmh).wav",58,7.125021,0.000000,0.000000,0.001487
+"Test signal 15 (vehicle interior 40 kmh).wav",59,7.250021,0.000000,0.000000,0.026332
+"Test signal 15 (vehicle interior 40 kmh).wav",60,7.375021,0.000000,0.000000,0.001638
+"Test signal 15 (vehicle interior 40 kmh).wav",61,7.500021,0.000000,0.000000,0.021883
+"Test signal 15 (vehicle interior 40 kmh).wav",62,7.625021,0.000000,0.000000,0.003822
+"Test signal 15 (vehicle interior 40 kmh).wav",63,7.750021,0.041836,0.001208,0.186713
+"Test signal 15 (vehicle interior 40 kmh).wav",64,7.875021,0.000000,0.000000,0.002991
+"Test signal 15 (vehicle interior 40 kmh).wav",65,8.000021,0.020577,0.000135,0.170036
+"Test signal 15 (vehicle interior 40 kmh).wav",66,8.125021,0.033471,0.001428,0.132381
+"Test signal 15 (vehicle interior 40 kmh).wav",67,8.250021,0.000000,0.000000,0.002061
+"Test signal 15 (vehicle interior 40 kmh).wav",68,8.375021,0.000000,0.000000,0.037913
+"Test signal 15 (vehicle interior 40 kmh).wav",69,8.500021,0.000000,0.000000,0.000000
+"Test signal 15 (vehicle interior 40 kmh).wav",70,8.625021,0.000000,0.000000,0.072383
+"Test signal 15 (vehicle interior 40 kmh).wav",71,8.750021,0.000000,0.000000,0.000615
+"Test signal 15 (vehicle interior 40 kmh).wav",72,8.875021,0.000000,0.000000,0.000121
+"Test signal 15 (vehicle interior 40 kmh).wav",73,9.000021,0.000000,0.000000,0.006073
+"Test signal 15 (vehicle interior 40 kmh).wav",74,9.125021,0.000000,0.000000,0.005457
+"Test signal 15 (vehicle interior 40 kmh).wav",75,9.250021,0.000000,0.000000,0.000000
+"Test signal 15 (vehicle interior 40 kmh).wav",76,9.375021,0.000000,0.000000,0.009955
+"Test signal 15 (vehicle interior 40 kmh).wav",77,9.500021,0.020476,0.000179,0.152350
+"Test signal 15 (vehicle interior 40 kmh).wav",78,9.625021,0.000000,0.000000,0.003474
+"Test signal 15 (vehicle interior 40 kmh).wav",79,9.750021,0.000000,0.000000,0.028842
+"Test signal 15 (vehicle interior 40 kmh).wav",80,9.875021,0.000000,0.000000,0.003251
+"Test signal 15 (vehicle interior 40 kmh).wav",81,10.000021,0.000000,0.000000,0.015629
+"Test signal 15 (vehicle interior 40 kmh).wav",82,10.125021,0.000000,0.000000,0.010961
+"Test signal 15 (vehicle interior 40 kmh).wav",83,10.250021,0.028723,0.000571,0.152728
+"Test signal 15 (vehicle interior 40 kmh).wav",84,10.375021,0.000000,0.000000,0.004040
+"Test signal 15 (vehicle interior 40 kmh).wav",85,10.500021,0.000000,0.000000,0.005912
+"Test signal 15 (vehicle interior 40 kmh).wav",86,10.625021,0.000000,0.000000,0.006128
+"Test signal 15 (vehicle interior 40 kmh).wav",87,10.750021,0.000000,0.000000,0.057761
+"Test signal 15 (vehicle interior 40 kmh).wav",88,10.875021,0.000000,0.000000,0.036609
+"Test signal 15 (vehicle interior 40 kmh).wav",89,11.000021,0.090687,0.000416,0.735225
+"Test signal 15 (vehicle interior 40 kmh).wav",90,11.125021,0.000000,0.000000,0.000000
+"Test signal 15 (vehicle interior 40 kmh).wav",91,11.250021,0.000000,0.000000,0.000000
+"Test signal 16 (hairdryer).wav",1,0.000021,0.000000,0.000000,0.046277
+"Test signal 16 (hairdryer).wav",2,0.125021,0.049062,0.059473,0.054640
+"Test signal 16 (hairdryer).wav",3,0.250021,0.064675,0.124468,0.059110
+"Test signal 16 (hairdryer).wav",4,0.375021,0.087235,0.144252,0.081779
+"Test signal 16 (hairdryer).wav",5,0.500021,0.053489,0.063583,0.059477
+"Test signal 16 (hairdryer).wav",6,0.625021,0.047774,0.103411,0.043122
+"Test signal 16 (hairdryer).wav",7,0.750021,0.077158,0.135125,0.071710
+"Test signal 16 (hairdryer).wav",8,0.875021,0.045566,0.033084,0.061712
+"Test signal 16 (hairdryer).wav",9,1.000021,0.037074,0.057782,0.038733
+"Test signal 16 (hairdryer).wav",10,1.125021,0.047396,0.056925,0.053149
+"Test signal 16 (hairdryer).wav",11,1.250021,0.038110,0.078533,0.035836
+"Test signal 16 (hairdryer).wav",12,1.375021,0.000000,0.000000,0.049879
+"Test signal 16 (hairdryer).wav",13,1.500021,0.019670,0.004016,0.046211
+"Test signal 16 (hairdryer).wav",14,1.625021,0.069984,0.154127,0.060388
+"Test signal 16 (hairdryer).wav",15,1.750021,0.044885,0.156154,0.034253
+"Test signal 16 (hairdryer).wav",16,1.875021,0.074186,0.135169,0.068224
+"Test signal 16 (hairdryer).wav",17,2.000021,0.073999,0.121370,0.070748
+"Test signal 16 (hairdryer).wav",18,2.125021,0.040175,0.032277,0.053099
+"Test signal 16 (hairdryer).wav",19,2.250021,0.052370,0.098603,0.049293
+"Test signal 16 (hairdryer).wav",20,2.375021,0.083390,0.182962,0.070788
+"Test signal 16 (hairdryer).wav",21,2.500021,0.033356,0.017908,0.052090
+"Test signal 16 (hairdryer).wav",22,2.625021,0.027810,0.004909,0.066542
+"Test signal 16 (hairdryer).wav",23,2.750021,0.040563,0.044517,0.047765
+"Test signal 16 (hairdryer).wav",24,2.875021,0.032894,0.015831,0.053546
+"Test signal 16 (hairdryer).wav",25,3.000021,0.035968,0.039645,0.042805
+"Test signal 16 (hairdryer).wav",26,3.125021,0.036173,0.062121,0.036562
+"Test signal 16 (hairdryer).wav",27,3.250021,0.031410,0.046210,0.034086
+"Test signal 16 (hairdryer).wav",28,3.375021,0.043866,0.044605,0.052703
+"Test signal 16 (hairdryer).wav",29,3.500021,0.000000,0.000000,0.045383
+"Test signal 16 (hairdryer).wav",30,3.625021,0.000000,0.000000,0.000000
+"Test signal 16 (hairdryer).wav",31,3.750021,0.000000,0.000000,0.000000
+"Test signal 17 (machine gun).wav",1,0.000021,0.000000,0.000000,0.000000
+"Test signal 17 (machine gun).wav",2,0.125021,0.000000,0.000000,0.001288
+"Test signal 17 (machine gun).wav",3,0.250021,0.000000,0.000000,0.000604
+"Test signal 17 (machine gun).wav",4,0.375021,0.000000,0.000000,0.000000
+"Test signal 17 (machine gun).wav",5,0.500021,0.000000,0.000000,0.002331
+"Test signal 17 (machine gun).wav",6,0.625021,0.000000,0.000000,0.010322
+"Test signal 17 (machine gun).wav",7,0.750021,0.000000,0.000000,0.039747
+"Test signal 17 (machine gun).wav",8,0.875021,0.000000,0.000000,0.023740
+"Test signal 17 (machine gun).wav",9,1.000021,0.000000,0.000000,0.011752
+"Test signal 17 (machine gun).wav",10,1.125021,0.000000,0.000000,0.185673
+"Test signal 17 (machine gun).wav",11,1.250021,0.000000,0.000000,1.000000
+"Test signal 17 (machine gun).wav",12,1.375021,0.000000,0.000000,0.000000
+"Test signal 17 (machine gun).wav",13,1.500021,0.000000,0.000000,0.000000
+"Test signal 17 (machine gun).wav",14,1.625021,0.000000,0.000000,0.000000
+"Test signal 17 (machine gun).wav",15,1.750021,0.000000,0.000000,0.001138
+"Test signal 17 (machine gun).wav",16,1.875021,0.000000,0.000000,0.000135
+"Test signal 17 (machine gun).wav",17,2.000021,0.000000,0.000000,0.000277
+"Test signal 17 (machine gun).wav",18,2.125021,0.000000,0.000000,0.003892
+"Test signal 17 (machine gun).wav",19,2.250021,0.000000,0.000000,0.000871
+"Test signal 17 (machine gun).wav",20,2.375021,0.000000,0.000000,0.000000
+"Test signal 17 (machine gun).wav",21,2.500021,0.000000,0.000000,0.000000
+"Test signal 17 (machine gun).wav",22,2.625021,0.000000,0.000000,0.000000
+"Test signal 18 (hammer).wav",1,0.000021,0.000000,0.000000,0.001653
+"Test signal 18 (hammer).wav",2,0.125021,0.037298,0.032236,0.048355
+"Test signal 18 (hammer).wav",3,0.250021,0.000000,0.000000,0.001580
+"Test signal 18 (hammer).wav",4,0.375021,0.000000,0.000000,0.011328
+"Test signal 18 (hammer).wav",5,0.500021,0.019916,0.016193,0.028138
+"Test signal 18 (hammer).wav",6,0.625021,0.000000,0.000000,0.000407
+"Test signal 18 (hammer).wav",7,0.750021,0.026790,0.028550,0.033257
+"Test signal 18 (hammer).wav",8,0.875021,0.000000,0.000000,0.000000
+"Test signal 18 (hammer).wav",9,1.000021,0.011292,0.003539,0.023975
+"Test signal 18 (hammer).wav",10,1.125021,0.000000,0.000000,0.002071
+"Test signal 18 (hammer).wav",11,1.250021,0.000000,0.000000,0.009482
+"Test signal 18 (hammer).wav",12,1.375021,0.022696,0.026337,0.027770
+"Test signal 18 (hammer).wav",13,1.500021,0.000000,0.000000,0.052221
+"Test signal 18 (hammer).wav",14,1.625021,0.000000,0.000000,0.000000
+"Test signal 18 (hammer).wav",15,1.750021,0.000000,0.000000,0.000000
+"Test signal 18 (hammer).wav",16,1.875021,0.000000,0.000000,0.000000
+"Test signal 19 (door creak).wav",1,0.000021,0.071493,0.017613,0.137561
+"Test signal 19 (door creak).wav",2,0.125021,0.122185,0.118618,0.134604
+"Test signal 19 (door creak).wav",3,0.250021,0.161026,0.218956,0.152434
+"Test signal 19 (door creak).wav",4,0.375021,0.109432,0.117877,0.117343
+"Test signal 19 (door creak).wav",5,0.500021,0.019146,0.000307,0.114712
+"Test signal 19 (door creak).wav",6,0.625021,0.107581,0.055613,0.151301
+"Test signal 19 (door creak).wav",7,0.750021,0.020879,0.000237,0.140882
+"Test signal 19 (door creak).wav",8,0.875021,0.027532,0.000711,0.133576
+"Test signal 19 (door creak).wav",9,1.000021,0.017379,0.000274,0.105871
+"Test signal 19 (door creak).wav",10,1.125021,0.079262,0.027659,0.132818
+"Test signal 19 (door creak).wav",11,1.250021,0.017677,0.000200,0.121334
+"Test signal 19 (door creak).wav",12,1.375021,0.087395,0.033095,0.140718
+"Test signal 19 (door creak).wav",13,1.500021,0.087843,0.029556,0.147637
+"Test signal 19 (door creak).wav",14,1.625021,0.087899,0.138411,0.083830
+"Test signal 19 (door creak).wav",15,1.750021,0.088545,0.059974,0.115015
+"Test signal 19 (door creak).wav",16,1.875021,0.127611,0.164447,0.126144
+"Test signal 19 (door creak).wav",17,2.000021,0.068104,0.004806,0.208376
+"Test signal 19 (door creak).wav",18,2.125021,0.000000,0.000000,0.000000
+"Test signal 19 (door creak).wav",19,2.250021,0.000000,0.000000,0.000000
+"Test signal 20 (shaking coins).wav",1,0.000021,0.000000,0.000000,0.017007
+"Test signal 20 (shaking coins).wav",2,0.125021,0.000000,0.000000,0.016705
+"Test signal 20 (shaking coins).wav",3,0.250021,0.017679,0.000725,0.075668
+"Test signal 20 (shaking coins).wav",4,0.375021,0.000000,0.000000,0.009014
+"Test signal 20 (shaking coins).wav",5,0.500021,0.000000,0.000000,0.013685
+"Test signal 20 (shaking coins).wav",6,0.625021,0.000000,0.000000,0.006235
+"Test signal 20 (shaking coins).wav",7,0.750021,0.000000,0.000000,0.006395
+"Test signal 20 (shaking coins).wav",8,0.875021,0.000000,0.000000,0.011825
+"Test signal 20 (shaking coins).wav",9,1.000021,0.000000,0.000000,0.035680
+"Test signal 20 (shaking coins).wav",10,1.125021,0.000000,0.000000,0.017416
+"Test signal 20 (shaking coins).wav",11,1.250021,0.000000,0.000000,0.016078
+"Test signal 20 (shaking coins).wav",12,1.375021,0.000000,0.000000,0.009595
+"Test signal 20 (shaking coins).wav",13,1.500021,0.013353,0.000423,0.064676
+"Test signal 20 (shaking coins).wav",14,1.625021,0.000000,0.000000,0.029094
+"Test signal 20 (shaking coins).wav",15,1.750021,0.000000,0.000000,0.027500
+"Test signal 20 (shaking coins).wav",16,1.875021,0.000000,0.000000,0.007024
+"Test signal 20 (shaking coins).wav",17,2.000021,0.000000,0.000000,0.002765
+"Test signal 20 (shaking coins).wav",18,2.125021,0.000000,0.000000,0.000000
+"Test signal 20 (shaking coins).wav",19,2.250021,0.000000,0.000000,0.000000
+"Test signal 21 (jackhammer).wav",1,0.000021,0.000000,0.000000,0.001040
+"Test signal 21 (jackhammer).wav",2,0.125021,0.000000,0.000000,0.006765
+"Test signal 21 (jackhammer).wav",3,0.250021,0.000000,0.000000,0.001505
+"Test signal 21 (jackhammer).wav",4,0.375021,0.000000,0.000000,0.010518
+"Test signal 21 (jackhammer).wav",5,0.500021,0.000000,0.000000,0.011044
+"Test signal 21 (jackhammer).wav",6,0.625021,0.011070,0.000193,0.067977
+"Test signal 21 (jackhammer).wav",7,0.750021,0.000000,0.000000,0.042202
+"Test signal 21 (jackhammer).wav",8,0.875021,0.000000,0.000000,0.002410
+"Test signal 21 (jackhammer).wav",9,1.000021,0.028161,0.003464,0.076843
+"Test signal 21 (jackhammer).wav",10,1.125021,0.000000,0.000000,0.031870
+"Test signal 21 (jackhammer).wav",11,1.250021,0.038496,0.007981,0.084020
+"Test signal 21 (jackhammer).wav",12,1.375021,0.000000,0.000000,0.008545
+"Test signal 21 (jackhammer).wav",13,1.500021,0.000000,0.000000,0.015042
+"Test signal 21 (jackhammer).wav",14,1.625021,0.050728,0.011460,0.104325
+"Test signal 21 (jackhammer).wav",15,1.750021,0.000000,0.000000,0.017788
+"Test signal 21 (jackhammer).wav",16,1.875021,0.000000,0.000000,0.001169
+"Test signal 21 (jackhammer).wav",17,2.000021,0.000000,0.000000,0.001089
+"Test signal 21 (jackhammer).wav",18,2.125021,0.000000,0.000000,0.000000
+"Test signal 21 (jackhammer).wav",19,2.250021,0.000000,0.000000,0.000000
+"Test signal 22 (ratchet wheel (large)).wav",1,0.000021,0.016873,0.001057,0.062118
+"Test signal 22 (ratchet wheel (large)).wav",2,0.125021,0.020515,0.001205,0.075812
+"Test signal 22 (ratchet wheel (large)).wav",3,0.250021,0.013813,0.000206,0.087943
+"Test signal 22 (ratchet wheel (large)).wav",4,0.375021,0.000000,0.000000,0.004053
+"Test signal 22 (ratchet wheel (large)).wav",5,0.500021,0.000000,0.000000,0.005253
+"Test signal 22 (ratchet wheel (large)).wav",6,0.625021,0.000000,0.000000,0.002089
+"Test signal 22 (ratchet wheel (large)).wav",7,0.750021,0.000000,0.000000,0.012181
+"Test signal 22 (ratchet wheel (large)).wav",8,0.875021,0.000000,0.000000,0.004608
+"Test signal 22 (ratchet wheel (large)).wav",9,1.000021,0.000000,0.000000,0.004125
+"Test signal 22 (ratchet wheel (large)).wav",10,1.125021,0.000000,0.000000,0.054530
+"Test signal 22 (ratchet wheel (large)).wav",11,1.250021,0.000000,0.000000,0.000000
+"Test signal 22 (ratchet wheel (large)).wav",12,1.375021,0.000000,0.000000,0.000000
+"Test signal 22 (ratchet wheel (large)).wav",13,1.500021,0.000000,0.000000,0.000000
+"Test signal 23 (typewriter).wav",1,0.000021,0.013517,0.000670,0.055450
+"Test signal 23 (typewriter).wav",2,0.125021,0.000000,0.000000,0.006135
+"Test signal 23 (typewriter).wav",3,0.250021,0.000000,0.000000,0.020670
+"Test signal 23 (typewriter).wav",4,0.375021,0.000000,0.000000,0.009012
+"Test signal 23 (typewriter).wav",5,0.500021,0.000000,0.000000,0.003536
+"Test signal 23 (typewriter).wav",6,0.625021,0.000000,0.000000,0.006449
+"Test signal 23 (typewriter).wav",7,0.750021,0.000000,0.000000,0.006792
+"Test signal 23 (typewriter).wav",8,0.875021,0.000000,0.000000,0.002226
+"Test signal 23 (typewriter).wav",9,1.000021,0.000000,0.000000,0.002764
+"Test signal 23 (typewriter).wav",10,1.125021,0.000000,0.000000,0.008058
+"Test signal 23 (typewriter).wav",11,1.250021,0.000000,0.000000,0.007657
+"Test signal 23 (typewriter).wav",12,1.375021,0.000000,0.000000,0.014732
+"Test signal 23 (typewriter).wav",13,1.500021,0.000000,0.000000,0.002588
+"Test signal 23 (typewriter).wav",14,1.625021,0.000000,0.000000,0.004847
+"Test signal 23 (typewriter).wav",15,1.750021,0.000000,0.000000,0.005992
+"Test signal 23 (typewriter).wav",16,1.875021,0.000000,0.000000,0.005990
+"Test signal 23 (typewriter).wav",17,2.000021,0.000000,0.000000,0.038226
+"Test signal 23 (typewriter).wav",18,2.125021,0.000000,0.000000,0.000000
+"Test signal 23 (typewriter).wav",19,2.250021,0.000000,0.000000,0.000000
+"Test signal 24 (woodpecker).wav",1,0.000021,0.000000,0.000000,0.015943
+"Test signal 24 (woodpecker).wav",2,0.125021,0.000000,0.000000,0.008544
+"Test signal 24 (woodpecker).wav",3,0.250021,0.000000,0.000000,0.016823
+"Test signal 24 (woodpecker).wav",4,0.375021,0.000000,0.000000,0.080730
+"Test signal 24 (woodpecker).wav",5,0.500021,0.000000,0.000000,0.024924
+"Test signal 24 (woodpecker).wav",6,0.625021,0.000000,0.000000,0.071360
+"Test signal 24 (woodpecker).wav",7,0.750021,0.000000,0.000000,0.061116
+"Test signal 24 (woodpecker).wav",8,0.875021,0.000000,0.000000,0.080670
+"Test signal 24 (woodpecker).wav",9,1.000021,0.000000,0.000000,0.062556
+"Test signal 24 (woodpecker).wav",10,1.125021,0.000000,0.000000,0.053341
+"Test signal 24 (woodpecker).wav",11,1.250021,0.000000,0.000000,0.049684
+"Test signal 24 (woodpecker).wav",12,1.375021,0.000000,0.000000,0.035615
+"Test signal 24 (woodpecker).wav",13,1.500021,0.012242,0.000092,0.101564
+"Test signal 24 (woodpecker).wav",14,1.625021,0.000000,0.000000,0.020811
+"Test signal 24 (woodpecker).wav",15,1.750021,0.000000,0.000000,0.023269
+"Test signal 24 (woodpecker).wav",16,1.875021,0.000000,0.000000,0.000000
+"Test signal 24 (woodpecker).wav",17,2.000021,0.000000,0.000000,0.000000
+"Test signal 24 (woodpecker).wav",18,2.125021,0.000000,0.000000,0.000000
+"Test signal 25 (full can rattle).wav",1,0.000021,0.000000,0.000000,0.000000
+"Test signal 25 (full can rattle).wav",2,0.125021,0.000000,0.000000,0.011511
+"Test signal 25 (full can rattle).wav",3,0.250021,0.000000,0.000000,0.000000
+"Test signal 25 (full can rattle).wav",4,0.375021,0.000000,0.000000,0.000997
+"Test signal 25 (full can rattle).wav",5,0.500021,0.000000,0.000000,0.000000
+"Test signal 25 (full can rattle).wav",6,0.625021,0.000000,0.000000,0.001256
+"Test signal 25 (full can rattle).wav",7,0.750021,0.000000,0.000000,0.006908
+"Test signal 25 (full can rattle).wav",8,0.875021,0.008716,0.000056,0.079390
+"Test signal 25 (full can rattle).wav",9,1.000021,0.000000,0.000000,0.004254
+"Test signal 25 (full can rattle).wav",10,1.125021,0.000000,0.000000,0.000000
+"Test signal 25 (full can rattle).wav",11,1.250021,0.000000,0.000000,0.000000
+"Test signal 25 (full can rattle).wav",12,1.375021,0.000000,0.000000,0.001015
+"Test signal 25 (full can rattle).wav",13,1.500021,0.000000,0.000000,0.000641
+"Test signal 25 (full can rattle).wav",14,1.625021,0.000000,0.000000,0.003101
+"Test signal 25 (full can rattle).wav",15,1.750021,0.024034,0.000233,0.169330
+"Test signal 25 (full can rattle).wav",16,1.875021,0.006503,0.000211,0.033557
+"Test signal 25 (full can rattle).wav",17,2.000021,0.000000,0.000000,0.000000
+"Test signal 25 (full can rattle).wav",18,2.125021,0.000000,0.000000,0.000000
+"Test signal 25 (full can rattle).wav",19,2.250021,0.000000,0.000000,0.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",1,0.000021,0.600498,0.121912,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",2,0.125021,0.956790,0.607641,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",3,0.250021,0.942173,0.576226,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",4,0.375021,0.960914,0.616722,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",5,0.500021,0.962994,0.621338,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",6,0.625021,0.944748,0.581676,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",7,0.750021,0.951430,0.595984,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",8,0.875021,0.951773,0.596726,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",9,1.000021,0.969983,0.637024,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",10,1.125021,0.971580,0.640649,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",11,1.250021,0.973064,0.644029,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",12,1.375021,0.969038,0.634888,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",13,1.500021,0.974408,0.647103,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",14,1.625021,0.977162,0.653430,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",15,1.750021,0.978437,0.656375,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",16,1.875021,0.969714,0.636416,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",17,2.000021,0.969508,0.635949,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",18,2.125021,0.974234,0.646703,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",19,2.250021,0.974210,0.646648,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",20,2.375021,0.975560,0.649744,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",21,2.500021,0.979566,0.658991,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",22,2.625021,0.985753,0.673453,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",23,2.750021,0.985207,0.672168,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",24,2.875021,0.987497,0.677573,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",25,3.000021,0.984201,0.669806,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",26,3.125021,0.987535,0.677663,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",27,3.250021,0.984663,0.670890,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",28,3.375021,0.985594,0.673080,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",29,3.500021,0.988364,0.679625,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",30,3.625021,0.988180,0.679188,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",31,3.750021,0.987765,0.678205,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",32,3.875021,0.988063,0.678911,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",33,4.000021,0.988771,0.680591,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",34,4.125021,0.989406,0.682099,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",35,4.250021,0.990193,0.683973,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",36,4.375021,0.991019,0.685940,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",37,4.500021,0.991861,0.687952,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",38,4.625021,0.992319,0.689049,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",39,4.750021,0.992533,0.689562,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",40,4.875021,0.993106,0.690936,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",41,5.000021,0.993440,0.691736,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",42,5.125021,0.993659,0.692263,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",43,5.250021,0.994185,0.693529,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",44,5.375021,0.994691,0.694744,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",45,5.500021,0.995013,0.695520,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",46,5.625021,0.995298,0.696207,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",47,5.750021,0.995534,0.696779,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",48,5.875021,0.995782,0.697376,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",49,6.000021,0.996091,0.698124,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",50,6.125021,0.996349,0.698747,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",51,6.250021,0.996596,0.699344,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",52,6.375021,0.996900,0.700080,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",53,6.500021,0.997187,0.700775,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",54,6.625021,0.997298,0.701044,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",55,6.750021,0.997489,0.701507,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",56,6.875021,0.997726,0.702083,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",57,7.000021,0.998002,0.702753,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",58,7.125021,0.998232,0.703311,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",59,7.250021,0.998411,0.703745,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",60,7.375021,0.998483,0.703921,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",61,7.500021,0.998685,0.704413,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",62,7.625021,0.998942,0.705037,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",63,7.750021,0.999139,0.705517,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",64,7.875021,0.999219,0.705713,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",65,8.000021,0.999362,0.706060,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",66,8.125021,0.999526,0.706460,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",67,8.250021,0.999673,0.706817,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",68,8.375021,0.999757,0.707024,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",69,8.500021,0.999904,0.707382,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",70,8.625021,0.999978,0.707563,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",71,8.750021,1.000086,0.707825,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",72,8.875021,1.000321,0.708399,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",73,9.000021,1.000369,0.708517,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",74,9.125021,1.000409,0.708613,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",75,9.250021,1.000546,0.708950,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",76,9.375021,1.000577,0.709024,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",77,9.500021,1.000707,0.709341,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",78,9.625021,1.000785,0.709533,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",79,9.750021,1.000858,0.709711,1.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",80,9.875021,0.918711,0.531933,0.997444
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",81,10.000021,0.413922,0.034264,0.994929
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",82,10.125021,0.000000,0.000000,0.000000
+"Test signal 7 (tone 1 kHz 30 dB - 80 dB).wav",83,10.250021,0.000000,0.000000,0.000000
+"Test signal 3 (1 kHz 60 dB).wav",1,0.000021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",2,0.125021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",3,0.250021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",4,0.375021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",5,0.500021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",6,0.625021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",7,0.750021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",8,0.875021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",9,1.000021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",10,1.125021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",11,1.250021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",12,1.375021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",13,1.500021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",14,1.625021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",15,1.750021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",16,1.875021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",17,2.000021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",18,2.125021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",19,2.250021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",20,2.375021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",21,2.500021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",22,2.625021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",23,2.750021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",24,2.875021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",25,3.000021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",26,3.125021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",27,3.250021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",28,3.375021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",29,3.500021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",30,3.625021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",31,3.750021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",32,3.875021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",33,4.000021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",34,4.125021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",35,4.250021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",36,4.375021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",37,4.500021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",38,4.625021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",39,4.750021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",40,4.875021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",41,5.000021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",42,5.125021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",43,5.250021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",44,5.375021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",45,5.500021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",46,5.625021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",47,5.750021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",48,5.875021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",49,6.000021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",50,6.125021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",51,6.250021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",52,6.375021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",53,6.500021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",54,6.625021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",55,6.750021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",56,6.875021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",57,7.000021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",58,7.125021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",59,7.250021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",60,7.375021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",61,7.500021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",62,7.625021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",63,7.750021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",64,7.875021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",65,8.000021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",66,8.125021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",67,8.250021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",68,8.375021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",69,8.500021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",70,8.625021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",71,8.750021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",72,8.875021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",73,9.000021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",74,9.125021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",75,9.250021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",76,9.375021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",77,9.500021,1.000037,0.707705,1.000000
+"Test signal 3 (1 kHz 60 dB).wav",78,9.625021,1.000037,0.707705,1.000000
+"Test signal 5 (pinknoise 60 dB).wav",1,0.000021,0.000000,0.000000,0.005654
+"Test signal 5 (pinknoise 60 dB).wav",2,0.125021,0.000000,0.000000,0.003494
+"Test signal 5 (pinknoise 60 dB).wav",3,0.250021,0.000000,0.000000,0.005013
+"Test signal 5 (pinknoise 60 dB).wav",4,0.375021,0.000000,0.000000,0.017722
+"Test signal 5 (pinknoise 60 dB).wav",5,0.500021,0.000000,0.000000,0.005707
+"Test signal 5 (pinknoise 60 dB).wav",6,0.625021,0.000000,0.000000,0.007734
+"Test signal 5 (pinknoise 60 dB).wav",7,0.750021,0.000000,0.000000,0.006494
+"Test signal 5 (pinknoise 60 dB).wav",8,0.875021,0.000000,0.000000,0.001680
+"Test signal 5 (pinknoise 60 dB).wav",9,1.000021,0.000000,0.000000,0.005091
+"Test signal 5 (pinknoise 60 dB).wav",10,1.125021,0.000000,0.000000,0.002751
+"Test signal 5 (pinknoise 60 dB).wav",11,1.250021,0.000000,0.000000,0.011673
+"Test signal 5 (pinknoise 60 dB).wav",12,1.375021,0.000000,0.000000,0.007067
+"Test signal 5 (pinknoise 60 dB).wav",13,1.500021,0.000000,0.000000,0.006616
+"Test signal 5 (pinknoise 60 dB).wav",14,1.625021,0.000000,0.000000,0.005555
+"Test signal 5 (pinknoise 60 dB).wav",15,1.750021,0.000000,0.000000,0.011472
+"Test signal 5 (pinknoise 60 dB).wav",16,1.875021,0.000000,0.000000,0.005449
+"Test signal 5 (pinknoise 60 dB).wav",17,2.000021,0.000000,0.000000,0.004807
+"Test signal 5 (pinknoise 60 dB).wav",18,2.125021,0.000000,0.000000,0.000550
+"Test signal 5 (pinknoise 60 dB).wav",19,2.250021,0.000000,0.000000,0.002748
+"Test signal 5 (pinknoise 60 dB).wav",20,2.375021,0.000000,0.000000,0.006402
+"Test signal 5 (pinknoise 60 dB).wav",21,2.500021,0.000000,0.000000,0.000894
+"Test signal 5 (pinknoise 60 dB).wav",22,2.625021,0.000000,0.000000,0.018483
+"Test signal 5 (pinknoise 60 dB).wav",23,2.750021,0.000000,0.000000,0.010014
+"Test signal 5 (pinknoise 60 dB).wav",24,2.875021,0.000000,0.000000,0.011151
+"Test signal 5 (pinknoise 60 dB).wav",25,3.000021,0.000000,0.000000,0.006271
+"Test signal 5 (pinknoise 60 dB).wav",26,3.125021,0.000000,0.000000,0.011474
+"Test signal 5 (pinknoise 60 dB).wav",27,3.250021,0.000000,0.000000,0.006319
+"Test signal 5 (pinknoise 60 dB).wav",28,3.375021,0.000000,0.000000,0.008926
+"Test signal 5 (pinknoise 60 dB).wav",29,3.500021,0.000000,0.000000,0.005691
+"Test signal 5 (pinknoise 60 dB).wav",30,3.625021,0.000000,0.000000,0.007203
+"Test signal 5 (pinknoise 60 dB).wav",31,3.750021,0.000000,0.000000,0.008032
+"Test signal 5 (pinknoise 60 dB).wav",32,3.875021,0.000000,0.000000,0.008033
+"Test signal 5 (pinknoise 60 dB).wav",33,4.000021,0.000000,0.000000,0.006089
+"Test signal 5 (pinknoise 60 dB).wav",34,4.125021,0.000000,0.000000,0.007507
+"Test signal 5 (pinknoise 60 dB).wav",35,4.250021,0.000000,0.000000,0.019491
+"Test signal 5 (pinknoise 60 dB).wav",36,4.375021,0.000000,0.000000,0.006943
+"Test signal 5 (pinknoise 60 dB).wav",37,4.500021,0.000000,0.000000,0.021397
+"Test signal 5 (pinknoise 60 dB).wav",38,4.625021,0.000000,0.000000,0.007555
+"Test signal 5 (pinknoise 60 dB).wav",39,4.750021,0.000000,0.000000,0.004979
+"Test signal 5 (pinknoise 60 dB).wav",40,4.875021,0.000000,0.000000,0.005450
+"Test signal 5 (pinknoise 60 dB).wav",41,5.000021,0.000000,0.000000,0.011902
+"Test signal 5 (pinknoise 60 dB).wav",42,5.125021,0.000000,0.000000,0.006562
+"Test signal 5 (pinknoise 60 dB).wav",43,5.250021,0.000000,0.000000,0.003651
+"Test signal 5 (pinknoise 60 dB).wav",44,5.375021,0.000000,0.000000,0.016658
+"Test signal 5 (pinknoise 60 dB).wav",45,5.500021,0.000000,0.000000,0.015016
+"Test signal 5 (pinknoise 60 dB).wav",46,5.625021,0.000000,0.000000,0.005768
+"Test signal 5 (pinknoise 60 dB).wav",47,5.750021,0.000000,0.000000,0.005879
+"Test signal 5 (pinknoise 60 dB).wav",48,5.875021,0.000000,0.000000,0.007244
+"Test signal 5 (pinknoise 60 dB).wav",49,6.000021,0.000000,0.000000,0.009066
+"Test signal 5 (pinknoise 60 dB).wav",50,6.125021,0.000000,0.000000,0.005866
+"Test signal 5 (pinknoise 60 dB).wav",51,6.250021,0.000000,0.000000,0.002720
+"Test signal 5 (pinknoise 60 dB).wav",52,6.375021,0.000000,0.000000,0.009683
+"Test signal 5 (pinknoise 60 dB).wav",53,6.500021,0.000000,0.000000,0.004634
+"Test signal 5 (pinknoise 60 dB).wav",54,6.625021,0.000000,0.000000,0.007741
+"Test signal 5 (pinknoise 60 dB).wav",55,6.750021,0.000000,0.000000,0.006072
+"Test signal 5 (pinknoise 60 dB).wav",56,6.875021,0.000000,0.000000,0.012142
+"Test signal 5 (pinknoise 60 dB).wav",57,7.000021,0.000000,0.000000,0.006990
+"Test signal 5 (pinknoise 60 dB).wav",58,7.125021,0.000000,0.000000,0.018196
+"Test signal 5 (pinknoise 60 dB).wav",59,7.250021,0.000000,0.000000,0.004298
+"Test signal 5 (pinknoise 60 dB).wav",60,7.375021,0.000000,0.000000,0.005729
+"Test signal 5 (pinknoise 60 dB).wav",61,7.500021,0.000000,0.000000,0.004474
+"Test signal 5 (pinknoise 60 dB).wav",62,7.625021,0.000000,0.000000,0.008291
+"Test signal 5 (pinknoise 60 dB).wav",63,7.750021,0.000000,0.000000,0.012261
+"Test signal 5 (pinknoise 60 dB).wav",64,7.875021,0.000000,0.000000,0.000000
+"Test signal 5 (pinknoise 60 dB).wav",65,8.000021,0.000000,0.000000,0.011254
+"Test signal 5 (pinknoise 60 dB).wav",66,8.125021,0.000000,0.000000,0.004338
+"Test signal 5 (pinknoise 60 dB).wav",67,8.250021,0.000000,0.000000,0.004288
+"Test signal 5 (pinknoise 60 dB).wav",68,8.375021,0.000000,0.000000,0.002534
+"Test signal 5 (pinknoise 60 dB).wav",69,8.500021,0.000000,0.000000,0.009406
+"Test signal 5 (pinknoise 60 dB).wav",70,8.625021,0.000000,0.000000,0.005158
+"Test signal 5 (pinknoise 60 dB).wav",71,8.750021,0.000000,0.000000,0.005876
+"Test signal 5 (pinknoise 60 dB).wav",72,8.875021,0.000000,0.000000,0.006240
+"Test signal 5 (pinknoise 60 dB).wav",73,9.000021,0.000000,0.000000,0.012143
+"Test signal 5 (pinknoise 60 dB).wav",74,9.125021,0.000000,0.000000,0.005322
+"Test signal 5 (pinknoise 60 dB).wav",75,9.250021,0.000000,0.000000,0.015771
+"Test signal 5 (pinknoise 60 dB).wav",76,9.375021,0.000000,0.000000,0.004209
+"Test signal 5 (pinknoise 60 dB).wav",77,9.500021,0.000000,0.000000,0.010135
+"Test signal 5 (pinknoise 60 dB).wav",78,9.625021,0.000000,0.000000,0.010106
+"trafic.wav",1,0.000021,0.000000,0.000000,0.004795
+"trafic.wav",2,0.125021,0.000000,0.000000,0.031354
+"trafic.wav",3,0.250021,0.000000,0.000000,0.033439
+"trafic.wav",4,0.375021,0.000000,0.000000,0.021692
+"trafic.wav",5,0.500021,0.000000,0.000000,0.013888
+"trafic.wav",6,0.625021,0.000000,0.000000,0.029633
+"trafic.wav",7,0.750021,0.000000,0.000000,0.021352
+"trafic.wav",8,0.875021,0.000000,0.000000,0.016216
+"trafic.wav",9,1.000021,0.014474,0.003795,0.031998
+"trafic.wav",10,1.125021,0.067358,0.138980,0.059762
+"trafic.wav",11,1.250021,0.104052,0.140334,0.103263
+"trafic.wav",12,1.375021,0.082316,0.102865,0.086029
+"trafic.wav",13,1.500021,0.055989,0.037865,0.076224
+"trafic.wav",14,1.625021,0.040008,0.002521,0.134674
+"trafic.wav",15,1.750021,0.026818,0.001489,0.098488
+"trafic.wav",16,1.875021,0.047085,0.007173,0.112751
+"trafic.wav",17,2.000021,0.036635,0.004189,0.099973
+"trafic.wav",18,2.125021,0.043603,0.007020,0.103118
+"trafic.wav",19,2.250021,0.036324,0.003960,0.100969
+"trafic.wav",20,2.375021,0.023759,0.001533,0.083585
+"trafic.wav",21,2.500021,0.014406,0.000982,0.052244
+"trafic.wav",22,2.625021,0.000000,0.000000,0.009777
+"trafic.wav",23,2.750021,0.027839,0.026645,0.035811
+"trafic.wav",24,2.875021,0.000000,0.000000,0.041601
+"trafic.wav",25,3.000021,0.004442,0.000048,0.035641
+"trafic.wav",26,3.125021,0.000000,0.000000,0.003782
+"trafic.wav",27,3.250021,0.000000,0.000000,0.011774
+"trafic.wav",28,3.375021,0.000000,0.000000,0.008779
+"trafic.wav",29,3.500021,0.032122,0.047067,0.034831
+"trafic.wav",30,3.625021,0.038693,0.126597,0.030658
+"trafic.wav",31,3.750021,0.042766,0.046972,0.050075
+"trafic.wav",32,3.875021,0.000000,0.000000,0.026014
+"trafic.wav",33,4.000021,0.000000,0.000000,0.012249
+"trafic.wav",34,4.125021,0.000000,0.000000,0.031116
+"trafic.wav",35,4.250021,0.000000,0.000000,0.025760
+"trafic.wav",36,4.375021,0.000000,0.000000,0.014305
+"trafic.wav",37,4.500021,0.000000,0.000000,0.014964
+"trafic.wav",38,4.625021,0.000000,0.000000,0.013738
+"trafic.wav",39,4.750021,0.000000,0.000000,0.006008
+"trafic.wav",40,4.875021,0.000000,0.000000,0.010787
+"trafic.wav",41,5.000021,0.025834,0.040109,0.028036
+"trafic.wav",42,5.125021,0.040447,0.068228,0.040688
+"trafic.wav",43,5.250021,0.012102,0.001686,0.034360
+"trafic.wav",44,5.375021,0.000000,0.000000,0.020813
+"trafic.wav",45,5.500021,0.020662,0.009415,0.035972
+"trafic.wav",46,5.625021,0.000000,0.000000,0.000000
+"trafic.wav",47,5.750021,0.010066,0.000283,0.052412
+"trafic.wav",48,5.875021,0.000000,0.000000,0.026311
+"trafic.wav",49,6.000021,0.007981,0.001529,0.021029
+"trafic.wav",50,6.125021,0.000000,0.000000,0.003847
+"trafic.wav",51,6.250021,0.000000,0.000000,0.025981
+"trafic.wav",52,6.375021,0.013765,0.002537,0.034813
+"trafic.wav",53,6.500021,0.013963,0.014388,0.018747
+"trafic.wav",54,6.625021,0.020162,0.039555,0.020589
+"trafic.wav",55,6.750021,0.009809,0.000808,0.034502
+"trafic.wav",56,6.875021,0.000000,0.000000,0.008465
+"trafic.wav",57,7.000021,0.000000,0.000000,0.000000
+"trafic.wav",58,7.125021,0.000000,0.000000,0.003706
+"trafic.wav",59,7.250021,0.000000,0.000000,0.067540
+"trafic.wav",60,7.375021,0.024360,0.008137,0.046746
+"trafic.wav",61,7.500021,0.000000,0.000000,0.017517
+"trafic.wav",62,7.625021,0.000000,0.000000,0.036606
+"trafic.wav",63,7.750021,0.000000,0.000000,0.034672
+"trafic.wav",64,7.875021,0.015214,0.013186,0.021577
+"trafic.wav",65,8.000021,0.000000,0.000000,0.036846
+"trafic.wav",66,8.125021,0.000000,0.000000,0.003292
+"trafic.wav",67,8.250021,0.000000,0.000000,0.003573
+"trafic.wav",68,8.375021,0.000000,0.000000,0.009752
+"trafic.wav",69,8.500021,0.014069,0.003386,0.032188
+"trafic.wav",70,8.625021,0.000000,0.000000,0.034533
+"trafic.wav",71,8.750021,0.000000,0.000000,0.001315
+"trafic.wav",72,8.875021,0.000000,0.000000,0.003577
+"trafic.wav",73,9.000021,0.009372,0.000761,0.033286
+"trafic.wav",74,9.125021,0.025232,0.021062,0.034469
+"trafic.wav",75,9.250021,0.000000,0.000000,0.008777
+"trafic.wav",76,9.375021,0.027057,0.060574,0.025552
+"trafic.wav",77,9.500021,0.013250,0.030106,0.013378
+"trafic.wav",78,9.625021,0.020348,0.008666,0.036371
+"trafic.wav",79,9.750021,0.019829,0.012048,0.031191
+"trafic.wav",80,9.875021,0.009383,0.002451,0.021702
+"trafic.wav",81,10.000021,0.012682,0.001983,0.034353
+"trafic.wav",82,10.125021,0.027122,0.040484,0.029715
+"white_noise_442_1768_Hz_stationary.wav",1,0.000023,0.773001,0.770655,0.699601
+"white_noise_442_1768_Hz_stationary.wav",2,0.125011,0.782451,0.810496,0.697420
+"white_noise_442_1768_Hz_stationary.wav",3,0.250000,0.775759,0.794736,0.694869
+"white_noise_442_1768_Hz_stationary.wav",4,0.374989,0.780364,0.817348,0.692921
+"white_noise_442_1768_Hz_stationary.wav",5,0.499977,0.763616,0.778223,0.686400
+"white_noise_442_1768_Hz_stationary.wav",6,0.624966,0.785174,0.793309,0.706028
+"white_noise_442_1768_Hz_stationary.wav",7,0.749955,0.776770,0.775212,0.702400
+"white_noise_442_1768_Hz_stationary.wav",8,0.874943,0.776185,0.801454,0.693206
+"white_noise_442_1768_Hz_stationary.wav",9,0.999932,0.769419,0.787493,0.690004
+"white_noise_442_1768_Hz_stationary.wav",10,1.124921,0.773607,0.780126,0.697162
+"white_noise_442_1768_Hz_stationary.wav",11,1.249909,0.767232,0.774270,0.691809
+"white_noise_442_1768_Hz_stationary.wav",12,1.374898,0.788496,0.810909,0.704116
+"white_noise_442_1768_Hz_stationary.wav",13,1.499887,0.781727,0.797648,0.700701
+"white_noise_442_1768_Hz_stationary.wav",14,1.624875,0.776189,0.781342,0.699709
+"white_noise_442_1768_Hz_stationary.wav",15,1.749864,0.777037,0.784240,0.699725
+"white_noise_442_1768_Hz_stationary.wav",16,1.874853,0.778665,0.786842,0.700729
+"white_noise_442_1768_Hz_stationary.wav",17,1.999841,0.784059,0.803466,0.701475
+"white_noise_442_1768_Hz_stationary.wav",18,2.124830,0.772034,0.787696,0.692908
+"white_noise_442_1768_Hz_stationary.wav",19,2.249819,0.773846,0.806224,0.689061
+"white_noise_442_1768_Hz_stationary.wav",20,2.374807,0.771525,0.779854,0.694878
+"white_noise_442_1768_Hz_stationary.wav",21,2.499796,0.775754,0.785599,0.697820
+"white_noise_442_1768_Hz_stationary.wav",22,2.624785,0.769829,0.773898,0.694897
+"white_noise_442_1768_Hz_stationary.wav",23,2.749773,0.776532,0.784999,0.698902
+"white_noise_200_2000_Hz_stationary.wav",1,0.000023,0.612690,0.655412,0.553226
+"white_noise_200_2000_Hz_stationary.wav",2,0.125011,0.617504,0.669229,0.554471
+"white_noise_200_2000_Hz_stationary.wav",3,0.250000,0.604395,0.635281,0.550025
+"white_noise_200_2000_Hz_stationary.wav",4,0.374989,0.613142,0.661290,0.551930
+"white_noise_200_2000_Hz_stationary.wav",5,0.499977,0.612033,0.651881,0.553571
+"white_noise_200_2000_Hz_stationary.wav",6,0.624966,0.614156,0.641196,0.559386
+"white_noise_200_2000_Hz_stationary.wav",7,0.749955,0.613416,0.658169,0.553202
+"white_noise_200_2000_Hz_stationary.wav",8,0.874943,0.605577,0.640672,0.549679
+"white_noise_200_2000_Hz_stationary.wav",9,0.999932,0.618891,0.668715,0.556206
+"white_noise_200_2000_Hz_stationary.wav",10,1.124921,0.613395,0.658387,0.553111
+"white_noise_200_2000_Hz_stationary.wav",11,1.249909,0.607973,0.643436,0.551561
+"white_noise_200_2000_Hz_stationary.wav",12,1.374898,0.610204,0.662505,0.548215
+"white_noise_200_2000_Hz_stationary.wav",13,1.499887,0.604272,0.630935,0.551271
+"white_noise_200_2000_Hz_stationary.wav",14,1.624875,0.624809,0.672469,0.561790
+"white_noise_200_2000_Hz_stationary.wav",15,1.749864,0.610584,0.663771,0.548263
+"white_noise_200_2000_Hz_stationary.wav",16,1.874853,0.607184,0.634657,0.553439
+"white_noise_200_2000_Hz_stationary.wav",17,1.999841,0.617880,0.673502,0.553604
+"white_noise_200_2000_Hz_stationary.wav",18,2.124830,0.615574,0.674589,0.550664
+"white_noise_200_2000_Hz_stationary.wav",19,2.249819,0.624760,0.674019,0.561260
+"white_noise_200_2000_Hz_stationary.wav",20,2.374807,0.623075,0.679988,0.557538
+"white_noise_200_2000_Hz_stationary.wav",21,2.499796,0.600876,0.637186,0.545374
+"white_noise_200_2000_Hz_stationary.wav",22,2.624785,0.614217,0.654055,0.555394
+"white_noise_200_2000_Hz_stationary.wav",23,2.749773,0.620035,0.679898,0.554123
+"white_noise_200_2000_Hz_stationary.wav",24,2.874762,0.620979,0.669158,0.558445
+"white_noise_200_2000_Hz_stationary.wav",25,2.999751,0.607386,0.644441,0.550572
+"white_noise_200_2000_Hz_stationary.wav",26,3.124739,0.605643,0.629938,0.553175
+"white_noise_200_2000_Hz_stationary.wav",27,3.249728,0.625650,0.687214,0.558285
+"white_noise_200_2000_Hz_stationary.wav",28,3.374717,0.613028,0.648552,0.555754
+"white_noise_200_2000_Hz_stationary.wav",29,3.499705,0.606870,0.632428,0.553792
+"white_noise_200_2000_Hz_stationary.wav",30,3.624694,0.617151,0.662361,0.556172
+"white_noise_200_2000_Hz_stationary.wav",31,3.749683,0.614655,0.670175,0.550949

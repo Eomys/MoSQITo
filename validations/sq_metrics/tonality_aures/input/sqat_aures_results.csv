@@ -1,4 +1,4 @@
-# SQAT commit 11658b5 (2026-10-02), MATLAB 26.1.0.3251617 (R2026a) Update 2, generated 2026-10-11 02:51
+# SQAT commit 11658b5 (2026-10-02), MATLAB 26.1.0.3251617 (R2026a) Update 2, generated 2026-10-11 11:20
 case,description,fs,nframes,K_mean,K_max,K_median,wT_mean,wGr_mean
 ref,"1000 Hz 60 dB",48000,14,1.000034,1.000034,1.000034,0.707699,1.000000
 bin_1000,"1000 Hz 60 dB",48000,14,1.000034,1.000034,1.000034,0.707699,1.000000

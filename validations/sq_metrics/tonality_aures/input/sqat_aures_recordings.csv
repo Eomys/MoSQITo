@@ -1,6 +1,6 @@
-# SQAT commit 11658b5, MATLAB 26.1.0.3251617 (R2026a) Update 2, generated 2026-10-11 02:05
+# SQAT commit 11658b5 (2026-10-02), MATLAB 26.1.0.3251617 (R2026a) Update 2, generated 2026-10-11 11:21
 file,calib,fs,duration_s,Leq_dB,nframes,K_mean,K_median,K_max,K5,wT_mean,wGr_mean
-"Test signal 14 (propeller-driven airplane).wav",2.82843,48000,13.155,78.9,104,0.255649,0.241776,0.557610,0.528915,0.127137,NaN
+"Test signal 14 (propeller-driven airplane).wav",2.82843,48000,13.155,78.9,104,0.255649,0.241776,0.557610,0.528915,0.127137,0.348074
 "Test signal 15 (vehicle interior 40 kmh).wav",2.82843,48000,11.537,80.9,91,0.003652,0.000000,0.090687,0.028723,0.000099,0.037480
 "Test signal 16 (hairdryer).wav",2.82843,48000,4.110,77.1,31,0.041556,0.040563,0.087235,0.083390,0.065066,0.049675
 "Test signal 17 (machine gun).wav",2.82843,48000,2.909,53.0,22,0.000000,0.000000,0.000000,0.000000,0.000000,0.058262

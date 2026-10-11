@@ -26,6 +26,7 @@ from pathlib import Path
 import numpy as np
 
 from mosqito.sq_metrics import tonality_aures
+from mosqito.sq_metrics.tonality.tonality_aures.tonality_aures_tv import tonality_aures_tv
 from mosqito.sq_metrics.tonality.tonality_aures.tonality_aures import _bark
 
 HERE = Path(__file__).resolve().parent
@@ -179,6 +180,21 @@ def compare_with_sqat(csv_path=SQAT_CSV):
         reader = csv.DictReader(fh)
         sqat = list(reader)
     commit = first.strip("# \n")
+    signals = _sqat_signals()
+    rows = []
+    for entry in sqat:
+        name = entry["case"]
+        if name not in signals:
+            continue
+        ours = tonality_aures(signals[name], FS)
+        theirs = float(entry["K_mean"])
+        rows.append({"case": name, "description": entry["description"], "sqat": theirs,
+                     "mosqito": ours, "difference": ours - theirs})
+    return {"commit": commit, "rows": rows}
+
+
+def _sqat_signals():
+    """The deterministic signals of the SQAT comparison, by case name of the CSV."""
     signals = {
         "ref": pure_tone(1000, 60),
         "bin_1000": pure_tone(1000, 60),
@@ -196,16 +212,7 @@ def compare_with_sqat(csv_path=SQAT_CSV):
         signals[f"level_{spl}"] = pure_tone(1000, spl)
     for freq in (250, 500, 2000, 4000):
         signals[f"freq_{freq}"] = pure_tone(freq, 60)
-    rows = []
-    for entry in sqat:
-        name = entry["case"]
-        if name not in signals:
-            continue
-        ours = tonality_aures(signals[name], FS)
-        theirs = float(entry["K_mean"])
-        rows.append({"case": name, "description": entry["description"], "sqat": theirs,
-                     "mosqito": ours, "difference": ours - theirs})
-    return {"commit": commit, "rows": rows}
+    return signals
 
 
 RECORDINGS_CSV = HERE / "input" / "sqat_aures_recordings.csv"
@@ -220,13 +227,68 @@ RECORDINGS_DIRS = {
 }
 
 
-def compare_with_sqat_recordings(csv_path=RECORDINGS_CSV):
+FRAMES_CSV = HERE / "input" / "sqat_aures_frames.csv"
+RECORDINGS_FRAMES_CSV = HERE / "input" / "sqat_aures_recordings_frames.csv"
+
+
+def _read_sqat_frames(csv_path, key):
+    """SQAT's frame rows grouped by case or file: {name: (time [s], K)}."""
+    if not csv_path.exists():
+        return "", {}
+    with csv_path.open(encoding="utf-8") as fh:
+        commit = fh.readline().strip("# \n")
+        rows = list(csv.DictReader(fh))
+    frames = {}
+    for r in rows:
+        frames.setdefault(r[key], ([], []))
+        frames[r[key]][0].append(float(r["time_s"]))
+        frames[r[key]][1].append(float(r["K"]))
+    return commit, {k: (np.array(t), np.array(K)) for k, (t, K) in frames.items()}
+
+
+def _frame_difference(sqat_k, ours_k):
+    """Frame-by-frame difference of two series that start at the same time with the same hop."""
+    n = min(sqat_k.size, ours_k.size)
+    d = ours_k[:n] - sqat_k[:n]
+    d = d[np.isfinite(d)]
+    if d.size == 0:
+        return {"n_frames": 0, "max_abs_diff": float("nan"), "rms_diff": float("nan")}
+    return {"n_frames": int(d.size), "max_abs_diff": float(np.max(np.abs(d))),
+            "rms_diff": float(np.sqrt(np.mean(d**2)))}
+
+
+def compare_with_sqat_frames(csv_path=FRAMES_CSV):
+    """Frame by frame: SQAT's K(t) against ``tonality_aures_tv`` on the deterministic signals.
+
+    Both sides use 250 ms frames every 125 ms from the start of the signal, so
+    the series are compared frame by frame (SQAT stops one frame earlier at
+    the end of a 2 s signal; the common frames are compared).
+    """
+    commit, frames = _read_sqat_frames(csv_path, "case")
+    if not frames:
+        return {"commit": "", "rows": []}
+    signals = _sqat_signals()
+    rows = []
+    for name, (_, sqat_k) in frames.items():
+        if name not in signals:
+            continue
+        ours_k, _ = tonality_aures_tv(signals[name], FS)
+        row = {"case": name, "sqat_mean": float(np.mean(sqat_k)), "mosqito_frames_mean": float(np.mean(ours_k))}
+        row.update(_frame_difference(sqat_k, ours_k))
+        rows.append(row)
+    return {"commit": commit, "rows": rows}
+
+
+def compare_with_sqat_recordings(csv_path=RECORDINGS_CSV, frames_csv=RECORDINGS_FRAMES_CSV):
     """Our values against SQAT's on the recordings shipped with MoSQITo.
 
     The files are loaded with the calibration MoSQITo uses for them (column
     ``calib`` of the CSV, the ``wav_calib`` argument of ``mosqito.utils.load``).
-    SQAT gives the mean over 250 ms frames; we give one value for the whole
-    file, so the two agree only for stationary sounds.
+    SQAT gives statistics over 250 ms frames; ``tonality_aures`` gives one
+    value for the whole file and ``tonality_aures_tv`` the same frames as
+    SQAT, so the frame statistics are the like-for-like comparison and the
+    whole-file value agrees with them only for stationary sounds. Where
+    SQAT's frame series are available they are compared frame by frame.
     """
     from mosqito.utils import load
 
@@ -236,6 +298,7 @@ def compare_with_sqat_recordings(csv_path=RECORDINGS_CSV):
     with csv_path.open(encoding="utf-8") as fh:
         commit = fh.readline().strip("# \n")
         sqat = list(csv.DictReader(fh))
+    _, frames = _read_sqat_frames(frames_csv, "file")
     rows = []
     for entry in sqat:
         name = entry["file"]
@@ -245,9 +308,15 @@ def compare_with_sqat_recordings(csv_path=RECORDINGS_CSV):
             continue
         signal, fs = load(str(path), wav_calib=float(entry["calib"]))
         ours = tonality_aures(signal, fs)
+        ours_k, _ = tonality_aures_tv(signal, fs)
         theirs = float(entry["K_mean"])
-        rows.append({"file": name, "leq": float(entry["Leq_dB"]), "sqat_mean": theirs,
-                     "sqat_max": float(entry["K_max"]), "mosqito": ours, "difference": ours - theirs})
+        row = {"file": name, "leq": float(entry["Leq_dB"]), "sqat_mean": theirs,
+               "sqat_max": float(entry["K_max"]), "mosqito": ours, "difference": ours - theirs,
+               "mosqito_frames_mean": float(np.mean(ours_k)), "mosqito_frames_max": float(np.max(ours_k)),
+               "difference_frames": float(np.mean(ours_k)) - theirs}
+        if name in frames:
+            row.update(_frame_difference(frames[name][1], ours_k))
+        rows.append(row)
     return {"commit": commit, "rows": rows}
 
 
@@ -264,6 +333,7 @@ def summarize_validation():
     }
     summary["success"] = all(row["passes"] for rows in summary.values() for row in rows)
     summary["sqat"] = compare_with_sqat()
+    summary["sqat_frames"] = compare_with_sqat_frames()
     summary["sqat_recordings"] = compare_with_sqat_recordings()
     return summary
 
@@ -292,11 +362,17 @@ def print_validation_report():
         print("| Case | Signal | SQAT | MoSQITo | Difference |\n|---|---|---|---|---|")
         for r in summary["sqat"]["rows"]:
             print(f"| {r['case']} | {r['description']} | {r['sqat']:.3f} | {r['mosqito']:.3f} | {r['difference']:+.3f} |")
+    if summary["sqat_frames"]["rows"]:
+        print(f"\n### frame by frame with SQAT ({summary['sqat_frames']['commit']})\n")
+        print("| Case | Frames | SQAT mean | MoSQITo frames mean | Largest frame difference | RMS frame difference |\n|---|---|---|---|---|---|")
+        for r in summary["sqat_frames"]["rows"]:
+            print(f"| {r['case']} | {r['n_frames']} | {r['sqat_mean']:.3f} | {r['mosqito_frames_mean']:.3f} | {r['max_abs_diff']:.3f} | {r['rms_diff']:.3f} |")
     if summary["sqat_recordings"]["rows"]:
         print(f"\n### recordings shipped with MoSQITo, SQAT ({summary['sqat_recordings']['commit']})\n")
-        print("| File | Leq [dB] | SQAT mean | SQAT max | MoSQITo | Difference to the mean |\n|---|---|---|---|---|---|")
+        print("| File | Leq [dB] | SQAT mean | SQAT max | MoSQITo frames mean | MoSQITo frames max | MoSQITo whole file | Frames mean minus SQAT mean | RMS frame difference |\n|---|---|---|---|---|---|---|---|---|")
         for r in summary["sqat_recordings"]["rows"]:
-            print(f"| {r['file']} | {r['leq']:.1f} | {r['sqat_mean']:.3f} | {r['sqat_max']:.3f} | {r['mosqito']:.3f} | {r['difference']:+.3f} |")
+            rms = f"{r['rms_diff']:.3f}" if "rms_diff" in r else "-"
+            print(f"| {r['file']} | {r['leq']:.1f} | {r['sqat_mean']:.3f} | {r['sqat_max']:.3f} | {r['mosqito_frames_mean']:.3f} | {r['mosqito_frames_max']:.3f} | {r['mosqito']:.3f} | {r['difference_frames']:+.3f} | {rms} |")
     print(f"\noverall success: {summary['success']}")
     return summary
 
