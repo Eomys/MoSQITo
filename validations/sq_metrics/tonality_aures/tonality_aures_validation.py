@@ -184,6 +184,49 @@ def compare_with_sqat(csv_path=SQAT_CSV):
     return {"commit": commit, "rows": rows}
 
 
+RECORDINGS_CSV = HERE / "input" / "sqat_aures_recordings.csv"
+RECORDINGS_DIRS = {
+    "Test signal 1": "validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5",
+    "Test signal 2": "validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.5",
+    "Test signal 7": "validations/sq_metrics/loudness_zwtv/input/ISO_532-1/Annex B.4",
+    "Test signal 3": "validations/sq_metrics/loudness_zwst/input/ISO_532_1",
+    "Test signal 5": "validations/sq_metrics/loudness_zwst/input/ISO_532_1",
+    "trafic": "validations/sq_metrics/loudness_zwst/input/ISO_532_1",
+    "white_noise": "tests/input",
+}
+
+
+def compare_with_sqat_recordings(csv_path=RECORDINGS_CSV):
+    """Our values against SQAT's on the recordings shipped with MoSQITo.
+
+    The files are loaded with the calibration MoSQITo uses for them (column
+    ``calib`` of the CSV, the ``wav_calib`` argument of ``mosqito.utils.load``).
+    SQAT gives the mean over 250 ms frames; we give one value for the whole
+    file, so the two agree only for stationary sounds.
+    """
+    from mosqito.utils import load
+
+    if not csv_path.exists():
+        return {"commit": "", "rows": []}
+    root = HERE.parents[2]
+    with csv_path.open(encoding="utf-8") as fh:
+        commit = fh.readline().strip("# \n")
+        sqat = list(csv.DictReader(fh))
+    rows = []
+    for entry in sqat:
+        name = entry["file"]
+        folder = next((d for key, d in RECORDINGS_DIRS.items() if name.startswith(key)), None)
+        path = root / folder / name if folder else None
+        if path is None or not path.exists():
+            continue
+        signal, fs = load(str(path), wav_calib=float(entry["calib"]))
+        ours = tonality_aures(signal, fs)
+        theirs = float(entry["K_mean"])
+        rows.append({"file": name, "leq": float(entry["Leq_dB"]), "sqat_mean": theirs,
+                     "sqat_max": float(entry["K_max"]), "mosqito": ours, "difference": ours - theirs})
+    return {"commit": commit, "rows": rows}
+
+
 def summarize_validation():
     """All checks in one dictionary, with an overall success flag."""
     summary = {
@@ -197,6 +240,7 @@ def summarize_validation():
     }
     summary["success"] = all(row["passes"] for rows in summary.values() for row in rows)
     summary["sqat"] = compare_with_sqat()
+    summary["sqat_recordings"] = compare_with_sqat_recordings()
     return summary
 
 
@@ -224,6 +268,11 @@ def print_validation_report():
         print("| Case | Signal | SQAT | MoSQITo | Difference |\n|---|---|---|---|---|")
         for r in summary["sqat"]["rows"]:
             print(f"| {r['case']} | {r['description']} | {r['sqat']:.3f} | {r['mosqito']:.3f} | {r['difference']:+.3f} |")
+    if summary["sqat_recordings"]["rows"]:
+        print(f"\n### recordings shipped with MoSQITo, SQAT ({summary['sqat_recordings']['commit']})\n")
+        print("| File | Leq [dB] | SQAT mean | SQAT max | MoSQITo | Difference to the mean |\n|---|---|---|---|---|---|")
+        for r in summary["sqat_recordings"]["rows"]:
+            print(f"| {r['file']} | {r['leq']:.1f} | {r['sqat_mean']:.3f} | {r['sqat_max']:.3f} | {r['mosqito']:.3f} | {r['difference']:+.3f} |")
     print(f"\noverall success: {summary['success']}")
     return summary
 

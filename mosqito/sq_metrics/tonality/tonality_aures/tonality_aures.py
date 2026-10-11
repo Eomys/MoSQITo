@@ -303,6 +303,8 @@ def _find_sinusoids(levels, pxx, freqs, lobe, k_min, k_max):
     for k in range(max(k_min, 3), min(k_max, n - 4) + 1):
         if not (levels[k - 1] < levels[k] >= levels[k + 1]):
             continue
+        if levels[k] < _hearing_threshold(freqs[k]):
+            continue  # below the threshold in quiet the level excess of Gl. (8) is negative
         if any(levels[k] - levels[k + off] < TONAL_THRESHOLD for off in (-3, -2, 2, 3)):
             continue
         curvature = levels[k - 1] - 2 * levels[k] + levels[k + 1]  # dB per bin^2 (negative)

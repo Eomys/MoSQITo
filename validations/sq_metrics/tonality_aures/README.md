@@ -133,7 +133,32 @@ SQAT (G. Felix Greco, R. Merino-Martínez, A. Osses, M. J. B. Lotinga, doi:10.52
 
 Both implementations calibrate c from the reference tone and arrive at 1.1055. On tones in one-critical-band noise (the `Tonality_Aures1985` validation sounds of SQAT, 1 kHz tone at 82 dB SPL) the two differ where the tone is 30 to 40 dB over the noise band: SQAT lets a narrowband region absorb the sinusoids it contains, so the tone disappears into the band (K = 0.13 and 0.73 at 30 and 40 dB), while this implementation follows the order of Fig. 8 of the paper, sinusoids first and regions in the residual (0.40 and 0.79 on the same files, 0.67 and 0.87 on the synthetic series above). From 50 dB on both give 0.91 to 1.00.
 
-Real recordings have not been compared yet.
+### Recordings shipped with MoSQITo
+
+The same SQAT version was run on the ISO 532-1 Annex B.5 recordings and a few other files of this repository (`comparison_sqat/compare_sqat_aures_recordings.m`, results in `input/sqat_aures_recordings.csv`), with the calibration MoSQITo uses for them (`wav_calib` = 2√2 for the ISO files, 0.01 for `white_noise_442_1768_Hz_stationary.wav`). SQAT gives the mean and the maximum over its 250 ms frames; this implementation gives one value for the whole file. The two quantities agree for stationary sounds and differ by design for impulsive or varying ones (propeller aircraft, door creak), where a single spectrum of the whole file is not what the method was made for.
+
+| File | Leq [dB] | SQAT mean | SQAT max | MoSQITo | Difference to the mean |
+|---|---|---|---|---|---|
+| Test signal 14 (propeller-driven airplane) | 78.9 | 0.256 | 0.558 | 0.360 | +0.105 |
+| Test signal 15 (vehicle interior 40 kmh) | 80.9 | 0.004 | 0.091 | 0.000 | -0.004 |
+| Test signal 16 (hairdryer) | 77.1 | 0.042 | 0.087 | 0.030 | -0.011 |
+| Test signal 17 (machine gun) | 53.0 | 0.000 | 0.000 | 0.000 | +0.000 |
+| Test signal 18 (hammer) | 57.5 | 0.007 | 0.037 | 0.000 | -0.007 |
+| Test signal 19 (door creak) | 59.3 | 0.068 | 0.161 | 0.147 | +0.079 |
+| Test signal 20 (shaking coins) | 60.2 | 0.002 | 0.018 | 0.000 | -0.002 |
+| Test signal 21 (jackhammer) | 53.4 | 0.007 | 0.051 | 0.000 | -0.007 |
+| Test signal 22 (ratchet wheel (large)) | 53.7 | 0.004 | 0.021 | 0.000 | -0.004 |
+| Test signal 23 (typewriter) | 55.4 | 0.001 | 0.014 | 0.000 | -0.001 |
+| Test signal 24 (woodpecker) | 53.9 | 0.001 | 0.012 | 0.012 | +0.011 |
+| Test signal 25 (full can rattle) | 49.9 | 0.002 | 0.024 | 0.000 | -0.002 |
+| Test signal 7 (tone 1 kHz 30 dB - 80 dB) | 69.1 | 0.951 | 1.001 | 0.950 | -0.002 |
+| Test signal 3 (1 kHz 60 dB) | 60.0 | 1.000 | 1.000 | 1.000 | -0.000 |
+| Test signal 5 (pinknoise 60 dB) | 60.0 | 0.000 | 0.000 | 0.000 | +0.000 |
+| trafic | 71.7 | 0.014 | 0.104 | 0.000 | -0.014 |
+| white_noise_442_1768_Hz_stationary | 46.4 | 0.776 | 0.788 | 0.717 | -0.059 |
+| white_noise_200_2000_Hz_stationary | 98.3 | 0.613 | 0.626 | 0.622 | +0.008 |
+
+The stationary files agree within 0.06 t.u.; the largest difference, white noise with tones at 442 and 1768 Hz, comes from the loudness weighting (w_Gr 0.63 here, 0.70 in SQAT), where the two implementations read the loudness of the noise from different estimates (Welch spectrum of the whole file against the time signal of each frame with the tones notched out).
 
 ## References
 
