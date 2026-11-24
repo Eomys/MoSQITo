@@ -14,10 +14,12 @@ def time_segmentation(sig, fs, nperseg=2048, noverlap=None, is_ecma=False):
     fs : float
         The time signal sampling frequency.
     nperseg: int, optional
-        Length of each segment. Defaults to 2048.
+        Length of each segment in samples. Defaults to 2048.
     noverlap: int, optional
-        Number of points to overlap between segments.
-        If None, noverlap = nperseg / 2. Defaults to None.
+        Hop size in samples between consecutive segment starts. The default
+        (``None``) uses half the segment length rounded down, with a minimum
+        of one sample. Set to ``0`` to use a hop of ``nperseg`` for
+        non-overlapping segments.
     is_ecma: bool, optional
         If is_ecma = True, the implementation is as described
         in Formula 16 (section 5.1.4) of ECMA-418-2. Defaults
@@ -29,8 +31,7 @@ def time_segmentation(sig, fs, nperseg=2048, noverlap=None, is_ecma=False):
         A 2-dimensional array of size (nperseg, nseg)
         containing the segmented signal.
     time: numpy.array
-        The time axis corresponding to the segmented
-        signal, size (nseg,)
+        Segment center times in seconds, size (nseg,).
     """
 
     if noverlap is None:
