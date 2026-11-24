@@ -20,10 +20,13 @@ def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="fr
         Sampling frequency, can be omitted if the input is a DataTimeobject.
         Default to None
     nperseg: int, optional
-        Length of each segment. Defaults to 4096.
+        Length of each segment in samples after any resampling. Defaults to
+        4096.
     noverlap: int, optional
-        Number of points to overlap between segments.
-        If None, noverlap = nperseg / 2. Defaults to None.
+        Hop size in samples between consecutive segment starts, after any
+        resampling. The default (``None``) uses half the segment length rounded
+        down, with a minimum of one sample. Set to ``0`` to use a hop of
+        ``nperseg`` for non-overlapping segments.
     field_type : {'free', 'diffuse'}
         Type of soundfield.
         Default is 'free'
@@ -37,21 +40,7 @@ def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="fr
     bark_axis : numpy.ndarray
         Bark axis, size (Nbark,).
     time_axis : numpy.ndarray
-        Time axis, size (Ntime,).
-
-    Warning
-    -------
-    N : numpy.array
-        The overall loudness array [sones], size (Ntime,).
-    N_specific : numpy.ndarray
-        The specific loudness array [sones/bark], size (Nbark, Ntime).
-    bark_axis: numpy.array
-        The Bark axis array, size (Nbark,).
-    time_axis: numpy.array
-        The time axis array, size (Ntime,).
-	The sampling frequency of the signal must be >= 48 kHz to fulfill requirements.
-    If the provided signal doesn't meet the requirements, it will be resampled.
-
+        Segment center times in seconds, size (Ntime,).
 
     See Also
     ---------
@@ -61,6 +50,9 @@ def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="fr
 
     Notes
     ------
+    A sampling frequency of at least 48 kHz is required. Signals with a
+    lower sampling frequency are resampled to 48 kHz.
+
     For each considered segment, the total loudness :math:`N` is computed as the integral of the specific loudness :math:`N'` measured in sone/bark, over the Bark scale.
     The values of specific loudness are evaluated from third octave band levels as function of critical band rate :math:`z` in Bark.
 
@@ -69,9 +61,10 @@ def loudness_zwst_perseg(signal, fs, nperseg=4096, noverlap=None, field_type="fr
 
     Due to normative continuity, the method is in accordance with ISO 226:1987 equal loudness contours
     instead of ISO 226:2003, as defined in the following standards:
-        * ISO 532:1975 (method B)
-        * DIN 45631:1991
-        * ISO 532-1:2017 (method 1)
+
+    * ISO 532:1975 (method B)
+    * DIN 45631:1991
+    * ISO 532-1:2017 (method 1)
 
     References
     -----------
