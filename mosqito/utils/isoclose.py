@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 
-try:
-    import matplotlib.pyplot as plt
-except ImportError:
-    raise RuntimeError(
-        "In order to perform this validation you need the 'matplotlib' package."
-    )
-
 from numpy import amin, amax, arange, abs
 
 def isoclose(
@@ -31,7 +24,7 @@ def isoclose(
         Absolute tolerance.
         Default to 0
     is_plot : bool, optional
-        To generate a "compliance" plot.
+        To generate a "compliance" plot. Requires Matplotlib when True.
         Default to False
     tol_label: str
         Label for the tolerance curves
@@ -57,6 +50,13 @@ def isoclose(
     is_isoclose = (actual >= range_pos).all() and (actual <= range_neg).all()
 
     if is_plot:
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            raise RuntimeError(
+                "In order to perform this validation you need the 'matplotlib' package."
+            )
+
         # Define xaxis
         if xaxis is None:
             xaxis = arange(actual.shape[0])
