@@ -14,29 +14,29 @@ from mosqito.sq_metrics.tonality.prominence_ratio_ecma._pr_main_calc import (
 
 def pr_ecma_perseg(signal, fs, prominence=True, overlap=0):
     """
-    Computes the tone-to-noise ratio value per segments from a time signal
-
-    This function computes the prominence ratio according to ECMA 418-1.
+    Compute the ECMA-418-1 prominence ratio per time window.
 
     Parameters
     ----------
-    signal :numpy.array
-        Signal time values in [Pa].
+    signal : numpy.ndarray
+        One-dimensional sound pressure signal in Pa.
     fs : integer
-        Sampling frequency.
-    prominence : Bool
-        If True, the algorithm only returns the prominent tones, if False it returns all tones detected.
-        Default to True
+        Sampling frequency in Hz.
+    prominence : bool
+        If True, include only prominent tones. If False, also include
+        ratios for non-prominent tones. Defaults to True.
     overlap : float
-        Overlapping coefficient for the time windows of 200ms.
-        Default to 0
+        Controls the step between 500 ms windows. The step in samples is
+        ``int(overlap * int(0.5 * fs))``. A zero step (the default) is
+        replaced by the window length. For example, ``overlap=0.25``
+        gives a 125 ms step at 48 kHz.
 
     Returns
     -------
-    t_pr : float
-        Global PR value.
+    t_pr : array of float
+        Combined PR in dB for the prominent tones in each window.
     pr : array of float
-        PR values for each detected tone.
+        PR in dB on the frequency-by-time grid.
     promi : array of bool
         Prominence criterion for each detected tone.
     freqs : array_like
@@ -48,31 +48,31 @@ def pr_ecma_perseg(signal, fs, prominence=True, overlap=0):
     --------
     .pr_ecma_freq : PR computation for a sound spectrum
     .pr_ecma_st : PR computation for a stationary signal
-    .tnr_ecma_perseg : TNR for a non-stationary signal
+    :func:`~mosqito.sq_metrics.tonality.tone_to_noise_ecma.tnr_ecma_perseg.tnr_ecma_perseg`
+        TNR for a non-stationary signal.
 
     Notes
     -----
-    The computation is realised over successive time windows of 500ms.
-    For each time window, the computation is based on a spectrum analysis detecting peaks to be compared with the overall smoothed spectrum.
-    The algorithm automatically detects the frequency of the tonal components according to Sottek's method.
+    Each 500 ms window is screened for candidate tones using a
+    smoothed-spectrum method based on Bray and Caspary (2008).
+    The ratio calculation follows ECMA-418-1. ECMA-418-2 defines a
+    separate psychoacoustic tonality metric using the Sottek Hearing Model.
 
-    .. math::
-        \\Delta L_{TNR} = L_{peak} - 10\\log_{10}\\left (10^{0.1L_{peakband}} -10^{0.1L_{peak}}\\right )
+    TNR compares the power of a tone with the masking noise power in its
+    critical band. PR compares the power in the tone's critical band
+    with the average power in the adjacent critical bands, with a
+    bandwidth correction at low frequencies.
 
-    .. math::
-        \\Delta L_{PR} = 10\\log_{10}\\left ( 10^{0.1L_{peakband}} \\right ) - 10\\log_{10}\\left [0.5\\left (10^{0.1L_{lowerband}} -10^{0.1L_{upperband}}\\right )\\right]
-
-    The difference between PR and TNR lies in the comparison process between the peak level and the background noise amplitude.
-    TNR compares the peak level to the level of its critical band, while PR compares the level of the peak's critical band to its two neighbor bands.
     According to ECMA 418-1 standard, TNR can then prove to be more accurate for multiple tones in adjacent critical bands, for example when strong harmonics exist.
     PR can be more effective for multiple tones within the same critical band and is more readily automated to handle such cases.
 
-    Along with the TNR/PR value comes a prominence indicator, a tone being considered as prominent if its dB level is sufficiently higher than the smoothed spectrum, depending on its frequency.
+    The prominence indicator applies the frequency-dependent ECMA-418-1
+    criterion to a detected tone's ratio.
 
 
     References
     ----------
-    :cite:empty:`PR-ECMA-418-2`
+    :cite:empty:`PR-ECMA-418-1,PR-ECMA-418-2,PR-BrayCaspary2008`
 
     .. bibliography::
         :keyprefix: PR-
