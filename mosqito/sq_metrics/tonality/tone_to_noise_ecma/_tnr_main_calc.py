@@ -143,7 +143,12 @@ def _tnr_main_calc(spectrum_db, freq_axis):
                     high_limit_idx = argmin(abs(fr - f2))
     
                     spec_sum = sum(10 ** (spec[low_limit_idx:high_limit_idx] / 10))
-                    Ltot = 10 * log10(spec_sum)
+                    if spec_sum > 0:
+                        Ltot = 10 * log10(spec_sum)
+                        if 10 ** (Lt / 10) >= 10 ** (Ltot / 10):
+                            Lt = 10 * log10(
+                                10 ** (spec[ind_p] / 10) + 10 ** (spec[ind_s] / 10)
+                            )
     
                     # suppression of the second highest tone from the list of tones
                     sup = where(peaks == ind_s)[0]
@@ -163,7 +168,8 @@ def _tnr_main_calc(spectrum_db, freq_axis):
                     high_limit_idx = argmin(abs(fr - f2))
     
                     spec_sum = sum(10 ** (spec[low_limit_idx:high_limit_idx] / 10))
-                    Ltot = 10 * log10(spec_sum)
+                    if spec_sum > 0:
+                        Ltot = 10 * log10(spec_sum)
     
                     delta_ft = fr[1] - fr[0]
     
@@ -178,53 +184,58 @@ def _tnr_main_calc(spectrum_db, freq_axis):
                 high_limit_idx = argmin(abs(fr - f2))
     
                 spec_sum = sum(10 ** (spec[low_limit_idx:high_limit_idx] / 10))
-                Ltot = 10 * log10(spec_sum)
+                if spec_sum > 0:
+                    Ltot = 10 * log10(spec_sum)
+                    if 10 ** (Lt / 10) >= 10 ** (Ltot / 10):
+                        Lt = spec[ind_p]
     
                 delta_ft = fr[1] - fr[0]
     
             # SPL of the masking noise
             delta_fc = f2 - f1
             delta_ftot = frs[high_limit_idx] - frs[low_limit_idx]
-            Ln = 10 * log10(10 ** (Ltot / 10) - 10 ** (Lt / 10)) + 10 * log10(
-                delta_fc / (delta_ftot - delta_ft)
-            )
-    
-            # Tone-to-noise ratio
-            f = fr[ind_p]
-            delta_t = Lt - Ln
-            if delta_t > 0:
-                if nseg > 1:
-                    tones_freqs[i] = append(tones_freqs[i], f)
-                elif nseg == 1:
-                    tones_freqs = append(tones_freqs, f)
-                tnr = append(tnr, delta_t)
-    
-                # Prominence criteria
-                if f >= 89.1 and f < 1000:
-                    if delta_t >= 8 + 8.33 * log10(1000 / f):
-                        if nseg > 1:
-                            prominence[i].append(True)                        
-                        elif nseg == 1:
-                            prominence.append(True)
-                    else:
-                        if nseg > 1:
-                            prominence[i].append(False)
-                        
-                        elif nseg == 1:
-                            prominence.append(False)
-                elif f >= 1000 and f <= 11200:
-                    if delta_t >= 8:
-                        if nseg > 1:
-                            prominence[i].append(True)
-                        
-                        elif nseg == 1:
-                            prominence.append(True)
-                    else:
-                        if nseg > 1:
-                            prominence[i].append(False)
-                        
-                        elif nseg == 1:
-                            prominence.append(False)
+            noise_power = 10 ** (Ltot / 10) - 10 ** (Lt / 10) if spec_sum > 0 else 0
+            if noise_power > 0 and delta_ftot > delta_ft:
+                Ln = 10 * log10(noise_power) + 10 * log10(
+                    delta_fc / (delta_ftot - delta_ft)
+                )
+
+                # Tone-to-noise ratio
+                f = fr[ind_p]
+                delta_t = Lt - Ln
+                if delta_t > 0:
+                    if nseg > 1:
+                        tones_freqs[i] = append(tones_freqs[i], f)
+                    elif nseg == 1:
+                        tones_freqs = append(tones_freqs, f)
+                    tnr = append(tnr, delta_t)
+
+                    # Prominence criteria
+                    if f >= 89.1 and f < 1000:
+                        if delta_t >= 8 + 8.33 * log10(1000 / f):
+                            if nseg > 1:
+                                prominence[i].append(True)
+                            elif nseg == 1:
+                                prominence.append(True)
+                        else:
+                            if nseg > 1:
+                                prominence[i].append(False)
+
+                            elif nseg == 1:
+                                prominence.append(False)
+                    elif f >= 1000 and f <= 11200:
+                        if delta_t >= 8:
+                            if nseg > 1:
+                                prominence[i].append(True)
+
+                            elif nseg == 1:
+                                prominence.append(True)
+                        else:
+                            if nseg > 1:
+                                prominence[i].append(False)
+
+                            elif nseg == 1:
+                                prominence.append(False)
     
             # suppression from the list of tones
             sup = where(peaks == ind_p)[0]
